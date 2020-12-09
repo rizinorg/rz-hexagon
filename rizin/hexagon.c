@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdbool.h>
-#include <r_types.h>
-#include <r_lib.h>
-#include <r_util.h>
-#include <r_asm.h>
+#include <rz_types.h>
+#include <rz_lib.h>
+#include <rz_util.h>
+#include <rz_asm.h>
 #include "hexagon.h"
 
 // TODO: Handle also control reg pairs

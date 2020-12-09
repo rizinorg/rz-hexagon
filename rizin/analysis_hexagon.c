@@ -1,19 +1,19 @@
-/* radare - LGPL - Copyright 2018 - xvilka */
+/* rizin - LGPL - Copyright 2018 - xvilka */
 
-#include <r_types.h>
-#include <r_util.h>
-#include <r_asm.h>
-#include <r_anal.h>
-#include <r_lib.h>
+#include <rz_types.h>
+#include <rz_util.h>
+#include <rz_asm.h>
+#include <rz_analysis.h>
+#include <rz_lib.h>
 #include "hexagon.h"
 #include "hexagon_insn.h"
-#include "hexagon_anal.h"
+#include "hexagon_analysis.h"
 
-static int hexagon_v6_op(RAnal *anal, RAnalOp *op, ut64 addr, const ut8 *buf, int len, RAnalOpMask mask) {
+static int hexagon_v6_op(RzAnal *analysis, RzAnalysisOp *op, ut64 addr, const ut8 *buf, int len, RzAnalysisOpMask mask) {
 	HexInsn hi = {0};;
 	ut32 data = 0;
-	memset (op, 0, sizeof (RAnalOp));
-	data = r_read_le32 (buf);
+	memset (op, 0, sizeof (RzAnalysisOp));
+	data = rz_read_le32 (buf);
 	int size = hexagon_disasm_instruction (data, &hi, (ut32) addr);
 	op->size = size;
 	if (size <= 0) {
@@ -26,7 +26,7 @@ static int hexagon_v6_op(RAnal *anal, RAnalOp *op, ut64 addr, const ut8 *buf, in
 	return hexagon_anal_instruction (&hi, op);
 }
 
-static int set_reg_profile(RAnal *anal) {
+static int set_reg_profile(RzAnalysis *analysis) {
 	// TODO: Add missing registers
 	const char *p =
 		"=PC	pc\n"
@@ -83,10 +83,10 @@ static int set_reg_profile(RAnal *anal) {
 		"flg	s   .1 132.30 0\n"
 		"flg	z   .1 132.31 0\n";
 
-	return r_reg_set_profile_string (anal->reg, p);
+	return rz_reg_set_profile_string (analysis->reg, p);
 }
 
-RAnalPlugin r_anal_plugin_hexagon = {
+RzAnalysisPlugin rz_analysis_plugin_hexagon = {
 	.name = "hexagon",
 	.desc = "Qualcomm Hexagon (QDSP6) V6",
 	.license = "LGPL3",
@@ -97,10 +97,10 @@ RAnalPlugin r_anal_plugin_hexagon = {
 	.set_reg_profile = set_reg_profile,
 };
 
-#ifndef R2_PLUGIN_INCORE
-R_API RLibStruct radare_plugin = {
-	.type = R_LIB_TYPE_ANAL,
-	.data = &r_anal_plugin_hexagon_v6,
-	.version = R2_VERSION
+#ifndef RZ_PLUGIN_INCORE
+RZ_API RzLibStruct rizin_plugin = {
+	.type = RZ_LIB_TYPE_ANAL,
+	.data = &rz_analysis_plugin_hexagon_v6,
+	.version = RZ_VERSION
 };
 #endif
