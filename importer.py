@@ -1852,8 +1852,17 @@ def write_files_rizin(ins_class, ins_duplex, hex_insn_names, extendable_insn):
     includes += ["extern ut32 constant_extender;"]
     includes += [""] # for the sake of beauty
 
+    # Add gcc deoptimization attribute for Rizin CI ASAN build
+    deoptimize_if_asan = ["#if ASAN"]
+    deoptimize_if_asan += ["#define NO_OPT_IF_ASAN __attribute__((optimize(0)))"]
+    deoptimize_if_asan += ["#else"]
+    deoptimize_if_asan += ["#define NO_OPT_IF_ASAN"]
+    deoptimize_if_asan += ["#endif"]
+    deoptimize_if_asan += [""] # for the sake of beauty
+
     # Wrap everything into one function
-    lines = auto_header + spdx + includes + make_C_block(lines, "int hexagon_disasm_instruction(ut32 hi_u32, HexInsn *hi, ut32 addr)", None, "return 4;")
+    lines = auto_header + spdx + includes + deoptimize_if_asan + \
+        make_C_block(lines, "NO_OPT_IF_ASAN int hexagon_disasm_instruction(ut32 hi_u32, HexInsn *hi, ut32 addr)", None, "return 4;")
     with open(HEX_DISAS_FILENAME, "w") as f:
         for l in lines:
             f.write(l + "\n")
