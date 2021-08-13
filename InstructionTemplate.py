@@ -282,7 +282,7 @@ class InstructionTemplate:
 
     # RIZIN SPECIFIC
     def get_rizin_op_type(self) -> str:
-        """ Returns the c code to assign the instruction type to the RzAnalysisOp.type member. """
+        """Returns the c code to assign the instruction type to the RzAnalysisOp.type member."""
 
         op_type = "op->type = "
 
@@ -329,7 +329,12 @@ class InstructionTemplate:
                 )
 
         if op_type == "op->type = ":
-            log("Instruction: {} has no instr. type assigned to it yet.".format(self.name), LogLevel.VERBOSE)
+            log(
+                "Instruction: {} has no instr. type assigned to it yet.".format(
+                    self.name
+                ),
+                LogLevel.VERBOSE,
+            )
             return "NONE"
 
         return op_type
