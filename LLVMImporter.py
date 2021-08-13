@@ -603,41 +603,42 @@ class LLVMImporter:
 
             i: Instruction
             for i in all_instr:
-                if i.has_jump_target:
-                    f.write("{}case {}:\n".format(indent * 2, i.plugin_name))
-                    f.write("{}// {}\n".format(indent * 3, i.syntax))
-                    f.write("{}{}\n".format(indent * 3, i.get_rizin_op_type()))
-                    if i.has_imm_jmp_target():
-                        index = i.get_jmp_operand_syntax_index()
-                        if index < 0:
-                            raise ImplementationException(
-                                "Not PC relative operand given. But the jump needs one."
-                                "{}".format(i.llvm_syntax)
-                            )
+                if i.get_rizin_op_type() == "NONE":
+                    continue
+                f.write("{}case {}:\n".format(indent * 2, i.plugin_name))
+                f.write("{}// {}\n".format(indent * 3, i.syntax))
+                f.write("{}{}\n".format(indent * 3, i.get_rizin_op_type()))
+                if i.has_imm_jmp_target():
+                    index = i.get_jmp_operand_syntax_index()
+                    if index < 0:
+                        raise ImplementationException(
+                            "No PC relative operand given. But the jump needs one."
+                            "{}".format(i.llvm_syntax)
+                        )
 
+                    f.write(
+                        "{}op->jump = op->addr + (st32) hi->ops[{}].op.imm;\n".format(
+                            indent * 3, index
+                        )
+                    )
+                    if i.predicated:
                         f.write(
-                            "{}op->jump = op->addr + (st32) hi->ops[{}].op.imm;\n".format(
-                                indent * 3, index
+                            "{}op->fail = op->addr + op->size;\n".format(indent * 3)
+                        )
+                    if i.is_loop_begin:
+                        f.write(
+                            "{}if (is_loop0_begin(hi)) {{\n".format(indent * 3)
+                            + "{}hw_loop0_start = op->jump;\n{}}}\n".format(
+                                indent * 4, indent * 3
                             )
                         )
-                        if i.predicated:
-                            f.write(
-                                "{}op->fail = op->addr + op->size;\n".format(indent * 3)
+                        f.write(
+                            "{}else if (is_loop1_begin(hi)) {{\n".format(indent * 3)
+                            + "{}hw_loop1_start = op->jump;\n{}}}\n".format(
+                                indent * 4, indent * 3
                             )
-                        if i.is_loop_begin:
-                            f.write(
-                                "{}if (is_loop0_begin(hi)) {{\n".format(indent * 3)
-                                + "{}hw_loop0_start = op->jump;\n{}}}\n".format(
-                                    indent * 4, indent * 3
-                                )
-                            )
-                            f.write(
-                                "{}else if (is_loop1_begin(hi)) {{\n".format(indent * 3)
-                                + "{}hw_loop1_start = op->jump;\n{}}}\n".format(
-                                    indent * 4, indent * 3
-                                )
-                            )
-                    f.write("{}break;\n".format(indent * 3, indent * 2))
+                        )
+                f.write("{}break;\n".format(indent * 3, indent * 2))
 
             f.write("{i}}}\n{i}return op->size;\n}}".format(i=indent))
         log("hexagon_analysis.c written to: {}".format(path))
