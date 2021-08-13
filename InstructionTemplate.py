@@ -282,12 +282,14 @@ class InstructionTemplate:
 
     # RIZIN SPECIFIC
     def get_rizin_op_type(self) -> str:
+        """ Returns the c code to assign the instruction type to the RzAnalysisOp.type member. """
+
         op_type = "op->type = "
 
         if self.is_trap:
-            return op_type + "RZ_ANALYSIS_OP_TYPE_TRAP"
-        if not self.has_jump_target:
-            return op_type + "RZ_ANALYSIS_OP_TYPE_UNK;"
+            return op_type + "RZ_ANALYSIS_OP_TYPE_TRAP;"
+        elif self.name == "A2_nop":
+            return op_type + "RZ_ANALYSIS_OP_TYPE_NOP;"
 
         if self.predicated:
             if self.is_call:
@@ -307,9 +309,7 @@ class InstructionTemplate:
                     else "RZ_ANALYSIS_OP_TYPE_RCJMP;"
                 )
             else:
-                raise ImplementationException(
-                    "Instruction is not of any known branch type: {}".format(self.name)
-                )
+                op_type += "RZ_ANALYSIS_OP_TYPE_COND;"
         else:
             if self.is_call:
                 # Immediate and register call
@@ -327,10 +327,10 @@ class InstructionTemplate:
                     if self.has_imm_jmp_target()
                     else "RZ_ANALYSIS_OP_TYPE_RJMP;"
                 )
-            else:
-                raise ImplementationException(
-                    "Instruction is not of any known branch type: {}".format(self.name)
-                )
+
+        if op_type == "op->type = ":
+            log("Instruction: {} has no instr. type assigned to it yet.".format(self.name), LogLevel.VERBOSE)
+            return "NONE"
 
         return op_type
 
