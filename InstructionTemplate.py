@@ -270,6 +270,15 @@ class InstructionTemplate:
             else:
                 raise ImplementationException("Unhandled operand: {}".format(op.syntax))
 
+            if op.type == OperandType.IMMEDIATE:
+                code += "{i}hi->vals[{si}] = (st64) hi->ops[{si}].op.imm;\n".format(
+                    i=indent, si=op.syntax_index
+                )
+            else:
+                code += "{i}hi->vals[{si}] = ST64_MAX;\n".format(
+                    i=indent, si=op.syntax_index
+                )
+
         mnemonic = self.register_names_to_upper(mnemonic)
 
         code += mnemonic + sprint_src + ", hi->pkt_info.syntax_postfix" + ");\n"
@@ -335,7 +344,7 @@ class InstructionTemplate:
                 ),
                 LogLevel.VERBOSE,
             )
-            return "NONE"
+            return op_type + "RZ_ANALYSIS_OP_TYPE_NULL;"
 
         return op_type
 
