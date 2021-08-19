@@ -607,19 +607,29 @@ class LLVMImporter:
                 ) == 0:
                     f.write("{i}op->val = UT64_MAX;\n".format(i=(indent * 3)))
                 else:
-                    f.write("{i}op->val = UT64_MAX;\n".format(i=(indent * 3)))
                     keys = list(i.operands)
                     for k in range(6):  # RzAnalysisOp.analysis_vals has a size of 8.
                         if k < len(i.operands.values()):
                             o = i.operands[keys[k]]
-                            if i.has_imm_jmp_target():
-                                index = i.get_jmp_operand_syntax_index()
+                            if (
+                                i.has_imm_jmp_target()
+                                and o.type == OperandType.IMMEDIATE
+                            ):
+                                f.write(
+                                    "{i}op->val = op->jump;\n".format(i=(indent * 3))
+                                )
                                 f.write(
                                     "{i}op->analysis_vals[{si}].imm = op->jump;\n".format(
                                         i=(indent * 3), si=o.syntax_index
                                     )
                                 )
                             else:
+                                if o.type == OperandType.IMMEDIATE:
+                                    f.write(
+                                        "{i}op->val = hi->vals[{si}];\n".format(
+                                            i=(indent * 3), si=o.syntax_index
+                                        )
+                                    )
                                 f.write(
                                     "{i}op->analysis_vals[{si}].imm = hi->vals[{si}];\n".format(
                                         i=(indent * 3), si=o.syntax_index
