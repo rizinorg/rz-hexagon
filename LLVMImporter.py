@@ -13,6 +13,7 @@ from HardwareRegister import HardwareRegister
 from DuplexInstruction import DuplexInstruction, DuplexIClass
 from ImplementationException import ImplementationException
 from Instruction import Instruction
+from Operand import OperandType
 from SubInstruction import SubInstruction
 from helperFunctions import (
     log,
@@ -603,8 +604,6 @@ class LLVMImporter:
 
             i: Instruction
             for i in all_instr:
-                if i.get_rizin_op_type() == "NONE":
-                    continue
                 f.write("{}case {}:\n".format(indent * 2, i.plugin_name))
                 f.write("{}// {}\n".format(indent * 3, i.syntax))
                 f.write("{}{}\n".format(indent * 3, i.get_rizin_op_type()))
@@ -638,6 +637,36 @@ class LLVMImporter:
                                 indent * 4, indent * 3
                             )
                         )
+                if [o.type for o in i.operands.values()].count(
+                    OperandType.IMMEDIATE
+                ) == 0:
+                    f.write("{i}op->val = UT64_MAX;\n".format(i=(indent * 3)))
+                else:
+                    f.write("{i}op->val = UT64_MAX;\n".format(i=(indent * 3)))
+                    keys = list(i.operands)
+                    for k in range(6):  # RzAnalysisOp.analysis_vals has a size of 8.
+                        if k < len(i.operands.values()):
+                            o = i.operands[keys[k]]
+                            if i.has_imm_jmp_target():
+                                index = i.get_jmp_operand_syntax_index()
+                                f.write(
+                                    "{i}op->analysis_vals[{si}].imm = op->jump;\n".format(
+                                        i=(indent * 3), si=o.syntax_index
+                                    )
+                                )
+                            else:
+                                f.write(
+                                    "{i}op->analysis_vals[{si}].imm = hi->vals[{si}];\n".format(
+                                        i=(indent * 3), si=o.syntax_index
+                                    )
+                                )
+                        else:
+                            f.write(
+                                "{i}op->analysis_vals[{s}].imm = ST64_MAX;\n".format(
+                                    i=(indent * 3), s=k
+                                )
+                            )
+
                 f.write("{}break;\n".format(indent * 3, indent * 2))
 
             f.write("{i}}}\n{i}return op->size;\n}}".format(i=indent))
