@@ -73,7 +73,6 @@ class LLVMImporter:
             self.generate_decompiler_code()
             self.add_license_header()
             self.apply_clang_format()
-        self.print_todos()
 
     def parse_instructions(self) -> None:
         for i, i_name in enumerate(self.hexArch["!instanceof"]["HInst"]):
@@ -199,40 +198,6 @@ class LLVMImporter:
                         "The mnemonic variable is at the moment only 128 byte."
                         + "This syntax takes at least {}+1 bytes.".format(sl)
                     )
-
-    @staticmethod
-    def print_todos() -> None:
-        log(
-            "CtrRegs64: C21:20, C23:22, C25:24, C27:C26, C29:28 recognition are not yet implemented by LLVM.\n"
-            "\tSo at the moment we don't have them either.",
-            LogLevel.TODO,
-        )
-        log(
-            "HVX: HVX register classes and instructions can, at the moment, not be tested properly.\n"
-            "\tThe public SDK does not support them yet, so we can't compile reasonable test cases for them.",
-            LogLevel.TODO,
-        )
-        log(
-            "All not generated files have to be moved to handwritten_files",
-            LogLevel.TODO,
-        )
-        log(
-            "A lot of instruction types can be set in analyse like NOP etc.",
-            LogLevel.TODO,
-        )
-        log("Syntax highlighting is weird.", LogLevel.TODO)
-        log("Analysis tests are missing.", LogLevel.TODO)
-        log("No UTF-8 free version yet.", LogLevel.TODO)
-        log(
-            "The support for 512bit Hardware registers was removed in V66 (replaced by 1024bit once).\n\t"
-            "But LLVM Vx registers still have a size of 512bit.\n\t"
-            "We multiply the size of all vector register by 2.",
-            LogLevel.TODO,
-        )
-        log(
-            "Argument and return registers for the HVX calling convention are not described in the register profile.",
-            LogLevel.TODO,
-        )
 
     def get_cc_regs(self) -> dict:
         """Returns a list of register names which are argument or return register in the calling convention.
