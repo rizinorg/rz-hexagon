@@ -705,6 +705,7 @@ class LLVMImporter:
         p += '"=BP{}r30\\n"'.format(indent) + "\n"
         p += '"=LR{}r31\\n"'.format(indent) + "\n"
         p += '"=SR{}usr\\n"'.format(indent) + "\n"
+        p += '"=SN{}r0\\n"'.format(indent) + "\n"
 
         arg_regs = ""
         ret_regs = ""
