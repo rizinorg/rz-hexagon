@@ -176,14 +176,17 @@ class InstructionTemplate:
         return -1
 
     # RIZIN SPECIFIC
-    def get_instruction_init_in_c(self) -> str:
+    def get_instruction_init_in_c(self, first: bool) -> str:
         """Returns one big c code block which parses one binary instruction. The blocks are used in hexagon_disas.c"""
 
         indent = PluginInfo.LINE_INDENT
         var = PluginInfo.HEX_INSTR_VAR_SYNTAX
         code = ""
-        code += "if (({} & 0x{:x}) == 0x{:x}) {{\n".format(
-            var, self.encoding.instruction_mask, self.encoding.op_code
+        code += "{}if (({} & 0x{:x}) == 0x{:x}) {{\n".format(
+            "" if first else "else ",
+            var,
+            self.encoding.instruction_mask,
+            self.encoding.op_code,
         )
         code += "{}// {} | {}\n".format(indent, self.encoding.docs_mask, self.syntax)
         code += "{}hi->instruction = {};\n".format(indent, self.plugin_name)
