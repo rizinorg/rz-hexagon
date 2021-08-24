@@ -332,12 +332,16 @@ class LLVMImporter:
 
             # Duplexes
             for c in range(0xF):  # Class 0xf is reserved yet.
+                first = True
                 dest.write("{}case 0x{:x}:\n".format(indent * 3, c))
                 for d_instr in self.duplex_instructions.values():
                     if d_instr.encoding.get_i_class() == c:
                         dest.write(
-                            indent_code_block(d_instr.get_instruction_init_in_c(), 4)
+                            indent_code_block(
+                                d_instr.get_instruction_init_in_c(first), 4
+                            )
                         )
+                        first = False
                 dest.write("{}break;\n".format(indent * 4))
 
             # Normal instructions
@@ -345,12 +349,14 @@ class LLVMImporter:
             dest.write("{}}}\n{}}}\n{}else {{\n".format(indent * 2, indent, indent))
             dest.write("{}switch (({} >> 28) & 0xF) {{\n".format(indent * 2, var))
             for c in range(0x10):
+                first = True
                 dest.write("{}case 0x{:x}:\n".format(indent * 3, c))
                 for instr in self.normal_instructions.values():
                     if instr.encoding.get_i_class() == c:
                         dest.write(
-                            indent_code_block(instr.get_instruction_init_in_c(), 4)
+                            indent_code_block(instr.get_instruction_init_in_c(first), 4)
                         )
+                        first = False
                 dest.write("{}break;\n".format(indent * 4))
 
             # Closing brackets for switch, else, function
