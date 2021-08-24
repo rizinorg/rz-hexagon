@@ -319,48 +319,63 @@ class LLVMImporter:
                 set_pos_after_license(include)
                 dest.writelines(include.readlines())
 
-            header = (
+            main_function = (
                 "int hexagon_disasm_instruction(ut32 hi_u32, HexInsn *hi, ut32 addr) {\n"
-                + '{}char signed_imm[16] = "";\n'.format(indent)
                 + "{}// DUPLEXES\n".format(indent)
                 + "{}if ((({} >> 14) & 0x3) == 0) {{\n".format(indent, var)
                 + "{}switch (((({} >> 29) & 0xF) << 1) | (({} >> 13) & 1)) {{\n".format(
                     indent * 2, var, var
                 )
             )
-            dest.write(header)
 
             # Duplexes
             for c in range(0xF):  # Class 0xf is reserved yet.
-                first = True
-                dest.write("{}case 0x{:x}:\n".format(indent * 3, c))
+                main_function += "{}case 0x{:x}:\n".format(indent * 3, c)
+                main_function += (
+                    "hexagon_disasm_duplex_0x{:x}(hi_u32, hi, addr);\n".format(c)
+                )
+                dest.write(
+                    "void hexagon_disasm_duplex_0x{:x}(ut32 hi_u32, HexInsn *hi, ut32 addr) {{\n".format(
+                        c
+                    )
+                )
+                dest.write('{}char signed_imm[16] = "";\n'.format(indent))
                 for d_instr in self.duplex_instructions.values():
                     if d_instr.encoding.get_i_class() == c:
                         dest.write(
-                            indent_code_block(
-                                d_instr.get_instruction_init_in_c(first), 4
-                            )
+                            indent_code_block(d_instr.get_instruction_init_in_c(), 1)
                         )
-                        first = False
-                dest.write("{}break;\n".format(indent * 4))
+                dest.write("}\n\n")
+                main_function += "{}break;\n".format(indent * 4)
 
             # Normal instructions
             # Brackets for switch, if
-            dest.write("{}}}\n{}}}\n{}else {{\n".format(indent * 2, indent, indent))
-            dest.write("{}switch (({} >> 28) & 0xF) {{\n".format(indent * 2, var))
+            main_function += "{}}}\n{}}}\n{}else {{\n".format(
+                indent * 2, indent, indent
+            )
+            main_function += "{}switch (({} >> 28) & 0xF) {{\n".format(indent * 2, var)
             for c in range(0x10):
-                first = True
-                dest.write("{}case 0x{:x}:\n".format(indent * 3, c))
+                main_function += "{}case 0x{:x}:\n".format(indent * 3, c)
+                main_function += "hexagon_disasm_0x{:x}(hi_u32, hi, addr);\n".format(c)
+                dest.write(
+                    "void hexagon_disasm_0x{:x}(ut32 hi_u32, HexInsn *hi, ut32 addr) {{\n".format(
+                        c
+                    )
+                )
+                dest.write('{}char signed_imm[16] = "";\n'.format(indent))
                 for instr in self.normal_instructions.values():
                     if instr.encoding.get_i_class() == c:
                         dest.write(
-                            indent_code_block(instr.get_instruction_init_in_c(first), 4)
+                            indent_code_block(instr.get_instruction_init_in_c(), 1)
                         )
-                        first = False
-                dest.write("{}break;\n".format(indent * 4))
+                dest.write("}\n\n")
+                main_function += "{}break;\n".format(indent * 4)
 
             # Closing brackets for switch, else, function
-            dest.write("{}}}\n{}}}\n{}return 4;\n}}".format(indent * 2, indent, indent))
+            main_function += "{}}}\n{}}}\n{}return 4;\n}}".format(
+                indent * 2, indent, indent
+            )
+            dest.write(main_function)
         log("Hexagon instruction disassembler code written to: {}".format(path))
 
     # RIZIN SPECIFIC
