@@ -334,18 +334,24 @@ class LLVMImporter:
                 main_function += (
                     "hexagon_disasm_duplex_0x{:x}(hi_u32, hi, addr);\n".format(c)
                 )
-                dest.write(
-                    "void hexagon_disasm_duplex_0x{:x}(ut32 hi_u32, HexInsn *hi, ut32 addr) {{\n".format(
-                        c
-                    )
+                func_body = ""
+                func_header = "void hexagon_disasm_duplex_0x{:x}(ut32 hi_u32, HexInsn *hi, ut32 addr) {{\n".format(
+                    c
                 )
-                dest.write('{}char signed_imm[16] = "";\n'.format(indent))
                 for d_instr in self.duplex_instructions.values():
                     if d_instr.encoding.get_i_class() == c:
-                        dest.write(
-                            indent_code_block(d_instr.get_instruction_init_in_c(), 1)
+                        func_body += indent_code_block(
+                            d_instr.get_instruction_init_in_c(), 1
                         )
-                dest.write("}\n\n")
+                        if (
+                            "sprintf(signed_imm" in func_body
+                            and "signed_imm[16]" not in func_header
+                        ):
+                            func_header += '{}char signed_imm[16] = "";\n'.format(
+                                indent
+                            )
+
+                dest.write(func_header + func_body + "}\n\n")
                 main_function += "{}break;\n".format(indent * 4)
 
             # Normal instructions
@@ -357,18 +363,24 @@ class LLVMImporter:
             for c in range(0x10):
                 main_function += "{}case 0x{:x}:\n".format(indent * 3, c)
                 main_function += "hexagon_disasm_0x{:x}(hi_u32, hi, addr);\n".format(c)
-                dest.write(
-                    "void hexagon_disasm_0x{:x}(ut32 hi_u32, HexInsn *hi, ut32 addr) {{\n".format(
-                        c
-                    )
+
+                func_body = ""
+                func_header = "void hexagon_disasm_0x{:x}(ut32 hi_u32, HexInsn *hi, ut32 addr) {{\n".format(
+                    c
                 )
-                dest.write('{}char signed_imm[16] = "";\n'.format(indent))
                 for instr in self.normal_instructions.values():
                     if instr.encoding.get_i_class() == c:
-                        dest.write(
-                            indent_code_block(instr.get_instruction_init_in_c(), 1)
+                        func_body += indent_code_block(
+                            instr.get_instruction_init_in_c(), 1
                         )
-                dest.write("}\n\n")
+                        if (
+                            "sprintf(signed_imm" in func_body
+                            and "signed_imm[16]" not in func_header
+                        ):
+                            func_header += '{}char signed_imm[16] = "";\n'.format(
+                                indent
+                            )
+                dest.write(func_header + func_body + "}\n\n")
                 main_function += "{}break;\n".format(indent * 4)
 
             # Closing brackets for switch, else, function
