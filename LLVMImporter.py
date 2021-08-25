@@ -261,8 +261,7 @@ class LLVMImporter:
         self.build_hexagon_analysis_h()
         self.build_hexagon_analysis_c()
         self.build_hexagon_regs()
-        # TODO Register profiles:  analysis_hexagon.c::set_reg_profile()
-        # TODO copy Calling convention: cc-hexagon_hexagon.c
+        self.build_cc_hexagon_32_sdb_txt()
         pass
 
     # RIZIN SPECIFIC
@@ -276,7 +275,7 @@ class LLVMImporter:
         log("Add license headers")
         for subdir, dirs, files in os.walk("rizin/"):
             for file in files:
-                if file == "hexagon":  # Tests
+                if file == "hexagon" or file[-3:] == "txt":  # Tests
                     continue
                 p = os.path.join(subdir, file)
                 with open(p, "r+") as f:
@@ -789,6 +788,90 @@ class LLVMImporter:
         p += arg_regs + ret_regs + "\n"
 
         return p
+
+    # RIZIN SPECIFIC
+    @staticmethod
+    def build_cc_hexagon_32_sdb_txt(
+        path: str = "rizin/librz/analysis/d/cc-hexagon-32.sdb.txt",
+    ) -> None:
+        """Builds the *incomplete* calling convention as sdb file.
+        Hexagon can pass arguments and return values via different registers. E.g. either over R0 or R1:0.
+        But the calling convention logic in rizin and the sdb is not sophisticated enough to model this.
+        That is the reason we add only one of multiple possible argument/return register per db entry.
+        """
+
+        cc_dict = dict()
+        with open(path, "w+") as f:
+            for reg in HexagonArchInfo.CC_REGS["GPR_args"]:
+                n = int(re.search("\d{1,2}", reg).group(0))
+                if reg[0] == "R":
+                    cc_dict["cc.hexagon.arg{}".format(n)] = "r{}".format(n)
+                elif reg[0] == "D":
+                    continue
+                    # cc_dict["cc.hexagon.arg{}".format(n)] += ",R{}:{}".format((n*2)+1, n*2)  # D0 = R1:0, D1 = R3:2 etc.
+                else:
+                    raise ImplementationException(
+                        "Could not assign register {} to a specific argument value.".format(
+                            reg
+                        )
+                    )
+            cc_dict["cc.hexagon.argn"] = "stack_rev"
+            for reg in HexagonArchInfo.CC_REGS["GPR_ret"]:
+                n = int(re.search("\d{1,2}", reg).group(0))
+                if reg[0] == "R":
+                    if HexagonArchInfo.CC_REGS["GPR_ret"].index(reg) == 0:
+                        cc_dict["cc.hexagon.ret".format(n)] = "r{}".format(n)
+                    else:
+                        continue
+                        # cc_dict["cc.hexagon.ret".format(n)] += ",R{}".format(n)
+                elif reg[0] == "D":
+                    continue
+                    # cc_dict["cc.hexagon.ret".format(n)] += ",R{}:{}".format((n*2)+1, n*2)  # D0 = R1:0, D1 = R3:2 etc.
+                else:
+                    raise ImplementationException(
+                        "Could not assign register {} to a specific return value.".format(
+                            reg
+                        )
+                    )
+
+            f.write("default.cc=hexagon\n\nhexagon=cc\n")
+            for k, v in cc_dict.items():
+                f.write(k + "=" + v + "\n")
+            f.write("\nhvx=cc\ncc.hvx.name=hvx\n")
+
+            cc_dict = dict()
+            for reg in HexagonArchInfo.CC_REGS["HVX_args"]:
+                n = int(re.search("\d{1,2}", reg).group(0))
+                if reg[0] == "V":
+                    cc_dict["cc.hvx.arg{}".format(n)] = "v{}".format(n)
+                elif reg[0] == "W":
+                    continue
+                    # cc_dict["cc.hvx.arg{}".format(n)] += ",V{}:{}".format((n*2)+1, n*2)
+                else:
+                    raise ImplementationException(
+                        "Could not assign register {} to a specific argument value.".format(
+                            reg
+                        )
+                    )
+            for reg in HexagonArchInfo.CC_REGS["HVX_ret"]:
+                n = int(re.search("\d{1,2}", reg).group(0))
+                if reg[0] == "V":
+                    if HexagonArchInfo.CC_REGS["HVX_ret"].index(reg) == 0:
+                        cc_dict["cc.hvx.ret".format(n)] = "v{}".format(n)
+                    else:
+                        continue
+                        # cc_dict["cc.hvx.ret".format(n)] += ",V{}".format(n)
+                elif reg[0] == "W":
+                    continue
+                    # cc_dict["cc.hvx.ret".format(n)] += ",V{}:{}".format((n*2)+1, n*2)
+                else:
+                    raise ImplementationException(
+                        "Could not assign register {} to a specific return value.".format(
+                            reg
+                        )
+                    )
+            for k, v in cc_dict.items():
+                f.write(k + "=" + v + "\n")
 
     # RIZIN SPECIFIC
     @staticmethod
