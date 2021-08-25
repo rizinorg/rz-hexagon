@@ -781,10 +781,10 @@ class LLVMImporter:
     # RIZIN SPECIFIC
     @staticmethod
     def apply_clang_format() -> None:
+        log("Apply clang-format.")
         for subdir, dirs, files in os.walk("rizin/librz/"):
             for file in files:
                 os.system("./clang-format.py -f " + os.path.join(subdir, file))
-        log("clang-format applied.")
 
 
 if __name__ == "__main__":
