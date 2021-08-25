@@ -479,9 +479,7 @@ class LLVMImporter:
 
                 dest.write("{}switch (opcode_reg) {{\n".format(indent))
                 dest.write(
-                    '{}default:\n{}rz_warn_if_reached();\n{}return "<err>";\n'.format(
-                        indent * 2, indent * 3, indent * 3
-                    )
+                    '{}default:\n{}return "<err>";\n'.format(indent * 2, indent * 3)
                 )
 
                 hw_reg: HardwareRegister
