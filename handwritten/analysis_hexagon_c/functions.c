@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: LGPL-3.0-only
 
 static int hexagon_v6_op(RzAnalysis *analysis, RzAnalysisOp *op, ut64 addr, const ut8 *buf, int len, RzAnalysisOpMask mask) {
-	HexInsn hi = {0};;
+	HexInsn hi = {0};
 	ut32 data = 0;
 	memset (op, 0, sizeof (RzAnalysisOp));
 	data = rz_read_le32 (buf);
@@ -14,7 +14,7 @@ static int hexagon_v6_op(RzAnalysis *analysis, RzAnalysisOp *op, ut64 addr, cons
 	}
 
 	op->addr = addr;
-	op->jump = op->fail = -1;
-	op->ptr = op->val = -1;
+	op->jump = op->fail = UT64_MAX;
+	op->ptr = op->val = UT64_MAX;
 	return hexagon_analysis_instruction (&hi, op);
 }
