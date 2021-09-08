@@ -1,18 +1,11 @@
 NAME=hexagon jumps
 FILE=bins/elf/analysis/hexagon-hello-loop
 CMDS=<<EOF
+b 0x100000
 s sym.main
 af
 aar
 afx
-s 0x000050e4
-pi 2
-s 0x0000539c
-pi 4
-/ai 0xdead
-/ai 0xbeef
-/ai 0xfffffff8
-/ai 0x1c00
 EOF
 EXPECT=<<EOF
 c 0x00005124 -> 0x00005128 ? jump 0x5128 
@@ -22,12 +15,39 @@ C 0x00005138 -> 0x000050e0 [     call sym.pHello
 C 0x0000513c -> 0x000050f8 [     call sym.pWorld 
 c 0x00005140 -> 0x00005144 [     jump 0x5144 
 c 0x00005150 -> 0x00005128 ? jump 0x5128 
+EOF
+RUN
+
+NAME=hexagon immext
+FILE=bins/elf/analysis/hexagon-hello-loop
+CMDS=<<EOF
+b 0x100000
+s 0x000050e4
+pi 2
+s 0x0000539c
+pi 4
+EOF
+EXPECT=<<EOF
 ? immext(##0xb0c0) 
 ? R0 = ##0xb0d0 
 ? immext(##0xd180) 
 ? R2 = ##0xd1ac 
 ? immext(##0xfe105000) 
 ? R3 = ##-0x1efb000 
+EOF
+RUN
+
+NAME=hexagon immediate search
+FILE=bins/elf/analysis/hexagon-hello-loop
+CMDS=<<EOF
+b 0x100000
+aar
+/ai 0xdead
+/ai 0xbeef
+/ai 0xfffffff8
+/ai 0x1c00
+EOF
+EXPECT=<<EOF
 0x00000b80   # 4: ? R0.h = #0xdead 
 0x00000b84   # 4: [     R0.l = #0xbeef 
 0x00001e68   # 4: ? R4.l = #0xbeef 
@@ -42,6 +62,7 @@ c 0x00005150 -> 0x00005128 ? jump 0x5128
 0x00005840   # 4: ? R4 = add(R2,##-0x8) 
 0x00005970   # 4: ? if (R2.new) P2 = add(R2,##-0x8) 
 0x000059d0   # 4: ? R1 = and(R1,##-0x8) 
+0x00005d00   # 4: ? if (R2.new) P0 = add(R2,##-0x8) 
 0x00006394   # 4: ? R4 = and(R4,##-0x8) 
 0x000063f8   # 4: ? R4 = and(R4,##-0x8) 
 0x0000641c   # 4: ? R4 = and(R4,##-0x8) 
@@ -53,6 +74,7 @@ c 0x00005150 -> 0x00005128 ? jump 0x5128
 0x00007ee0   # 4: ? R17 = add(R17,##-0x8) 
 0x00008484   # 4: ? R2 = add(R16,add(R2,##-0x8)) 
 0x0000848c   # 4: ? R2 = add(R2,##-0x8) 
+0x00008500   # 4: ? memd(R2+##-0x8) = R1:0 
 0x00008598   # 4: ? memd(R2+##-0x8) = R1:0 
 0x000087b8   # 4: ? memd(R3+##-0x8) = R1:0 
 0x00009b64   # 4: ? R2 = memw(R18+##-0x8) 
