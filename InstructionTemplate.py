@@ -301,6 +301,8 @@ class InstructionTemplate:
             return op_type + "RZ_ANALYSIS_OP_TYPE_TRAP;"
         elif self.name == "A2_nop":
             return op_type + "RZ_ANALYSIS_OP_TYPE_NOP;"
+        elif self.name == "invalid_decode":
+            return op_type + "RZ_ANALYSIS_OP_TYPE_ILL;"
 
         if self.predicated:
             if self.is_call:

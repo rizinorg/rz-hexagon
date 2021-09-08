@@ -16410,7 +16410,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_INVALID_DECODE:
 		// <invalid>
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_ILL;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDI_SA1_ADDRX:

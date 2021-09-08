@@ -75673,5 +75673,11 @@ int hexagon_disasm_instruction(ut32 hi_u32, HexInsn *hi, ut32 addr) {
 			break;
 		}
 	}
+	if (hi->instruction == HEX_INS_INVALID_DECODE) {
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr);
+		sprintf(hi->mnem, "%s <invalid> %s", hi->pkt_info.syntax_prefix, hi->pkt_info.syntax_postfix);
+	}
 	return 4;
 }
