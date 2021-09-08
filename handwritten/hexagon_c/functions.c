@@ -30,14 +30,17 @@ void hex_set_pkt_info(RZ_INOUT HexPktInfo* i_pkt_info, const ut32 addr) {
     static bool valid_packet = true;
     static bool new_pkt_starts = true;
 
-    // (addr == (prev_addr - 4) || addr == 0) 
-    // We can only know for sure, if the current packet is a valid packet,
-    // if we have seen the instr. before the current one.
-    //
-    // In case the previous instruction belong to a valid packet, we are still in a valid packet.
-    // If it was part of an *invalid* packet, a new *valid* packet only begins, if the previous instruction
-    // was the last of the invalid packet.
-    valid_packet = (prev_addr == (addr - 4) || addr == 0) && (valid_packet || new_pkt_starts);
+    // Only change valid_packet flag if the same instruction is not disassembled twice (e.g. for analysis and asm).
+    if (prev_addr != addr) {
+        // We can only know for sure, if the current packet is a valid packet,
+        // if we have seen the instr. before the current one.
+        // (addr == (prev_addr - 4) || addr == 0)
+        //
+        // In case the previous instruction belongs to a valid packet, we are still in a valid packet.
+        // If it was part of an *invalid* packet, a new *valid* packet only begins, if the previous instruction
+        // was the last of the invalid packet.
+        valid_packet = (prev_addr == (addr - 4) || addr == 0) && (valid_packet || new_pkt_starts);
+    }
     if (valid_packet) {
         memcpy(&pkt.i_infos[i], i_pkt_info, sizeof(HexPktInfo));
     }
