@@ -383,8 +383,18 @@ class LLVMImporter:
                 main_function += "{}break;\n".format(indent * 4)
 
             # Closing brackets for switch, else, function
-            main_function += "{}}}\n{}}}\n{}return 4;\n}}".format(
-                indent * 2, indent, indent
+            main_function += "{}}}\n{}}}\n".format(indent * 2, indent)
+            main_function += (
+                "{}if (hi->instruction == HEX_INS_INVALID_DECODE) {{\n".format(indent)
+                + "{}hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;\n".format(
+                    indent * 2
+                )
+                + "{}hi->pkt_info.loop_attr = HEX_NO_LOOP;\n".format(indent * 2)
+                + "{}hex_set_pkt_info(&(hi->pkt_info), addr);\n".format(indent * 2)
+                + '{}sprintf(hi->mnem, "%s <invalid> %s", hi->pkt_info.syntax_prefix, hi->pkt_info.syntax_postfix);\n{}}}\n'.format(
+                    indent * 2, indent
+                )
+                + "{}return 4;\n}}".format(indent)
             )
             dest.write(main_function)
         log("Hexagon instruction disassembler code written to: {}".format(path))
