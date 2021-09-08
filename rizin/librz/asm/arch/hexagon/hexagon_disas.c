@@ -75572,105 +75572,107 @@ void hexagon_disasm_0xf(ut32 hi_u32, HexInsn *hi, ut32 addr) {
 }
 
 int hexagon_disasm_instruction(ut32 hi_u32, HexInsn *hi, ut32 addr) {
-	// DUPLEXES
-	if (((hi_u32 >> 14) & 0x3) == 0) {
-		switch ((((hi_u32 >> 29) & 0xF) << 1) | ((hi_u32 >> 13) & 1)) {
-		case 0x0:
-			hexagon_disasm_duplex_0x0(hi_u32, hi, addr);
-			break;
-		case 0x1:
-			hexagon_disasm_duplex_0x1(hi_u32, hi, addr);
-			break;
-		case 0x2:
-			hexagon_disasm_duplex_0x2(hi_u32, hi, addr);
-			break;
-		case 0x3:
-			hexagon_disasm_duplex_0x3(hi_u32, hi, addr);
-			break;
-		case 0x4:
-			hexagon_disasm_duplex_0x4(hi_u32, hi, addr);
-			break;
-		case 0x5:
-			hexagon_disasm_duplex_0x5(hi_u32, hi, addr);
-			break;
-		case 0x6:
-			hexagon_disasm_duplex_0x6(hi_u32, hi, addr);
-			break;
-		case 0x7:
-			hexagon_disasm_duplex_0x7(hi_u32, hi, addr);
-			break;
-		case 0x8:
-			hexagon_disasm_duplex_0x8(hi_u32, hi, addr);
-			break;
-		case 0x9:
-			hexagon_disasm_duplex_0x9(hi_u32, hi, addr);
-			break;
-		case 0xa:
-			hexagon_disasm_duplex_0xa(hi_u32, hi, addr);
-			break;
-		case 0xb:
-			hexagon_disasm_duplex_0xb(hi_u32, hi, addr);
-			break;
-		case 0xc:
-			hexagon_disasm_duplex_0xc(hi_u32, hi, addr);
-			break;
-		case 0xd:
-			hexagon_disasm_duplex_0xd(hi_u32, hi, addr);
-			break;
-		case 0xe:
-			hexagon_disasm_duplex_0xe(hi_u32, hi, addr);
-			break;
-		}
-	} else {
-		switch ((hi_u32 >> 28) & 0xF) {
-		case 0x0:
-			hexagon_disasm_0x0(hi_u32, hi, addr);
-			break;
-		case 0x1:
-			hexagon_disasm_0x1(hi_u32, hi, addr);
-			break;
-		case 0x2:
-			hexagon_disasm_0x2(hi_u32, hi, addr);
-			break;
-		case 0x3:
-			hexagon_disasm_0x3(hi_u32, hi, addr);
-			break;
-		case 0x4:
-			hexagon_disasm_0x4(hi_u32, hi, addr);
-			break;
-		case 0x5:
-			hexagon_disasm_0x5(hi_u32, hi, addr);
-			break;
-		case 0x6:
-			hexagon_disasm_0x6(hi_u32, hi, addr);
-			break;
-		case 0x7:
-			hexagon_disasm_0x7(hi_u32, hi, addr);
-			break;
-		case 0x8:
-			hexagon_disasm_0x8(hi_u32, hi, addr);
-			break;
-		case 0x9:
-			hexagon_disasm_0x9(hi_u32, hi, addr);
-			break;
-		case 0xa:
-			hexagon_disasm_0xa(hi_u32, hi, addr);
-			break;
-		case 0xb:
-			hexagon_disasm_0xb(hi_u32, hi, addr);
-			break;
-		case 0xc:
-			hexagon_disasm_0xc(hi_u32, hi, addr);
-			break;
-		case 0xd:
-			hexagon_disasm_0xd(hi_u32, hi, addr);
-			break;
-		case 0xe:
-			hexagon_disasm_0xe(hi_u32, hi, addr);
-			break;
-		case 0xf:
-			hexagon_disasm_0xf(hi_u32, hi, addr);
-			break;
+	if (hi_u32 != 0x00000000) {
+		// DUPLEXES
+		if (((hi_u32 >> 14) & 0x3) == 0) {
+			switch ((((hi_u32 >> 29) & 0xF) << 1) | ((hi_u32 >> 13) & 1)) {
+			case 0x0:
+				hexagon_disasm_duplex_0x0(hi_u32, hi, addr);
+				break;
+			case 0x1:
+				hexagon_disasm_duplex_0x1(hi_u32, hi, addr);
+				break;
+			case 0x2:
+				hexagon_disasm_duplex_0x2(hi_u32, hi, addr);
+				break;
+			case 0x3:
+				hexagon_disasm_duplex_0x3(hi_u32, hi, addr);
+				break;
+			case 0x4:
+				hexagon_disasm_duplex_0x4(hi_u32, hi, addr);
+				break;
+			case 0x5:
+				hexagon_disasm_duplex_0x5(hi_u32, hi, addr);
+				break;
+			case 0x6:
+				hexagon_disasm_duplex_0x6(hi_u32, hi, addr);
+				break;
+			case 0x7:
+				hexagon_disasm_duplex_0x7(hi_u32, hi, addr);
+				break;
+			case 0x8:
+				hexagon_disasm_duplex_0x8(hi_u32, hi, addr);
+				break;
+			case 0x9:
+				hexagon_disasm_duplex_0x9(hi_u32, hi, addr);
+				break;
+			case 0xa:
+				hexagon_disasm_duplex_0xa(hi_u32, hi, addr);
+				break;
+			case 0xb:
+				hexagon_disasm_duplex_0xb(hi_u32, hi, addr);
+				break;
+			case 0xc:
+				hexagon_disasm_duplex_0xc(hi_u32, hi, addr);
+				break;
+			case 0xd:
+				hexagon_disasm_duplex_0xd(hi_u32, hi, addr);
+				break;
+			case 0xe:
+				hexagon_disasm_duplex_0xe(hi_u32, hi, addr);
+				break;
+			}
+		} else {
+			switch ((hi_u32 >> 28) & 0xF) {
+			case 0x0:
+				hexagon_disasm_0x0(hi_u32, hi, addr);
+				break;
+			case 0x1:
+				hexagon_disasm_0x1(hi_u32, hi, addr);
+				break;
+			case 0x2:
+				hexagon_disasm_0x2(hi_u32, hi, addr);
+				break;
+			case 0x3:
+				hexagon_disasm_0x3(hi_u32, hi, addr);
+				break;
+			case 0x4:
+				hexagon_disasm_0x4(hi_u32, hi, addr);
+				break;
+			case 0x5:
+				hexagon_disasm_0x5(hi_u32, hi, addr);
+				break;
+			case 0x6:
+				hexagon_disasm_0x6(hi_u32, hi, addr);
+				break;
+			case 0x7:
+				hexagon_disasm_0x7(hi_u32, hi, addr);
+				break;
+			case 0x8:
+				hexagon_disasm_0x8(hi_u32, hi, addr);
+				break;
+			case 0x9:
+				hexagon_disasm_0x9(hi_u32, hi, addr);
+				break;
+			case 0xa:
+				hexagon_disasm_0xa(hi_u32, hi, addr);
+				break;
+			case 0xb:
+				hexagon_disasm_0xb(hi_u32, hi, addr);
+				break;
+			case 0xc:
+				hexagon_disasm_0xc(hi_u32, hi, addr);
+				break;
+			case 0xd:
+				hexagon_disasm_0xd(hi_u32, hi, addr);
+				break;
+			case 0xe:
+				hexagon_disasm_0xe(hi_u32, hi, addr);
+				break;
+			case 0xf:
+				hexagon_disasm_0xf(hi_u32, hi, addr);
+				break;
+			}
 		}
 	}
 	if (hi->instruction == HEX_INS_INVALID_DECODE) {

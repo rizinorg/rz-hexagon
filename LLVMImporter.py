@@ -320,6 +320,7 @@ class LLVMImporter:
 
             main_function = (
                 "int hexagon_disasm_instruction(ut32 hi_u32, HexInsn *hi, ut32 addr) {\n"
+                + "if (hi_u32 != 0x00000000) {\n"
                 + "{}// DUPLEXES\n".format(indent)
                 + "{}if ((({} >> 14) & 0x3) == 0) {{\n".format(indent, var)
                 + "{}switch (((({} >> 29) & 0xF) << 1) | (({} >> 13) & 1)) {{\n".format(
@@ -383,7 +384,7 @@ class LLVMImporter:
                 main_function += "{}break;\n".format(indent * 4)
 
             # Closing brackets for switch, else, function
-            main_function += "{}}}\n{}}}\n".format(indent * 2, indent)
+            main_function += "{}}}\n{}}}\n{}}}".format(indent * 3, indent * 2, indent)
             main_function += (
                 "{}if (hi->instruction == HEX_INS_INVALID_DECODE) {{\n".format(indent)
                 + "{}hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;\n".format(
