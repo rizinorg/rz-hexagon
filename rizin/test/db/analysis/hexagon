@@ -44,7 +44,7 @@ b 0x100000
 aar
 /ai 0xdead
 /ai 0xbeef
-/ai 0xfffffff8
+/ai -8
 /ai 0x1c00
 EOF
 EXPECT=<<EOF

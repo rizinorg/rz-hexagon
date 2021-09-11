@@ -67,7 +67,7 @@ typedef struct {
 	ut8 type;
 	union {
 		ut8 reg; // + additional Hi or Lo selector // + additional shift // + additional :brev //
-		ut32 imm;
+		st64 imm;
 	} op;
 	ut8 attr;
 	ut8 shift;

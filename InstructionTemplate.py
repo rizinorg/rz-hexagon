@@ -260,7 +260,7 @@ class InstructionTemplate:
                     src = ", signed_imm"
                     mnemonic = re.sub(r"#?" + op.explicit_syntax, "%s", mnemonic)
                 else:
-                    src = ", hi->ops[{}].op.imm".format(op.syntax_index)
+                    src = ", (ut32) hi->ops[{}].op.imm".format(op.syntax_index)
                     if op.total_width == 32:
                         # 32bit values are marked with ##. Non 32bit values with #. Don't care without.
                         # Add the second # to the syntax in case of 32bit value.

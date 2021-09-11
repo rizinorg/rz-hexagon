@@ -191,7 +191,7 @@ class Immediate(Operand):
                 )
             )
             self.code_opcode_parsing += (
-                "{}{}hi->ops[{}].op.imm |= (0xffffffff << {});\n{}}}\n".format(
+                "{}{}hi->ops[{}].op.imm |= (0xffffffffffffffff << {});\n{}}}\n".format(
                     indent, indent, self.syntax_index, shift, indent
                 )
             )
