@@ -143,7 +143,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -184,7 +184,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -229,9 +229,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#Ii,#II)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -312,7 +312,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -339,7 +339,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -350,7 +350,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -361,7 +361,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -372,7 +372,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -571,7 +571,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = sub(#Ii,Rs)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -662,7 +662,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rx.h = #Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -673,7 +673,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rx.l = #Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -689,7 +689,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -1041,7 +1041,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -1067,7 +1067,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -1083,7 +1083,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -1099,7 +1099,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -1115,7 +1115,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -1131,7 +1131,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -1147,7 +1147,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -1157,9 +1157,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#Ii,#II)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -1169,7 +1169,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#Ii,Rs)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -1181,7 +1181,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -1192,7 +1192,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -1206,7 +1206,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_A4_EXT:
 		// immext(#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = ST64_MAX;
 		op->analysis_vals[2].imm = ST64_MAX;
@@ -1359,7 +1359,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -1375,7 +1375,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -1386,7 +1386,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -1397,7 +1397,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -1443,7 +1443,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -1459,7 +1459,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -1470,7 +1470,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -1481,7 +1481,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -1492,7 +1492,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -1503,7 +1503,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -1514,7 +1514,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -1525,7 +1525,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -1536,7 +1536,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -1607,7 +1607,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -1618,7 +1618,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -1634,7 +1634,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -1670,7 +1670,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -1706,7 +1706,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -1717,7 +1717,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -1728,7 +1728,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -1739,7 +1739,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -1755,7 +1755,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -1776,7 +1776,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -1797,7 +1797,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -1823,9 +1823,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -1836,7 +1836,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -1846,7 +1846,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -1896,7 +1896,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = add(pc,#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -1933,7 +1933,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -1949,7 +1949,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -1965,7 +1965,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -1991,7 +1991,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -2162,7 +2162,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -2192,7 +2192,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = dfmake(#Ii):neg
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -2203,7 +2203,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = dfmake(#Ii):pos
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -2255,7 +2255,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -2325,7 +2325,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = sfmake(#Ii):neg
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -2336,7 +2336,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = sfmake(#Ii):pos
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -2784,7 +2784,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J2_PAUSE:
 		// pause(#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = ST64_MAX;
 		op->analysis_vals[2].imm = ST64_MAX;
@@ -2900,7 +2900,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J2_TRAP0:
 		// trap0(#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_TRAP;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = ST64_MAX;
 		op->analysis_vals[2].imm = ST64_MAX;
@@ -2912,7 +2912,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// trap1(Rx,#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_TRAP;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -4527,7 +4527,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -4543,7 +4543,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -4559,7 +4559,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -4575,7 +4575,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -4591,7 +4591,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -4607,7 +4607,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -4623,7 +4623,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -4639,7 +4639,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -4655,7 +4655,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -4671,7 +4671,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -4687,7 +4687,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -4703,7 +4703,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -4719,7 +4719,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -4735,7 +4735,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -4751,7 +4751,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -4767,7 +4767,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -4783,7 +4783,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -4799,7 +4799,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -4815,7 +4815,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -4831,7 +4831,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -4847,7 +4847,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -4862,7 +4862,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = memb(gp+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -4874,7 +4874,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -4890,7 +4890,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -4906,7 +4906,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -4921,7 +4921,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = memd(gp+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -4933,7 +4933,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -4949,7 +4949,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -4965,7 +4965,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -4980,7 +4980,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = memh(gp+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -4992,7 +4992,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -5008,7 +5008,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -5024,7 +5024,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -5039,7 +5039,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = memw(gp+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -5051,7 +5051,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -5067,7 +5067,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -5083,7 +5083,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -5098,7 +5098,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = memub(gp+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -5110,7 +5110,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -5126,7 +5126,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -5142,7 +5142,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -5157,7 +5157,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = memuh(gp+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -5180,7 +5180,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5191,7 +5191,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5202,7 +5202,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5213,7 +5213,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5224,7 +5224,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5235,7 +5235,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5246,7 +5246,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5257,7 +5257,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5268,7 +5268,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5279,7 +5279,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5290,7 +5290,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5301,7 +5301,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5312,7 +5312,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5323,7 +5323,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5334,7 +5334,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5345,7 +5345,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5356,7 +5356,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5367,7 +5367,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5378,7 +5378,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5389,7 +5389,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5400,7 +5400,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5411,7 +5411,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5422,7 +5422,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5433,7 +5433,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5444,7 +5444,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5455,7 +5455,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5466,7 +5466,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5477,7 +5477,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5488,7 +5488,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5499,7 +5499,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5510,7 +5510,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5521,7 +5521,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5532,7 +5532,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5543,7 +5543,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5554,7 +5554,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5565,7 +5565,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5576,7 +5576,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5587,7 +5587,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5598,7 +5598,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5609,7 +5609,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5620,7 +5620,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5631,7 +5631,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5642,7 +5642,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5653,7 +5653,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5664,7 +5664,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5675,7 +5675,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5686,7 +5686,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5697,7 +5697,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5706,7 +5706,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memb(Rs+#Ii) += Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -5717,7 +5717,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memh(Rs+#Ii) += Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -5728,7 +5728,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memw(Rs+#Ii) += Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -5739,7 +5739,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memb(Rs+#Ii) &= Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -5750,7 +5750,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memh(Rs+#Ii) &= Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -5761,7 +5761,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memw(Rs+#Ii) &= Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -5772,9 +5772,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memb(Rs+#Ii) += #II
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -5784,9 +5784,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memh(Rs+#Ii) += #II
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -5796,9 +5796,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memw(Rs+#Ii) += #II
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -5808,9 +5808,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memb(Rs+#Ii) = clrbit(#II)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -5820,9 +5820,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memh(Rs+#Ii) = clrbit(#II)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -5832,9 +5832,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memw(Rs+#Ii) = clrbit(#II)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -5844,9 +5844,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memb(Rs+#Ii) = setbit(#II)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -5856,9 +5856,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memh(Rs+#Ii) = setbit(#II)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -5868,9 +5868,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memw(Rs+#Ii) = setbit(#II)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -5880,9 +5880,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memb(Rs+#Ii) -= #II
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -5892,9 +5892,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memh(Rs+#Ii) -= #II
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -5904,9 +5904,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memw(Rs+#Ii) -= #II
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -5917,7 +5917,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -5928,9 +5928,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5940,7 +5940,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -5951,9 +5951,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5963,7 +5963,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -5974,9 +5974,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -5986,7 +5986,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -5997,9 +5997,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -6009,7 +6009,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -6020,9 +6020,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -6032,7 +6032,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -6043,9 +6043,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -6065,7 +6065,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -6077,7 +6077,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -6087,9 +6087,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -6099,7 +6099,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -6111,7 +6111,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -6121,9 +6121,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -6133,7 +6133,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -6145,7 +6145,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -6155,9 +6155,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -6167,7 +6167,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -6179,7 +6179,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -6189,9 +6189,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -6201,7 +6201,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -6213,7 +6213,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -6223,9 +6223,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -6235,7 +6235,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -6247,7 +6247,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -6257,9 +6257,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -6268,7 +6268,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memb(Rs+#Ii) |= Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -6279,7 +6279,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memh(Rs+#Ii) |= Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -6290,7 +6290,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memw(Rs+#Ii) |= Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -6302,7 +6302,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -6315,7 +6315,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -6324,7 +6324,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -6337,7 +6337,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -6346,7 +6346,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -6359,7 +6359,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -6368,7 +6368,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -6381,7 +6381,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -6390,7 +6390,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -6403,7 +6403,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -6412,7 +6412,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -6425,7 +6425,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -6434,7 +6434,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -6447,7 +6447,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -6456,7 +6456,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -6469,7 +6469,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -6478,7 +6478,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -6491,7 +6491,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -6500,7 +6500,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -6513,7 +6513,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -6522,7 +6522,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -6535,7 +6535,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -6544,7 +6544,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -6557,7 +6557,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -6566,7 +6566,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -6579,7 +6579,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -6588,7 +6588,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -6601,7 +6601,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -6610,7 +6610,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -6623,7 +6623,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -6632,7 +6632,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -6645,7 +6645,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -6654,7 +6654,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -6667,7 +6667,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -6676,7 +6676,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -6689,7 +6689,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -6698,7 +6698,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -6711,7 +6711,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -6720,7 +6720,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -6733,7 +6733,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -6742,7 +6742,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -6755,7 +6755,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -6764,7 +6764,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -6777,7 +6777,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -6786,7 +6786,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -6799,7 +6799,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -6808,7 +6808,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -6821,7 +6821,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -6864,7 +6864,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memb(Rs+#Ii) -= Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -6875,7 +6875,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memh(Rs+#Ii) -= Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -6886,7 +6886,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memw(Rs+#Ii) -= Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -6908,7 +6908,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -7079,7 +7079,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -7090,7 +7090,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -7766,7 +7766,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -7777,7 +7777,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -8043,7 +8043,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -8348,10 +8348,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = add(#Ii,mpyi(Rs,#II))
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -8362,7 +8362,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -8372,7 +8372,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -8382,7 +8382,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = add(#Ii,mpyi(Rs,Rt))
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
@@ -8643,7 +8643,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = memb(#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -8654,7 +8654,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = memd(#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -8665,7 +8665,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = memh(#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -8676,7 +8676,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = memw(#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -8687,7 +8687,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = memub(#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -8698,7 +8698,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = memuh(#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -8708,7 +8708,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_PS_STORERBABS:
 		// memb(#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
@@ -8719,7 +8719,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_PS_STORERBNEWABS:
 		// memb(#Ii) = Nt.new
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
@@ -8730,7 +8730,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_PS_STORERDABS:
 		// memd(#Ii) = Rtt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
@@ -8741,7 +8741,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_PS_STORERFABS:
 		// memh(#Ii) = Rt.h
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
@@ -8752,7 +8752,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_PS_STORERHABS:
 		// memh(#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
@@ -8763,7 +8763,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_PS_STORERHNEWABS:
 		// memh(#Ii) = Nt.new
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
@@ -8774,7 +8774,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_PS_STORERIABS:
 		// memw(#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
@@ -8785,7 +8785,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_PS_STORERINEWABS:
 		// memw(#Ii) = Nt.new
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
@@ -8796,7 +8796,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_PS_TRAP1:
 		// trap1(#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_TRAP;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = ST64_MAX;
 		op->analysis_vals[2].imm = ST64_MAX;
@@ -8820,7 +8820,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -8829,7 +8829,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// allocframe(Rx,#Ii):raw
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -8841,7 +8841,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -8852,7 +8852,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -8863,7 +8863,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -8874,7 +8874,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -8885,7 +8885,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -8896,7 +8896,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -8907,7 +8907,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -8918,7 +8918,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -8929,7 +8929,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -8940,7 +8940,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -8951,7 +8951,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -8962,7 +8962,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -8973,7 +8973,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -8984,7 +8984,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -8995,7 +8995,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9076,7 +9076,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9087,7 +9087,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9098,7 +9098,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9109,7 +9109,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9120,7 +9120,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9131,7 +9131,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9142,7 +9142,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9153,7 +9153,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9164,7 +9164,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9175,7 +9175,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9186,7 +9186,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9197,7 +9197,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9208,7 +9208,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9219,7 +9219,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9230,7 +9230,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9366,7 +9366,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9407,9 +9407,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -9424,9 +9424,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -9441,9 +9441,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -9458,9 +9458,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -9550,7 +9550,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9561,7 +9561,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9572,7 +9572,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9583,7 +9583,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9594,7 +9594,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9605,7 +9605,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9616,7 +9616,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9627,7 +9627,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9638,7 +9638,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9649,7 +9649,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9660,7 +9660,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9671,7 +9671,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9682,7 +9682,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9693,7 +9693,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9768,9 +9768,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = mask(#Ii,#II)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9791,7 +9791,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9802,7 +9802,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9813,7 +9813,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9824,7 +9824,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9835,7 +9835,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9846,7 +9846,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9857,7 +9857,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9868,7 +9868,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9879,7 +9879,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9890,7 +9890,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9901,7 +9901,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9912,7 +9912,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9923,7 +9923,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9934,7 +9934,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9945,7 +9945,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9956,7 +9956,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9967,7 +9967,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9978,7 +9978,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -9989,7 +9989,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -10000,7 +10000,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -10011,7 +10011,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -10022,7 +10022,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -10033,7 +10033,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -10044,7 +10044,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -10055,7 +10055,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -10066,7 +10066,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -10077,7 +10077,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -10088,7 +10088,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -10099,7 +10099,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -10110,7 +10110,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -10121,7 +10121,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -10132,7 +10132,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -10143,7 +10143,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -10154,7 +10154,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -10165,7 +10165,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -10176,7 +10176,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -10187,7 +10187,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -10198,7 +10198,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -10209,7 +10209,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -10220,7 +10220,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -10231,7 +10231,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -10242,7 +10242,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -10253,7 +10253,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -10264,7 +10264,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -10275,7 +10275,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -10286,7 +10286,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -10297,7 +10297,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -10308,7 +10308,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -10319,7 +10319,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -10354,7 +10354,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memb(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -10370,7 +10370,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memb(Rx++#Ii:circ(Mu)) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
@@ -10386,7 +10386,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memb(Rx++#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -10401,7 +10401,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_S2_STORERBGP:
 		// memb(gp+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
@@ -10413,7 +10413,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memb(Rs+#Ii) = Nt.new
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -10429,7 +10429,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memb(Rx++#Ii:circ(Mu)) = Nt.new
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
@@ -10445,7 +10445,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memb(Rx++#Ii) = Nt.new
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -10460,7 +10460,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_S2_STORERBNEWGP:
 		// memb(gp+#Ii) = Nt.new
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
@@ -10472,7 +10472,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memd(Rs+#Ii) = Rtt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -10488,7 +10488,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memd(Rx++#Ii:circ(Mu)) = Rtt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
@@ -10504,7 +10504,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memd(Rx++#Ii) = Rtt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -10519,7 +10519,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_S2_STORERDGP:
 		// memd(gp+#Ii) = Rtt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
@@ -10531,7 +10531,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memh(Rs+#Ii) = Rt.h
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -10547,7 +10547,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memh(Rx++#Ii:circ(Mu)) = Rt.h
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
@@ -10563,7 +10563,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memh(Rx++#Ii) = Rt.h
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -10578,7 +10578,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_S2_STORERFGP:
 		// memh(gp+#Ii) = Rt.h
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
@@ -10590,7 +10590,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memh(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -10606,7 +10606,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memh(Rx++#Ii:circ(Mu)) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
@@ -10622,7 +10622,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memh(Rx++#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -10637,7 +10637,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_S2_STORERHGP:
 		// memh(gp+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
@@ -10649,7 +10649,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memh(Rs+#Ii) = Nt.new
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -10665,7 +10665,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memh(Rx++#Ii:circ(Mu)) = Nt.new
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
@@ -10681,7 +10681,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memh(Rx++#Ii) = Nt.new
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -10696,7 +10696,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_S2_STORERHNEWGP:
 		// memh(gp+#Ii) = Nt.new
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
@@ -10708,7 +10708,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memw(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -10724,7 +10724,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memw(Rx++#Ii:circ(Mu)) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
@@ -10740,7 +10740,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memw(Rx++#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -10755,7 +10755,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_S2_STORERIGP:
 		// memw(gp+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
@@ -10767,7 +10767,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memw(Rs+#Ii) = Nt.new
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -10783,7 +10783,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memw(Rx++#Ii:circ(Mu)) = Nt.new
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
@@ -10799,7 +10799,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memw(Rx++#Ii) = Nt.new
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -10814,7 +10814,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_S2_STORERINEWGP:
 		// memw(gp+#Ii) = Nt.new
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
@@ -10852,9 +10852,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -10864,9 +10864,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -10876,9 +10876,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -10888,9 +10888,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -10900,7 +10900,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -10916,7 +10916,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -10933,7 +10933,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -11024,7 +11024,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -11080,7 +11080,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -11089,10 +11089,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rx = add(#Ii,asl(Rxin,#II))
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -11101,10 +11101,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rx = add(#Ii,lsr(Rxin,#II))
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -11113,10 +11113,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rx = and(#Ii,asl(Rxin,#II))
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -11125,10 +11125,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rx = and(#Ii,lsr(Rxin,#II))
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -11138,7 +11138,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -11149,7 +11149,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -11165,9 +11165,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -11182,9 +11182,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -11198,7 +11198,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = lsl(#Ii,Rt)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -11210,7 +11210,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -11226,7 +11226,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -11238,7 +11238,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -11248,7 +11248,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -11258,10 +11258,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rx = or(#Ii,asl(Rxin,#II))
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -11270,10 +11270,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rx = or(#Ii,lsr(Rxin,#II))
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -11287,7 +11287,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (!Pv) memb(#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -11300,7 +11300,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -11309,7 +11309,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (!Pv.new) memb(#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -11321,7 +11321,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -11333,7 +11333,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -11342,7 +11342,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (!Pv) memb(#Ii) = Nt.new
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -11355,7 +11355,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -11364,7 +11364,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (!Pv.new) memb(#Ii) = Nt.new
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -11376,7 +11376,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -11388,7 +11388,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -11397,7 +11397,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (Pv) memb(#Ii) = Nt.new
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -11410,7 +11410,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -11419,7 +11419,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (Pv.new) memb(#Ii) = Nt.new
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -11431,7 +11431,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -11443,7 +11443,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -11452,7 +11452,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (Pv) memb(#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -11465,7 +11465,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -11474,7 +11474,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (Pv.new) memb(#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -11486,7 +11486,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -11498,7 +11498,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -11507,7 +11507,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (!Pv) memd(#Ii) = Rtt
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -11520,7 +11520,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -11529,7 +11529,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (!Pv.new) memd(#Ii) = Rtt
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -11541,7 +11541,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -11553,7 +11553,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -11562,7 +11562,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (Pv) memd(#Ii) = Rtt
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -11575,7 +11575,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -11584,7 +11584,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (Pv.new) memd(#Ii) = Rtt
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -11596,7 +11596,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -11608,7 +11608,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -11617,7 +11617,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (!Pv) memh(#Ii) = Rt.h
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -11630,7 +11630,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -11639,7 +11639,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (!Pv.new) memh(#Ii) = Rt.h
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -11651,7 +11651,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -11663,7 +11663,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -11672,7 +11672,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (Pv) memh(#Ii) = Rt.h
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -11685,7 +11685,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -11694,7 +11694,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (Pv.new) memh(#Ii) = Rt.h
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -11706,7 +11706,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -11718,7 +11718,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -11727,7 +11727,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (!Pv) memh(#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -11740,7 +11740,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -11749,7 +11749,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (!Pv.new) memh(#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -11761,7 +11761,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -11773,7 +11773,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -11782,7 +11782,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (!Pv) memh(#Ii) = Nt.new
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -11795,7 +11795,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -11804,7 +11804,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (!Pv.new) memh(#Ii) = Nt.new
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -11816,7 +11816,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -11828,7 +11828,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -11837,7 +11837,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (Pv) memh(#Ii) = Nt.new
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -11850,7 +11850,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -11859,7 +11859,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (Pv.new) memh(#Ii) = Nt.new
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -11871,7 +11871,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -11883,7 +11883,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -11892,7 +11892,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (Pv) memh(#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -11905,7 +11905,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -11914,7 +11914,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (Pv.new) memh(#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -11926,7 +11926,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -11938,7 +11938,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -11947,7 +11947,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (!Pv) memw(#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -11960,7 +11960,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -11969,7 +11969,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (!Pv.new) memw(#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -11981,7 +11981,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -11993,7 +11993,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -12002,7 +12002,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (!Pv) memw(#Ii) = Nt.new
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -12015,7 +12015,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -12024,7 +12024,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (!Pv.new) memw(#Ii) = Nt.new
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -12036,7 +12036,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -12048,7 +12048,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -12057,7 +12057,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (Pv) memw(#Ii) = Nt.new
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -12070,7 +12070,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -12079,7 +12079,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (Pv.new) memw(#Ii) = Nt.new
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -12091,7 +12091,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -12103,7 +12103,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -12112,7 +12112,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (Pv) memw(#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -12125,7 +12125,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -12134,7 +12134,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (Pv.new) memw(#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -12146,7 +12146,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -12158,7 +12158,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -12182,9 +12182,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memb(Rs+#Ii) = #II
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -12195,9 +12195,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -12207,9 +12207,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -12219,9 +12219,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -12231,9 +12231,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -12242,9 +12242,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memh(Rs+#Ii) = #II
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -12255,9 +12255,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -12267,9 +12267,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -12279,9 +12279,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -12291,9 +12291,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -12302,9 +12302,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memw(Rs+#Ii) = #II
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -12315,9 +12315,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -12327,9 +12327,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -12339,9 +12339,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -12351,9 +12351,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -12362,7 +12362,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memb(Re=#II) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -12374,7 +12374,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -12384,9 +12384,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memb(Ru<<#Ii+#II) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -12396,7 +12396,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memb(Re=#II) = Nt.new
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -12408,7 +12408,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -12418,9 +12418,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memb(Ru<<#Ii+#II) = Nt.new
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -12430,7 +12430,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memd(Re=#II) = Rtt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -12442,7 +12442,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -12452,9 +12452,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memd(Ru<<#Ii+#II) = Rtt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -12464,7 +12464,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memh(Re=#II) = Rt.h
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -12476,7 +12476,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -12486,9 +12486,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memh(Ru<<#Ii+#II) = Rt.h
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -12498,7 +12498,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memh(Re=#II) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -12510,7 +12510,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -12520,9 +12520,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memh(Ru<<#Ii+#II) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -12532,7 +12532,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memh(Re=#II) = Nt.new
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -12544,7 +12544,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -12554,9 +12554,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memh(Ru<<#Ii+#II) = Nt.new
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -12566,7 +12566,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memw(Re=#II) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -12578,7 +12578,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -12588,9 +12588,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memw(Ru<<#Ii+#II) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -12600,7 +12600,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memw(Re=#II) = Nt.new
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -12612,7 +12612,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -12622,9 +12622,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memw(Ru<<#Ii+#II) = Nt.new
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -12635,7 +12635,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -12645,10 +12645,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rx = sub(#Ii,asl(Rxin,#II))
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -12657,10 +12657,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rx = sub(#Ii,lsr(Rxin,#II))
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -12671,7 +12671,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -12682,7 +12682,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -12722,7 +12722,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -12733,7 +12733,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -12749,7 +12749,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -12760,7 +12760,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -12771,7 +12771,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -12782,7 +12782,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -12793,7 +12793,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -12804,7 +12804,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -12815,7 +12815,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -12826,7 +12826,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -12837,7 +12837,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -12848,7 +12848,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -12859,7 +12859,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -12870,7 +12870,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -12881,7 +12881,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -12978,7 +12978,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -12989,7 +12989,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -13000,7 +13000,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -13011,7 +13011,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -13021,7 +13021,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -13032,7 +13032,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -13048,7 +13048,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -13059,7 +13059,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -13071,7 +13071,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -13082,7 +13082,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -13097,7 +13097,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -13114,7 +13114,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -13125,7 +13125,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -13141,7 +13141,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -13152,7 +13152,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -13167,7 +13167,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -13178,7 +13178,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -13190,7 +13190,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -13201,7 +13201,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -13216,7 +13216,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -13233,7 +13233,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -13244,7 +13244,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -13260,7 +13260,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -13271,7 +13271,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -13286,7 +13286,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -13303,7 +13303,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -13314,7 +13314,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -13329,7 +13329,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -13341,7 +13341,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -13352,7 +13352,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -13367,7 +13367,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -13384,7 +13384,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -13395,7 +13395,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -13410,7 +13410,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -13427,7 +13427,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -13438,7 +13438,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -13453,7 +13453,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -13465,7 +13465,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -13476,7 +13476,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -13491,7 +13491,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -13508,7 +13508,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -13519,7 +13519,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -13533,7 +13533,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// vmemu(Rt+#Ii) = Vs
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -13545,7 +13545,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -13556,7 +13556,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -13571,7 +13571,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// vmemu(Rx++#Ii) = Vs
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -13588,7 +13588,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -13599,7 +13599,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -13614,7 +13614,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// vmem(Rt+#Ii) = Vs
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -13625,7 +13625,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// vmem(Rt+#Ii) = Os.new
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -13637,7 +13637,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -13648,7 +13648,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -13663,7 +13663,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// vmem(Rx++#Ii) = Os.new
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -13680,7 +13680,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -13691,7 +13691,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -13707,7 +13707,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -13718,7 +13718,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -13734,7 +13734,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -13745,7 +13745,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -13760,7 +13760,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// vmem(Rt+#Ii):nt = Vs
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -13771,7 +13771,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// vmem(Rt+#Ii):nt = Os.new
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -13783,7 +13783,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -13794,7 +13794,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -13809,7 +13809,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// vmem(Rx++#Ii):nt = Os.new
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -13826,7 +13826,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -13837,7 +13837,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -13853,7 +13853,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -13864,7 +13864,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -13880,7 +13880,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -13891,7 +13891,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -13906,7 +13906,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// vmem(Rx++#Ii):nt = Vs
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -13923,7 +13923,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -13934,7 +13934,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -13950,7 +13950,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -13961,7 +13961,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -13976,7 +13976,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// vmem(Rx++#Ii) = Vs
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -13993,7 +13993,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -14004,7 +14004,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -14020,7 +14020,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -14031,7 +14031,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -14046,7 +14046,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// vmem(Rt+#Ii):scatter_release
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -14057,7 +14057,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// vmem(Rx++#Ii):scatter_release
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -14310,7 +14310,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -14946,7 +14946,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -15002,7 +15002,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -15013,7 +15013,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -15039,7 +15039,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -15050,7 +15050,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -15556,7 +15556,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -15567,7 +15567,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -15618,7 +15618,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -15629,7 +15629,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -15790,7 +15790,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -15801,7 +15801,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -16154,7 +16154,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_V6_VWHIST128M:
 		// vwhist128(#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = ST64_MAX;
 		op->analysis_vals[2].imm = ST64_MAX;
@@ -16171,7 +16171,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// vwhist128(Qv,#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -16217,7 +16217,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// z = vmem(Rt+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -16228,7 +16228,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// z = vmem(Rx++#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -16245,7 +16245,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -16256,7 +16256,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -16296,7 +16296,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// dcfetch(Rs+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -16418,7 +16418,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
@@ -16433,7 +16433,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = add(r29,#Ii) ; Rx = add(Rxin,Rs)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
@@ -16450,7 +16450,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
@@ -16465,7 +16465,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #Ii ; Rx = add(Rxin,Rs)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
@@ -16502,10 +16502,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -16513,10 +16513,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = add(r29,#II) ; Rd = add(r29,#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -16525,10 +16525,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #II ; Rd = add(r29,#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -16538,7 +16538,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
@@ -16548,7 +16548,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = add(r29,#Ii) ; Rd = and(Rs,#1)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
@@ -16569,7 +16569,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #Ii ; Rd = and(Rs,#1)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
@@ -16586,7 +16586,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -16601,7 +16601,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = add(r29,#Ii) ; if (!p0) Rd = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -16637,7 +16637,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// p0 = cmp.eq(Rs,#Ii) ; if (!p0) Rd = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -16649,7 +16649,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -16664,7 +16664,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #Ii ; if (!p0) Rd = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -16675,7 +16675,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #n1 ; if (!p0) Rd = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -16712,7 +16712,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -16727,7 +16727,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = add(r29,#Ii) ; if (!p0.new) Rd = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -16753,7 +16753,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// p0 = cmp.eq(Rs,#Ii) ; if (!p0.new) Rd = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -16765,7 +16765,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -16780,7 +16780,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #Ii ; if (!p0.new) Rd = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -16791,7 +16791,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #n1 ; if (!p0.new) Rd = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -16828,7 +16828,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -16843,7 +16843,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = add(r29,#Ii) ; if (p0) Rd = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -16874,7 +16874,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// p0 = cmp.eq(Rs,#Ii) ; if (p0) Rd = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -16886,7 +16886,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -16901,7 +16901,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #Ii ; if (p0) Rd = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -16912,7 +16912,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #n1 ; if (p0) Rd = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -16949,7 +16949,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -16964,7 +16964,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = add(r29,#Ii) ; if (p0.new) Rd = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -16985,7 +16985,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// p0 = cmp.eq(Rs,#Ii) ; if (p0.new) Rd = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -16997,7 +16997,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -17012,7 +17012,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #Ii ; if (p0.new) Rd = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -17023,7 +17023,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #n1 ; if (p0.new) Rd = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -17060,10 +17060,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -17074,7 +17074,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -17082,10 +17082,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = add(r29,#II) ; p0 = cmp.eq(Rs,#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17096,7 +17096,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17105,10 +17105,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// p0 = cmp.eq(RS,#II) ; p0 = cmp.eq(Rs,#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17118,10 +17118,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -17131,7 +17131,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17140,10 +17140,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #II ; p0 = cmp.eq(Rs,#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17154,7 +17154,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17165,7 +17165,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17176,7 +17176,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17187,7 +17187,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17198,7 +17198,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17208,10 +17208,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -17222,7 +17222,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -17230,10 +17230,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = add(r29,#II) ; Rdd = combine(#0,#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17244,7 +17244,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17254,7 +17254,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -17265,7 +17265,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -17276,7 +17276,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -17287,7 +17287,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -17297,10 +17297,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// p0 = cmp.eq(Rs,#II) ; Rdd = combine(#0,#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17309,10 +17309,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#0,#II) ; Rdd = combine(#0,#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17322,10 +17322,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -17335,7 +17335,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17344,10 +17344,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #II ; Rdd = combine(#0,#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17356,10 +17356,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #n1 ; Rdd = combine(#0,#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17370,7 +17370,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17381,7 +17381,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17392,7 +17392,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17403,7 +17403,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17414,7 +17414,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17424,10 +17424,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -17438,7 +17438,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -17446,10 +17446,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = add(r29,#II) ; Rdd = combine(#1,#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17460,7 +17460,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17470,7 +17470,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -17481,7 +17481,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -17492,7 +17492,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -17503,7 +17503,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -17513,10 +17513,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// p0 = cmp.eq(Rs,#II) ; Rdd = combine(#1,#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17525,10 +17525,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#0,#II) ; Rdd = combine(#1,#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17537,10 +17537,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#1,#II) ; Rdd = combine(#1,#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17550,10 +17550,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -17563,7 +17563,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17572,10 +17572,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #II ; Rdd = combine(#1,#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17584,10 +17584,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #n1 ; Rdd = combine(#1,#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17598,7 +17598,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17609,7 +17609,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17620,7 +17620,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17631,7 +17631,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17642,7 +17642,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17652,10 +17652,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -17666,7 +17666,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -17674,10 +17674,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = add(r29,#II) ; Rdd = combine(#2,#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17688,7 +17688,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17698,7 +17698,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -17709,7 +17709,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -17720,7 +17720,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -17731,7 +17731,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -17741,10 +17741,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// p0 = cmp.eq(Rs,#II) ; Rdd = combine(#2,#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17753,10 +17753,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#0,#II) ; Rdd = combine(#2,#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17765,10 +17765,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#1,#II) ; Rdd = combine(#2,#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17777,10 +17777,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#2,#II) ; Rdd = combine(#2,#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17790,10 +17790,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -17803,7 +17803,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17812,10 +17812,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #II ; Rdd = combine(#2,#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17824,10 +17824,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #n1 ; Rdd = combine(#2,#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17838,7 +17838,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17849,7 +17849,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17860,7 +17860,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17871,7 +17871,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17882,7 +17882,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17892,10 +17892,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -17906,7 +17906,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -17914,10 +17914,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = add(r29,#II) ; Rdd = combine(#3,#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17928,7 +17928,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17938,7 +17938,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -17949,7 +17949,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -17960,7 +17960,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -17971,7 +17971,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -17981,10 +17981,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// p0 = cmp.eq(Rs,#II) ; Rdd = combine(#3,#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -17993,10 +17993,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#0,#II) ; Rdd = combine(#3,#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -18005,10 +18005,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#1,#II) ; Rdd = combine(#3,#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -18017,10 +18017,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#2,#II) ; Rdd = combine(#3,#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -18029,10 +18029,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#3,#II) ; Rdd = combine(#3,#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -18042,10 +18042,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -18055,7 +18055,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -18064,10 +18064,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #II ; Rdd = combine(#3,#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -18076,10 +18076,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #n1 ; Rdd = combine(#3,#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -18090,7 +18090,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -18101,7 +18101,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -18112,7 +18112,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -18123,7 +18123,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -18134,7 +18134,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -18144,7 +18144,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
@@ -18159,7 +18159,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = add(r29,#Ii) ; Rdd = combine(Rs,#0)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
@@ -18195,7 +18195,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// p0 = cmp.eq(RS,#Ii) ; Rdd = combine(Rs,#0)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
@@ -18206,7 +18206,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#0,#Ii) ; Rdd = combine(Rs,#0)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
@@ -18217,7 +18217,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#1,#Ii) ; Rdd = combine(Rs,#0)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
@@ -18228,7 +18228,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#2,#Ii) ; Rdd = combine(Rs,#0)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
@@ -18239,7 +18239,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#3,#Ii) ; Rdd = combine(Rs,#0)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
@@ -18261,7 +18261,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
@@ -18276,7 +18276,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #Ii ; Rdd = combine(Rs,#0)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
@@ -18287,7 +18287,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #n1 ; Rdd = combine(Rs,#0)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
@@ -18324,7 +18324,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
@@ -18339,7 +18339,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = add(r29,#Ii) ; Rdd = combine(#0,Rs)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
@@ -18375,7 +18375,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// p0 = cmp.eq(RS,#Ii) ; Rdd = combine(#0,Rs)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
@@ -18386,7 +18386,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#0,#Ii) ; Rdd = combine(#0,Rs)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
@@ -18397,7 +18397,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#1,#Ii) ; Rdd = combine(#0,Rs)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
@@ -18408,7 +18408,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#2,#Ii) ; Rdd = combine(#0,Rs)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
@@ -18419,7 +18419,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#3,#Ii) ; Rdd = combine(#0,Rs)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
@@ -18436,7 +18436,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
@@ -18451,7 +18451,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #Ii ; Rdd = combine(#0,Rs)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
@@ -18462,7 +18462,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #n1 ; Rdd = combine(#0,Rs)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
@@ -18499,22 +18499,22 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
-		op->val = hi->vals[5];
+		op->val = (ut64)hi->vals[5];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDSP_SA1_DEC:
 		// RD = add(r29,#Ii) ; Rd = add(Rs,#n1)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -18525,7 +18525,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -18534,11 +18534,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
-		op->val = hi->vals[5];
+		op->val = (ut64)hi->vals[5];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_INC_SA1_DEC:
@@ -18548,7 +18548,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -18556,11 +18556,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #Ii ; Rd = add(Rs,#n1)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -18571,7 +18571,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -18580,7 +18580,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
@@ -18590,7 +18590,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = add(r29,#Ii) ; Rd = add(Rs,#1)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
@@ -18606,7 +18606,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #Ii ; Rd = add(Rs,#1)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
@@ -18623,10 +18623,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -18637,7 +18637,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -18645,10 +18645,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = add(r29,#Ii) ; Rd = #n1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -18659,7 +18659,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -18668,10 +18668,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// p0 = cmp.eq(Rs,#Ii) ; Rd = #n1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -18681,10 +18681,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -18694,7 +18694,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -18703,10 +18703,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #Ii ; Rd = #n1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -18715,10 +18715,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #N1 ; Rd = #n1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -18729,7 +18729,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -18740,7 +18740,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -18751,7 +18751,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -18762,7 +18762,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -18773,7 +18773,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -18783,7 +18783,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
@@ -18793,7 +18793,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = add(r29,#Ii) ; Rd = sxtb(Rs)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
@@ -18810,7 +18810,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
@@ -18825,7 +18825,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #Ii ; Rd = sxtb(Rs)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
@@ -18852,7 +18852,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
@@ -18862,7 +18862,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = add(r29,#Ii) ; Rd = sxth(Rs)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
@@ -18879,7 +18879,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
@@ -18894,7 +18894,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #Ii ; Rd = sxth(Rs)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
@@ -18916,7 +18916,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
@@ -18926,7 +18926,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = add(r29,#Ii) ; Rd = Rs
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
@@ -18937,7 +18937,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #Ii ; Rd = Rs
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
@@ -18954,7 +18954,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
@@ -18964,7 +18964,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = add(r29,#Ii) ; Rd = and(Rs,#255)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
@@ -18981,7 +18981,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
@@ -18996,7 +18996,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #Ii ; Rd = and(Rs,#255)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
@@ -19033,7 +19033,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
@@ -19043,7 +19043,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = add(r29,#Ii) ; Rd = zxth(Rs)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
@@ -19060,7 +19060,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
@@ -19075,7 +19075,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #Ii ; Rd = zxth(Rs)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
@@ -19107,11 +19107,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
-		op->val = hi->vals[5];
+		op->val = (ut64)hi->vals[5];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDRX_SL1_LOADRI_IO:
@@ -19122,18 +19122,18 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
-		op->val = hi->vals[5];
+		op->val = (ut64)hi->vals[5];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDSP_SL1_LOADRI_IO:
 		// RD = add(r29,#II) ; Rd = memw(Rs+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -19144,7 +19144,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -19154,7 +19154,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -19165,7 +19165,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -19176,7 +19176,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -19187,7 +19187,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -19196,11 +19196,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// p0 = cmp.eq(RS,#II) ; Rd = memw(Rs+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -19208,11 +19208,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#0,#II) ; Rd = memw(Rs+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -19220,11 +19220,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#1,#II) ; Rd = memw(Rs+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -19232,11 +19232,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#2,#II) ; Rd = memw(Rs+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -19244,11 +19244,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#3,#II) ; Rd = memw(Rs+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -19259,7 +19259,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -19270,7 +19270,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -19279,11 +19279,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
-		op->val = hi->vals[5];
+		op->val = (ut64)hi->vals[5];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_INC_SL1_LOADRI_IO:
@@ -19293,7 +19293,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -19301,11 +19301,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #II ; Rd = memw(Rs+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -19313,11 +19313,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #n1 ; Rd = memw(Rs+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -19328,7 +19328,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -19339,7 +19339,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -19350,7 +19350,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -19361,7 +19361,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -19372,7 +19372,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -19381,11 +19381,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
-		op->val = hi->vals[5];
+		op->val = (ut64)hi->vals[5];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDI_SL1_LOADRUB_IO:
@@ -19393,11 +19393,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
-		op->val = hi->vals[5];
+		op->val = (ut64)hi->vals[5];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDRX_SL1_LOADRUB_IO:
@@ -19408,18 +19408,18 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
-		op->val = hi->vals[5];
+		op->val = (ut64)hi->vals[5];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDSP_SL1_LOADRUB_IO:
 		// RD = add(r29,#II) ; Rd = memub(Rs+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -19430,7 +19430,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -19440,7 +19440,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -19451,7 +19451,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -19462,7 +19462,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -19473,7 +19473,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -19482,11 +19482,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// p0 = cmp.eq(RS,#II) ; Rd = memub(Rs+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -19494,11 +19494,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#0,#II) ; Rd = memub(Rs+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -19506,11 +19506,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#1,#II) ; Rd = memub(Rs+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -19518,11 +19518,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#2,#II) ; Rd = memub(Rs+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -19530,11 +19530,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#3,#II) ; Rd = memub(Rs+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -19545,7 +19545,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -19556,7 +19556,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -19565,11 +19565,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
-		op->val = hi->vals[5];
+		op->val = (ut64)hi->vals[5];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_INC_SL1_LOADRUB_IO:
@@ -19579,7 +19579,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -19587,11 +19587,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #II ; Rd = memub(Rs+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -19599,11 +19599,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #n1 ; Rd = memub(Rs+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -19614,7 +19614,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -19625,7 +19625,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -19636,7 +19636,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -19647,7 +19647,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -19658,7 +19658,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -19667,11 +19667,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
-		op->val = hi->vals[5];
+		op->val = (ut64)hi->vals[5];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL1_LOADRUB_IO_SL1_LOADRUB_IO:
@@ -19679,11 +19679,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
-		op->val = hi->vals[5];
+		op->val = (ut64)hi->vals[5];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDI_SL2_DEALLOCFRAME:
@@ -19691,7 +19691,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -19706,7 +19706,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = add(r29,#Ii) ; deallocframe
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -19742,7 +19742,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// p0 = cmp.eq(Rs,#Ii) ; deallocframe
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -19753,7 +19753,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#0,#Ii) ; deallocframe
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -19764,7 +19764,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#1,#Ii) ; deallocframe
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -19775,7 +19775,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#2,#Ii) ; deallocframe
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -19786,7 +19786,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#3,#Ii) ; deallocframe
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -19808,7 +19808,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -19823,7 +19823,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #Ii ; deallocframe
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -19834,7 +19834,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #n1 ; deallocframe
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -19871,7 +19871,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -19882,7 +19882,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -19898,7 +19898,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -19908,7 +19908,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = memd(r29+#Ii) ; deallocframe
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -19920,7 +19920,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -19930,7 +19930,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = memw(r29+#Ii) ; deallocframe
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -19942,7 +19942,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -19953,7 +19953,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -19968,7 +19968,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = add(r29,#Ii) ; jumpr r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -20004,7 +20004,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// p0 = cmp.eq(Rs,#Ii) ; jumpr r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -20015,7 +20015,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#0,#Ii) ; jumpr r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -20026,7 +20026,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#1,#Ii) ; jumpr r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -20037,7 +20037,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#2,#Ii) ; jumpr r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -20048,7 +20048,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#3,#Ii) ; jumpr r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -20070,7 +20070,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -20085,7 +20085,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #Ii ; jumpr r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -20096,7 +20096,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #n1 ; jumpr r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -20133,7 +20133,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -20144,7 +20144,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -20160,7 +20160,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -20170,7 +20170,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = memd(r29+#Ii) ; jumpr r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -20182,7 +20182,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -20192,7 +20192,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = memw(r29+#Ii) ; jumpr r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -20204,7 +20204,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -20240,7 +20240,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -20255,7 +20255,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = add(r29,#Ii) ; if (!p0) jumpr r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -20291,7 +20291,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// p0 = cmp.eq(Rs,#Ii) ; if (!p0) jumpr r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -20302,7 +20302,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#0,#Ii) ; if (!p0) jumpr r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -20313,7 +20313,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#1,#Ii) ; if (!p0) jumpr r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -20324,7 +20324,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#2,#Ii) ; if (!p0) jumpr r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -20335,7 +20335,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#3,#Ii) ; if (!p0) jumpr r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -20357,7 +20357,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -20372,7 +20372,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #Ii ; if (!p0) jumpr r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -20383,7 +20383,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #n1 ; if (!p0) jumpr r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -20420,7 +20420,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -20431,7 +20431,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -20447,7 +20447,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -20457,7 +20457,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = memd(r29+#Ii) ; if (!p0) jumpr r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -20469,7 +20469,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -20479,7 +20479,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = memw(r29+#Ii) ; if (!p0) jumpr r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -20491,7 +20491,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -20527,7 +20527,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -20542,7 +20542,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = add(r29,#Ii) ; if (!p0.new) jumpr:nt r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -20578,7 +20578,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// p0 = cmp.eq(Rs,#Ii) ; if (!p0.new) jumpr:nt r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -20589,7 +20589,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#0,#Ii) ; if (!p0.new) jumpr:nt r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -20600,7 +20600,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#1,#Ii) ; if (!p0.new) jumpr:nt r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -20611,7 +20611,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#2,#Ii) ; if (!p0.new) jumpr:nt r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -20622,7 +20622,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#3,#Ii) ; if (!p0.new) jumpr:nt r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -20644,7 +20644,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -20659,7 +20659,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #Ii ; if (!p0.new) jumpr:nt r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -20670,7 +20670,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #n1 ; if (!p0.new) jumpr:nt r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -20707,7 +20707,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -20718,7 +20718,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -20734,7 +20734,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -20744,7 +20744,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = memd(r29+#Ii) ; if (!p0.new) jumpr:nt r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -20756,7 +20756,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -20766,7 +20766,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = memw(r29+#Ii) ; if (!p0.new) jumpr:nt r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -20778,7 +20778,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -20814,7 +20814,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -20829,7 +20829,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = add(r29,#Ii) ; if (p0) jumpr r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -20865,7 +20865,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// p0 = cmp.eq(Rs,#Ii) ; if (p0) jumpr r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -20876,7 +20876,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#0,#Ii) ; if (p0) jumpr r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -20887,7 +20887,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#1,#Ii) ; if (p0) jumpr r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -20898,7 +20898,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#2,#Ii) ; if (p0) jumpr r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -20909,7 +20909,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#3,#Ii) ; if (p0) jumpr r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -20931,7 +20931,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -20946,7 +20946,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #Ii ; if (p0) jumpr r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -20957,7 +20957,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #n1 ; if (p0) jumpr r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -20994,7 +20994,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -21005,7 +21005,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -21021,7 +21021,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -21031,7 +21031,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = memd(r29+#Ii) ; if (p0) jumpr r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -21043,7 +21043,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -21053,7 +21053,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = memw(r29+#Ii) ; if (p0) jumpr r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -21065,7 +21065,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -21101,7 +21101,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -21116,7 +21116,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = add(r29,#Ii) ; if (p0.new) jumpr:nt r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -21152,7 +21152,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// p0 = cmp.eq(Rs,#Ii) ; if (p0.new) jumpr:nt r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -21163,7 +21163,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#0,#Ii) ; if (p0.new) jumpr:nt r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -21174,7 +21174,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#1,#Ii) ; if (p0.new) jumpr:nt r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -21185,7 +21185,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#2,#Ii) ; if (p0.new) jumpr:nt r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -21196,7 +21196,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#3,#Ii) ; if (p0.new) jumpr:nt r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -21218,7 +21218,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -21233,7 +21233,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #Ii ; if (p0.new) jumpr:nt r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -21244,7 +21244,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #n1 ; if (p0.new) jumpr:nt r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -21281,7 +21281,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -21292,7 +21292,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -21308,7 +21308,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -21318,7 +21318,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = memd(r29+#Ii) ; if (p0.new) jumpr:nt r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -21330,7 +21330,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -21340,7 +21340,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = memw(r29+#Ii) ; if (p0.new) jumpr:nt r31
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -21352,7 +21352,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -21388,11 +21388,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
-		op->val = hi->vals[5];
+		op->val = (ut64)hi->vals[5];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDRX_SL2_LOADRB_IO:
@@ -21403,18 +21403,18 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
-		op->val = hi->vals[5];
+		op->val = (ut64)hi->vals[5];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDSP_SL2_LOADRB_IO:
 		// RD = add(r29,#II) ; Rd = memb(Rs+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -21425,7 +21425,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -21435,7 +21435,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -21446,7 +21446,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -21457,7 +21457,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -21468,7 +21468,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -21477,11 +21477,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// p0 = cmp.eq(RS,#II) ; Rd = memb(Rs+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -21489,11 +21489,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#0,#II) ; Rd = memb(Rs+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -21501,11 +21501,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#1,#II) ; Rd = memb(Rs+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -21513,11 +21513,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#2,#II) ; Rd = memb(Rs+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -21525,11 +21525,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#3,#II) ; Rd = memb(Rs+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -21540,7 +21540,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -21551,7 +21551,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -21560,11 +21560,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
-		op->val = hi->vals[5];
+		op->val = (ut64)hi->vals[5];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_INC_SL2_LOADRB_IO:
@@ -21574,7 +21574,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -21582,11 +21582,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #II ; Rd = memb(Rs+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -21594,11 +21594,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #n1 ; Rd = memb(Rs+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -21609,7 +21609,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -21620,7 +21620,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -21631,7 +21631,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -21642,7 +21642,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -21653,7 +21653,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -21662,11 +21662,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
-		op->val = hi->vals[5];
+		op->val = (ut64)hi->vals[5];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL1_LOADRUB_IO_SL2_LOADRB_IO:
@@ -21674,11 +21674,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
-		op->val = hi->vals[5];
+		op->val = (ut64)hi->vals[5];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRB_IO_SL2_LOADRB_IO:
@@ -21686,11 +21686,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
-		op->val = hi->vals[5];
+		op->val = (ut64)hi->vals[5];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRH_IO_SL2_LOADRB_IO:
@@ -21698,11 +21698,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
-		op->val = hi->vals[5];
+		op->val = (ut64)hi->vals[5];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRUH_IO_SL2_LOADRB_IO:
@@ -21710,11 +21710,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
-		op->val = hi->vals[5];
+		op->val = (ut64)hi->vals[5];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDI_SL2_LOADRD_SP:
@@ -21722,10 +21722,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -21736,7 +21736,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -21744,10 +21744,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = add(r29,#II) ; Rdd = memd(r29+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -21758,7 +21758,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -21768,7 +21768,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -21779,7 +21779,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -21790,7 +21790,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -21801,7 +21801,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -21811,10 +21811,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// p0 = cmp.eq(Rs,#II) ; Rdd = memd(r29+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -21823,10 +21823,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#0,#II) ; Rdd = memd(r29+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -21835,10 +21835,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#1,#II) ; Rdd = memd(r29+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -21847,10 +21847,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#2,#II) ; Rdd = memd(r29+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -21859,10 +21859,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#3,#II) ; Rdd = memd(r29+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -21873,7 +21873,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -21884,7 +21884,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -21894,10 +21894,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -21907,7 +21907,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -21916,10 +21916,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #II ; Rdd = memd(r29+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -21928,10 +21928,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #n1 ; Rdd = memd(r29+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -21942,7 +21942,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -21953,7 +21953,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -21964,7 +21964,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -21975,7 +21975,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -21986,7 +21986,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -21996,10 +21996,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22008,10 +22008,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22020,10 +22020,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22031,10 +22031,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = memd(r29+#II) ; Rdd = memd(r29+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -22044,10 +22044,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22055,10 +22055,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = memw(r29+#II) ; Rdd = memd(r29+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -22068,10 +22068,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22080,11 +22080,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
-		op->val = hi->vals[5];
+		op->val = (ut64)hi->vals[5];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDRX_SL2_LOADRH_IO:
@@ -22095,18 +22095,18 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
-		op->val = hi->vals[5];
+		op->val = (ut64)hi->vals[5];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDSP_SL2_LOADRH_IO:
 		// RD = add(r29,#II) ; Rd = memh(Rs+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22117,7 +22117,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22127,7 +22127,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -22138,7 +22138,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -22149,7 +22149,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -22160,7 +22160,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -22169,11 +22169,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// p0 = cmp.eq(RS,#II) ; Rd = memh(Rs+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22181,11 +22181,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#0,#II) ; Rd = memh(Rs+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22193,11 +22193,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#1,#II) ; Rd = memh(Rs+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22205,11 +22205,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#2,#II) ; Rd = memh(Rs+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22217,11 +22217,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#3,#II) ; Rd = memh(Rs+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22232,7 +22232,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22243,7 +22243,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22252,11 +22252,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
-		op->val = hi->vals[5];
+		op->val = (ut64)hi->vals[5];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_INC_SL2_LOADRH_IO:
@@ -22266,7 +22266,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22274,11 +22274,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #II ; Rd = memh(Rs+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22286,11 +22286,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #n1 ; Rd = memh(Rs+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22301,7 +22301,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22312,7 +22312,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22323,7 +22323,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22334,7 +22334,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22345,7 +22345,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22354,11 +22354,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
-		op->val = hi->vals[5];
+		op->val = (ut64)hi->vals[5];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL1_LOADRUB_IO_SL2_LOADRH_IO:
@@ -22366,11 +22366,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
-		op->val = hi->vals[5];
+		op->val = (ut64)hi->vals[5];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRH_IO_SL2_LOADRH_IO:
@@ -22378,11 +22378,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
-		op->val = hi->vals[5];
+		op->val = (ut64)hi->vals[5];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDI_SL2_LOADRI_SP:
@@ -22390,10 +22390,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22404,7 +22404,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22412,10 +22412,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = add(r29,#II) ; Rd = memw(r29+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -22426,7 +22426,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -22436,7 +22436,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -22447,7 +22447,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -22458,7 +22458,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -22469,7 +22469,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -22479,10 +22479,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// p0 = cmp.eq(Rs,#II) ; Rd = memw(r29+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -22491,10 +22491,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#0,#II) ; Rd = memw(r29+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -22503,10 +22503,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#1,#II) ; Rd = memw(r29+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -22515,10 +22515,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#2,#II) ; Rd = memw(r29+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -22527,10 +22527,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#3,#II) ; Rd = memw(r29+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -22541,7 +22541,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -22552,7 +22552,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -22562,10 +22562,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22575,7 +22575,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -22584,10 +22584,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #II ; Rd = memw(r29+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -22596,10 +22596,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #n1 ; Rd = memw(r29+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -22610,7 +22610,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -22621,7 +22621,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -22632,7 +22632,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -22643,7 +22643,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -22654,7 +22654,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -22664,10 +22664,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22676,10 +22676,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22688,10 +22688,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22700,10 +22700,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22711,10 +22711,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = memw(r29+#II) ; Rd = memw(r29+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -22724,10 +22724,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22736,11 +22736,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
-		op->val = hi->vals[5];
+		op->val = (ut64)hi->vals[5];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDRX_SL2_LOADRUH_IO:
@@ -22751,18 +22751,18 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
-		op->val = hi->vals[5];
+		op->val = (ut64)hi->vals[5];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDSP_SL2_LOADRUH_IO:
 		// RD = add(r29,#II) ; Rd = memuh(Rs+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22773,7 +22773,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22783,7 +22783,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -22794,7 +22794,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -22805,7 +22805,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -22816,7 +22816,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -22825,11 +22825,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// p0 = cmp.eq(RS,#II) ; Rd = memuh(Rs+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22837,11 +22837,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#0,#II) ; Rd = memuh(Rs+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22849,11 +22849,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#1,#II) ; Rd = memuh(Rs+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22861,11 +22861,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#2,#II) ; Rd = memuh(Rs+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22873,11 +22873,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RDD = combine(#3,#II) ; Rd = memuh(Rs+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22888,7 +22888,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22899,7 +22899,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22908,11 +22908,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
-		op->val = hi->vals[5];
+		op->val = (ut64)hi->vals[5];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_INC_SL2_LOADRUH_IO:
@@ -22922,7 +22922,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22930,11 +22930,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #II ; Rd = memuh(Rs+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22942,11 +22942,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// RD = #n1 ; Rd = memuh(Rs+#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22957,7 +22957,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22968,7 +22968,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22979,7 +22979,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -22990,7 +22990,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -23001,7 +23001,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -23010,11 +23010,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
-		op->val = hi->vals[5];
+		op->val = (ut64)hi->vals[5];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL1_LOADRUB_IO_SL2_LOADRUH_IO:
@@ -23022,11 +23022,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
-		op->val = hi->vals[5];
+		op->val = (ut64)hi->vals[5];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRH_IO_SL2_LOADRUH_IO:
@@ -23034,11 +23034,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
-		op->val = hi->vals[5];
+		op->val = (ut64)hi->vals[5];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRUH_IO_SL2_LOADRUH_IO:
@@ -23046,11 +23046,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
-		op->val = hi->vals[5];
+		op->val = (ut64)hi->vals[5];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDI_SL2_RETURN:
@@ -23058,7 +23058,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -23073,7 +23073,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = add(r29,#Ii) ; dealloc_return
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -23109,7 +23109,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// p0 = cmp.eq(Rs,#Ii) ; dealloc_return
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -23120,7 +23120,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#0,#Ii) ; dealloc_return
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -23131,7 +23131,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#1,#Ii) ; dealloc_return
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -23142,7 +23142,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#2,#Ii) ; dealloc_return
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -23153,7 +23153,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#3,#Ii) ; dealloc_return
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -23175,7 +23175,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -23190,7 +23190,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #Ii ; dealloc_return
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -23201,7 +23201,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #n1 ; dealloc_return
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -23238,7 +23238,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -23249,7 +23249,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -23265,7 +23265,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -23275,7 +23275,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = memd(r29+#Ii) ; dealloc_return
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -23287,7 +23287,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -23297,7 +23297,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = memw(r29+#Ii) ; dealloc_return
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -23309,7 +23309,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -23325,7 +23325,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -23340,7 +23340,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = add(r29,#Ii) ; if (!p0) dealloc_return
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -23376,7 +23376,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// p0 = cmp.eq(Rs,#Ii) ; if (!p0) dealloc_return
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -23387,7 +23387,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#0,#Ii) ; if (!p0) dealloc_return
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -23398,7 +23398,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#1,#Ii) ; if (!p0) dealloc_return
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -23409,7 +23409,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#2,#Ii) ; if (!p0) dealloc_return
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -23420,7 +23420,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#3,#Ii) ; if (!p0) dealloc_return
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -23442,7 +23442,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -23457,7 +23457,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #Ii ; if (!p0) dealloc_return
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -23468,7 +23468,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #n1 ; if (!p0) dealloc_return
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -23505,7 +23505,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -23516,7 +23516,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -23532,7 +23532,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -23542,7 +23542,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = memd(r29+#Ii) ; if (!p0) dealloc_return
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -23554,7 +23554,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -23564,7 +23564,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = memw(r29+#Ii) ; if (!p0) dealloc_return
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -23576,7 +23576,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -23602,7 +23602,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -23617,7 +23617,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = add(r29,#Ii) ; if (!p0.new) dealloc_return:nt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -23653,7 +23653,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// p0 = cmp.eq(Rs,#Ii) ; if (!p0.new) dealloc_return:nt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -23664,7 +23664,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#0,#Ii) ; if (!p0.new) dealloc_return:nt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -23675,7 +23675,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#1,#Ii) ; if (!p0.new) dealloc_return:nt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -23686,7 +23686,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#2,#Ii) ; if (!p0.new) dealloc_return:nt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -23697,7 +23697,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#3,#Ii) ; if (!p0.new) dealloc_return:nt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -23719,7 +23719,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -23734,7 +23734,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #Ii ; if (!p0.new) dealloc_return:nt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -23745,7 +23745,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #n1 ; if (!p0.new) dealloc_return:nt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -23782,7 +23782,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -23793,7 +23793,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -23809,7 +23809,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -23819,7 +23819,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = memd(r29+#Ii) ; if (!p0.new) dealloc_return:nt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -23831,7 +23831,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -23841,7 +23841,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = memw(r29+#Ii) ; if (!p0.new) dealloc_return:nt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -23853,7 +23853,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -23889,7 +23889,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -23904,7 +23904,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = add(r29,#Ii) ; if (p0) dealloc_return
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -23940,7 +23940,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// p0 = cmp.eq(Rs,#Ii) ; if (p0) dealloc_return
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -23951,7 +23951,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#0,#Ii) ; if (p0) dealloc_return
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -23962,7 +23962,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#1,#Ii) ; if (p0) dealloc_return
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -23973,7 +23973,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#2,#Ii) ; if (p0) dealloc_return
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -23984,7 +23984,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#3,#Ii) ; if (p0) dealloc_return
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -24006,7 +24006,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -24021,7 +24021,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #Ii ; if (p0) dealloc_return
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -24032,7 +24032,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #n1 ; if (p0) dealloc_return
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -24069,7 +24069,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -24080,7 +24080,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -24096,7 +24096,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -24106,7 +24106,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = memd(r29+#Ii) ; if (p0) dealloc_return
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -24118,7 +24118,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -24128,7 +24128,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = memw(r29+#Ii) ; if (p0) dealloc_return
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -24140,7 +24140,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -24161,7 +24161,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -24176,7 +24176,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = add(r29,#Ii) ; if (p0.new) dealloc_return:nt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -24212,7 +24212,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// p0 = cmp.eq(Rs,#Ii) ; if (p0.new) dealloc_return:nt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -24223,7 +24223,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#0,#Ii) ; if (p0.new) dealloc_return:nt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -24234,7 +24234,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#1,#Ii) ; if (p0.new) dealloc_return:nt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -24245,7 +24245,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#2,#Ii) ; if (p0.new) dealloc_return:nt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -24256,7 +24256,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#3,#Ii) ; if (p0.new) dealloc_return:nt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -24278,7 +24278,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -24293,7 +24293,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #Ii ; if (p0.new) dealloc_return:nt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -24304,7 +24304,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #n1 ; if (p0.new) dealloc_return:nt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -24341,7 +24341,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -24352,7 +24352,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -24368,7 +24368,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -24378,7 +24378,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = memd(r29+#Ii) ; if (p0.new) dealloc_return:nt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -24390,7 +24390,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -24400,7 +24400,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = memw(r29+#Ii) ; if (p0.new) dealloc_return:nt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -24412,7 +24412,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -24443,10 +24443,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
@@ -24457,7 +24457,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
@@ -24465,10 +24465,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = add(r29,#II) ; memb(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -24479,7 +24479,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -24489,7 +24489,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -24500,7 +24500,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -24511,7 +24511,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -24522,7 +24522,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -24532,10 +24532,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// p0 = cmp.eq(RS,#II) ; memb(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -24544,10 +24544,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#0,#II) ; memb(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -24556,10 +24556,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#1,#II) ; memb(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -24568,10 +24568,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#2,#II) ; memb(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -24580,10 +24580,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#3,#II) ; memb(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -24594,7 +24594,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -24605,7 +24605,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -24615,10 +24615,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
@@ -24628,7 +24628,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -24637,10 +24637,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #II ; memb(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -24649,10 +24649,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #n1 ; memb(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -24663,7 +24663,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -24674,7 +24674,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -24685,7 +24685,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -24696,7 +24696,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -24707,7 +24707,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -24717,10 +24717,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
@@ -24729,10 +24729,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
@@ -24740,7 +24740,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// deallocframe ; memb(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -24752,10 +24752,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
@@ -24763,10 +24763,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = memd(r29+#II) ; memb(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -24776,10 +24776,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
@@ -24787,10 +24787,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = memw(r29+#II) ; memb(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -24800,10 +24800,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
@@ -24811,7 +24811,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// dealloc_return ; memb(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -24822,7 +24822,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (!p0) dealloc_return ; memb(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -24833,7 +24833,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (!p0.new) dealloc_return:nt ; memb(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -24844,7 +24844,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (p0) dealloc_return ; memb(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -24855,7 +24855,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (p0.new) dealloc_return:nt ; memb(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -24866,11 +24866,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memb(RS+#II) = RT ; memb(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
@@ -24878,11 +24878,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memw(RS+#II) = RT ; memb(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
@@ -24891,10 +24891,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
@@ -24905,7 +24905,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
@@ -24913,10 +24913,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = add(r29,#II) ; memw(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -24927,7 +24927,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -24937,7 +24937,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -24948,7 +24948,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -24959,7 +24959,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -24970,7 +24970,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -24980,10 +24980,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// p0 = cmp.eq(RS,#II) ; memw(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -24992,10 +24992,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#0,#II) ; memw(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -25004,10 +25004,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#1,#II) ; memw(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -25016,10 +25016,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#2,#II) ; memw(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -25028,10 +25028,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#3,#II) ; memw(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -25042,7 +25042,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -25053,7 +25053,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -25063,10 +25063,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
@@ -25076,7 +25076,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -25085,10 +25085,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #II ; memw(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -25097,10 +25097,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #n1 ; memw(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -25111,7 +25111,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -25122,7 +25122,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -25133,7 +25133,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -25144,7 +25144,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -25155,7 +25155,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -25165,10 +25165,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
@@ -25177,10 +25177,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
@@ -25188,7 +25188,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// deallocframe ; memw(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -25200,10 +25200,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
@@ -25211,10 +25211,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = memd(r29+#II) ; memw(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -25224,10 +25224,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
@@ -25235,10 +25235,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = memw(r29+#II) ; memw(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -25248,10 +25248,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
@@ -25259,7 +25259,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// dealloc_return ; memw(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -25270,7 +25270,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (!p0) dealloc_return ; memw(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -25281,7 +25281,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (!p0.new) dealloc_return:nt ; memw(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -25292,7 +25292,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (p0) dealloc_return ; memw(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -25303,7 +25303,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (p0.new) dealloc_return:nt ; memw(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -25314,11 +25314,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memw(RS+#II) = RT ; memw(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
@@ -25327,9 +25327,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -25340,7 +25340,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -25349,9 +25349,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = add(r29,#II) ; allocframe(#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -25362,7 +25362,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -25372,7 +25372,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (!p0) Rd = #0 ; allocframe(#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -25383,7 +25383,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (!p0.new) Rd = #0 ; allocframe(#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -25394,7 +25394,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (p0) Rd = #0 ; allocframe(#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -25405,7 +25405,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (p0.new) Rd = #0 ; allocframe(#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -25416,9 +25416,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// p0 = cmp.eq(Rs,#II) ; allocframe(#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -25428,9 +25428,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#0,#II) ; allocframe(#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -25440,9 +25440,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#1,#II) ; allocframe(#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -25452,9 +25452,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#2,#II) ; allocframe(#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -25464,9 +25464,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#3,#II) ; allocframe(#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -25477,7 +25477,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -25488,7 +25488,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -25499,9 +25499,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -25511,7 +25511,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -25521,9 +25521,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #II ; allocframe(#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -25533,9 +25533,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #n1 ; allocframe(#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -25546,7 +25546,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -25557,7 +25557,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -25568,7 +25568,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -25579,7 +25579,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -25590,7 +25590,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -25601,9 +25601,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -25613,9 +25613,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -25623,7 +25623,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_X2_AUTOJOIN_SL2_DEALLOCFRAME_SS2_ALLOCFRAME:
 		// deallocframe ; allocframe(#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = ST64_MAX;
 		op->analysis_vals[2].imm = ST64_MAX;
@@ -25636,9 +25636,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -25647,9 +25647,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = memd(r29+#II) ; allocframe(#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -25660,9 +25660,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -25671,9 +25671,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = memw(r29+#II) ; allocframe(#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -25684,9 +25684,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -25694,7 +25694,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_SS2_ALLOCFRAME:
 		// dealloc_return ; allocframe(#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = ST64_MAX;
 		op->analysis_vals[2].imm = ST64_MAX;
@@ -25705,7 +25705,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_F_SS2_ALLOCFRAME:
 		// if (!p0) dealloc_return ; allocframe(#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = ST64_MAX;
 		op->analysis_vals[2].imm = ST64_MAX;
@@ -25716,7 +25716,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_FNEW_SS2_ALLOCFRAME:
 		// if (!p0.new) dealloc_return:nt ; allocframe(#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = ST64_MAX;
 		op->analysis_vals[2].imm = ST64_MAX;
@@ -25727,7 +25727,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_T_SS2_ALLOCFRAME:
 		// if (p0) dealloc_return ; allocframe(#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = ST64_MAX;
 		op->analysis_vals[2].imm = ST64_MAX;
@@ -25738,7 +25738,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_TNEW_SS2_ALLOCFRAME:
 		// if (p0.new) dealloc_return:nt ; allocframe(#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = ST64_MAX;
 		op->analysis_vals[2].imm = ST64_MAX;
@@ -25750,10 +25750,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memb(Rs+#II) = Rt ; allocframe(#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -25762,10 +25762,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memw(Rs+#II) = Rt ; allocframe(#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -25774,9 +25774,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memb(Rs+#II) = #0 ; allocframe(#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -25786,9 +25786,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memb(Rs+#II) = #1 ; allocframe(#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -25797,10 +25797,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_X2_AUTOJOIN_SS2_STORED_SP_SS2_ALLOCFRAME:
 		// memd(r29+#II) = Rtt ; allocframe(#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -25810,10 +25810,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memh(Rs+#II) = Rt ; allocframe(#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -25821,10 +25821,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_X2_AUTOJOIN_SS2_STOREW_SP_SS2_ALLOCFRAME:
 		// memw(r29+#II) = Rt ; allocframe(#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -25834,9 +25834,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memw(Rs+#II) = #0 ; allocframe(#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -25846,9 +25846,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memw(Rs+#II) = #1 ; allocframe(#Ii)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -25859,10 +25859,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -25873,7 +25873,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -25881,10 +25881,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = add(r29,#II) ; memb(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -25895,7 +25895,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -25905,7 +25905,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -25916,7 +25916,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -25927,7 +25927,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -25938,7 +25938,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -25948,10 +25948,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// p0 = cmp.eq(RS,#II) ; memb(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -25960,10 +25960,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#0,#II) ; memb(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -25972,10 +25972,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#1,#II) ; memb(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -25984,10 +25984,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#2,#II) ; memb(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -25996,10 +25996,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#3,#II) ; memb(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26010,7 +26010,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26021,7 +26021,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26031,10 +26031,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -26044,7 +26044,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26053,10 +26053,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #II ; memb(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26065,10 +26065,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #n1 ; memb(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26079,7 +26079,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26090,7 +26090,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26101,7 +26101,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26112,7 +26112,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26123,7 +26123,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26133,10 +26133,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -26145,10 +26145,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -26156,7 +26156,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// deallocframe ; memb(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -26168,10 +26168,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -26179,10 +26179,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = memd(r29+#II) ; memb(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26192,10 +26192,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -26203,10 +26203,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = memw(r29+#II) ; memb(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26216,10 +26216,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -26227,7 +26227,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// dealloc_return ; memb(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -26238,7 +26238,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (!p0) dealloc_return ; memb(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -26249,7 +26249,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (!p0.new) dealloc_return:nt ; memb(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -26260,7 +26260,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (p0) dealloc_return ; memb(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -26271,7 +26271,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (p0.new) dealloc_return:nt ; memb(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -26282,11 +26282,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memb(RS+#II) = Rt ; memb(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -26294,11 +26294,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memw(RS+#II) = Rt ; memb(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -26306,10 +26306,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memb(RS+#II) = #0 ; memb(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26317,11 +26317,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_X2_AUTOJOIN_SS2_STORED_SP_SS2_STOREBI0:
 		// memd(r29+#II) = Rtt ; memb(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26330,22 +26330,22 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memh(RS+#II) = Rt ; memb(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SS2_STOREW_SP_SS2_STOREBI0:
 		// memw(r29+#II) = Rt ; memb(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26354,10 +26354,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memw(RS+#II) = #0 ; memb(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26366,10 +26366,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memw(RS+#II) = #1 ; memb(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26379,10 +26379,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -26393,7 +26393,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -26401,10 +26401,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = add(r29,#II) ; memb(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26415,7 +26415,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26425,7 +26425,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -26436,7 +26436,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -26447,7 +26447,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -26458,7 +26458,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -26468,10 +26468,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// p0 = cmp.eq(RS,#II) ; memb(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26480,10 +26480,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#0,#II) ; memb(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26492,10 +26492,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#1,#II) ; memb(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26504,10 +26504,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#2,#II) ; memb(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26516,10 +26516,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#3,#II) ; memb(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26530,7 +26530,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26541,7 +26541,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26551,10 +26551,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -26564,7 +26564,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26573,10 +26573,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #II ; memb(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26585,10 +26585,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #n1 ; memb(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26599,7 +26599,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26610,7 +26610,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26621,7 +26621,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26632,7 +26632,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26643,7 +26643,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26653,10 +26653,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -26665,10 +26665,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -26676,7 +26676,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// deallocframe ; memb(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -26688,10 +26688,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -26699,10 +26699,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = memd(r29+#II) ; memb(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26712,10 +26712,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -26723,10 +26723,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = memw(r29+#II) ; memb(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26736,10 +26736,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -26747,7 +26747,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// dealloc_return ; memb(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -26758,7 +26758,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (!p0) dealloc_return ; memb(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -26769,7 +26769,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (!p0.new) dealloc_return:nt ; memb(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -26780,7 +26780,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (p0) dealloc_return ; memb(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -26791,7 +26791,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (p0.new) dealloc_return:nt ; memb(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -26802,11 +26802,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memb(RS+#II) = Rt ; memb(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -26814,11 +26814,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memw(RS+#II) = Rt ; memb(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -26826,10 +26826,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memb(RS+#II) = #0 ; memb(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26838,10 +26838,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memb(RS+#II) = #1 ; memb(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26849,11 +26849,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_X2_AUTOJOIN_SS2_STORED_SP_SS2_STOREBI1:
 		// memd(r29+#II) = Rtt ; memb(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26862,22 +26862,22 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memh(RS+#II) = Rt ; memb(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SS2_STOREW_SP_SS2_STOREBI1:
 		// memw(r29+#II) = Rt ; memb(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26886,10 +26886,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memw(RS+#II) = #0 ; memb(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26898,10 +26898,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memw(RS+#II) = #1 ; memb(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26911,9 +26911,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26924,7 +26924,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -26933,9 +26933,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = add(r29,#II) ; memd(r29+#Ii) = Rtt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -26946,7 +26946,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -26956,7 +26956,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (!p0) Rd = #0 ; memd(r29+#Ii) = Rtt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -26967,7 +26967,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (!p0.new) Rd = #0 ; memd(r29+#Ii) = Rtt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -26978,7 +26978,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (p0) Rd = #0 ; memd(r29+#Ii) = Rtt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -26989,7 +26989,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (p0.new) Rd = #0 ; memd(r29+#Ii) = Rtt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -27000,9 +27000,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// p0 = cmp.eq(Rs,#II) ; memd(r29+#Ii) = Rtt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -27012,9 +27012,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#0,#II) ; memd(r29+#Ii) = Rtt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -27024,9 +27024,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#1,#II) ; memd(r29+#Ii) = Rtt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -27036,9 +27036,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#2,#II) ; memd(r29+#Ii) = Rtt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -27048,9 +27048,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#3,#II) ; memd(r29+#Ii) = Rtt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -27061,7 +27061,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -27072,7 +27072,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -27083,9 +27083,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -27095,7 +27095,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -27105,9 +27105,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #II ; memd(r29+#Ii) = Rtt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -27117,9 +27117,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #n1 ; memd(r29+#Ii) = Rtt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -27130,7 +27130,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -27141,7 +27141,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -27152,7 +27152,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -27163,7 +27163,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -27174,7 +27174,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -27185,9 +27185,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -27197,9 +27197,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -27207,7 +27207,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_X2_AUTOJOIN_SL2_DEALLOCFRAME_SS2_STORED_SP:
 		// deallocframe ; memd(r29+#Ii) = Rtt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
@@ -27220,9 +27220,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -27231,9 +27231,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = memd(r29+#II) ; memd(r29+#Ii) = Rtt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -27244,9 +27244,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -27255,9 +27255,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = memw(r29+#II) ; memd(r29+#Ii) = Rtt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -27268,9 +27268,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -27278,7 +27278,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_SS2_STORED_SP:
 		// dealloc_return ; memd(r29+#Ii) = Rtt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
@@ -27289,7 +27289,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_F_SS2_STORED_SP:
 		// if (!p0) dealloc_return ; memd(r29+#Ii) = Rtt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
@@ -27300,7 +27300,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_FNEW_SS2_STORED_SP:
 		// if (!p0.new) dealloc_return:nt ; memd(r29+#Ii) = Rtt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
@@ -27311,7 +27311,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_T_SS2_STORED_SP:
 		// if (p0) dealloc_return ; memd(r29+#Ii) = Rtt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
@@ -27322,7 +27322,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_TNEW_SS2_STORED_SP:
 		// if (p0.new) dealloc_return:nt ; memd(r29+#Ii) = Rtt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
@@ -27334,10 +27334,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memb(Rs+#II) = RT ; memd(r29+#Ii) = Rtt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -27346,10 +27346,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memw(Rs+#II) = RT ; memd(r29+#Ii) = Rtt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -27357,10 +27357,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_X2_AUTOJOIN_SS2_STORED_SP_SS2_STORED_SP:
 		// memd(r29+#II) = RTT ; memd(r29+#Ii) = Rtt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -27370,10 +27370,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memh(Rs+#II) = RT ; memd(r29+#Ii) = Rtt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -27381,10 +27381,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_X2_AUTOJOIN_SS2_STOREW_SP_SS2_STORED_SP:
 		// memw(r29+#II) = RT ; memd(r29+#Ii) = Rtt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -27395,10 +27395,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
@@ -27409,7 +27409,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
@@ -27417,10 +27417,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = add(r29,#II) ; memh(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -27431,7 +27431,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -27441,7 +27441,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -27452,7 +27452,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -27463,7 +27463,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -27474,7 +27474,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -27484,10 +27484,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// p0 = cmp.eq(RS,#II) ; memh(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -27496,10 +27496,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#0,#II) ; memh(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -27508,10 +27508,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#1,#II) ; memh(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -27520,10 +27520,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#2,#II) ; memh(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -27532,10 +27532,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#3,#II) ; memh(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -27546,7 +27546,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -27557,7 +27557,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -27567,10 +27567,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
@@ -27580,7 +27580,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -27589,10 +27589,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #II ; memh(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -27601,10 +27601,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #n1 ; memh(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -27615,7 +27615,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -27626,7 +27626,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -27637,7 +27637,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -27648,7 +27648,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -27659,7 +27659,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -27669,10 +27669,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
@@ -27681,10 +27681,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
@@ -27692,7 +27692,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// deallocframe ; memh(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -27704,10 +27704,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
@@ -27715,10 +27715,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = memd(r29+#II) ; memh(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -27728,10 +27728,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
@@ -27739,10 +27739,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = memw(r29+#II) ; memh(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -27752,10 +27752,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
@@ -27763,7 +27763,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// dealloc_return ; memh(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -27774,7 +27774,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (!p0) dealloc_return ; memh(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -27785,7 +27785,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (!p0.new) dealloc_return:nt ; memh(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -27796,7 +27796,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (p0) dealloc_return ; memh(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -27807,7 +27807,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (p0.new) dealloc_return:nt ; memh(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -27818,11 +27818,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memb(RS+#II) = RT ; memh(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
@@ -27830,11 +27830,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memw(RS+#II) = RT ; memh(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
@@ -27842,11 +27842,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memh(RS+#II) = RT ; memh(Rs+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = hi->vals[5];
 		break;
@@ -27855,9 +27855,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -27868,7 +27868,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -27877,9 +27877,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = add(r29,#II) ; memw(r29+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -27890,7 +27890,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -27900,7 +27900,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (!p0) Rd = #0 ; memw(r29+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -27911,7 +27911,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (!p0.new) Rd = #0 ; memw(r29+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -27922,7 +27922,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (p0) Rd = #0 ; memw(r29+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -27933,7 +27933,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (p0.new) Rd = #0 ; memw(r29+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -27944,9 +27944,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// p0 = cmp.eq(Rs,#II) ; memw(r29+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -27956,9 +27956,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#0,#II) ; memw(r29+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -27968,9 +27968,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#1,#II) ; memw(r29+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -27980,9 +27980,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#2,#II) ; memw(r29+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -27992,9 +27992,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#3,#II) ; memw(r29+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -28005,7 +28005,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -28016,7 +28016,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -28027,9 +28027,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -28039,7 +28039,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -28049,9 +28049,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #II ; memw(r29+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -28061,9 +28061,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #n1 ; memw(r29+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -28074,7 +28074,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -28085,7 +28085,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -28096,7 +28096,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -28107,7 +28107,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -28118,7 +28118,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -28129,9 +28129,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -28141,9 +28141,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -28151,7 +28151,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_X2_AUTOJOIN_SL2_DEALLOCFRAME_SS2_STOREW_SP:
 		// deallocframe ; memw(r29+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
@@ -28164,9 +28164,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -28175,9 +28175,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = memd(r29+#II) ; memw(r29+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -28188,9 +28188,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -28199,9 +28199,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = memw(r29+#II) ; memw(r29+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -28212,9 +28212,9 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -28222,7 +28222,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_SS2_STOREW_SP:
 		// dealloc_return ; memw(r29+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
@@ -28233,7 +28233,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_F_SS2_STOREW_SP:
 		// if (!p0) dealloc_return ; memw(r29+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
@@ -28244,7 +28244,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_FNEW_SS2_STOREW_SP:
 		// if (!p0.new) dealloc_return:nt ; memw(r29+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
@@ -28255,7 +28255,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_T_SS2_STOREW_SP:
 		// if (p0) dealloc_return ; memw(r29+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
@@ -28266,7 +28266,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_TNEW_SS2_STOREW_SP:
 		// if (p0.new) dealloc_return:nt ; memw(r29+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
@@ -28278,10 +28278,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memb(Rs+#II) = RT ; memw(r29+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -28290,10 +28290,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memw(Rs+#II) = RT ; memw(r29+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -28302,10 +28302,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memh(Rs+#II) = RT ; memw(r29+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -28313,10 +28313,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_X2_AUTOJOIN_SS2_STOREW_SP_SS2_STOREW_SP:
 		// memw(r29+#II) = RT ; memw(r29+#Ii) = Rt
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -28327,10 +28327,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -28341,7 +28341,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -28349,10 +28349,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = add(r29,#II) ; memw(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -28363,7 +28363,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -28373,7 +28373,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -28384,7 +28384,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -28395,7 +28395,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -28406,7 +28406,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -28416,10 +28416,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// p0 = cmp.eq(RS,#II) ; memw(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -28428,10 +28428,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#0,#II) ; memw(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -28440,10 +28440,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#1,#II) ; memw(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -28452,10 +28452,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#2,#II) ; memw(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -28464,10 +28464,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#3,#II) ; memw(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -28478,7 +28478,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -28489,7 +28489,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -28499,10 +28499,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -28512,7 +28512,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -28521,10 +28521,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #II ; memw(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -28533,10 +28533,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #n1 ; memw(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -28547,7 +28547,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -28558,7 +28558,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -28569,7 +28569,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -28580,7 +28580,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -28591,7 +28591,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -28601,10 +28601,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -28613,10 +28613,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -28624,7 +28624,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// deallocframe ; memw(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -28636,10 +28636,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -28647,10 +28647,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = memd(r29+#II) ; memw(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -28660,10 +28660,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -28671,10 +28671,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = memw(r29+#II) ; memw(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -28684,10 +28684,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -28695,7 +28695,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// dealloc_return ; memw(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -28706,7 +28706,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (!p0) dealloc_return ; memw(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -28717,7 +28717,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (!p0.new) dealloc_return:nt ; memw(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -28728,7 +28728,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (p0) dealloc_return ; memw(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -28739,7 +28739,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (p0.new) dealloc_return:nt ; memw(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -28750,11 +28750,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memb(RS+#II) = Rt ; memw(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -28762,22 +28762,22 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memw(RS+#II) = Rt ; memw(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SS2_STORED_SP_SS2_STOREWI0:
 		// memd(r29+#II) = Rtt ; memw(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -28786,22 +28786,22 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memh(RS+#II) = Rt ; memw(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SS2_STOREW_SP_SS2_STOREWI0:
 		// memw(r29+#II) = Rt ; memw(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -28810,10 +28810,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memw(RS+#II) = #0 ; memw(Rs+#Ii) = #0
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -28823,10 +28823,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -28837,7 +28837,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -28845,10 +28845,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = add(r29,#II) ; memw(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -28859,7 +28859,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -28869,7 +28869,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -28880,7 +28880,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -28891,7 +28891,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -28902,7 +28902,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = ST64_MAX;
 		op->analysis_vals[4].imm = ST64_MAX;
@@ -28912,10 +28912,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// p0 = cmp.eq(RS,#II) ; memw(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -28924,10 +28924,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#0,#II) ; memw(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -28936,10 +28936,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#1,#II) ; memw(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -28948,10 +28948,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#2,#II) ; memw(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -28960,10 +28960,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = combine(#3,#II) ; memw(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -28974,7 +28974,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -28985,7 +28985,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -28995,10 +28995,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -29008,7 +29008,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -29017,10 +29017,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #II ; memw(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -29029,10 +29029,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = #n1 ; memw(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -29043,7 +29043,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -29054,7 +29054,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -29065,7 +29065,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -29076,7 +29076,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -29087,7 +29087,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -29097,10 +29097,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -29109,10 +29109,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -29120,7 +29120,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// deallocframe ; memw(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -29132,10 +29132,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -29143,10 +29143,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rdd = memd(r29+#II) ; memw(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -29156,10 +29156,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -29167,10 +29167,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// Rd = memw(r29+#II) ; memw(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -29180,10 +29180,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
-		op->val = hi->vals[2];
+		op->val = (ut64)hi->vals[2];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -29191,7 +29191,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// dealloc_return ; memw(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -29202,7 +29202,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (!p0) dealloc_return ; memw(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -29213,7 +29213,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (!p0.new) dealloc_return:nt ; memw(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -29224,7 +29224,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (p0) dealloc_return ; memw(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -29235,7 +29235,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// if (p0.new) dealloc_return:nt ; memw(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = ST64_MAX;
 		op->analysis_vals[3].imm = ST64_MAX;
@@ -29246,11 +29246,11 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memb(RS+#II) = Rt ; memw(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
@@ -29258,22 +29258,22 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memw(RS+#II) = Rt ; memw(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SS2_STORED_SP_SS2_STOREWI1:
 		// memd(r29+#II) = Rtt ; memw(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -29282,22 +29282,22 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memh(RS+#II) = Rt ; memw(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
 		op->analysis_vals[3].imm = hi->vals[3];
-		op->val = hi->vals[4];
+		op->val = (ut64)hi->vals[4];
 		op->analysis_vals[4].imm = hi->vals[4];
 		op->analysis_vals[5].imm = ST64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SS2_STOREW_SP_SS2_STOREWI1:
 		// memw(r29+#II) = Rt ; memw(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = hi->vals[0];
+		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -29306,10 +29306,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memw(RS+#II) = #0 ; memw(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;
@@ -29318,10 +29318,10 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		// memw(RS+#II) = #1 ; memw(Rs+#Ii) = #1
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->analysis_vals[0].imm = hi->vals[0];
-		op->val = hi->vals[1];
+		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
-		op->val = hi->vals[3];
+		op->val = (ut64)hi->vals[3];
 		op->analysis_vals[3].imm = hi->vals[3];
 		op->analysis_vals[4].imm = ST64_MAX;
 		op->analysis_vals[5].imm = ST64_MAX;

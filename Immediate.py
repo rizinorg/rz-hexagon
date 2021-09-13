@@ -195,8 +195,7 @@ class Immediate(Operand):
                     indent, indent, self.syntax_index, shift, indent
                 )
             )
-
         if self.is_extendable:
-            self.code_opcode_parsing += "{}hex_op_extend(&(hi->ops[{}]), false); // Extension possible\n".format(
+            self.code_opcode_parsing += "{}hex_op_extend(&(hi->ops[{}]), false, addr); // Extension possible\n".format(
                 indent, self.syntax_index
             )

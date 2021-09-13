@@ -273,7 +273,7 @@ class InstructionTemplate:
                 raise ImplementationException("Unhandled operand: {}".format(op.syntax))
 
             if op.type == OperandType.IMMEDIATE:
-                code += "{i}hi->vals[{si}] = (st64) hi->ops[{si}].op.imm;\n".format(
+                code += "{i}hi->vals[{si}] = hi->ops[{si}].op.imm;\n".format(
                     i=indent, si=op.syntax_index
                 )
             else:
@@ -285,7 +285,7 @@ class InstructionTemplate:
 
         code += mnemonic + sprint_src + ", hi->pkt_info.syntax_postfix" + ");\n"
         if self.name == "A4_ext":
-            code += "{}hex_op_extend(&(hi->ops[0]), true);\n".format(indent)
+            code += "{}hex_op_extend(&(hi->ops[0]), true, addr);\n".format(indent)
         code += "{}return;\n}}\n".format(indent)
         # log("\n" + code)
 
