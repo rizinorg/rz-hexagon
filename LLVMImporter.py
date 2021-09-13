@@ -319,7 +319,7 @@ class LLVMImporter:
                 dest.writelines(include.readlines())
 
             main_function = (
-                "int hexagon_disasm_instruction(ut32 hi_u32, HexInsn *hi, ut32 addr) {\n"
+                "int hexagon_disasm_instruction(const ut32 hi_u32, HexInsn *hi, const ut32 addr) {\n"
                 + "if (hi_u32 != 0x00000000) {\n"
                 + "{}// DUPLEXES\n".format(indent)
                 + "{}if ((({} >> 14) & 0x3) == 0) {{\n".format(indent, var)
@@ -335,7 +335,7 @@ class LLVMImporter:
                     "hexagon_disasm_duplex_0x{:x}(hi_u32, hi, addr);\n".format(c)
                 )
                 func_body = ""
-                func_header = "void hexagon_disasm_duplex_0x{:x}(ut32 hi_u32, HexInsn *hi, ut32 addr) {{\n".format(
+                func_header = "void hexagon_disasm_duplex_0x{:x}(const ut32 hi_u32, HexInsn *hi, const ut32 addr) {{\n".format(
                     c
                 )
                 for d_instr in self.duplex_instructions.values():
@@ -350,7 +350,6 @@ class LLVMImporter:
                             func_header += '{}char signed_imm[16] = "";\n'.format(
                                 indent
                             )
-
                 dest.write(func_header + func_body + "}\n\n")
                 main_function += "{}break;\n".format(indent * 4)
 
@@ -365,7 +364,7 @@ class LLVMImporter:
                 main_function += "hexagon_disasm_0x{:x}(hi_u32, hi, addr);\n".format(c)
 
                 func_body = ""
-                func_header = "void hexagon_disasm_0x{:x}(ut32 hi_u32, HexInsn *hi, ut32 addr) {{\n".format(
+                func_header = "void hexagon_disasm_0x{:x}(const ut32 hi_u32, HexInsn *hi, const ut32 addr) {{\n".format(
                     c
                 )
                 for instr in self.normal_instructions.values():
@@ -667,7 +666,7 @@ class LLVMImporter:
                             else:
                                 if o.type == OperandType.IMMEDIATE:
                                     f.write(
-                                        "{i}op->val = hi->vals[{si}];\n".format(
+                                        "{i}op->val = (ut64) hi->vals[{si}];\n".format(
                                             i=(indent * 3), si=o.syntax_index
                                         )
                                     )

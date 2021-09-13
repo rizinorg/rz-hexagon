@@ -90,3 +90,23 @@ EXPECT=<<EOF
 0x00005180   # 4: ? immext(##0x1c00) 
 EOF
 RUN
+
+NAME=hexagon extended immediate search
+FILE=bins/elf/analysis/hexagon-hello-loop
+BROKEN=1
+CMDS=<<EOF
+b 0x100000
+e asm.pcalign=0x4
+aar
+/ai sym.sys_TLSFreeAll
+/ai sym.coredump
+EOF
+EXPECT=<<EOF
+0x000051d4   # 4: ? R1 = ##0x5410
+0x00000b70   # 4: ? jump sym.coredump 
+0x00000b7c   # 4: ? jump sym.coredump 
+0x00000b8c   # 4: ? jump sym.coredump 
+0x00000f48   # 4: ? jump sym.coredump 
+0x000051f0   # 4: ? R28 = ##sym.coredump 
+EOF
+RUN
