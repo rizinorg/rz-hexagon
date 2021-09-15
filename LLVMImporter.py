@@ -319,7 +319,7 @@ class LLVMImporter:
                 dest.writelines(include.readlines())
 
             main_function = (
-                "int hexagon_disasm_instruction(const ut32 hi_u32, HexInsn *hi, const ut32 addr) {\n"
+                "int hexagon_disasm_instruction(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr) {\n"
                 + "if (hi_u32 != 0x00000000) {\n"
                 + "{}// DUPLEXES\n".format(indent)
                 + "{}if ((({} >> 14) & 0x3) == 0) {{\n".format(indent, var)
@@ -331,11 +331,11 @@ class LLVMImporter:
             # Duplexes
             for c in range(0xF):  # Class 0xf is reserved yet.
                 main_function += "{}case 0x{:x}:\n".format(indent * 3, c)
-                main_function += (
-                    "hexagon_disasm_duplex_0x{:x}(hi_u32, hi, addr);\n".format(c)
+                main_function += "hexagon_disasm_duplex_0x{:x}(hi_u32, hi, addr, previous_addr);\n".format(
+                    c
                 )
                 func_body = ""
-                func_header = "void hexagon_disasm_duplex_0x{:x}(const ut32 hi_u32, HexInsn *hi, const ut32 addr) {{\n".format(
+                func_header = "void hexagon_disasm_duplex_0x{:x}(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr) {{\n".format(
                     c
                 )
                 for d_instr in self.duplex_instructions.values():
@@ -361,10 +361,14 @@ class LLVMImporter:
             main_function += "{}switch (({} >> 28) & 0xF) {{\n".format(indent * 2, var)
             for c in range(0x10):
                 main_function += "{}case 0x{:x}:\n".format(indent * 3, c)
-                main_function += "hexagon_disasm_0x{:x}(hi_u32, hi, addr);\n".format(c)
+                main_function += (
+                    "hexagon_disasm_0x{:x}(hi_u32, hi, addr, previous_addr);\n".format(
+                        c
+                    )
+                )
 
                 func_body = ""
-                func_header = "void hexagon_disasm_0x{:x}(const ut32 hi_u32, HexInsn *hi, const ut32 addr) {{\n".format(
+                func_header = "void hexagon_disasm_0x{:x}(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr) {{\n".format(
                     c
                 )
                 for instr in self.normal_instructions.values():
@@ -390,11 +394,13 @@ class LLVMImporter:
                     indent * 2
                 )
                 + "{}hi->pkt_info.loop_attr = HEX_NO_LOOP;\n".format(indent * 2)
-                + "{}hex_set_pkt_info(&(hi->pkt_info), addr);\n".format(indent * 2)
+                + "{}hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);\n".format(
+                    indent * 2
+                )
                 + '{}sprintf(hi->mnem, "%s <invalid> %s", hi->pkt_info.syntax_prefix, hi->pkt_info.syntax_postfix);\n{}}}\n'.format(
                     indent * 2, indent
                 )
-                + "{}return 4;\n}}".format(indent)
+                + "return 4;\n}"
             )
             dest.write(main_function)
         log("Hexagon instruction disassembler code written to: {}".format(path))
