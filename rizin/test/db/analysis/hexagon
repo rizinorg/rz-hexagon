@@ -2,7 +2,6 @@ NAME=hexagon jumps
 FILE=bins/elf/analysis/hexagon-hello-loop
 CMDS=<<EOF
 b 0x100000
-e asm.pcalign=0x4
 s sym.main
 af
 aar
@@ -23,7 +22,6 @@ NAME=hexagon immext
 FILE=bins/elf/analysis/hexagon-hello-loop
 CMDS=<<EOF
 b 0x100000
-e asm.pcalign=0x4
 s 0x000050e4
 pi 2
 s 0x0000539c
@@ -43,7 +41,6 @@ NAME=hexagon immediate search
 FILE=bins/elf/analysis/hexagon-hello-loop
 CMDS=<<EOF
 b 0x100000
-e asm.pcalign=0x4
 aar
 /ai 0xdead
 /ai 0xbeef
@@ -96,7 +93,6 @@ FILE=bins/elf/analysis/hexagon-hello-loop
 BROKEN=1
 CMDS=<<EOF
 b 0x100000
-e asm.pcalign=0x4
 aar
 /ai sym.sys_TLSFreeAll
 /ai sym.coredump
