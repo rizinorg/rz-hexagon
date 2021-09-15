@@ -193,7 +193,9 @@ class InstructionTemplate:
             indent, var, self.encoding.parse_bits_mask
         )
         code += "{}hi->pkt_info.loop_attr = {};\n".format(indent, self.loop_member.name)
-        code += "{}hex_set_pkt_info(&(hi->pkt_info), addr);\n".format(indent)
+        code += "{}hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);\n".format(
+            indent
+        )
 
         if self.is_duplex:
             code += "{}hi->duplex = {};\n".format(indent, str(self.is_duplex).lower())

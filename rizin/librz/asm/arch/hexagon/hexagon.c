@@ -601,12 +601,11 @@ static inline bool is_endloop01_pkt(const ut8 pi_0, const ut8 pi_1) {
 	return ((pi_0 == 0x2) && (pi_1 == 0x2));
 }
 
-void hex_set_pkt_info(RZ_INOUT HexPktInfo *i_pkt_info, const ut32 addr) {
+void hex_set_pkt_info(RZ_INOUT HexPktInfo *i_pkt_info, const ut32 addr, const ut32 previous_addr) {
 	static HexPkt pkt = { 0 }; // Current packet
 	static ut8 i = 0; // Index of the instruction in the current packet.
 	static ut8 p0 = 255;
 	static ut8 p1 = 255;
-	static ut32 previous_addr = 0;
 	// Valid packet: A packet from which we know its *actual* first and last instruction.
 	// Does this instruction belong to a valid packet?
 	static bool valid_packet = true;
@@ -621,7 +620,7 @@ void hex_set_pkt_info(RZ_INOUT HexPktInfo *i_pkt_info, const ut32 addr) {
 		// In case the previous instruction belongs to a valid packet, we are still in a valid packet.
 		// If it was part of an *invalid* packet, a new *valid* packet only begins, if the previous instruction
 		// was the last of the invalid packet.
-		valid_packet = (previous_addr == (addr - 4) || addr == 0) && (valid_packet || new_pkt_starts);
+		valid_packet = ((previous_addr == (addr - 4)) || (addr == 0)) && (valid_packet || new_pkt_starts);
 	}
 	if (valid_packet) {
 		memcpy(&pkt.i_infos[i], i_pkt_info, sizeof(HexPktInfo));
@@ -682,7 +681,6 @@ void hex_set_pkt_info(RZ_INOUT HexPktInfo *i_pkt_info, const ut32 addr) {
 			strncpy(i_pkt_info->syntax_prefix, "?", 8);
 		}
 	}
-	previous_addr = addr;
 }
 
 static inline bool imm_is_scaled(const HexOpAttr attr) {
@@ -699,15 +697,15 @@ static inline bool imm_is_scaled(const HexOpAttr attr) {
 void hex_op_extend(RZ_INOUT HexOp *op, const bool set_new_extender, const ut32 addr) {
 	// Constant extender value
 	static ut64 constant_extender = 0;
-	static ut32 prev_addr = 0;
+	static ut32 prev_addr = UT32_MAX;
 
 	if (op->type != HEX_OP_TYPE_IMM) {
-		goto set_prev_addr_return;
+		goto set_prev_addr_ret;
 	}
 
 	if (set_new_extender) {
 		constant_extender = op->op.imm;
-		goto set_prev_addr_return;
+		goto set_prev_addr_ret;
 	}
 
 	if ((addr - 4) != prev_addr) {
@@ -715,7 +713,7 @@ void hex_op_extend(RZ_INOUT HexOp *op, const bool set_new_extender, const ut32 a
 		if (!set_new_extender) {
 			constant_extender = 0;
 		}
-		goto set_prev_addr_return;
+		goto set_prev_addr_ret;
 	}
 
 	if (constant_extender != 0) {
@@ -724,7 +722,7 @@ void hex_op_extend(RZ_INOUT HexOp *op, const bool set_new_extender, const ut32 a
 		constant_extender = 0;
 	}
 
-set_prev_addr_return:
+set_prev_addr_ret:
 	prev_addr = addr;
 	return;
 }

@@ -2,12 +2,15 @@
 //
 // SPDX-License-Identifier: LGPL-3.0-only
 
-static int disassemble (RzAsm *a, RzAsmOp *op, const ut8 *buf, int l) {
+static int disassemble(RzAsm *a, RzAsmOp *op, const ut8 *buf, int l) {
+	static ut32 prev_addr = UT32_MAX;
 	HexInsn hi = {0};
 	hi.instruction = HEX_INS_INVALID_DECODE;
 	ut32 data = rz_read_le32 (buf);
-	op->buf_asm.len = hexagon_disasm_instruction (data, &hi, (ut32) a->pc);
+	ut32 addr = (ut32) a->pc;
+	op->buf_asm.len = hexagon_disasm_instruction(data, &hi, addr, prev_addr);
 	rz_strbuf_set (&op->buf_asm, hi.mnem);
+	prev_addr = addr;
 	return op->size;
 }
 
