@@ -1,0 +1,245 @@
+{
+  "SysRegs64": {
+    "!anonymous": false,
+    "!fields": [],
+    "!name": "GuestRegs64",
+    "!superclasses": [
+      "DAGOperand",
+      "RegisterClass"
+    ],
+    "Alignment": 64,
+    "AllocationPriority": 0,
+    "AltOrderSelect": "",
+    "AltOrders": [],
+    "CopyCost": 1,
+    "DecoderMethod": "",
+    "DiagnosticString": "",
+    "DiagnosticType": "",
+    "GeneratePressureSet": 1,
+    "MemberList": {
+      "args": [
+        [
+          {
+            "def": "S1_0",
+            "kind": "def",
+            "printable": "S1_0"
+          }
+        ],
+        [
+          {
+            "def": "S3_2",
+            "kind": "def",
+            "printable": "S3_2"
+          }
+        ],
+        [
+          {
+            "def": "S5_4",
+            "kind": "def",
+            "printable": "S5_4"
+          }
+        ],
+        [
+          {
+            "def": "S7_6",
+            "kind": "def",
+            "printable": "S7_6"
+          }
+        ],
+        [
+          {
+            "def": "S9_8",
+            "kind": "def",
+            "printable": "S9_8"
+          }
+        ],
+        [
+          {
+            "def": "S11_10",
+            "kind": "def",
+            "printable": "S11_10"
+          }
+        ],
+        [
+          {
+            "def": "S13_12",
+            "kind": "def",
+            "printable": "S13_12"
+          }
+        ],
+        [
+          {
+            "def": "S15_14",
+            "kind": "def",
+            "printable": "S15_14"
+          }
+        ],
+        [
+          {
+            "def": "S17_16",
+            "kind": "def",
+            "printable": "S17_16"
+          }
+        ],
+        [
+          {
+            "def": "S21_20",
+            "kind": "def",
+            "printable": "S21_20"
+          }
+        ],
+        [
+          {
+            "def": "S27_26",
+            "kind": "def",
+            "printable": "S27_26"
+          }
+        ],
+        [
+          {
+            "def": "S29_28",
+            "kind": "def",
+            "printable": "S29_28"
+          }
+        ],
+        [
+          {
+            "def": "S31_30",
+            "kind": "def",
+            "printable": "S31_30"
+          }
+        ],
+        [
+          {
+            "def": "S33_32",
+            "kind": "def",
+            "printable": "S33_32"
+          }
+        ],
+        [
+          {
+            "def": "S37_36",
+            "kind": "def",
+            "printable": "S37_36"
+          }
+        ],
+        [
+          {
+            "def": "S39_38",
+            "kind": "def",
+            "printable": "S39_38"
+          }
+        ],
+        [
+          {
+            "def": "S41_40",
+            "kind": "def",
+            "printable": "S41_40"
+          }
+        ],
+        [
+          {
+            "def": "S43_42",
+            "kind": "def",
+            "printable": "S43_42"
+          }
+        ],
+        [
+          {
+            "def": "S45_44",
+            "kind": "def",
+            "printable": "S45_44"
+          }
+        ],
+        [
+          {
+            "def": "S47_46",
+            "kind": "def",
+            "printable": "S47_46"
+          }
+        ],
+        [
+          {
+            "def": "S49_48",
+            "kind": "def",
+            "printable": "S49_48"
+          }
+        ],
+        [
+          {
+            "def": "S51_50",
+            "kind": "def",
+            "printable": "S51_50"
+          }
+        ],
+        [
+          {
+            "def": "S53_52",
+            "kind": "def",
+            "printable": "S53_52"
+          }
+        ],
+        [
+          {
+            "def": "S55_54",
+            "kind": "def",
+            "printable": "S55_54"
+          }
+        ],
+        [
+          {
+            "def": "S57_56",
+            "kind": "def",
+            "printable": "S57_56"
+          }
+        ],
+        [
+          {
+            "def": "S59_58",
+            "kind": "def",
+            "printable": "S59_58"
+          }
+        ],
+        [
+          {
+            "def": "S61_60",
+            "kind": "def",
+            "printable": "S61_60"
+          }
+        ],
+        [
+          {
+            "def": "S63_62",
+            "kind": "def",
+            "printable": "S63_62"
+          }
+        ]
+      ],
+      "kind": "dag",
+      "operator": {
+        "def": "add",
+        "kind": "def",
+        "printable": "add"
+      },
+      "printable": "(add S1_0, S3_2, S5_4, S7_6, S9_8, S11_10, S13_12, S15_14, S17_16, S21_20, S27_26, S29_28, S31_30, S33_32, S37_36, S39_38, S41_40, S43_42, S45_44, S47_46, S49_48, S51_50, S53_52, S55_54, S57_56, S59_58, S61_60, S63_62)"
+    },
+    "Namespace": "Hexagon",
+    "OperandNamespace": "MCOI",
+    "RegInfos": null,
+    "RegTypes": [
+      {
+        "def": "i64",
+        "kind": "def",
+        "printable": "i64"
+      }
+    ],
+    "Size": 64,
+    "Weight": null,
+    "altNameIndex": {
+      "def": "NoRegAltName",
+      "kind": "def",
+      "printable": "NoRegAltName"
+    },
+    "isAllocatable": 0
+  }
+}

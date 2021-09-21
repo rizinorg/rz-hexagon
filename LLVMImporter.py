@@ -47,6 +47,7 @@ class LLVMImporter:
 
         with open(self.hexagon_target_json_path) as file:
             self.hexArch = json.load(file)
+        self.update_hex_arch()
         log("LLVM Hexagon target dump successfully loaded.")
 
         # Save types
@@ -73,6 +74,46 @@ class LLVMImporter:
             self.generate_decompiler_code()
             self.add_license_header()
             self.apply_clang_format()
+
+    def update_hex_arch(self):
+        """Imports system instructions and registers described in the manual but not implemented by LLVM."""
+        reg_count = 0
+        self.hexArch["!instanceof"]["RegisterClass"] += ["SysRegs", "SysRegs64"]
+        reg_dir = "./import/registers/"
+        for filename in os.listdir(reg_dir):
+            with open(reg_dir + filename) as f:
+                reg = json.load(f)
+            reg_name = list(reg.keys())[0]
+            if reg_name != "SysRegs" or reg_name != "SysRegs64":
+                if reg_name in self.hexArch["!instanceof"]["DwarfRegNum"]:
+                    raise ImplementationException(
+                        "Register {} already present in the LLVM definitions. Please check whether LLVM implements System/Monitor instructions and system registers etc.".format(
+                            reg_name
+                        )
+                    )
+                self.hexArch["!instanceof"]["DwarfRegNum"] += reg.keys()
+                reg_count += 1
+            self.hexArch.update(reg)
+
+        instr_count = 0
+        insn_dir = "./import/instructions/"
+        for filename in os.listdir(insn_dir):
+            instn_name = filename.replace(".json", "")
+            with open(insn_dir + filename) as f:
+                insn = json.load(f)
+            syntax_list = list()
+            for llvm_instr in self.hexArch["!instanceof"]["HInst"]:
+                syntax_list.append(self.hexArch[llvm_instr]["AsmString"])
+            if (
+                "UNDOCUMENTED" not in instn_name
+                and insn[instn_name]["AsmString"] in syntax_list
+            ):
+                continue
+            self.hexArch.update(insn)
+            self.hexArch["!instanceof"]["HInst"] += list(insn.keys())
+            instr_count += 1
+        log("Imported {} system registers.".format(reg_count))
+        log("Imported {} system instructions.".format(instr_count))
 
     def parse_instructions(self) -> None:
         for i, i_name in enumerate(self.hexArch["!instanceof"]["HInst"]):
