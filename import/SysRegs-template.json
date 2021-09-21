@@ -1,0 +1,469 @@
+{
+  "SysRegs": {
+    "!anonymous": false,
+    "!fields": [],
+    "!name": "SysRegs",
+    "!superclasses": [
+      "DAGOperand",
+      "RegisterClass"
+    ],
+    "Alignment": 32,
+    "AllocationPriority": 0,
+    "AltOrderSelect": "",
+    "AltOrders": [],
+    "CopyCost": 1,
+    "DecoderMethod": "",
+    "DiagnosticString": "",
+    "DiagnosticType": "",
+    "GeneratePressureSet": 1,
+    "MemberList": {
+      "args": [
+        [
+          {
+            "def": "SGP0",
+            "kind": "def",
+            "printable": "SGP0"
+          }
+        ],
+        [
+          {
+            "def": "EVB",
+            "kind": "def",
+            "printable": "EVB"
+          }
+        ],
+        [
+          {
+            "def": "ISDBST",
+            "kind": "def",
+            "printable": "ISDBST"
+          }
+        ],
+        [
+          {
+            "def": "PMUCNT0",
+            "kind": "def",
+            "printable": "PMUCNT0"
+          }
+        ],
+        [
+          {
+            "def": "SGP1",
+            "kind": "def",
+            "printable": "SGP1"
+          }
+        ],
+        [
+          {
+            "def": "MODECTL",
+            "kind": "def",
+            "printable": "MODECTL"
+          }
+        ],
+        [
+          {
+            "def": "ISDBCFG0",
+            "kind": "def",
+            "printable": "ISDBCFG0"
+          }
+        ],
+        [
+          {
+            "def": "PMUCNT1",
+            "kind": "def",
+            "printable": "PMUCNT1"
+          }
+        ],
+        [
+          {
+            "def": "STID",
+            "kind": "def",
+            "printable": "STID"
+          }
+        ],
+        [
+          {
+            "def": "SYSCFG",
+            "kind": "def",
+            "printable": "SYSCFG"
+          }
+        ],
+        [
+          {
+            "def": "ISDBCFG1",
+            "kind": "def",
+            "printable": "ISDBCFG1"
+          }
+        ],
+        [
+          {
+            "def": "PMUCNT2",
+            "kind": "def",
+            "printable": "PMUCNT2"
+          }
+        ],
+        [
+          {
+            "def": "ELR",
+            "kind": "def",
+            "printable": "ELR"
+          }
+        ],
+        [
+          {
+            "def": "PMUCNT3",
+            "kind": "def",
+            "printable": "PMUCNT3"
+          }
+        ],
+        [
+          {
+            "def": "BADVA0",
+            "kind": "def",
+            "printable": "BADVA0"
+          }
+        ],
+        [
+          {
+            "def": "IPEND",
+            "kind": "def",
+            "printable": "IPEND"
+          }
+        ],
+        [
+          {
+            "def": "BRKPTPC0",
+            "kind": "def",
+            "printable": "BRKPTPC0"
+          }
+        ],
+        [
+          {
+            "def": "PMUEVTCFG",
+            "kind": "def",
+            "printable": "PMUEVTCFG"
+          }
+        ],
+        [
+          {
+            "def": "BADVA1",
+            "kind": "def",
+            "printable": "BADVA1"
+          }
+        ],
+        [
+          {
+            "def": "VID",
+            "kind": "def",
+            "printable": "VID"
+          }
+        ],
+        [
+          {
+            "def": "BRKPTCFG0",
+            "kind": "def",
+            "printable": "BRKPTCFG0"
+          }
+        ],
+        [
+          {
+            "def": "PMUCFG",
+            "kind": "def",
+            "printable": "PMUCFG"
+          }
+        ],
+        [
+          {
+            "def": "SSR",
+            "kind": "def",
+            "printable": "SSR"
+          }
+        ],
+        [
+          {
+            "def": "IAD",
+            "kind": "def",
+            "printable": "IAD"
+          }
+        ],
+        [
+          {
+            "def": "BRKPTPC1",
+            "kind": "def",
+            "printable": "BRKPTPC1"
+          }
+        ],
+        [
+          {
+            "def": "CCR",
+            "kind": "def",
+            "printable": "CCR"
+          }
+        ],
+        [
+          {
+            "def": "BRKPTCFG1",
+            "kind": "def",
+            "printable": "BRKPTCFG1"
+          }
+        ],
+        [
+          {
+            "def": "HTID",
+            "kind": "def",
+            "printable": "HTID"
+          }
+        ],
+        [
+          {
+            "def": "IEL",
+            "kind": "def",
+            "printable": "IEL"
+          }
+        ],
+        [
+          {
+            "def": "ISDBMBXIN",
+            "kind": "def",
+            "printable": "ISDBMBXIN"
+          }
+        ],
+        [
+          {
+            "def": "BADVA",
+            "kind": "def",
+            "printable": "BADVA"
+          }
+        ],
+        [
+          {
+            "def": "ISDBMBXOUT",
+            "kind": "def",
+            "printable": "ISDBMBXOUT"
+          }
+        ],
+        [
+          {
+            "def": "IMASK",
+            "kind": "def",
+            "printable": "IMASK"
+          }
+        ],
+        [
+          {
+            "def": "IAHL",
+            "kind": "def",
+            "printable": "IAHL"
+          }
+        ],
+        [
+          {
+            "def": "ISDBEN",
+            "kind": "def",
+            "printable": "ISDBEN"
+          }
+        ],
+        [
+          {
+            "def": "CFGBASE",
+            "kind": "def",
+            "printable": "CFGBASE"
+          }
+        ],
+        [
+          {
+            "def": "ISDBGPR",
+            "kind": "def",
+            "printable": "ISDBGPR"
+          }
+        ],
+        [
+          {
+            "def": "DIAG",
+            "kind": "def",
+            "printable": "DIAG"
+          }
+        ],
+        [
+          {
+            "def": "REV",
+            "kind": "def",
+            "printable": "REV"
+          }
+        ],
+        [
+          {
+            "def": "PCYCLELO",
+            "kind": "def",
+            "printable": "PCYCLELO"
+          }
+        ],
+        [
+          {
+            "def": "PCYCLEHI",
+            "kind": "def",
+            "printable": "PCYCLEHI"
+          }
+        ],
+        [
+          {
+            "def": "S11",
+            "kind": "def",
+            "printable": "S11"
+          }
+        ],
+        [
+          {
+            "def": "S12",
+            "kind": "def",
+            "printable": "S12"
+          }
+        ],
+        [
+          {
+            "def": "S13",
+            "kind": "def",
+            "printable": "S13"
+          }
+        ],
+        [
+          {
+            "def": "S14",
+            "kind": "def",
+            "printable": "S14"
+          }
+        ],
+        [
+          {
+            "def": "S15",
+            "kind": "def",
+            "printable": "S15"
+          }
+        ],
+        [
+          {
+            "def": "S44",
+            "kind": "def",
+            "printable": "S44"
+          }
+        ],
+        [
+          {
+            "def": "S45",
+            "kind": "def",
+            "printable": "S45"
+          }
+        ],
+        [
+          {
+            "def": "S46",
+            "kind": "def",
+            "printable": "S46"
+          }
+        ],
+        [
+          {
+            "def": "S47",
+            "kind": "def",
+            "printable": "S47"
+          }
+        ],
+        [
+          {
+            "def": "S54",
+            "kind": "def",
+            "printable": "S54"
+          }
+        ],
+        [
+          {
+            "def": "S55",
+            "kind": "def",
+            "printable": "S55"
+          }
+        ],
+        [
+          {
+            "def": "S56",
+            "kind": "def",
+            "printable": "S56"
+          }
+        ],
+        [
+          {
+            "def": "S57",
+            "kind": "def",
+            "printable": "S57"
+          }
+        ],
+        [
+          {
+            "def": "S58",
+            "kind": "def",
+            "printable": "S58"
+          }
+        ],
+        [
+          {
+            "def": "S59",
+            "kind": "def",
+            "printable": "S59"
+          }
+        ],
+        [
+          {
+            "def": "S60",
+            "kind": "def",
+            "printable": "S60"
+          }
+        ],
+        [
+          {
+            "def": "S61",
+            "kind": "def",
+            "printable": "S61"
+          }
+        ],
+        [
+          {
+            "def": "S62",
+            "kind": "def",
+            "printable": "S62"
+          }
+        ],
+        [
+          {
+            "def": "S63",
+            "kind": "def",
+            "printable": "S63"
+          }
+        ]
+      ],
+      "kind": "dag",
+      "operator": {
+        "def": "add",
+        "kind": "def",
+        "printable": "add"
+      },
+      "printable": "(add SGP0, EVB, ISDBST, PMUCNT0, SGP1, MODECTL, ISDBCFG0, PMUCNT1, STID, SYSCFG, ISDBCFG1, PMUCNT2, ELR, PMUCNT3, BADVA0, IPEND, BRKPTPC0, PMUEVTCFG, BADVA1, VID, BRKPTCFG0, PMUCFG, SSR, IAD, BRKPTPC1, CCR, BRKPTCFG1, HTID, IEL, ISDBMBXIN, BADVA, ISDBMBXOUT, IMASK, IAHL, ISDBEN, CFGBASE, ISDBGPR, DIAG, REV, PCYCLELO, PCYCLEHI, S11, S12, S13, S14, S15, S44, S45, S46, S47, S54, S55, S56, S57, S58, S59, S60, S61, S62, S63)"
+    },
+    "Namespace": "Hexagon",
+    "OperandNamespace": "MCOI",
+    "RegInfos": null,
+    "RegTypes": [
+      {
+        "def": "i32",
+        "kind": "def",
+        "printable": "i32"
+      }
+    ],
+    "Size": 32,
+    "Weight": null,
+    "altNameIndex": {
+      "def": "NoRegAltName",
+      "kind": "def",
+      "printable": "NoRegAltName"
+    },
+    "isAllocatable": 0
+  }
+}

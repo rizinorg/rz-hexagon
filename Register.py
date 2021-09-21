@@ -67,6 +67,7 @@ class Register(Operand):
         self.is_vector = False
         # Register of the guest VM: GELR, GSR, GOSP, G3-15, GPMUCNT4-7, G20-23 etc.
         self.is_guest = False
+        self.is_system = False
 
         # Registers usable by sub instructions. This implies a different encoding of the register number because of the
         # space constrains for sub instructions.
@@ -141,6 +142,11 @@ class Register(Operand):
             self.is_guest = True
         elif self.llvm_reg_class == "GuestRegs64":  # G1:0 = G1_0, G3:2 etc.
             self.is_guest = True
+            self.is_double = True
+        elif self.llvm_reg_class == "SysRegs":
+            self.is_system = True
+        elif self.llvm_reg_class == "SysRegs64":
+            self.is_system = True
             self.is_double = True
         else:
             raise ImplementationException(

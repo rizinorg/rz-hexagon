@@ -1,0 +1,48 @@
+{
+  "BADVA": {
+    "!anonymous": false,
+    "!fields": [],
+    "!name": "BADVA",
+    "!superclasses": [
+      "Register",
+      "HexagonReg",
+      "Si",
+      "DwarfRegNum"
+    ],
+    "Aliases": [],
+    "AltNames": [
+      "s9"
+    ],
+    "AsmName": "badva",
+    "CostPerUse": [
+      0
+    ],
+    "CoveredBySubRegs": 0,
+    "DwarfNumbers": [
+      0
+    ],
+    "HWEncoding": [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "Namespace": "Hexagon",
+    "RegAltNameIndices": [],
+    "SubRegIndices": [],
+    "SubRegs": [],
+    "isArtificial": 0
+  }
+}

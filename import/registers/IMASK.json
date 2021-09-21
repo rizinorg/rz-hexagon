@@ -1,0 +1,48 @@
+{
+  "IMASK": {
+    "!anonymous": false,
+    "!fields": [],
+    "!name": "IMASK",
+    "!superclasses": [
+      "Register",
+      "HexagonReg",
+      "Si",
+      "DwarfRegNum"
+    ],
+    "Aliases": [],
+    "AltNames": [
+      "s10"
+    ],
+    "AsmName": "imask",
+    "CostPerUse": [
+      0
+    ],
+    "CoveredBySubRegs": 0,
+    "DwarfNumbers": [
+      0
+    ],
+    "HWEncoding": [
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "Namespace": "Hexagon",
+    "RegAltNameIndices": [],
+    "SubRegIndices": [],
+    "SubRegs": [],
+    "isArtificial": 0
+  }
+}

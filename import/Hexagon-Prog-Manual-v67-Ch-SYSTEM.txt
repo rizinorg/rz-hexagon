@@ -1,0 +1,1540 @@
+Hexagon V67 Programmer’s Reference Manual                                                             Instruction Set
+     11.9.2       SYSTEM/MONITOR
+                  The SYSTEM/MONITOR instruction subclass includes instructions for Monitor mode.
+          Clear interrupt auto disable
+                  Register Rs specifies a 32-bit mask, where bit 0 corresponds to the highest-priority
+                  interrupt 0, and register bit 31 refers to the lowest-priority interrupt 31.
+                  For bits set in Rs, the corresponding bit in IAD is cleared. This re-enables the interrupt.
+                  For bits cleared in Rs, the corresponding bit in IAD is unaffected.
+                   Syntax                                   Behavior
+                   ciad(Rs)                                 IAD &= ~Rs;
+                  Class: SYSTEM (slot 3)
+                  Notes
+                       ■   This instruction may only be grouped with ALU32 or non-floating-point XTYPE
+                           instructions.
+                       ■   This is a monitor-level feature. If performed in User or Guest mode, a privilege
+                           error exception occurs.
+                  Encoding
+31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9  8  7 6 5  4  3  2  1  0
+   ICLASS      sm                      s5        Parse
+ 0  1  1  0 0  1   0 0  0  0  0   s  s  s  s  s  P   P -  -   - -  - - 0  1 1  -  -  -  -  - ciad(Rs)
+                  Field name        Description
+                  sm                Supervisor mode only
+                  ICLASS            Instruction Class
+                  Parse             Packet/Loop parse bits
+                  s5                Field to encode register s
+80-N2040-45 Rev. B                                                                                                329
+Hexagon V67 Programmer’s Reference Manual                                                          Instruction Set
+          Swap SGP control register
+                  CRSWAP swaps the contents of a general register with one of the Supervisor General
+                  Pointer registers, either SGP0 or SGP1.
+                  For example, these registers can be used to hold a supervisor or exception stack pointer, or
+                  other general pointers for fast exception processing. A pair swap form exists to swap both
+                  SGP registers with an align ed pair of general registers.
+                   Syntax                                   Behavior
+                   crswap(Rx,sgp)                           Assembler mapped to: "crswap(Rx,sgp0)"
+                   crswap(Rx,sgp0)                          tmp = Rx;
+                                                            Rx = SGP0;
+                                                            SGP0 = tmp;
+                   crswap(Rx,sgp1)                          tmp = Rx;
+                                                            Rx = SGP1;
+                                                            SGP1 = tmp;
+                   crswap(Rxx,sgp1:0)                       tmp = Rxx;
+                                                            Rxx=SGP;
+                                                            SGP = tmp;
+                  Class: SYSTEM (slot 3)
+                  Notes
+                       ■   This is a monitor-level feature. If performed in User or Guest mode, a privilege
+                           error exception occurs.
+                  Encoding
+31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9  8  7 6 5  4 3 2  1 0
+   ICLASS      sm                      x5        Parse
+ 0  1  1  0 0  1   0 1  0  0  0   x  x  x  x  x  P   P -  -   - -  - -  - - -  - -  - -  - crswap(Rx,sgp0)
+ 0  1  1  0 0  1   0 1  0  0  1   x  x  x  x  x  P   P -  -   - -  - -  - - -  - -  - -  - crswap(Rx,sgp1)
+ 0  1  1  0 1  1   0 1  1  0   -  x  x  x  x  x  P   P -  -   - -  - -  - - - 0  0 0  0 0  crswap(Rxx,sgp1:0)
+                  Field name        Description
+                  sm                Supervisor mode only
+                  ICLASS            Instruction Class
+                  Parse             Packet/Loop parse bits
+                  x5                Field to encode register x
+80-N2040-45 Rev. B                                                                                             330
+Hexagon V67 Programmer’s Reference Manual                                                             Instruction Set
+          Cancel pending interrupts
+                  Register Rs specifies a 32-bit mask, where bit 0 corresponds to the highest-priority
+                  interrupt 0, and register bit 31 refers to the lowest-priority interrupt 31.
+                  CSWI cancels any pending interrupts indicated in the mask by clearing the interrupt from
+                  the IPEND register.
+                   Syntax                                   Behavior
+                   cswi(Rs)                                 IPEND &= ~Rs;
+                  Class: SYSTEM (slot 3)
+                  Notes
+                       ■   This instruction may only be grouped with ALU32 or non-floating-point XTYPE
+                           instructions.
+                       ■   This is a monitor-level feature. If performed in User or Guest mode, a privilege
+                           error exception occurs.
+                  Encoding
+31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9  8 7  6 5  4  3  2  1  0
+   ICLASS      sm                      s5        Parse
+ 0  1  1  0 0  1   0 0  0  0  0   s  s  s  s  s  P   P -  -   - -  - - 0  0 1  -  -  -  -  - cswi(Rs)
+                  Field name        Description
+                  sm                Supervisor mode only
+                  ICLASS            Instruction Class
+                  Parse             Packet/Loop parse bits
+                  s5                Field to encode register s
+80-N2040-45 Rev. B                                                                                                331
+Hexagon V67 Programmer’s Reference Manual                                                             Instruction Set
+          Data cache kill
+                  DCKILL invalidates the entire contents of the data cache. On power-up, the caches are not
+                  guaranteed to contain valid data.
+                  Use this instruction to establish an initial clean cache state. All dirty data in the data cache
+                  that has not yet written back to memory is lost when DCKILL is executed. To save data
+                  clean it out using DCLEAN instructions before executing DCKILL.
+                  Because the caches are shared between all threads, this instruction must be performed only
+                  while ensuring that no other thread is using the caches. The best option is to use this
+                  instruction when only one thread is powered on and others are powered off.
+                   Syntax                                   Behavior
+                   dckill                                   dcache_inv_all();
+                  Class: SYSTEM (slots 0)
+                  Notes
+                       ■    This is a solo instruction. It must not be grouped with other instructions in a
+                            packet.
+                       ■    This is a monitor-level feature. If performed in User or Guest mode, a privilege
+                            error exception occurs.
+                  Encoding
+31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9  8 7  6 5  4  3  2  1  0
+                               U
+   ICLASS    Amode     Type                      Parse
+                               N
+ 1  0  1  0 0  0   1 0  0   0  0  -  -  -  -   - P   P -  -   - -  - -  - - -  -  -  -  -  -  dckill
+                  Field name        Description
+                  ICLASS            Instruction Class
+                  Parse             Packet/Loop parse bits
+                  Amode             Amode
+                  Type              Type
+                  UN                Unsigned
+80-N2040-45 Rev. B                                                                                                332
+Hexagon V67 Programmer’s Reference Manual                                                        Instruction Set
+        Data cache maintenance monitor instructions
+                  Perform maintenance operations on the data cache.
+                  DCCLEANINVIDX looks at index Rs in the data cache. If this line has dirty data, the data
+                  is flushed out to memory. The line is invalidated. The set is provided in Rs[10:5] and the
+                  way in Rs[1:0]. This instruction can only be grouped with X-type or A-type instructions.
+                  DCCLEANIDX looks at index Rs in the data cache. If this line has dirty data, the data is
+                  flushed out to memory. The set is provided in Rs[10:5] and the way in Rs[1:0]. This
+                  instruction can only be grouped with X-type or A-type instructions.
+                  DCINVIDX invalidates the line at index Rs. The set is provided in Rs[10:5] and the way
+                  in Rs[1:0]. This instruction can only be grouped with X-type or A-type instructions.
+                  DCTAGR reads the tag at indicated by Rs and returns the data into Rd. The set is provided
+                  Rs[10:5], and the way is provided in Rs[1:0]. The tag is returned in Rd[23:0], and the state
+                  is returned in Rd[30:29]. This instruction can only be grouped with X-type or A-type
+                  instructions.
+                  DCTAGW uses register Rs and Rt. Register Rs contains the set in [10:5] and way in [1:0]
+                  while the Rt value contains the Tag in [23:0] and the state in [30:29]. For WT D$,
+                  state=2'b11 is an invalid value. The DCTAGW instruction is single-thread only. All other
+                  threads must be in Stop or Debug mode with no outstanding transactions. This instruction
+                  is SOLO and must not appear in a packet with other instructions.
+                  The state bits are encoded as follows:
+                           00 = Invalid
+                           01 = Valid & clean
+                           10 = Reserved
+                           11 = Not used for WT D$
+                  For 32 KB D$, Rs[11:5] provides the set index for the above instructions.
+                   Syntax                              Behavior
+                   Rd=dctagr(Rs)                        dcache_tag_read(Rs);
+                   dccleanidx(Rs)                       dcache_clean_idx(Rs);
+                   dccleaninvidx(Rs)                    dcache_cleaninv_idx(Rs);
+                   dcinvidx(Rs)                         dcache_inv_idx(Rs);
+                   dctagw(Rs,Rt)                        dcache_tag_write(Rs,Rt);
+                  Class: SYSTEM (slots 0)
+                  Notes
+                        ■  Group this instruction only with ALU32 or non-floating-point XTYPE
+                           instructions.
+80-N2040-45 Rev. B                                                                                           333
+Hexagon V67 Programmer’s Reference Manual                                                             Instruction Set
+                       ■    This is a solo instruction. It must not be grouped with other instructions in a
+                            packet.
+                       ■    This is a monitor-level feature. If performed in User or Guest mode, a privilege
+                            error exception occurs.
+                  Encoding
+31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9  8 7  6 5 4  3  2  1 0
+                               U
+   ICLASS    Amode     Type             s5       Parse
+                               N
+ 1  0  1  0 0  0   1 0  0   0  1  s  s  s  s  s  P   P -  -   -  - - -  - - -  - -  -  -  - dccleanidx(Rs)
+ 1  0  1  0 0  0   1 0  0   1  0  s  s  s  s  s  P   P -  -   -  - - -  - - -  - -  -  -  - dcinvidx(Rs)
+ 1  0  1  0 0  0   1 0  0   1  1  s  s  s  s  s  P   P -  -   -  - - -  - - -  - -  -  -  - dccleaninvidx(Rs)
+                               U
+   ICLASS    Amode     Type             s5       Parse          t5
+                               N
+ 1  0  1  0 0  1   0 0  0   0  0  s  s  s  s  s  P   P -  t   t  t t t  - - -  - -  -  -  - dctagw(Rs,Rt)
+                               U
+   ICLASS    Amode     Type    N        s5       Parse                             d5
+ 1  0  1  0 0  1   0 0  0   0  1  s  s  s  s  s  P   P -  -   -  - - -  - - - d  d  d  d d Rd=dctagr(Rs)
+                  Field name        Description
+                  ICLASS            Instruction Class
+                  Parse             Packet/Loop parse bits
+                  d5                Field to encode register d
+                  s5                Field to encode register s
+                  t5                Field to encode register t
+                  Amode             Amode
+                  Type              Type
+                  UN                Unsigned
+80-N2040-45 Rev. B                                                                                                334
+Hexagon V67 Programmer’s Reference Manual                                                         Instruction Set
+          Read the interrupt mask for a thread
+                  Each thread contains an IMASK register that holds the interrupt enable/disable for
+                  individual interrupts 0-31.
+                  GETIMASK reads the IMASK for the thread indicated by the low bits of Rs. The result is
+                  returned in Rd. For Rs values outside of [0-NUM_THREADS-1], the results are
+                  undefined.
+                   Syntax                                   Behavior
+                   Rd=getimask(Rs)                          Rd = IMASK[Rs & thread->processor_ptr-
+                                                            >thread_system_mask];
+                  Class: SYSTEM (slot 3)
+                  Notes
+                       ■   Group this instruction only with ALU32 or non-floating-point XTYPE
+                           instructions.
+                       ■   This is a monitor-level feature. If performed in User or Guest mode, a privilege
+                           error exception occurs.
+                  Encoding
+31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9  8 7  6 5  4 3 2  1 0
+   ICLASS      sm                      s5        Parse                             d5
+ 0  1  1  0 0  1   1 0  0  0  0   s  s  s  s  s  P   P -  -   - -  - - -  - - d  d d  d d Rd=getimask(Rs)
+                  Field name        Description
+                  sm                Supervisor mode only
+                  ICLASS            Instruction Class
+                  Parse             Packet/Loop parse bits
+                  d5                Field to encode register d
+                  s5                Field to encode register s
+80-N2040-45 Rev. B                                                                                            335
+Hexagon V67 Programmer’s Reference Manual                                                              Instruction Set
+          Acquire hardware lock
+                  If the lock bit is set, sleep until the lock bit is clear. The packet with the lock instruction
+                  only completes once the lock is set and acquired by this thread. When multiple threads are
+                  waiting for the lock, the hardware guarantees round-robin fairness such that no thread is
+                  starved.
+                  TLBLOCK is acquired automatically whenever a thread raises a TLB miss-RW or TLB-
+                  miss-X exception.
+                   Syntax                                    Behavior
+                   k0lock                                    if (can_aquire_k0_lock) {
+                                                                 SYSCFG.K0LOCK = 1;
+                                                             } else {
+                                                                 sleep_until_available;
+                                                             }
+                   tlblock                                   if (can_aquire_tlb_lock) {
+                                                                 SYSCFG.TLBLOCK = 1;
+                                                             } else {
+                                                                 sleep_until_available;
+                                                             }
+                  Class: SYSTEM (slot 3)
+                  Notes
+                        ■  This is a solo instruction. It must not be grouped with other instructions in a
+                           packet.
+                        ■  This is a monitor-level feature. If performed in User or Guest mode, a privilege
+                           error exception occurs.
+                  Encoding
+31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9    8 7   6 5  4 3 2  1  0
+   ICLASS      sm                                Parse
+ 0  1  1  0 1  1   0  0  0 0  1   -  -   -  -  - P   P  -  -   - -  -  - 0   0 1  - -  - -  -  tlblock
+ 0  1  1  0 1  1   0  0  0 0  1   -  -   -  -  - P   P  -  -   - -  -  - 0   1 1  - -  - -  -  k0lock
+                  Field name        Description
+                  sm                Supervisor mode only
+                  ICLASS            Instruction Class
+                  Parse             Packet/Loop parse bits
+80-N2040-45 Rev. B                                                                                                 336
+Hexagon V67 Programmer’s Reference Manual                                                            Instruction Set
+          Release hardware lock
+                  This instruction releases a hardware lock.
+                   Syntax                                   Behavior
+                   k0unlock                                 SYSCFG.K0LOCK = 0;
+                   tlbunlock                                SYSCFG.TLBLOCK = 0;
+                  Class: SYSTEM (slot 3)
+                  Notes
+                       ■   This is a solo instruction. It must not be grouped with other instructions in a
+                           packet.
+                       ■   This is a monitor-level feature. If performed in User or Guest mode, a privilege
+                           error exception occurs.
+                  Encoding
+31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9  8 7  6 5  4 3 2  1 0
+   ICLASS      sm                                Parse
+ 0  1  1  0 1  1   0 0  0  0  1   -  -  -  -   - P   P -  -   - -  - - 0 1  0  - - -  -  - tlbunlock
+ 0  1  1  0 1  1   0 0  0  0  1   -  -  -  -   - P   P -  -   - -  - - 1 0  0  - - -  -  - k0unlock
+                  Field name        Description
+                  sm                Supervisor mode only
+                  ICLASS            Instruction Class
+                  Parse             Packet/Loop parse bits
+80-N2040-45 Rev. B                                                                                               337
+Hexagon V67 Programmer’s Reference Manual                                                          Instruction Set
+        Interrupt to thread assignment read
+                  Each thread contains an IMASK register that holds the interrupt enable/disable for
+                  individual interrupts 0-31.
+                  For a given interrupt, IASSIGNR reads the corresponding bit in the IMASK register of
+                  each thread. The upper halfword of source register Rs contains the interrupt number from
+                  0-31 (0 is the highest priority interrupt, 31 the lowest). The low bits of the destination
+                  register Rd contain a bit mask where bit 0 contains the corresponding IMASK value for
+                  thread 0, bit 1 the value for thread 1, etc.
+                  The number of defined bits depends on the number of hardware threads provided in the
+                  core. All bits beyond the number of threads provided are cleared. For example, if the
+                  interrupt number is set to 0, Rd[0] is the value of IMASK[0] for thread 0, Rd[1] is the
+                  value of IMASK[0] for thread 1, etc.
+                    31                             16 15                           0
+                                              Int#                                      Rs
+                                      Interrupt number [0-31]
+                                      0=highest priority
+                                      interrupt
+                                      31=lowest priority
+                    31                                                             0
+                                                                                        Rd
+                                                                                     Thread 0:
+                                                                                     Value of IMASK[int#]
+                                                                Thread 5 assignment
+                   Syntax                                Behavior
+                   Rd=iassignr(Rs)                        Rd=IASSIGNR(Rs);
+                  Class: SYSTEM (slot 3)
+                  Notes
+                       ■   Group this instruction only with ALU32 or non-floating-point XTYPE
+                           instructions.
+80-N2040-45 Rev. B                                                                                             338
+Hexagon V67 Programmer’s Reference Manual                                                         Instruction Set
+                       ■   This is a monitor-level feature. If performed in User or Guest mode, a privilege
+                           error exception occurs.
+                  Encoding
+31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5  4 3  2  1 0
+   ICLASS      sm                      s5        Parse                            d5
+ 0  1  1  0 0  1   1 0  0  1  1   s  s  s  s  s  P   P -  -  -  - - - - -  - d d  d  d d Rd=iassignr(Rs)
+                  Field name        Description
+                  sm                Supervisor mode only
+                  ICLASS            Instruction Class
+                  Parse             Packet/Loop parse bits
+                  d5                Field to encode register d
+                  s5                Field to encode register s
+80-N2040-45 Rev. B                                                                                            339
+Hexagon V67 Programmer’s Reference Manual                                                                   Instruction Set
+           Interrupt to thread assignment write
+                   Each thread contains an IMASK register that holds the interrupt enable/disable for
+                   individual interrupts 0-31.
+                   For a given interrupt, IASSIGNW sets or clears the corresponding bit the IMASK register
+                   of each thread. This allows for easy reassignment of interrupts to selected threads.
+                   Source register Rs contains two fields. The upper halfword contains the interrupt number
+                   from 0-31 (0 is the highest priority interrupt, 31 the lowest). The low bits contain a bit
+                   mask where bit 0 contains the corresponding IMASK value for thread 0, bit 1 the value for
+                   thread 1, etc. For example, if the interrupt number is set to 0, and the bit mask is set to
+                   0x03, the IMASK[0] for threads 0 and 1 are set and the IMASK[0] for all other threads are
+                   cleared. This means that threads 0,1 do not accept this interrupt, whereas other threads do
+                   accept it.
+   31                               16 15                            0
+                               Int#                                          Rs
+                                                                        Thread 0 assignment:
+                                                                        1=Set Thread0:IMASK[Int#]
+                      Interrupt number [0-31]                           (interrupt disabled)
+                      0=highest priority
+                      interrupt                                         0=Clear Thread0:IMASK[Int#]
+                      31=lowest priority                                (interrupt enabled for T0)
+                                                Thread 5 assignment
+                   Syntax                                   Behavior
+                    iassignw(Rs)                            IASSIGNW(Rs);
+                   Class: SYSTEM (slot 3)
+                   Notes
+                          ■  Group this instruction only with ALU32 or non-floating-point XTYPE
+                             instructions.
+                          ■  This is a monitor-level feature. If performed in User or Guest mode, a privilege
+                             error exception occurs.
+                   Encoding
+31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9    8   7  6  5  4  3  2  1  0
+    ICLASS      sm                       s5      Parse
+ 0   1  1   0 0 1   0   0  0  0  0  s  s  s s s  P   P -  -   - -  -   -   0  1 0   -  -  -  -  -  iassignw(Rs)
+80-N2040-45 Rev. B                                                                                                      340
+Hexagon V67 Programmer’s Reference Manual                 Instruction Set
+                  Field name   Description
+                  sm           Supervisor mode only
+                  ICLASS       Instruction Class
+                  Parse        Packet/Loop parse bits
+                  s5           Field to encode register s
+80-N2040-45 Rev. B                                                    341
+Hexagon V67 Programmer’s Reference Manual                                                            Instruction Set
+          Instruction cache maintenance supervisor operations
+                  Perform maintenance operations on the instruction cache.
+                  ICTAGR reads the tag at set Rs[12:5] for 32 Kb I$ or Rs[11:5] for 16 Kb I$, and way
+                  Rs[0]. The tag value is returned in Rd[31:10] for 32k caches, or Rd[31:9] for 16k caches.
+                  The Valid bit in Rs[1], and the Reserved bit in Rd[0].
+                  ICDATAR reads the data word at set Rs[13:5], word Rs[4:2], and way Rs[0]. The data
+                  value is returned in Rd[31:0].
+                  ICINVIDX invalidates the instruction cache index indicated by Rs[13:6] for 32 Kb I$ and
+                  Rs[12:6] for 16 Kb I$.
+                   Syntax                                   Behavior
+                   Rd=icdatar(Rs)                           icache_data_read(Rs);
+                   Rd=ictagr(Rs)                            icache_tag_read(Rs);
+                   icinvidx(Rs)                             icache_inv_idx(Rs);
+                  Class: SYSTEM (slot 2)
+                  Notes
+                       ■   This is a solo instruction. It must not be grouped with other instructions in a
+                           packet.
+                       ■   This is a monitor-level feature. If performed in User or Guest mode, a privilege
+                           error exception occurs.
+                  Encoding
+31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9  8 7  6 5  4 3  2  1 0
+   ICLASS                              s5        Parse                              d5
+ 0  1  0   1 0 1   0 1  1  0  1   s  s  s  s  s  P   P -  -   - -  - - -  - -  d d  d  d d Rd=icdatar(Rs)
+ 0  1  0   1 0 1   0 1  1  1  1   s  s  s  s  s  P   P -  -   - -  - - -  - -  d d  d  d d Rd=ictagr(Rs)
+   ICLASS                              s5        Parse
+ 0  1  0   1 0 1   1 0  1  1  0   s  s  s  s  s  P   P 0 0   1  -  - - -  - -  -  -  - - - icinvidx(Rs)
+                  Field name        Description
+                  ICLASS            Instruction Class
+                  Parse             Packet/Loop parse bits
+                  d5                Field to encode register d
+                  s5                Field to encode register s
+80-N2040-45 Rev. B                                                                                               342
+Hexagon V67 Programmer’s Reference Manual                                                           Instruction Set
+          Instruction cache maintenance operations (single-thread)
+                  Perform maintenance operations on the instruction cache.
+                  ICKILL invalidates the instruction cache.
+                  ICTAGW updates specified tag entry with contents of Rt. Rs[13:5] for 32 Kb I$ or
+                  Rs[12:5] for 16 Kb I$ selects index and Rs[0] selects cache way. Rt must have the Tag
+                  information in bits 20:0 for 32 Kb I$ or 21:0 for 16 Kb I$, the Valid bit in Rt[30] and the
+                  reserved bit in Rt[31].
+                  These instructions are single-thread only. All other threads must be in Stop or Debug mode
+                  with no outstanding transactions.
+                   Syntax                                   Behavior
+                   icdataw(Rs,Rt)                           icache_data_write(Rs,Rt);
+                   ickill                                   icache_inv_all();
+                   ictagw(Rs,Rt)                            icache_tag_write(Rs,Rt);
+                  Class: SYSTEM (slot 2)
+                  Notes
+                       ■   This is a solo instruction. It must not be grouped with other instructions in a
+                           packet.
+                       ■   This is a monitor-level feature. If performed in User or Guest mode, a privilege
+                           error exception occurs.
+                  Encoding
+31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9  8 7  6 5  4 3 2  1 0
+   ICLASS                              s5        Parse          t5
+ 0  1  0   1 0 1   0 1  1  1  0   s  s  s  s  s  P   P 0  t   t  t t t -  - -  - -  - -  - ictagw(Rs,Rt)
+ 0  1  0   1 0 1   0 1  1  1  0   s  s  s  s  s  P   P 1  t   t  t t t -  - -  - -  - -  - icdataw(Rs,Rt)
+   ICLASS                                        Parse
+ 0  1  0   1 0 1   1 0  1  1  0   -  -  -   -  - P   P 0 1   0   - - - -  - -  - -  - -  - ickill
+                  Field name        Description
+                  ICLASS            Instruction Class
+                  Parse             Packet/Loop parse bits
+                  s5                Field to encode register s
+                  t5                Field to encode register t
+80-N2040-45 Rev. B                                                                                              343
+Hexagon V67 Programmer’s Reference Manual                                                              Instruction Set
+          L2 cache operations by index
+                  These instructions operate on a specified line in L2 cache.
+                  The clean operation pushed dirty data out to the system. The invalidate operation marks
+                  the line as invalidate, and the cleaninv operation first cleans the line and then invalidates
+                  it.
+                  The index is provided in Rs[S:8] and the way is in Rs[2:0], where S is determined by the
+                  number of sets in the L2 cache. For segmented L2 caches, the granule bit provided in
+                  Rs[3]. This bit is ignored if the cache is not segmented.
+                  Different versions of Hexagon may have different L2 cache sizes. For more information,
+                  see the section on Core Versions
+                   Syntax                                     Behavior
+                   l2cleanidx(Rs)                             l2cache_clean_idx(Rs);
+                   l2cleaninvidx(Rs)                          l2cache_clean_invalidate_idx(Rs);
+                   l2invidx(Rs)                               l2cache_inv_idx(Rs);
+                  Class: SYSTEM (slots 0)
+                  Notes
+                        ■    Group this instruction only with ALU32 or non-floating-point XTYPE
+                             instructions.
+                        ■    This is a monitor-level feature. If performed in User or Guest mode, a privilege
+                             error exception occurs.
+                  Encoding
+31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9    8 7  6 5  4 3 2  1 0
+                                U
+   ICLASS    Amode      Type             s5        Parse
+                                N
+ 1  0  1  0 0  1   1  0  0   0  1  s   s  s  s  s  P   P -  -   - -  - - -  - -  - -  - -  - l2cleanidx(Rs)
+ 1  0  1  0 0  1   1  0  0   1  0  s   s  s  s  s  P   P -  -   - -  - - -  - -  - -  - -  - l2invidx(Rs)
+ 1  0  1  0 1  0   0  0  0   1  1  s   s  s  s  s  P   P -  -   - -  - - -  - -  - -  - -  - l2cleaninvidx(Rs)
+                  Field name          Description
+                  ICLASS              Instruction Class
+                  Parse               Packet/Loop parse bits
+                  s5                  Field to encode register s
+                  Amode               Amode
+                  Type                Type
+                  UN                  Unsigned
+80-N2040-45 Rev. B                                                                                                 344
+Hexagon V67 Programmer’s Reference Manual                                                          Instruction Set
+        L2 cache global operations
+                  Perform maintenance operations over the entire L2 cache.
+                  The instructions commit and set the SYSCFG:L2GCA bit to indicate that the Global
+                  Cache state machine is Active. Once the state machine is started, it processes every L2
+                  cache line in the background. After all cache lines have processed, the SYSCFG:L2GCA
+                  status bit is cleared.
+                  L2KILL invalidates every line. It is required to execute this instruction prior to using L2
+                  after a power-on reset, as the cache starts in an unknown state.
+                  L2GCLEAN forces a clean (flush) operation for all L2 cache lines that are dirty.
+                  L2GCLEANINV forces a clean (flush) for dirty L2 lines and then invalidate them.
+                  L2GUNLOCK clears the lock bit for all L2 cache lines.
+                  The L2GCLEAN and L2GCLEANINV are available with PA range and mask option. In
+                  this form, the Rtt register contains a mask in the lower word and match value in the upper
+                  word. If the Physical Page Number of the cache line AND’d with the mask is equal to the
+                  match value, the cache operation is performed. Otherwise, the cache line is left
+                  unchanged.
+                  For every cache line in L2, the semantics are: if (Rtt[23:0] & PA[35:12]) == Rtt[55:32]),
+                  do clean/cleaninv on the cache line.
+                   Syntax                                 Behavior
+                   l2gclean                               l2cache_global_clean();
+                   l2gclean(Rtt)                          l2cache_global_clean_range(Rtt);
+                   l2gcleaninv                            l2cache_global_clean_inv();
+                   l2gcleaninv(Rtt)                       l2cache_global_clean_inv_range(Rtt);
+                   l2gunlock                              l2cache_global_unlock();
+                   l2kill                                 l2cache_inv_all();
+                  Class: SYSTEM (slots 0)
+                  Notes
+                        ■  This is a solo instruction. It must not be grouped with other instructions in a
+                           packet.
+                        ■  This is a monitor-level feature. If performed in User or Guest mode, a privilege
+                           error exception occurs.
+80-N2040-45 Rev. B                                                                                             345
+Hexagon V67 Programmer’s Reference Manual                                                        Instruction Set
+                  Encoding
+31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9  8 7 6 5 4 3 2 1 0
+                              U
+   ICLASS    Amode     Type                      Parse          t5
+                              N
+ 1  0  1  0 0  1   1 0  1   0 1   -  -  -   -  - P   P -  t   t  t t t - - - - - - - - l2gclean(Rtt)
+ 1  0  1  0 0  1   1 0  1   1 0   -  -  -   -  - P   P -  t   t  t t t - - - - - - - - l2gcleaninv(Rtt)
+                              U                  Parse
+   ICLASS    Amode     Type
+                              N
+ 1  0  1  0 1  0   0 0  0   0 1   -  -  -   -  - P   P - 0   0  0  - - - - - - - - - - l2kill
+ 1  0  1  0 1  0   0 0  0   0 1   -  -  -   -  - P   P - 0   1  0  - - - - - - - - - - l2gunlock
+ 1  0  1  0 1  0   0 0  0   0 1   -  -  -   -  - P   P - 1   0  0  - - - - - - - - - - l2gclean
+ 1  0  1  0 1  0   0 0  0   0 1   -  -  -   -  - P   P - 1   1  0  - - - - - - - - - - l2gcleaninv
+                  Field name        Description
+                  ICLASS            Instruction Class
+                  Parse             Packet/Loop parse bits
+                  t5                Field to encode register t
+                  Amode             Amode
+                  Type              Type
+                  UN                Unsigned
+80-N2040-45 Rev. B                                                                                           346
+Hexagon V67 Programmer’s Reference Manual                                                                Instruction Set
+          L2 cache operations by address
+                  L2LOCKA first allocates a line in L2 based on the address provided in Rs. It then sets the
+                  lock bit so the line is not replaced in the future, unless explicitly unlocked. A fetch is
+                  initiated for the data. Finally, the instruction returns a status result to the destination
+                  predicate.
+                  The predicate is set to 0xff if the operation was successful, or 0x00 if the operation did not
+                  succeed. The failure state can be returned either because all the L2 cache ways are already
+                  locked, or because of so me internal transient conditions. The software should resolve
+                  transient conditions by re-trying L2LOCKA with a large number of attempts (1000
+                  recommended).
+                  The L2UNLOCKA instruction clears the lock bit on an L2 cache line which holds the
+                  provided address.
+                   Syntax                                     Behavior
+                   Pd=l2locka(Rs)                             EA=Rs;
+                                                              Pd=l2locka(EA);
+                   l2unlocka(Rs)                              EA=Rs;
+                                                              l2unlocka(EA);
+                  Class: SYSTEM (slots 0)
+                  Notes
+                        ■    Group this instruction only with ALU32 or non-floating-point XTYPE
+                             instructions.
+                        ■    The predicate generated by this instruction cannot be used as a .new predicate, nor
+                             can it be automatically AND’d with another predicate.
+                        ■    This is a monitor-level feature. If performed in User or Guest mode, a privilege
+                             error exception occurs.
+                  Encoding
+31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9    8 7  6 5 4  3  2  1   0
+                                U
+   ICLASS    Amode      Type             s5        Parse                                   d2
+                                N
+ 1  0  1  0 0  0   0  0  1   1  1   s  s  s  s  s  P   P 1  -   - -  - - -  - -  - -  -  d   d Pd=l2locka(Rs)
+                                U
+   ICLASS    Amode      Type             s5        Parse
+                                N
+ 1  0  1  0 0  1   1  0  0   1  1   s  s  s  s  s  P   P -  -   - -  - - -  - -  - -  -  -    - l2unlocka(Rs)
+                  Field name          Description
+                  ICLASS              Instruction Class
+                  Parse               Packet/Loop parse bits
+                  d2                  Field to encode register d
+                  s5                  Field to encode register s
+80-N2040-45 Rev. B                                                                                                   347
+Hexagon V67 Programmer’s Reference Manual  Instruction Set
+                  Field name   Description
+                  Amode        Amode
+                  Type         Type
+                  UN           Unsigned
+80-N2040-45 Rev. B                                     348
+Hexagon V67 Programmer’s Reference Manual                                                          Instruction Set
+        L2 tag read/write
+                  L2TAGR reads the tag as indicated by Rs and returns the data into Rd. Group this
+                  instruction with A-type and X-type instructions. Do not group the L2TAGW instruction in
+                  a packet.
+                  Register Rs is formatted as follows:
+                  Rs[31:8] = Set
+                  Rs[7:0] = Way
+                  Return register Rd is formatted as follows:
+                  Rd[31] = A1
+                  Rd[30] = A0
+                  Rd[28:8] = Tag address bits 35:15
+                  Rd[4] = Lock bit
+                  Rd[3] = Reserve bit
+                  Rd[2:0] = State[2:0]
+                  The state bits are defined as follows:
+                  0 = Invalid
+                  1,3 = Reserved
+                  4 = Valid & Clean
+                  6 = Valid & Dirty
+                   Syntax                                 Behavior
+                   Rd=l2tagr(Rs)                          l2cache_tag_read(Rs);
+                   l2tagw(Rs,Rt)                          l2cache_tag_write(Rs,Rt);
+                  Class: SYSTEM (slots 0)
+                  Notes
+                       ■   Group this instruction only with ALU32 or non-floating-point XTYPE
+                           instructions.
+                       ■   Results are undefined if a tag read or write addresses a non-present set or way.
+                       ■   This is a solo instruction. It must not be grouped with other instructions in a
+                           packet.
+                       ■   This is a monitor-level feature. If performed in User or Guest mode, a privilege
+                           error exception occurs.
+80-N2040-45 Rev. B                                                                                             349
+Hexagon V67 Programmer’s Reference Manual                                                        Instruction Set
+                  Encoding
+31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9  8 7 6 5 4 3 2  1 0
+                              U
+   ICLASS    Amode     Type            s5        Parse          t5
+                              N
+ 1  0  1  0 0  1   0 0  0   1 0   s  s  s  s  s  P   P 0  t   t  t t t - - - - -  - - - l2tagw(Rs,Rt)
+                              U
+   ICLASS    Amode     Type            s5        Parse                           d5
+                              N
+ 1  0  1  0 0  1   0 0  0   1 1   s  s  s  s  s  P   P -  -   -  - - - - - - d d d  d d Rd=l2tagr(Rs)
+                  Field name        Description
+                  ICLASS            Instruction Class
+                  Parse             Packet/Loop parse bits
+                  d5                Field to encode register d
+                  s5                Field to encode register s
+                  t5                Field to encode register t
+                  Amode             Amode
+                  Type              Type
+                  UN                Unsigned
+80-N2040-45 Rev. B                                                                                           350
+Hexagon V67 Programmer’s Reference Manual                                                           Instruction Set
+          Load from physical address
+                  MEMW_PHYS performs a word load using the 36-bit physical address held in source
+                  registers Rt:Rs. Rs holds PA[10:0] and Rt holds PA[35:11] in the least-significant bits.
+                  This instruction first looks in the L1 and L2 caches for the data. If found, the data is
+                  returned. If the access misses in cache, it is treated as a non-allocating (uncached) load.
+                  The hardware forces the two least-significant bits to zero, to never result in an alignment
+                  violation.
+                  The monitor software uses this instruction to walk Guest mode page tables, and for easier
+                  debugging.
+                   Syntax                                   Behavior
+                   Rd=memw_phys(Rs,Rt)                      Rd = *((Rs&0x7ff) | (Rt<<11));
+                  Class: SYSTEM (slots 0)
+                  Notes
+                       ■    This is a solo instruction. It must not be grouped with other instructions in a
+                            packet.
+                       ■    This is a monitor-level feature. If performed in User or Guest mode, a privilege
+                            error exception occurs.
+                  Encoding
+31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9  8 7  6 5  4 3   2 1  0
+                               U
+   ICLASS    Amode     Type             s5       Parse          t5                  d5
+                               N
+ 1  0  0  1 0  0   1 0  0   0  0  s  s  s  s  s  P   P 1  t   t  t t t  - 0 0  d d   d d  d Rd=memw_phys(Rs,Rt)
+                  Field name        Description
+                  ICLASS            Instruction Class
+                  Amode             Amode
+                  Type              Type
+                  UN                Unsigned
+                  Parse             Packet/Loop parse bits
+                  d5                Field to encode register d
+                  s5                Field to encode register s
+                  t5                Field to encode register t
+80-N2040-45 Rev. B                                                                                              351
+Hexagon V67 Programmer’s Reference Manual                                                          Instruction Set
+          Raise NMI on threads
+                  The low bits of Rs specify a thread mask, where bit 0 corresponds to thread 0. The number
+                  of defined bits depends on the how many hardware threads are supported.
+                  NMI raises a non-maskable NMI interrupt for all threads specified in the mask. This
+                  interrupt causes the thread jump to the NMI vector at the address specified in EVB.
+                   Syntax                                   Behavior
+                   nmi(Rs)                                  Raise NMI on threads;
+                  Class: SYSTEM (slot 3)
+                  Notes
+                       ■   This is a solo instruction. It must not be grouped with other instructions in a
+                           packet.
+                       ■   This is a monitor-level feature. If performed in User or Guest mode, a privilege
+                           error exception occurs.
+                  Encoding
+31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9  8 7  6 5  4 3  2 1 0
+   ICLASS      sm                      s5        Parse
+ 0  1  1  0 0  1   0 0  0  1  1   s  s  s  s  s  P   P -  -   - -  - - 0 1  0  -  - - -  - nmi(Rs)
+                  Field name        Description
+                  sm                Supervisor mode only
+                  ICLASS            Instruction Class
+                  Parse             Packet/Loop parse bits
+                  s5                Field to encode register s
+80-N2040-45 Rev. B                                                                                             352
+Hexagon V67 Programmer’s Reference Manual                                                          Instruction Set
+          Resume from Wait mode
+                  The low bits of Rs specify a thread mask, where bit 0 corresponds to thread 0. The number
+                  of defined bits depends on the how many hardware threads are supported.
+                  RESUME causes all threads specified in the mask which are in Wait mode to exit Wait
+                  mode back to either Supervisor or User mode (whichever was active when the thread
+                  entered Wait mode). If the thread to be resumed is off (Stop mode) or already running
+                  (User or Supervisor mode), the resume instruction has no affect.
+                   Syntax                                   Behavior
+                   resume(Rs)                               resume(Rs);
+                  Class: SYSTEM (slot 3)
+                  Notes
+                       ■   This is a solo instruction. It must not be grouped with other instructions in a
+                           packet.
+                       ■   This is a monitor-level feature. If performed in User or Guest mode, a privilege
+                           error exception occurs.
+                  Encoding
+31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9  8  7 6 5 4 3  2  1 0
+   ICLASS      sm                      s5        Parse
+ 0  1  1  0 0  1   0 0  0  1  0   s  s  s  s  s  P   P -  -   - -  - - 0  0 1 - -  -  -  - resume(Rs)
+                  Field name        Description
+                  sm                Supervisor mode only
+                  ICLASS            Instruction Class
+                  Parse             Packet/Loop parse bits
+                  s5                Field to encode register s
+80-N2040-45 Rev. B                                                                                             353
+Hexagon V67 Programmer’s Reference Manual                                                       Instruction Set
+          Return from exception
+                  RTE returns from an interrupt or exception handler. This instruction clears the EX bit in
+                  SSR and jumps to the location specified in the ELR register.
+                  This instruction also clears the SYSCFG.TLBLOCK bit, thus releasing the TLB lock and
+                  allowing other threads to acquire the lock if needed. Never group RTE with another
+                  exception-causing instruction. If RTE is grouped with any other instruction that causes an
+                  exception, the behavior is undefined.
+                   Syntax                                  Behavior
+                   rte                                     SSR.SSR_EX = 0;
+                                                           PC=ELR;
+                  Class: SYSTEM (slot 2)
+                  Notes
+                       ■   This is a monitor-level feature. If performed in User or Guest mode, a privilege
+                           error exception occurs.
+                  Encoding
+31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7  6 5 4 3  2  1 0
+   ICLASS                                        Parse
+ 0  1  0  1 0  1   1 1  1  1  1   -  -  -  -   - P   P 0 0   -  - - - 0 0  0 - -  -  - -  rte
+                  Field name        Description
+                  ICLASS            Instruction Class
+                  Parse             Packet/Loop parse bits
+80-N2040-45 Rev. B                                                                                          354
+Hexagon V67 Programmer’s Reference Manual                                                           Instruction Set
+          Set the interrupt mask for a thread
+                  Each thread contains an IMASK register that holds the interrupt enable/disable for
+                  individual interrupts 0-31.
+                  SETIMASK writes the IMASK for the thread indicated by the low bits of predicate Pt.
+                  Register Rs contains the 32-bit mask value to be written. For Pt values outside of [0-
+                  NUM_THREADS-1], the results are undefined.
+                   Syntax                                   Behavior
+                   setimask(Pt,Rs)                          PREDUSE_TIMING;
+                                                            IMASK[Pt & thread->processor_ptr-
+                                                            >thread_system_mask]=Rs;
+                  Class: SYSTEM (slot 3)
+                  Notes
+                       ■   This instruction may only be grouped with ALU32 or non-floating-point XTYPE
+                           instructions.
+                       ■   This is a monitor-level feature. If performed in User or Guest mode, a privilege
+                           error exception occurs.
+                  Encoding
+31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9     8 7 6 5 4 3 2 1 0
+   ICLASS      sm                      s5        Parse               t2
+ 0  1  1  0 0  1   0 0  1  0  0   s  s  s  s  s  P   P -  -   - -  t    t 0 0 0 - - - -  - setimask(Pt,Rs)
+                  Field name        Description
+                  sm                Supervisor mode only
+                  ICLASS            Instruction Class
+                  Parse             Packet/Loop parse bits
+                  s5                Field to encode register s
+                  t2                Field to encode register t
+80-N2040-45 Rev. B                                                                                              355
+Hexagon V67 Programmer’s Reference Manual                                                            Instruction Set
+          Set the priority for a thread
+                  Each thread contains an STID register that holds the software thread id (STID) and the
+                  priority (PRIO). This instruction writes the PRIO field for the thread indicated by the low
+                  bits of predicate Pt. The register Rs contains the 32-bit mask value to be written. For Pt
+                  values outside of [0-NUM_THREADS-1], the results are undefined.
+                   Syntax                                   Behavior
+                   setprio(Pt,Rs)                           PREDUSE_TIMING;
+                                                            TID[Pt & thread->processor_ptr-
+                                                            >thread_system_mask].PRIO=Rs;
+                  Class: SYSTEM (slot 3)
+                  Notes
+                        ■  This is a monitor-level feature. If performed in User or Guest mode, a privilege
+                           error exception occurs.
+                  Encoding
+31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9     8 7 6 5 4 3 2 1 0
+   ICLASS      sm                      s5        Parse               t2
+ 0  1  1  0 0  1   0 0   1 0  0   s  s  s  s  s  P   P -  -   - -  t    t 0 0 1 - - - -  - setprio(Pt,Rs)
+                  Field name        Description
+                  sm                Supervisor mode only
+                  ICLASS            Instruction Class
+                  Parse             Packet/Loop parse bits
+                  s5                Field to encode register s
+                  t2                Field to encode register t
+80-N2040-45 Rev. B                                                                                               356
+Hexagon V67 Programmer’s Reference Manual                                                             Instruction Set
+          Set interrupt auto disable
+                  Register Rs specifies a 32-bit mask, where bit 0 corresponds to the highest-priority
+                  interrupt 0, and register bit 31 refers to the lowest-priority interrupt 31.
+                  For bits set in Rs, the corresponding bit in IAD is set. This disables the interrupt. For bits
+                  cleared in Rs, the corresponding bit in IAD is unaffected.
+                   Syntax                                   Behavior
+                   siad(Rs)                                 IAD |= Rs;
+                  Class: SYSTEM (slot 3)
+                  Notes
+                       ■   This instruction may only be grouped with ALU32 or non-floating-point XTYPE
+                           instructions.
+                       ■   This is a monitor-level feature. If performed in User or Guest mode, a privilege
+                           error exception occurs.
+                  Encoding
+31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9  8 7 6  5  4  3  2  1  0
+   ICLASS      sm                      s5        Parse
+ 0  1  1  0 0  1   0 0  1  0  0   s  s  s  s  s  P   P -  -   - -  - - 0 1  1  -  -  -  -  - siad(Rs)
+                  Field name        Description
+                  sm                Supervisor mode only
+                  ICLASS            Instruction Class
+                  Parse             Packet/Loop parse bits
+                  s5                Field to encode register s
+80-N2040-45 Rev. B                                                                                                357
+Hexagon V67 Programmer’s Reference Manual                                                             Instruction Set
+          Start threads
+                  The low bits of Rs specify a thread mask, where bit 0 corresponds to thread 0. The number
+                  of defined bits depends on the how many hardware threads are supported.
+                  START raises a non-maskable software reset interrupt for all threads specified in the
+                  mask. This interrupt causes the thread to clear all writable bits in the Supervisor Status
+                  register and then jump to the start vector at the address specified in EVB. Typically,
+                  START powers up threads after they have are disabled by the STOP instruction.
+                   Syntax                                   Behavior
+                   start(Rs)                                start(Rs);
+                  Class: SYSTEM (slot 3)
+                  Notes
+                       ■   This is a solo instruction. It must not be grouped with other instructions in a
+                           packet.
+                       ■   This is a monitor-level feature. If performed in User or Guest mode, a privilege
+                           error exception occurs.
+                  Encoding
+31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9  8 7 6 5 4  3  2  1  0
+   ICLASS      sm                      s5        Parse
+ 0  1  1  0 0  1   0 0  0  1  1   s  s  s  s  s  P   P -  -   - -  - - 0 0 1  - -   -  -  - start(Rs)
+                  Field name        Description
+                  sm                Supervisor mode only
+                  ICLASS            Instruction Class
+                  Parse             Packet/Loop parse bits
+                  s5                Field to encode register s
+80-N2040-45 Rev. B                                                                                                358
+Hexagon V67 Programmer’s Reference Manual                                                            Instruction Set
+          Stop threads
+                  STOP causes the calling thread to enter Stop mode.
+                  Stop mode is a power-off mode where all register contents for that thread should be
+                  assumed lost. The only way out of Stop mode is through a reset interrupt. The reset
+                  interrupt can be from another thread executing the START instruction, or from an external
+                  hardware reset signal.
+                  The source register Rs is not used in the instruction. It exists for backwards compatibility.
+                   Syntax                                   Behavior
+                   stop(Rs)                                 if (!in_debug_mode) modectl[TNUM] = 0;
+                  Class: SYSTEM (slot 3)
+                  Notes
+                       ■   This is a solo instruction. It must not be grouped with other instructions in a
+                           packet.
+                       ■   This is a monitor-level feature. If performed in User or Guest mode, a privilege
+                           error exception occurs.
+                  Encoding
+31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9  8 7  6 5  4 3  2  1  0
+   ICLASS      sm                      s5        Parse
+ 0  1  1  0 0  1   0 0  0  1  1   s  s  s  s  s  P   P -  -   - -  - - 0 0  0  -  -  -  - - stop(Rs)
+                  Field name        Description
+                  sm                Supervisor mode only
+                  ICLASS            Instruction Class
+                  Parse             Packet/Loop parse bits
+                  s5                Field to encode register s
+80-N2040-45 Rev. B                                                                                               359
+Hexagon V67 Programmer’s Reference Manual                                                            Instruction Set
+          Software interrupt
+                  Register Rs specifies a 32-bit mask, where bit 0 corresponds to the highest-priority
+                  interrupt 0, and register bit 31 refers to the lowest-priority interrupt 31.
+                  SWI causes the interrupts indicated in the mask to raise. This instruction is provided so
+                  that threads can very quickly interrupt one another.
+                   Syntax                                   Behavior
+                   swi(Rs)                                  IPEND |= Rs;
+                  Class: SYSTEM (slot 3)
+                  Notes
+                        ■  This instruction may only be grouped with ALU32 or non-floating-point XTYPE
+                           instructions.
+                        ■  This is a monitor-level feature. If performed in User or Guest mode, a privilege
+                           error exception occurs.
+                  Encoding
+31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9  8 7 6  5  4  3  2  1  0
+   ICLASS      sm                      s5        Parse
+ 0  1  1  0 0  1   0 0   0 0  0   s  s  s  s  s  P   P -  -   - -  - - 0 0  0  -  -  -  -  - swi(Rs)
+                  Field name        Description
+                  sm                Supervisor mode only
+                  ICLASS            Instruction Class
+                  Parse             Packet/Loop parse bits
+                  s5                Field to encode register s
+80-N2040-45 Rev. B                                                                                               360
+Hexagon V67 Programmer’s Reference Manual                                                            Instruction Set
+        TLB read/write/probe operations
+                  Manage the software programmable Translation Lookaside Buffer.
+                  The TLB Read (TLBR) instruction returns the 64-bit TLB entry at the location specified in
+                  register Rs. The result is written into the 64-bit destination register pair.
+                  The TLB Write (TLBW) operation writes the 64-bit TLB entry specified by register Rt
+                  with the contents of register pair Rss.
+                  The TLB Probe (TLBP) operation looks up the TLB based on the virtual page number
+                  contained in register Rs[19:0] together with the 7-bit ASID provided in Rs[26:20]. If the
+                  entry is found and marked valid, its ind ex is placed in Rd, otherwise Rd is set to
+                  0x8000_0000.
+                  The TLB Invalidate ASID (TLBINVASID) instruction invalidates all TLB entries with the
+                  Global bit NOT set and with the ASID matching the Rs[26:20] operand.
+                  The Conditional TLB Write (CTLBW) instruction first checks if the new entry would
+                  overlap the virtual address range of any other entry in the TLB. The overlap check
+                  considers page size and ASID. In the overlap check, the Global bit of the incoming Rss
+                  entry is forced to zero and the Valid bit is forced to 1. If there is no overlap, the entry is
+                  written and the destination register is set to 0x8000_0000. Otherwise, if an overlap occurs,
+                  no TLB entry is written and the index on the overlapping entry is placed in Rd. If multiple
+                  entries overlap, the value 0xffff_ffff is returned.
+                  The TLB Overlap Check (TLBOC) operation looks up the TLB based on the VPN, page
+                  size, and ASID contained in register Rss (in the same format as TLBW). The overlap
+                  check considers page size and ASID. In the overlap check, the Global bit of the incoming
+                  Rss entry is forced to zero and the Valid bit is forced to 1. If the Rss entry overlaps virtual
+                  address range of any another entry in the TLB, the index of the overlapping entry is placed
+                  in Rd, otherwise Rd is set to 0x8000_0000. If multiple entries overlap, the value
+                  0xffff_ffff is returned.
+                  For both TLBOC and CTLBW, when the PPN[5:0] are all zero, the behavior is undefined.
+                   Syntax                                Behavior
+                   Rd=ctlbw(Rss,Rt)                      if (CHECK_TLB_OVERLAP((1LL<<63) | Rss)) {
+                                                               Rd=GET_OVERLAPPING_IDX((1LL<<63) | Rss);
+                                                         } else {
+                                                               TLB[Rt] = Rss;
+                                                               Rd=0x80000000;
+                                                         }
+                   Rd=tlboc(Rss)                         if (CHECK_TLB_OVERLAP((1LL<<63) | Rss)) {
+                                                               Rd=GET_OVERLAPPING_IDX((1LL<<63) | Rss);
+                                                         } else {
+                                                               Rd=0x80000000;
+                                                         }
+                   Rd=tlbp(Rs)                           Rd=search_TLB(Rs);
+                   Rdd=tlbr(Rs)                          Rdd = TLB[Rs];
+80-N2040-45 Rev. B                                                                                               361
+Hexagon V67 Programmer’s Reference Manual                                                             Instruction Set
+                   Syntax                                   Behavior
+                   tlbinvasid(Rs)                           for (i = 0; i < NUM_TLB_ENTRIES; i++) {
+                                                                 if ((TLB[i].PTE_G == 0) && (TLB[i].PTE_ASID
+                                                            == Rs[26:20])) {
+                                                                     TLB[i] = TLB[i] & ~(1ULL << 63);
+                                                                 }
+                                                            }
+                   tlbw(Rss,Rt)                             TLB[Rt] = Rss;
+                  Class: SYSTEM (slot 3)
+                  Notes
+                       ■   This is a solo instruction. It must not be grouped with other instructions in a
+                           packet.
+                       ■   This is a monitor-level feature. If performed in User or Guest mode, a privilege
+                           error exception occurs.
+                  Encoding
+31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9   8 7  6 5  4 3 2  1 0
+   ICLASS      sm                      s5        Parse          t5
+ 0  1  1  0 1  1   0 0  0  0  0   s  s  s  s  s  P   P 0  t   t  t t  t -  - -  - -  - -  - tlbw(Rss,Rt)
+   ICLASS      sm                      s5        Parse                              d5
+ 0  1  1  0 1  1   0 0  0  1  0   s  s  s  s  s  P   P -  -   -  - -  - -  - - d  d d  d d Rdd=tlbr(Rs)
+ 0  1  1  0 1  1   0 0  1  0  0   s  s  s  s  s  P   P -  -   -  - -  - -  - - d  d d  d d Rd=tlbp(Rs)
+   ICLASS      sm                      s5        Parse
+ 0  1  1  0 1  1   0 0  1  0  1   s  s  s  s  s  P   P -  -   -  - -  - -  - -  - -  - -  - tlbinvasid(Rs)
+   ICLASS      sm                      s5        Parse          t5                  d5
+ 0  1  1  0 1  1   0 0  1  1  0   s  s  s  s  s  P   P 0  t   t  t t  t -  - - d  d d  d d Rd=ctlbw(Rss,Rt)
+   ICLASS      sm                      s5        Parse                              d5
+ 0  1  1  0 1  1   0 0  1  1  1   s  s  s  s  s  P   P -  -   -  - -  - -  - - d  d d  d d Rd=tlboc(Rss)
+                  Field name        Description
+                  sm                Supervisor mode only
+                  ICLASS            Instruction Class
+                  Parse             Packet/Loop parse bits
+                  d5                Field to encode register d
+                  s5                Field to encode register s
+                  t5                Field to encode register t
+80-N2040-45 Rev. B                                                                                                362
+Hexagon V67 Programmer’s Reference Manual                                                       Instruction Set
+        System control register transfer
+                  Move data between supervisor control registers and general registers.
+                  Registers can be moved as 32-bit singles or as 64-bit aligned pairs. The figure shows the
+                  system control registers and their register field encodings.
+                     0       SGP0           16        EVB              32       ISDBST      48    PMUCNT0
+                     1       SGP1           17     MODECTL             33     ISDBCFG0      49    PMUCNT1
+                     2       STID           18      SYSCFG             34     ISDBCFG1      50    PMUCNT2
+                     3        ELR           19           -             35          -        51    PMUCNT3
+                     4     BADVA0           20       IPEND             36     BRKPTPC0      52   PMUEVTCFG
+                     5     BADVA1           21         VID             37    BRKPTCFG0      53    PMUCFG
+                     6       SSR            22         IAD             38     BRKPTPC1      54
+                     7       CCR            23           -             39    BRKPTCFG1
+                                                                                                   Reserved
+                     8       HTID           24         IEL             40    ISDBMBXIN
+                     9      BADVA           25           -             41   ISDBMBXOUT
+                    10      IMASK           26        IAHL                      ISDBEN
+                                                                       42
+                    11                      27     CFGBASE             43      ISDBGPR
+                                            28        DIAG
+                           Reserved         29        REV                      Reserved
+                                            30     PCYCLELO
+                                             31    PCYCLEHI
+                     15                                                 47                  63
+                   Syntax                                  Behavior
+                   Rd=Ss                                   Rd=Ss;
+                   Rdd=Sss                                 Rdd=Sss;
+                   Sd=Rs                                   Sd=Rs;
+                   Sdd=Rss                                 Sdd=Rss;
+                  Class: SYSTEM (slot 3)
+                  Notes
+                        ■ This is a monitor-level feature. If performed in User or Guest mode, a privilege
+                          error exception occurs.
+80-N2040-45 Rev. B                                                                                          363
+Hexagon V67 Programmer’s Reference Manual                                                       Instruction Set
+                  Encoding
+31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3  2  1 0
+   ICLASS      sm                      s5        Parse                        d7
+ 0  1  1  0 0  1   1 1  0  0   -  s  s  s  s  s  P   P -  -  -  - - - - d d d d  d  d d Sd=Rs
+ 0  1  1  0 1  1   0 1  0  0   -  s  s  s  s  s  P   P -  -  -  - - - - d d d d  d  d d Sdd=Rss
+   ICLASS      sm                   s7           Parse                           d5
+ 0  1  1  0 1  1   1 0  1   s  s  s  s  s  s  s  P   P -  -  -  - - - - - - d d  d  d d Rd=Ss
+ 0  1  1  0 1  1   1 1  0   s  s  s  s  s  s  s  P   P -  -  -  - - - - - - d d  d  d d Rdd=Sss
+                  Field name        Description
+                  sm                Supervisor mode only
+                  ICLASS            Instruction Class
+                  Parse             Packet/Loop parse bits
+                  d5                Field to encode register d
+                  d7                Field to encode register d
+                  s5                Field to encode register s
+                  s7                Field to encode register s
+80-N2040-45 Rev. B                                                                                          364
+Hexagon V67 Programmer’s Reference Manual                                                            Instruction Set
+          Transition threads to Wait mode
+                  WAIT causes the calling thread to enter Wait mode.
+                  Wait mode is a low-power mode where the thread idles. The thread does not fetch or
+                  execute instructions in Wait mode.
+                  When a thread executes WAIT, the PC is set to the packet after the WAIT instruction.
+                  To exit Wait mode, a waiting thread can either receive an interrupt, or another thread can
+                  execute the RESUME instruction for the waiting thread. In the case that a thread is woken
+                  up by an interrupt, at the time the interrupt service routine completes and executes a RTE
+                  instruction, the thread remains running.
+                  The source register Rs is not used in the instruction. It exists for backwards compatibility.
+                   Syntax                                   Behavior
+                   wait(Rs)                                 if (!in_debug_mode) modectl[(TNUM+16)] = 1;
+                                                            ;
+                  Class: SYSTEM (slot 3)
+                  Notes
+                       ■   This is a solo instruction. It must not be grouped with other instructions in a
+                           packet.
+                       ■   This is a monitor-level feature. If performed in User or Guest mode, a privilege
+                           error exception occurs.
+                  Encoding
+31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9  8 7  6 5  4 3  2  1  0
+   ICLASS      sm                      s5        Parse
+ 0  1  1  0 0  1   0 0  0  1  0   s  s  s  s  s  P   P -  -   - -  - - 0 0  0  -  -  -  - - wait(Rs)
+                  Field name        Description
+                  sm                Supervisor mode only
+                  ICLASS            Instruction Class
+                  Parse             Packet/Loop parse bits
+                  s5                Field to encode register s
+80-N2040-45 Rev. B                                                                                               365
+Hexagon V67 Programmer’s Reference Manual                                                       Instruction Set
+     11.9.3       SYSTEM/USER
+                  The SYSTEM/USER instruction subclass includes instructions which allow user access to
+                  system resources.
+          Load locked
+                  This memory lock instruction performs a word or double-word locked load.
+                  This instruction returns the contents of the memory at address Rs and also reserves a lock
+                  reservation at that address. For more information, see the section on Atomic Operations.
+                   Syntax                                   Behavior
+                   Rd=memw_locked(Rs)                       EA=Rs;
+                                                            Rd = *EA;
+                   Rdd=memd_locked(Rs)                      EA=Rs;
+                                                            Rdd = *EA;
+                  Class: SYSTEM (slots 0)
+                  Notes
+                       ■    This instruction may only be grouped with ALU32 or non-floating-point XTYPE
+                            instructions.
+                  Encoding
+31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9  8 7 6 5 4 3  2 1  0
+                               U
+   ICLASS    Amode     Type             s5        Parse                          d5
+                               N
+ 1  0  0  1 0  0   1 0  0   0  0  s   s  s  s  s  P   P 0 0   - -  - - - 0 0 d d  d d  d Rd=memw_locked(Rs)
+ 1  0  0  1 0  0   1 0  0   0  0  s   s  s  s  s  P   P 0 1   - -  - - - 0 0 d d  d d  d Rdd=memd_locked(Rs)
+                  Field name         Description
+                  ICLASS             Instruction Class
+                  Amode              Amode
+                  Type               Type
+                  UN                 Unsigned
+                  Parse              Packet/Loop parse bits
+                  d5                 Field to encode register d
+                  s5                 Field to encode register s
+80-N2040-45 Rev. B                                                                                           366
+Hexagon V67 Programmer’s Reference Manual                                                            Instruction Set
+          Store conditional
+                  This memory lock instruction performs a word or double-word conditional store
+                  operation.
+                  If the address reservation is held by this thread and there are no intervening accesses to the
+                  memory location, the store is performed and the predicate is set to true. Otherwise, the
+                  store is not performed and the predicate returns false. For more information, see the
+                  section on Atomic Operations.
+                   Syntax                                     Behavior
+                   memd_locked(Rs,Pd)=Rtt                     EA=Rs;
+                                                              if (lock_valid) {
+                                                                   *EA = Rtt;
+                                                                   Pd = 0xff;
+                                                                   lock_valid = 0;
+                                                              } else {
+                                                                   Pd = 0;
+                                                              }
+                   memw_locked(Rs,Pd)=Rt                      EA=Rs;
+                                                              if (lock_valid) {
+                                                                   *EA = Rt;
+                                                                   Pd = 0xff;
+                                                                   lock_valid = 0;
+                                                              } else {
+                                                                   Pd = 0;
+                                                              }
+                  Class: SYSTEM (slots 0)
+                  Notes
+                        ■    This instruction may only be grouped with ALU32 or non-floating-point XTYPE
+                             instructions.
+                        ■    The predicate generated by this instruction cannot be used as a .new predicate, nor
+                             can it be automatically AND’d with another predicate.
+                  Encoding
+31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9     8  7 6 5  4 3 2 1   0
+                                U
+   ICLASS    Amode      Type    N        s5        Parse          t5                      d2
+ 1  0  1  0 0  0   0  0  1   0  1   s  s  s  s  s  P   P -  t   t  t t  t  - - -  - - - d   d memw_locked(Rs,Pd)=Rt
+ 1  0  1  0 0  0   0  0  1   1  1   s  s  s  s  s  P   P 0  t   t  t t  t  - - -  - - - d   d memd_locked(Rs,Pd)=Rtt
+                  Field name          Description
+                  ICLASS              Instruction Class
+                  Parse               Packet/Loop parse bits
+                  d2                  Field to encode register d
+                  s5                  Field to encode register s
+80-N2040-45 Rev. B                                                                                                367
+Hexagon V67 Programmer’s Reference Manual                 Instruction Set
+                  Field name   Description
+                  t5           Field to encode register t
+                  Amode        Amode
+                  Type         Type
+                  UN           Unsigned
+80-N2040-45 Rev. B                                                    368
+Hexagon V67 Programmer’s Reference Manual                                                            Instruction Set
+          Zero a cache line
+                  DCZEROA clears 32 bytes of memory.
+                  If the memory is marked write-back cacheable, a cache line is allocated in the data cache
+                  and 32 bytes are cleared.
+                  If the memory is write-through or write-back, 32 bytes of zeros are sent to memory.
+                  This instruction is useful for efficiently handling write-only data by pre-allocating lines in
+                  the cache.
+                  The address must be 32-byte aligned. If not, an unaligned error exception is raised.
+                  If this instruction appears in a packet, slot 1 must be A-type or empty.
+                   Syntax                                   Behavior
+                   dczeroa(Rs)                              EA=Rs;
+                                                            dcache_zero_addr(EA);
+                  Class: SYSTEM (slots 0)
+                  Notes
+                        ■    A packet containing this instruction must have slot 1 either empty or executing an
+                             ALU32 instruction.
+                  Intrinsics
+                   dczeroa(Rs)                              void Q6_dczeroa_A(Address a)
+                  Encoding
+31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9  8 7  6 5  4 3  2  1  0
+                                U
+   ICLASS    Amode      Type    N      s5        Parse
+ 1  0  1  0 0  0   0  0  1   1 0  s  s  s  s  s  P   P 0  -   - -  - -  - -  - -  - -  -  - dczeroa(Rs)
+                  Field name        Description
+                  ICLASS            Instruction Class
+                  Parse             Packet/Loop parse bits
+                  s5                Field to encode register s
+                  Amode             Amode
+                  Type              Type
+                  UN                Unsigned
+80-N2040-45 Rev. B                                                                                               369
+Hexagon V67 Programmer’s Reference Manual                                                            Instruction Set
+          Memory barrier
+                  BARRIER establishes a memory barrier to ensure proper ordering between accesses
+                  before the barrier instruction and accesses after the barrier instruction.
+                  All accesses before the barrier are globally observable before any access after the barrier
+                  can be observed.
+                  The use of this instruction is system-dependent.
+                   Syntax                                   Behavior
+                   barrier                                  memory_barrier;
+                  Class: SYSTEM (slots 0)
+                  Notes
+                       ■    This is a solo instruction. It must not be grouped with other instructions in a
+                            packet.
+                  Encoding
+31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9  8 7  6 5 4  3  2  1  0
+                               U
+   ICLASS    Amode     Type                      Parse
+                               N
+ 1  0  1  0 1  0   0 0  0   0  0  -  -  -  -   - P   P -  -   - -  - - 0  0 0  - -  -  -  -  barrier
+                  Field name        Description
+                  ICLASS            Instruction Class
+                  Parse             Packet/Loop parse bits
+                  Amode             Amode
+                  Type              Type
+                  UN                Unsigned
+80-N2040-45 Rev. B                                                                                               370
+Hexagon V67 Programmer’s Reference Manual                                                          Instruction Set
+          Breakpoint
+                  BRKPT causes the program to enter Debug mode if enabled by ISDB.
+                  Execution control is handed to ISDB and the program does not proceed until directed by
+                  the debugger.
+                  If ISDB is disabled, this instruction is treated as a NOP.
+                   Syntax                                   Behavior
+                   brkpt                                    Enter Debug mode;
+                  Class: SYSTEM (slot 3)
+                  Notes
+                        ■  This is a solo instruction. It must not be grouped with other instructions in a
+                           packet.
+                  Encoding
+31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9  8 7  6 5 4 3  2  1 0
+   ICLASS      sm                                Parse
+ 0  1  1  0 1  1   0  0  0 0  1   -  -  -  -   - P   P -  -   - -  - - 0 0  0 - -  -  -  - brkpt
+                  Field name        Description
+                  sm                Supervisor mode only
+                  ICLASS            Instruction Class
+                  Parse             Packet/Loop parse bits
+80-N2040-45 Rev. B                                                                                             371
+Hexagon V67 Programmer’s Reference Manual                                                           Instruction Set
+          Data cache prefetch
+                  DCFETCH prefetches the data at address Rs + unsigned immediate.
+                  This instruction is a hint to the memory system, and is handled in an implementation-
+                  dependent manner.
+                   Syntax                                   Behavior
+                   dcfetch(Rs)                              Assembler mapped to: "dcfetch(Rs+#0)"
+                   dcfetch(Rs+#u11:3)                       EA=Rs+#u;
+                                                            dcache_fetch(EA);
+                  Class: SYSTEM (slots 0)
+                  Intrinsics
+                   dcfetch(Rs)                              void Q6_dcfetch_A(Address a)
+                  Encoding
+31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9  8 7  6 5  4 3  2 1  0
+                              U
+   ICLASS    Amode     Type            s5        Parse
+                              N
+ 1  0  0  1 0  1   0 0  0   0 0   s  s  s  s  s  P   P 0  -   - i  i i  i i  i i i  i i  i dcfetch(Rs+#u11:3)
+                  Field name        Description
+                  ICLASS            Instruction Class
+                  Amode             Amode
+                  Type              Type
+                  UN                Unsigned
+                  Parse             Packet/Loop parse bits
+                  s5                Field to encode register s
+80-N2040-45 Rev. B                                                                                              372
+Hexagon V67 Programmer’s Reference Manual                                                            Instruction Set
+          Data cache maintenance user operations
+                  Perform maintenance operations on the data cache.
+                  DCCLEANINVA looks up the data cache at address Rs. If this address is in the cache and
+                  has dirty data, the data is flushed out to memory and the line is then invalidated.
+                  DCCLEANA looks up the data cache at address Rs. If this address is in the cache and has
+                  dirty data, the data is flushed out to memory.
+                  DCINVA looks up the data cache at address Rs. If this address is in the cache, the line
+                  containing the data is invalidated.
+                  If an instruction appears in a packet, slot 1 must be A-type or empty.
+                  In implementations that support L2 cache, these instructions operate on both L1 data and
+                  L2 caches.
+                   Syntax                                   Behavior
+                   dccleana(Rs)                             EA=Rs;
+                                                            dcache_clean_addr(EA);
+                   dccleaninva(Rs)                          EA=Rs;
+                                                            dcache_cleaninv_addr(EA);
+                   dcinva(Rs)                               EA=Rs;
+                                                            dcache_cleaninv_addr(EA);
+                  Class: SYSTEM (slots 0)
+                  Notes
+                        ■    A packet containing this instruction must have slot 1 either empty or executing an
+                             ALU32 instruction.
+                  Intrinsics
+                   dccleana(Rs)                             void Q6_dccleana_A(Address a)
+                   dccleaninva(Rs)                          void Q6_dccleaninva_A(Address a)
+                   dcinva(Rs)                               void Q6_dcinva_A(Address a)
+                  Encoding
+31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9  8 7  6 5  4 3  2  1  0
+                                U
+   ICLASS    Amode      Type           s5       Parse
+                                N
+ 1  0  1  0 0  0   0  0  0   0 0  s  s  s  s  s P   P  -  -   - -  - -  - -  - - -  -  -  - dccleana(Rs)
+ 1  0  1  0 0  0   0  0  0   0 1  s  s  s  s  s P   P  -  -   - -  - -  - -  - - -  -  -  - dcinva(Rs)
+ 1  0  1  0 0  0   0  0  0   1 0  s  s  s  s  s P   P  -  -   - -  - -  - -  - - -  -  -  - dccleaninva(Rs)
+80-N2040-45 Rev. B                                                                                               373
+Hexagon V67 Programmer’s Reference Manual                 Instruction Set
+                  Field name   Description
+                  ICLASS       Instruction Class
+                  Parse        Packet/Loop parse bits
+                  s5           Field to encode register s
+                  Amode        Amode
+                  Type         Type
+                  UN           Unsigned
+80-N2040-45 Rev. B                                                    374
+Hexagon V67 Programmer’s Reference Manual                                                       Instruction Set
+          Send value to DIAG trace
+                  These instructions send the sources to the external DIAG trace.
+                   Syntax                                   Behavior
+                   diag(Rs)
+                   diag0(Rss,Rtt)
+                   diag1(Rss,Rtt)
+                  Class: SYSTEM (slot 3)
+                  Encoding
+31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9  8 7 6 5 4 3 2 1 0
+   ICLASS      sm                      s5        Parse
+ 0  1  1  0 0  0   1 0  0  1  0   s  s  s  s  s  P   P -  -   -  - - - 0 0 1 - - - - - diag(Rs)
+   ICLASS      sm                      s5        Parse          t5
+ 0  1  1  0 0  0   1 0  0  1  0   s  s  s  s  s  P   P -  t   t  t t t 0 1 0 - - - - - diag0(Rss,Rtt)
+ 0  1  1  0 0  0   1 0  0  1  0   s  s  s  s  s  P   P -  t   t  t t t 0 1 1 - - - - - diag1(Rss,Rtt)
+                  Field name        Description
+                  sm                Supervisor mode only
+                  ICLASS            Instruction Class
+                  Parse             Packet/Loop parse bits
+                  s5                Field to encode register s
+                  t5                Field to encode register t
+80-N2040-45 Rev. B                                                                                          375
+Hexagon V67 Programmer’s Reference Manual                                                            Instruction Set
+          Instruction cache maintenance user operations
+                  ICINVA looks up the address in Rs in the instruction cache.
+                  If the address is found, the instruction invalidates the corresponding cache line. If the user
+                  does not have proper permissions to the page which is to be invalidated, the instruction is
+                  converted to a NOP.
+                   Syntax                                  Behavior
+                   icinva(Rs)                              EA=Rs;
+                                                           icache_inv_addr(EA);
+                  Class: SYSTEM (slot 2)
+                  Notes
+                        ■  This is a solo instruction. It must not be grouped with other instructions in a
+                           packet.
+                  Encoding
+31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7  6  5  4 3 2  1 0
+   ICLASS                              s5        Parse
+ 0  1  0   1 0 1   1  0  1 1  0   s  s  s  s  s  P   P 0 0   0  - - -  - -  -  - - -  -  - icinva(Rs)
+                  Field name        Description
+                  ICLASS            Instruction Class
+                  Parse             Packet/Loop parse bits
+                  s5                Field to encode register s
+80-N2040-45 Rev. B                                                                                               376
+Hexagon V67 Programmer’s Reference Manual                                                          Instruction Set
+          Instruction synchronization
+                  ISYNC ensures that all previous instructions have committed before continuing to the next
+                  instruction.
+                  This instruction should be executed after the following events (when subsequent
+                  instructions must observe the results of the event):
+                       ■   After modifying the TLB with a TLBW instruction
+                       ■   After modifying the SSR register
+                       ■   After modifying the SYSCFG register
+                       ■   After any instruction cache maintenance operation
+                       ■   After modifying the TID register
+                   Syntax                                   Behavior
+                   isync                                    instruction_sync;
+                  Class: SYSTEM (slot 2)
+                  Notes
+                       ■   This is a solo instruction. It must not be grouped with other instructions in a
+                           packet.
+                  Encoding
+31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9  8 7  6 5 4 3  2  1 0
+   ICLASS                                        Parse
+ 0  1  0   1 0 1   1 1  1  1  0  0   0  0  0  0  P   P 0  -   - - 0  0 0 0  0 0 0  0 1  0  isync
+                  Field name        Description
+                  ICLASS            Instruction Class
+                  Parse             Packet/Loop parse bits
+80-N2040-45 Rev. B                                                                                             377
+Hexagon V67 Programmer’s Reference Manual                                                                    Instruction Set
+        L2 cache prefetch
+                  L2FETCH initiates background prefetching into the L2 cache.
+                  Rs specifies the 32-bit virtual start address. There are two forms of this instruction.
+                  In the first form, the dimensions of the area to prefetch are encoded in source register Rt as
+                  follows:
+                            Rt[15:8] = Width of a fetch block in bytes.
+                            Rt[7:0] = Height: the number of width-sized blocks to fetch.
+                            Rt[31:16] = Stride: an unsigned byte offset which increments the pointer after
+                            each width-sized block is fetched.
+                  In the second form, the operands are encoded in register pair Rtt as follows:
+                            Rtt[31:16] = Width of a fetch block in bytes.
+                            Rtt[15:0] = Height: the number of Width-sized blocks to fetch.
+                            Rtt[47:32] = Stride: an unsigned byte offset which increments the pointer after
+                            each Width-sized block is fetched.
+                            Rtt[48] = Direction. If clear, the prefetches should be performed in row major
+                            form, meaning all cache lines in a row should be fetched before proceeding to the
+                            next row. If the bit is set, prefetch should be done in column major form, meaning
+                            all cache lines in a column are fetched before proceeding to the next column.
+                  The following figure shows two examples of using the L2FETCH instruction.
+                             L2FETCH for box prefetch                             L2FETCH for large linear prefetch
+                        31                                                        31             16 15     8 7       0
+                                       16 15      8 7       0
+                    Rt        Stride       Width     Height                 Rt            128          128     Lines
+                    Rs             Start Address                            Rs               Start Address
+                                             Stride
+                                         Width
+                                       Prefetch
+                         Height                                                128* Lines
+                                         Area
+                  In the box prefetch, a 2-D range of memory is defined within a larger frame. The second
+                  example shows prefetch for a large linear area of memory which has size Lines * 128.
+80-N2040-45 Rev. B                                                                                                       378
+Hexagon V67 Programmer’s Reference Manual                                                               Instruction Set
+                  L2FETCH is non-blocking. After the instruction is initiated, the program continues on to
+                  the next instruction while the prefetching is performed in the background. L2fetch can
+                  bring in either code or data to the L2 cache. If the lines of interest are already in the L2, no
+                  action is performed. If the lines are missing from the L2$, the hardware attempts to fetch
+                  them from the system memory.
+                  The hardware prefetch engine continues to request all lines in the programmed memory
+                  range. The prefetching hardware makes a best-effort to prefetch the requested data, and
+                  attempts to perform prefetching at a lower priority than demand fetches. This prevents
+                  prefetch from adding traffic while the system is under heavy load.
+                  If a program initiates a new L2FETCH while an older L2FETCH operation is still
+                  pending, the new request is queued, up to 3 deep. If 3 L2FETCHes are already pending,
+                  the oldest request is dropped. During the time a L2 prefetch is active for a thread, the
+                  USR:PFA status bit is set to indicate that prefetches are in-progress. The programmer can
+                  use this bit to decide whether to start a new L2FETCH before the previous one completes.
+                  Executing an L2fetch with any subfield programmed as zero cancels all pending
+                  prefetches by the calling thread.
+                  The implementation is free to drop prefetches when needed.
+                   Syntax                                   Behavior
+                   l2fetch(Rs,Rt)                           l2fetch(Rs,INFO);
+                   l2fetch(Rs,Rtt)                          l2fetch(Rs,INFO);
+                  Class: SYSTEM (slots 0)
+                  Notes
+                        ■    This instruction may only be grouped with ALU32 or non-floating-point XTYPE
+                             instructions.
+                  Intrinsics
+                   l2fetch(Rs,Rt)                           void Q6_l2fetch_AR(Address a, Word32 Rt)
+                   l2fetch(Rs,Rtt)                          void Q6_l2fetch_AP(Address a, Word64 Rtt)
+                  Encoding
+31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9  8 7  6 5  4  3  2  1  0
+                                U
+   ICLASS    Amode      Type    N       s5      Parse           t5
+ 1  0  1  0 0  1   1  0  0   0  0  s  s  s s  s P   P  -  t   t  t t t 0  0 0  -   - -   - -  l2fetch(Rs,Rt)
+ 1  0  1  0 0  1   1  0  1   0  0  s  s  s s  s P   P  -  t   t  t t t  - -  - -   - -   - -  l2fetch(Rs,Rtt)
+80-N2040-45 Rev. B                                                                                                  379
+Hexagon V67 Programmer’s Reference Manual                 Instruction Set
+                  Field name   Description
+                  ICLASS       Instruction Class
+                  Parse        Packet/Loop parse bits
+                  s5           Field to encode register s
+                  t5           Field to encode register t
+                  Amode        Amode
+                  Type         Type
+                  UN           Unsigned
+80-N2040-45 Rev. B                                                    380
+Hexagon V67 Programmer’s Reference Manual                                                          Instruction Set
+          Pause
+                  The PAUSE instruction pauses execution for a specified period of time.
+                  During the pause duration, the program enters a low-power state and doesl not fetch and
+                  execute instructions. The instruction provides a short immediate which indicates the pause
+                  duration. The program pauses for at most the number of cycles specified in the immediate
+                  plus 8. The minimum pause is 0 cycles, and the maximum pause is implementation
+                  defined.
+                  An interrupt to the program exits the paused state.
+                  System events, such as hardware or DMA completion, can trigger exits from Pause mode.
+                  An implementation is free to pause for durations shorter than (immediate+8), but not
+                  longer.
+                  This instruction is useful for implementing user-level low-power synchronization
+                  operations, such as spin locks or wait-for-event signaling.
+                   Syntax                                   Behavior
+                   pause(#u8)                               Pause for #u cycles;
+                  Class: SYSTEM (slot 2)
+                  Notes
+                       ■   This is a solo instruction. It must not be grouped with other instructions in a
+                           packet.
+                  Encoding
+31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9  8 7  6 5  4 3 2  1 0
+   ICLASS                                        Parse
+ 0  1  0  1 0  1   0 0  0  1   -  -  -  -  -   - P   P -  i   i i  i i -  - -  i i i  -  - pause(#u8)
+                  Field name        Description
+                  ICLASS            Instruction Class
+                  Parse             Packet/Loop parse bits
+80-N2040-45 Rev. B                                                                                             381
+Hexagon V67 Programmer’s Reference Manual                                                           Instruction Set
+          Memory thread synchronization
+                  The SYNCHT instruction synchronizes memory.
+                  All outstanding memory operations, including cached and uncached loads and stores, are
+                  completed before the processor continues to the next instruction. This ensures that certain
+                  memory operations are performed in the desired order (for example, when accessing I/O
+                  devices).
+                  After performing a SYNCHT operation, the processor ceases fetching and executing
+                  instructions from the program until all outstanding memory operations of that program are
+                  completed.
+                  In multi-threaded or multi-core environments, SYNCHT is not concerned with other
+                  execution contexts.
+                  The use of this instruction is system-dependent.
+                   Syntax                                   Behavior
+                   syncht                                   memory_synch;
+                  Class: SYSTEM (slots 0)
+                  Notes
+                       ■    This is a solo instruction. It must not be grouped with other instructions in a
+                            packet.
+                  Encoding
+31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9  8 7  6 5 4  3  2  1 0
+                               U
+   ICLASS    Amode     Type                      Parse
+                               N
+ 1  0  1  0 1  0   0 0  0   1  0  -  -  -  -   - P   P -  -   - -  - -  - - -  - -  -  -  - syncht
+                  Field name        Description
+                  ICLASS            Instruction Class
+                  Parse             Packet/Loop parse bits
+                  Amode             Amode
+                  Type              Type
+                  UN                Unsigned
+80-N2040-45 Rev. B                                                                                              382
+Hexagon V67 Programmer’s Reference Manual                                                           Instruction Set
+          Send value to ETM trace
+                  TRACE takes the value of register Rs and emits it to the ETM trace.
+                  The ETM block must be enabled, and the thread must have permissions to perform
+                  tracing. The contents of Rs are user-defined.
+                   Syntax                                   Behavior
+                   trace(Rs)                                Send value to ETM trace;
+                  Class: SYSTEM (slot 3)
+                  Notes
+                       ■   This instruction may only be grouped with ALU32 or non-floating-point XTYPE
+                           instructions.
+                  Encoding
+31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9  8 7  6 5  4 3 2  1 0
+   ICLASS      sm                      s5        Parse
+ 0  1  1  0 0  0   1 0  0  1  0   s  s  s  s  s  P   P -  -   - -  - - 0 0  0  - -  - - - trace(Rs)
+                  Field name        Description
+                  sm                Supervisor mode only
+                  ICLASS            Instruction Class
+                  Parse             Packet/Loop parse bits
+                  s5                Field to encode register s
+80-N2040-45 Rev. B                                                                                              383
+Hexagon V67 Programmer’s Reference Manual                                                           Instruction Set
+          Trap
+                  TRAP causes a precise exception.
+                  Executing a TRAP instruction sets the EX bit in SSR to 1, which disables interrupts and
+                  enables Supervisor mode. The program then jumps to the vector location (either TRAP0
+                  or TRAP1). The instruction specifies a n 8-bit immediate field. This field is copied into the
+                  system status register cause field.
+                  Upon returning from the service routine with a RTE, execution resumes at the packet after
+                  the TRAP instruction.
+                  These instructions are generally intended for user code to request services from the
+                  operating system. Two TRAP instructions are provided so the OS can optimize for fast
+                  service routines and slower service routines.
+                   Syntax                                   Behavior
+                   trap0(#u8)                               SSR.CAUSE = #u;
+                                                            TRAP "0";
+                   trap1(#u8)                               Assembler mapped to: "trap1(R0,#u8)"
+                   trap1(Rx,#u8)                            if (!can_handle_trap1_virtinsn(#u)) {
+                                                                SSR.CAUSE = #u;
+                                                                TRAP "1";
+                                                            } else if (#u == 1) {
+                                                                VMRTE;
+                                                            } else if (#u == 3) {
+                                                                VMSETIE;
+                                                            } else if (#u == 4) {
+                                                                VMGETIE;
+                                                            } else if (#u == 6) {
+                                                                VMSPSWAP;
+                  Class: SYSTEM (slot 2)
+                  Notes
+                       ■   This is a solo instruction. It must not be grouped with other instructions in a
+                           packet.
+                  Encoding
+31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9  8 7  6 5  4 3  2 1 0
+   ICLASS                                       Parse
+ 0  1  0  1 0  1   0 0  0  0   -  -  -  -  -  - P   P  -  i   i i  i i -  - -  i  i i -  - trap0(#u8)
+   ICLASS                              x5       Parse
+ 0  1  0  1 0  1   0 0  1  0   -  x  x  x  x  x P   P  -  i   i i  i i -  - -  i  i i -  - trap1(Rx,#u8)
+80-N2040-45 Rev. B                                                                                              384
+Hexagon V67 Programmer’s Reference Manual                 Instruction Set
+                  Field name   Description
+                  ICLASS       Instruction Class
+                  Parse        Packet/Loop parse bits
+                  x5           Field to encode register x
+80-N2040-45 Rev. B                                                    385

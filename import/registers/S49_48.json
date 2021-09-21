@@ -1,0 +1,48 @@
+{
+  "S49_48": {
+    "!anonymous": false,
+    "!fields": [],
+    "!name": "S49_48",
+    "!superclasses": [
+      "Register",
+      "HexagonReg",
+      "Si",
+      "DwarfRegNum"
+    ],
+    "Aliases": [],
+    "AltNames": [
+      "s49"
+    ],
+    "AsmName": "s49:48",
+    "CostPerUse": [
+      0
+    ],
+    "CoveredBySubRegs": 0,
+    "DwarfNumbers": [
+      0
+    ],
+    "HWEncoding": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "Namespace": "Hexagon",
+    "RegAltNameIndices": [],
+    "SubRegIndices": [],
+    "SubRegs": [],
+    "isArtificial": 0
+  }
+}

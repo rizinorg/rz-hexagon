@@ -1,0 +1,48 @@
+{
+  "S1_0": {
+    "!anonymous": false,
+    "!fields": [],
+    "!name": "S1_0",
+    "!superclasses": [
+      "Register",
+      "HexagonReg",
+      "Si",
+      "DwarfRegNum"
+    ],
+    "Aliases": [],
+    "AltNames": [
+      "s1"
+    ],
+    "AsmName": "s1:0",
+    "CostPerUse": [
+      0
+    ],
+    "CoveredBySubRegs": 0,
+    "DwarfNumbers": [
+      0
+    ],
+    "HWEncoding": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "Namespace": "Hexagon",
+    "RegAltNameIndices": [],
+    "SubRegIndices": [],
+    "SubRegs": [],
+    "isArtificial": 0
+  }
+}

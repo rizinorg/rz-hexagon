@@ -3347,6 +3347,32 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		sprintf(hi->mnem, "%s %s = zxth(%s) ; %s = add(%sin,%s) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hex_get_general_sub_regs(hi->ops[2].op.reg), hex_get_general_sub_regs(hi->ops[3].op.reg), hex_get_general_sub_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
+	if ((hi_u32 & 0xfc00ff00) == 0x28003800) {
+		// 001010iiiiiiddddEE111000ssssxxxx | Rd = #Ii ; Rx = add(Rxin,Rs)
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SA1_ADDRX;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 4;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // Rd32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // Ii
+		hi->vals[1] = hi->ops[1].op.imm;
+		hi->ops[2].type = HEX_OP_TYPE_REG;
+		hi->ops[2].op.reg = (((hi_u32)&0xf) >> 0); // Rx16
+		hi->vals[2] = ST64_MAX;
+		hi->ops[3].type = HEX_OP_TYPE_REG;
+		hi->ops[3].op.reg = (((hi_u32)&0xf) >> 0); // Rx16in
+		hi->vals[3] = ST64_MAX;
+		hi->ops[4].type = HEX_OP_TYPE_REG;
+		hi->ops[4].op.reg = (((hi_u32)&0xf0) >> 4); // Rs16
+		hi->vals[4] = ST64_MAX;
+		sprintf(hi->mnem, "%s %s = #0x%x ; %s = add(%sin,%s) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_sub_regs(hi->ops[2].op.reg), hex_get_general_sub_regs(hi->ops[3].op.reg), hex_get_general_sub_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
 	if ((hi_u32 & 0xf800fc00) == 0x20002c00) {
 		// 00100IIIIIIIxxxxEE1011iiiiiidddd | Rx = add(Rxin,#II) ; Rd = add(r29,#Ii)
 		hi->instruction = HEX_INS_X2_AUTOJOIN_SA1_ADDI_SA1_ADDSP;
@@ -3435,6 +3461,31 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[3].shift = 2;
 		hi->vals[3] = hi->ops[3].op.imm;
 		sprintf(hi->mnem, "%s %s = ##0x%x ; %s = add(R29,#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_sub_regs(hi->ops[2].op.reg), (ut32)hi->ops[3].op.imm, hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xfc00fc00) == 0x28002c00) {
+		// 001010IIIIIIDDDDEE1011iiiiiidddd | RD = #II ; Rd = add(r29,#Ii)
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SA1_ADDSP;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 4;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // RD32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // II
+		hi->vals[1] = hi->ops[1].op.imm;
+		hi->ops[2].type = HEX_OP_TYPE_REG;
+		hi->ops[2].op.reg = (((hi_u32)&0xf) >> 0); // Rd16
+		hi->vals[2] = ST64_MAX;
+		hi->ops[3].type = HEX_OP_TYPE_IMM;
+		hi->ops[3].op.imm = (((hi_u32)&0x3f0) >> 4) << 2; // scaled Ii
+		hi->ops[3].attr = HEX_OP_IMM_SCALED;
+		hi->ops[3].shift = 2;
+		hi->vals[3] = hi->ops[3].op.imm;
+		sprintf(hi->mnem, "%s %s = #0x%x ; %s = add(R29,#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_sub_regs(hi->ops[2].op.reg), (ut32)hi->ops[3].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xf800ff00) == 0x20003200) {
@@ -3588,6 +3639,29 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[3].op.reg = (((hi_u32)&0xf0) >> 4); // Rs16
 		hi->vals[3] = ST64_MAX;
 		sprintf(hi->mnem, "%s %s = %s ; %s = and(%s,#1) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hex_get_general_sub_regs(hi->ops[2].op.reg), hex_get_general_sub_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xfc00ff00) == 0x28003200) {
+		// 001010iiiiiiDDDDEE110010ssssdddd | RD = #Ii ; Rd = and(Rs,#1)
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SA1_AND1;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 4;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // RD32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // Ii
+		hi->vals[1] = hi->ops[1].op.imm;
+		hi->ops[2].type = HEX_OP_TYPE_REG;
+		hi->ops[2].op.reg = (((hi_u32)&0xf) >> 0); // Rd16
+		hi->vals[2] = ST64_MAX;
+		hi->ops[3].type = HEX_OP_TYPE_REG;
+		hi->ops[3].op.reg = (((hi_u32)&0xf0) >> 4); // Rs16
+		hi->vals[3] = ST64_MAX;
+		sprintf(hi->mnem, "%s %s = #0x%x ; %s = and(%s,#1) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_sub_regs(hi->ops[2].op.reg), hex_get_general_sub_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xf800fff0) == 0x20003a70) {
@@ -3953,6 +4027,26 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		sprintf(hi->mnem, "%s %s = zxth(%s) ; if (!P0) %s = #0 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hex_get_general_sub_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
+	if ((hi_u32 & 0xfc00fff0) == 0x28003a70) {
+		// 001010iiiiiiDDDDEE1110100111dddd | RD = #Ii ; if (!p0) Rd = #0
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SA1_CLRF;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 3;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // RD32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // Ii
+		hi->vals[1] = hi->ops[1].op.imm;
+		hi->ops[2].type = HEX_OP_TYPE_REG;
+		hi->ops[2].op.reg = (((hi_u32)&0xf) >> 0); // Rd16
+		hi->vals[2] = ST64_MAX;
+		sprintf(hi->mnem, "%s %s = #0x%x ; if (!P0) %s = #0 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_sub_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
 	if ((hi_u32 & 0xf800fff0) == 0x20003a50) {
 		// 00100iiiiiiixxxxEE1110100101dddd | Rx = add(Rxin,#Ii) ; if (!p0.new) Rd = #0
 		hi->instruction = HEX_INS_X2_AUTOJOIN_SA1_ADDI_SA1_CLRFNEW;
@@ -4280,6 +4374,26 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[2].op.reg = (((hi_u32)&0xf) >> 0); // Rd16
 		hi->vals[2] = ST64_MAX;
 		sprintf(hi->mnem, "%s %s = zxth(%s) ; if (!P0.new) %s = #0 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hex_get_general_sub_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xfc00fff0) == 0x28003a50) {
+		// 001010iiiiiiDDDDEE1110100101dddd | RD = #Ii ; if (!p0.new) Rd = #0
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SA1_CLRFNEW;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 3;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // RD32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // Ii
+		hi->vals[1] = hi->ops[1].op.imm;
+		hi->ops[2].type = HEX_OP_TYPE_REG;
+		hi->ops[2].op.reg = (((hi_u32)&0xf) >> 0); // Rd16
+		hi->vals[2] = ST64_MAX;
+		sprintf(hi->mnem, "%s %s = #0x%x ; if (!P0.new) %s = #0 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_sub_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xf800fff0) == 0x20003a60) {
@@ -4628,6 +4742,26 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		sprintf(hi->mnem, "%s %s = zxth(%s) ; if (P0) %s = #0 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hex_get_general_sub_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
+	if ((hi_u32 & 0xfc00fff0) == 0x28003a60) {
+		// 001010iiiiiiDDDDEE1110100110dddd | RD = #Ii ; if (p0) Rd = #0
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SA1_CLRT;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 3;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // RD32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // Ii
+		hi->vals[1] = hi->ops[1].op.imm;
+		hi->ops[2].type = HEX_OP_TYPE_REG;
+		hi->ops[2].op.reg = (((hi_u32)&0xf) >> 0); // Rd16
+		hi->vals[2] = ST64_MAX;
+		sprintf(hi->mnem, "%s %s = #0x%x ; if (P0) %s = #0 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_sub_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
 	if ((hi_u32 & 0xf800fff0) == 0x20003a40) {
 		// 00100iiiiiiixxxxEE1110100100dddd | Rx = add(Rxin,#Ii) ; if (p0.new) Rd = #0
 		hi->instruction = HEX_INS_X2_AUTOJOIN_SA1_ADDI_SA1_CLRTNEW;
@@ -4938,6 +5072,26 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[2].op.reg = (((hi_u32)&0xf) >> 0); // Rd16
 		hi->vals[2] = ST64_MAX;
 		sprintf(hi->mnem, "%s %s = zxth(%s) ; if (P0.new) %s = #0 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hex_get_general_sub_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xfc00fff0) == 0x28003a40) {
+		// 001010iiiiiiDDDDEE1110100100dddd | RD = #Ii ; if (p0.new) Rd = #0
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SA1_CLRTNEW;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 3;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // RD32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // Ii
+		hi->vals[1] = hi->ops[1].op.imm;
+		hi->ops[2].type = HEX_OP_TYPE_REG;
+		hi->ops[2].op.reg = (((hi_u32)&0xf) >> 0); // Rd16
+		hi->vals[2] = ST64_MAX;
+		sprintf(hi->mnem, "%s %s = #0x%x ; if (P0.new) %s = #0 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_sub_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xf800ff0c) == 0x20003900) {
@@ -5255,6 +5409,29 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[3].op.imm = (((hi_u32)&0x3) >> 0); // Ii
 		hi->vals[3] = hi->ops[3].op.imm;
 		sprintf(hi->mnem, "%s %s = zxth(%s) ; P0 = cmp.eq(%s,#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hex_get_general_sub_regs(hi->ops[2].op.reg), (ut32)hi->ops[3].op.imm, hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xfc00ff0c) == 0x28003900) {
+		// 001010IIIIIIddddEE111001ssss00ii | Rd = #II ; p0 = cmp.eq(Rs,#Ii)
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SA1_CMPEQI;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 4;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // Rd32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // II
+		hi->vals[1] = hi->ops[1].op.imm;
+		hi->ops[2].type = HEX_OP_TYPE_REG;
+		hi->ops[2].op.reg = (((hi_u32)&0xf0) >> 4); // Rs16
+		hi->vals[2] = ST64_MAX;
+		hi->ops[3].type = HEX_OP_TYPE_IMM;
+		hi->ops[3].op.imm = (((hi_u32)&0x3) >> 0); // Ii
+		hi->vals[3] = hi->ops[3].op.imm;
+		sprintf(hi->mnem, "%s %s = #0x%x ; P0 = cmp.eq(%s,#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_sub_regs(hi->ops[2].op.reg), (ut32)hi->ops[3].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xf800ff98) == 0x20003c00) {
@@ -5695,6 +5872,29 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[3].op.imm = (((hi_u32)&0x60) >> 5); // Ii
 		hi->vals[3] = hi->ops[3].op.imm;
 		sprintf(hi->mnem, "%s %s = zxth(%s) ; %s = combine(#0,#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hex_get_general_double_low8_regs(hi->ops[2].op.reg), (ut32)hi->ops[3].op.imm, hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xfc00ff98) == 0x28003c00) {
+		// 001010IIIIIIDDDDEE1111000ii00ddd | RD = #II ; Rdd = combine(#0,#Ii)
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SA1_COMBINE0I;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 4;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // RD32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // II
+		hi->vals[1] = hi->ops[1].op.imm;
+		hi->ops[2].type = HEX_OP_TYPE_REG;
+		hi->ops[2].op.reg = (((hi_u32)&0x7) >> 0); // Rdd8
+		hi->vals[2] = ST64_MAX;
+		hi->ops[3].type = HEX_OP_TYPE_IMM;
+		hi->ops[3].op.imm = (((hi_u32)&0x60) >> 5); // Ii
+		hi->vals[3] = hi->ops[3].op.imm;
+		sprintf(hi->mnem, "%s %s = #0x%x ; %s = combine(#0,#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_double_low8_regs(hi->ops[2].op.reg), (ut32)hi->ops[3].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xf800ff98) == 0x20003c08) {
@@ -6158,6 +6358,29 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[3].op.imm = (((hi_u32)&0x60) >> 5); // Ii
 		hi->vals[3] = hi->ops[3].op.imm;
 		sprintf(hi->mnem, "%s %s = zxth(%s) ; %s = combine(#1,#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hex_get_general_double_low8_regs(hi->ops[2].op.reg), (ut32)hi->ops[3].op.imm, hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xfc00ff98) == 0x28003c08) {
+		// 001010IIIIIIDDDDEE1111000ii01ddd | RD = #II ; Rdd = combine(#1,#Ii)
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SA1_COMBINE1I;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 4;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // RD32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // II
+		hi->vals[1] = hi->ops[1].op.imm;
+		hi->ops[2].type = HEX_OP_TYPE_REG;
+		hi->ops[2].op.reg = (((hi_u32)&0x7) >> 0); // Rdd8
+		hi->vals[2] = ST64_MAX;
+		hi->ops[3].type = HEX_OP_TYPE_IMM;
+		hi->ops[3].op.imm = (((hi_u32)&0x60) >> 5); // Ii
+		hi->vals[3] = hi->ops[3].op.imm;
+		sprintf(hi->mnem, "%s %s = #0x%x ; %s = combine(#1,#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_double_low8_regs(hi->ops[2].op.reg), (ut32)hi->ops[3].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xf800ff98) == 0x20003c10) {
@@ -6644,6 +6867,29 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[3].op.imm = (((hi_u32)&0x60) >> 5); // Ii
 		hi->vals[3] = hi->ops[3].op.imm;
 		sprintf(hi->mnem, "%s %s = zxth(%s) ; %s = combine(#2,#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hex_get_general_double_low8_regs(hi->ops[2].op.reg), (ut32)hi->ops[3].op.imm, hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xfc00ff98) == 0x28003c10) {
+		// 001010IIIIIIDDDDEE1111000ii10ddd | RD = #II ; Rdd = combine(#2,#Ii)
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SA1_COMBINE2I;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 4;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // RD32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // II
+		hi->vals[1] = hi->ops[1].op.imm;
+		hi->ops[2].type = HEX_OP_TYPE_REG;
+		hi->ops[2].op.reg = (((hi_u32)&0x7) >> 0); // Rdd8
+		hi->vals[2] = ST64_MAX;
+		hi->ops[3].type = HEX_OP_TYPE_IMM;
+		hi->ops[3].op.imm = (((hi_u32)&0x60) >> 5); // Ii
+		hi->vals[3] = hi->ops[3].op.imm;
+		sprintf(hi->mnem, "%s %s = #0x%x ; %s = combine(#2,#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_double_low8_regs(hi->ops[2].op.reg), (ut32)hi->ops[3].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xf800ff98) == 0x20003c18) {
@@ -7153,6 +7399,29 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[3].op.imm = (((hi_u32)&0x60) >> 5); // Ii
 		hi->vals[3] = hi->ops[3].op.imm;
 		sprintf(hi->mnem, "%s %s = zxth(%s) ; %s = combine(#3,#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hex_get_general_double_low8_regs(hi->ops[2].op.reg), (ut32)hi->ops[3].op.imm, hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xfc00ff98) == 0x28003c18) {
+		// 001010IIIIIIDDDDEE1111000ii11ddd | RD = #II ; Rdd = combine(#3,#Ii)
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SA1_COMBINE3I;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 4;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // RD32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // II
+		hi->vals[1] = hi->ops[1].op.imm;
+		hi->ops[2].type = HEX_OP_TYPE_REG;
+		hi->ops[2].op.reg = (((hi_u32)&0x7) >> 0); // Rdd8
+		hi->vals[2] = ST64_MAX;
+		hi->ops[3].type = HEX_OP_TYPE_IMM;
+		hi->ops[3].op.imm = (((hi_u32)&0x60) >> 5); // Ii
+		hi->vals[3] = hi->ops[3].op.imm;
+		sprintf(hi->mnem, "%s %s = #0x%x ; %s = combine(#3,#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_double_low8_regs(hi->ops[2].op.reg), (ut32)hi->ops[3].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xf800ff08) == 0x20003d08) {
@@ -7710,6 +7979,29 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		sprintf(hi->mnem, "%s %s = zxth(%s) ; %s = combine(%s,#0) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hex_get_general_double_low8_regs(hi->ops[2].op.reg), hex_get_general_sub_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
+	if ((hi_u32 & 0xfc00ff08) == 0x28003d08) {
+		// 001010iiiiiiDDDDEE111101ssss1ddd | RD = #Ii ; Rdd = combine(Rs,#0)
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SA1_COMBINERZ;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 4;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // RD32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // Ii
+		hi->vals[1] = hi->ops[1].op.imm;
+		hi->ops[2].type = HEX_OP_TYPE_REG;
+		hi->ops[2].op.reg = (((hi_u32)&0x7) >> 0); // Rdd8
+		hi->vals[2] = ST64_MAX;
+		hi->ops[3].type = HEX_OP_TYPE_REG;
+		hi->ops[3].op.reg = (((hi_u32)&0xf0) >> 4); // Rs16
+		hi->vals[3] = ST64_MAX;
+		sprintf(hi->mnem, "%s %s = #0x%x ; %s = combine(%s,#0) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_double_low8_regs(hi->ops[2].op.reg), hex_get_general_sub_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
 	if ((hi_u32 & 0xf800ff08) == 0x20003d00) {
 		// 00100iiiiiiixxxxEE111101ssss0ddd | Rx = add(Rxin,#Ii) ; Rdd = combine(#0,Rs)
 		hi->instruction = HEX_INS_X2_AUTOJOIN_SA1_ADDI_SA1_COMBINEZR;
@@ -8242,6 +8534,29 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		sprintf(hi->mnem, "%s %s = zxth(%s) ; %s = combine(#0,%s) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hex_get_general_double_low8_regs(hi->ops[2].op.reg), hex_get_general_sub_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
+	if ((hi_u32 & 0xfc00ff08) == 0x28003d00) {
+		// 001010iiiiiiDDDDEE111101ssss0ddd | RD = #Ii ; Rdd = combine(#0,Rs)
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SA1_COMBINEZR;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 4;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // RD32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // Ii
+		hi->vals[1] = hi->ops[1].op.imm;
+		hi->ops[2].type = HEX_OP_TYPE_REG;
+		hi->ops[2].op.reg = (((hi_u32)&0x7) >> 0); // Rdd8
+		hi->vals[2] = ST64_MAX;
+		hi->ops[3].type = HEX_OP_TYPE_REG;
+		hi->ops[3].op.reg = (((hi_u32)&0xf0) >> 4); // Rs16
+		hi->vals[3] = ST64_MAX;
+		sprintf(hi->mnem, "%s %s = #0x%x ; %s = combine(#0,%s) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_double_low8_regs(hi->ops[2].op.reg), hex_get_general_sub_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
 	if ((hi_u32 & 0xf800ff00) == 0x20003300) {
 		// 00100iiiiiiixxxxEE110011ssssdddd | Rx = add(Rxin,#Ii) ; Rd = add(Rs,#n1)
 		hi->instruction = HEX_INS_X2_AUTOJOIN_SA1_ADDI_SA1_DEC;
@@ -8418,6 +8733,29 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		sprintf(hi->mnem, "%s %s = %s ; %s = add(%s,#-1) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hex_get_general_sub_regs(hi->ops[2].op.reg), hex_get_general_sub_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
+	if ((hi_u32 & 0xfc00ff00) == 0x28003300) {
+		// 001010iiiiiiDDDDEE110011ssssdddd | RD = #Ii ; Rd = add(Rs,#n1)
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SA1_DEC;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 4;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // RD32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // Ii
+		hi->vals[1] = hi->ops[1].op.imm;
+		hi->ops[2].type = HEX_OP_TYPE_REG;
+		hi->ops[2].op.reg = (((hi_u32)&0xf) >> 0); // Rd16
+		hi->vals[2] = ST64_MAX;
+		hi->ops[3].type = HEX_OP_TYPE_REG;
+		hi->ops[3].op.reg = (((hi_u32)&0xf0) >> 4); // Rs16
+		hi->vals[3] = ST64_MAX;
+		sprintf(hi->mnem, "%s %s = #0x%x ; %s = add(%s,#-1) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_sub_regs(hi->ops[2].op.reg), hex_get_general_sub_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
 	if ((hi_u32 & 0xf800ff00) == 0x20003100) {
 		// 00100iiiiiiixxxxEE110001ssssdddd | Rx = add(Rxin,#Ii) ; Rd = add(Rs,#1)
 		hi->instruction = HEX_INS_X2_AUTOJOIN_SA1_ADDI_SA1_INC;
@@ -8546,6 +8884,29 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[3].op.reg = (((hi_u32)&0xf0) >> 4); // Rs16
 		hi->vals[3] = ST64_MAX;
 		sprintf(hi->mnem, "%s %s = %s ; %s = add(%s,#1) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hex_get_general_sub_regs(hi->ops[2].op.reg), hex_get_general_sub_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xfc00ff00) == 0x28003100) {
+		// 001010iiiiiiDDDDEE110001ssssdddd | RD = #Ii ; Rd = add(Rs,#1)
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SA1_INC;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 4;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // RD32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // Ii
+		hi->vals[1] = hi->ops[1].op.imm;
+		hi->ops[2].type = HEX_OP_TYPE_REG;
+		hi->ops[2].op.reg = (((hi_u32)&0xf) >> 0); // Rd16
+		hi->vals[2] = ST64_MAX;
+		hi->ops[3].type = HEX_OP_TYPE_REG;
+		hi->ops[3].op.reg = (((hi_u32)&0xf0) >> 4); // Rs16
+		hi->vals[3] = ST64_MAX;
+		sprintf(hi->mnem, "%s %s = #0x%x ; %s = add(%s,#1) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_sub_regs(hi->ops[2].op.reg), hex_get_general_sub_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xf800fff0) == 0x20003a00) {
@@ -8843,6 +9204,26 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		sprintf(hi->mnem, "%s %s = zxth(%s) ; %s = #-1 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hex_get_general_sub_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
+	if ((hi_u32 & 0xfc00fff0) == 0x28003a00) {
+		// 001010iiiiiiDDDDEE1110100000dddd | RD = #Ii ; Rd = #n1
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SA1_SETIN1;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 3;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // RD32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // Ii
+		hi->vals[1] = hi->ops[1].op.imm;
+		hi->ops[2].type = HEX_OP_TYPE_REG;
+		hi->ops[2].op.reg = (((hi_u32)&0xf) >> 0); // Rd16
+		hi->vals[2] = ST64_MAX;
+		sprintf(hi->mnem, "%s %s = #0x%x ; %s = #-1 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_sub_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
 	if ((hi_u32 & 0xf800ff00) == 0x20003500) {
 		// 00100iiiiiiixxxxEE110101ssssdddd | Rx = add(Rxin,#Ii) ; Rd = sxtb(Rs)
 		hi->instruction = HEX_INS_X2_AUTOJOIN_SA1_ADDI_SA1_SXTB;
@@ -9065,6 +9446,29 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		sprintf(hi->mnem, "%s %s = %s ; %s = sxtb(%s) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hex_get_general_sub_regs(hi->ops[2].op.reg), hex_get_general_sub_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
+	if ((hi_u32 & 0xfc00ff00) == 0x28003500) {
+		// 001010iiiiiiDDDDEE110101ssssdddd | RD = #Ii ; Rd = sxtb(Rs)
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SA1_SXTB;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 4;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // RD32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // Ii
+		hi->vals[1] = hi->ops[1].op.imm;
+		hi->ops[2].type = HEX_OP_TYPE_REG;
+		hi->ops[2].op.reg = (((hi_u32)&0xf) >> 0); // Rd16
+		hi->vals[2] = ST64_MAX;
+		hi->ops[3].type = HEX_OP_TYPE_REG;
+		hi->ops[3].op.reg = (((hi_u32)&0xf0) >> 4); // Rs16
+		hi->vals[3] = ST64_MAX;
+		sprintf(hi->mnem, "%s %s = #0x%x ; %s = sxtb(%s) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_sub_regs(hi->ops[2].op.reg), hex_get_general_sub_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
 	if ((hi_u32 & 0xf800ff00) == 0x20003400) {
 		// 00100iiiiiiixxxxEE110100ssssdddd | Rx = add(Rxin,#Ii) ; Rd = sxth(Rs)
 		hi->instruction = HEX_INS_X2_AUTOJOIN_SA1_ADDI_SA1_SXTH;
@@ -9264,6 +9668,29 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		sprintf(hi->mnem, "%s %s = %s ; %s = sxth(%s) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hex_get_general_sub_regs(hi->ops[2].op.reg), hex_get_general_sub_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
+	if ((hi_u32 & 0xfc00ff00) == 0x28003400) {
+		// 001010iiiiiiDDDDEE110100ssssdddd | RD = #Ii ; Rd = sxth(Rs)
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SA1_SXTH;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 4;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // RD32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // Ii
+		hi->vals[1] = hi->ops[1].op.imm;
+		hi->ops[2].type = HEX_OP_TYPE_REG;
+		hi->ops[2].op.reg = (((hi_u32)&0xf) >> 0); // Rd16
+		hi->vals[2] = ST64_MAX;
+		hi->ops[3].type = HEX_OP_TYPE_REG;
+		hi->ops[3].op.reg = (((hi_u32)&0xf0) >> 4); // Rs16
+		hi->vals[3] = ST64_MAX;
+		sprintf(hi->mnem, "%s %s = #0x%x ; %s = sxth(%s) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_sub_regs(hi->ops[2].op.reg), hex_get_general_sub_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
 	if ((hi_u32 & 0xf800ff00) == 0x20003000) {
 		// 00100iiiiiiixxxxEE110000ssssdddd | Rx = add(Rxin,#Ii) ; Rd = Rs
 		hi->instruction = HEX_INS_X2_AUTOJOIN_SA1_ADDI_SA1_TFR;
@@ -9369,6 +9796,29 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[3].op.reg = (((hi_u32)&0xf0) >> 4); // Rs16
 		hi->vals[3] = ST64_MAX;
 		sprintf(hi->mnem, "%s %s = %s ; %s = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hex_get_general_sub_regs(hi->ops[2].op.reg), hex_get_general_sub_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xfc00ff00) == 0x28003000) {
+		// 001010iiiiiiDDDDEE110000ssssdddd | RD = #Ii ; Rd = Rs
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SA1_TFR;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 4;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // RD32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // Ii
+		hi->vals[1] = hi->ops[1].op.imm;
+		hi->ops[2].type = HEX_OP_TYPE_REG;
+		hi->ops[2].op.reg = (((hi_u32)&0xf) >> 0); // Rd16
+		hi->vals[2] = ST64_MAX;
+		hi->ops[3].type = HEX_OP_TYPE_REG;
+		hi->ops[3].op.reg = (((hi_u32)&0xf0) >> 4); // Rs16
+		hi->vals[3] = ST64_MAX;
+		sprintf(hi->mnem, "%s %s = #0x%x ; %s = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_sub_regs(hi->ops[2].op.reg), hex_get_general_sub_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xf800ff00) == 0x20003700) {
@@ -9639,6 +10089,29 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		sprintf(hi->mnem, "%s %s = zxth(%s) ; %s = and(%s,#255) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hex_get_general_sub_regs(hi->ops[2].op.reg), hex_get_general_sub_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
+	if ((hi_u32 & 0xfc00ff00) == 0x28003700) {
+		// 001010iiiiiiDDDDEE110111ssssdddd | RD = #Ii ; Rd = and(Rs,#255)
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SA1_ZXTB;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 4;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // RD32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // Ii
+		hi->vals[1] = hi->ops[1].op.imm;
+		hi->ops[2].type = HEX_OP_TYPE_REG;
+		hi->ops[2].op.reg = (((hi_u32)&0xf) >> 0); // Rd16
+		hi->vals[2] = ST64_MAX;
+		hi->ops[3].type = HEX_OP_TYPE_REG;
+		hi->ops[3].op.reg = (((hi_u32)&0xf0) >> 4); // Rs16
+		hi->vals[3] = ST64_MAX;
+		sprintf(hi->mnem, "%s %s = #0x%x ; %s = and(%s,#255) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_sub_regs(hi->ops[2].op.reg), hex_get_general_sub_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
 	if ((hi_u32 & 0xf800ff00) == 0x20003600) {
 		// 00100iiiiiiixxxxEE110110ssssdddd | Rx = add(Rxin,#Ii) ; Rd = zxth(Rs)
 		hi->instruction = HEX_INS_X2_AUTOJOIN_SA1_ADDI_SA1_ZXTH;
@@ -9882,6 +10355,111 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[3].op.reg = (((hi_u32)&0xf0) >> 4); // Rs16
 		hi->vals[3] = ST64_MAX;
 		sprintf(hi->mnem, "%s %s = zxth(%s) ; %s = zxth(%s) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hex_get_general_sub_regs(hi->ops[2].op.reg), hex_get_general_sub_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xfc00ff00) == 0x28003600) {
+		// 001010iiiiiiDDDDEE110110ssssdddd | RD = #Ii ; Rd = zxth(Rs)
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SA1_ZXTH;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 4;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // RD32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // Ii
+		hi->vals[1] = hi->ops[1].op.imm;
+		hi->ops[2].type = HEX_OP_TYPE_REG;
+		hi->ops[2].op.reg = (((hi_u32)&0xf) >> 0); // Rd16
+		hi->vals[2] = ST64_MAX;
+		hi->ops[3].type = HEX_OP_TYPE_REG;
+		hi->ops[3].op.reg = (((hi_u32)&0xf0) >> 4); // Rs16
+		hi->vals[3] = ST64_MAX;
+		sprintf(hi->mnem, "%s %s = #0x%x ; %s = zxth(%s) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_sub_regs(hi->ops[2].op.reg), hex_get_general_sub_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xf800fc00) == 0x20002800) {
+		// 00100IIIIIIIxxxxEE1010iiiiiidddd | Rx = add(Rxin,#II) ; Rd = #Ii
+		hi->instruction = HEX_INS_X2_AUTOJOIN_SA1_ADDI_UNDOCUMENTED_SA2_TFRSI;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 4;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // Rx16
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_REG;
+		hi->ops[1].op.reg = (((hi_u32)&0xf0000) >> 16); // Rx16in
+		hi->vals[1] = ST64_MAX;
+		hi->ops[2].type = HEX_OP_TYPE_IMM;
+		hi->ops[2].op.imm = (((hi_u32)&0x7f00000) >> 20); // II
+		if (hi->ops[2].op.imm & (1 << 6)) { // signed
+			hi->ops[2].op.imm |= (0xffffffffffffffff << 6);
+		}
+		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
+		if (((st32)hi->ops[2].op.imm) < 0) {
+			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+		} else {
+			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+		}
+		hi->vals[2] = hi->ops[2].op.imm;
+		hi->ops[3].type = HEX_OP_TYPE_REG;
+		hi->ops[3].op.reg = (((hi_u32)&0xf) >> 0); // Rd32
+		hi->vals[3] = ST64_MAX;
+		hi->ops[4].type = HEX_OP_TYPE_IMM;
+		hi->ops[4].op.imm = (((hi_u32)&0x3f0) >> 4); // Ii
+		hi->vals[4] = hi->ops[4].op.imm;
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = #0x%x %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_sub_regs(hi->ops[3].op.reg), (ut32)hi->ops[4].op.imm, hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xfc00fc00) == 0x28002800) {
+		// 001010IIIIIIDDDDEE1010iiiiiidddd | RD = #II ; Rd = #Ii
+		hi->instruction = HEX_INS_X2_AUTOJOIN_SA1_SETI_UNDOCUMENTED_SA2_TFRSI;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 4;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // RD16
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // II
+		hex_op_extend(&(hi->ops[1]), false, addr); // Extension possible
+		hi->vals[1] = hi->ops[1].op.imm;
+		hi->ops[2].type = HEX_OP_TYPE_REG;
+		hi->ops[2].op.reg = (((hi_u32)&0xf) >> 0); // Rd32
+		hi->vals[2] = ST64_MAX;
+		hi->ops[3].type = HEX_OP_TYPE_IMM;
+		hi->ops[3].op.imm = (((hi_u32)&0x3f0) >> 4); // Ii
+		hi->vals[3] = hi->ops[3].op.imm;
+		sprintf(hi->mnem, "%s %s = ##0x%x ; %s = #0x%x %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_sub_regs(hi->ops[2].op.reg), (ut32)hi->ops[3].op.imm, hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xfc00fc00) == 0x28002800) {
+		// 001010IIIIIIDDDDEE1010iiiiiidddd | RD = #II ; Rd = #Ii
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_UNDOCUMENTED_SA2_TFRSI;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 4;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // RD32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // II
+		hi->vals[1] = hi->ops[1].op.imm;
+		hi->ops[2].type = HEX_OP_TYPE_REG;
+		hi->ops[2].op.reg = (((hi_u32)&0xf) >> 0); // Rd32
+		hi->vals[2] = ST64_MAX;
+		hi->ops[3].type = HEX_OP_TYPE_IMM;
+		hi->ops[3].op.imm = (((hi_u32)&0x3f0) >> 4); // Ii
+		hi->vals[3] = hi->ops[3].op.imm;
+		sprintf(hi->mnem, "%s %s = #0x%x ; %s = #0x%x %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_sub_regs(hi->ops[2].op.reg), (ut32)hi->ops[3].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
 }
@@ -10563,6 +11141,34 @@ void hexagon_disasm_duplex_0x4(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		sprintf(hi->mnem, "%s %s = zxth(%s) ; %s = memw(%s+#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hex_get_general_sub_regs(hi->ops[2].op.reg), hex_get_general_sub_regs(hi->ops[3].op.reg), (ut32)hi->ops[4].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
+	if ((hi_u32 & 0xfc00f000) == 0x48000000) {
+		// 010010IIIIIIDDDDEE00iiiissssdddd | RD = #II ; Rd = memw(Rs+#Ii)
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SL1_LOADRI_IO;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 5;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // RD32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // II
+		hi->vals[1] = hi->ops[1].op.imm;
+		hi->ops[2].type = HEX_OP_TYPE_REG;
+		hi->ops[2].op.reg = (((hi_u32)&0xf) >> 0); // Rd16
+		hi->vals[2] = ST64_MAX;
+		hi->ops[3].type = HEX_OP_TYPE_REG;
+		hi->ops[3].op.reg = (((hi_u32)&0xf0) >> 4); // Rs16
+		hi->vals[3] = ST64_MAX;
+		hi->ops[4].type = HEX_OP_TYPE_IMM;
+		hi->ops[4].op.imm = (((hi_u32)&0xf00) >> 8) << 2; // scaled Ii
+		hi->ops[4].attr = HEX_OP_IMM_SCALED;
+		hi->ops[4].shift = 2;
+		hi->vals[4] = hi->ops[4].op.imm;
+		sprintf(hi->mnem, "%s %s = #0x%x ; %s = memw(%s+#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_sub_regs(hi->ops[2].op.reg), hex_get_general_sub_regs(hi->ops[3].op.reg), (ut32)hi->ops[4].op.imm, hi->pkt_info.syntax_postfix);
+		return;
+	}
 	if ((hi_u32 & 0xf800f000) == 0x40001000) {
 		// 01000IIIIIIIxxxxEE01iiiissssdddd | Rx = add(Rxin,#II) ; Rd = memub(Rs+#Ii)
 		hi->instruction = HEX_INS_X2_AUTOJOIN_SA1_ADDI_SL1_LOADRUB_IO;
@@ -11190,6 +11796,32 @@ void hexagon_disasm_duplex_0x4(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		sprintf(hi->mnem, "%s %s = zxth(%s) ; %s = memub(%s+#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hex_get_general_sub_regs(hi->ops[2].op.reg), hex_get_general_sub_regs(hi->ops[3].op.reg), (ut32)hi->ops[4].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
+	if ((hi_u32 & 0xfc00f000) == 0x48001000) {
+		// 010010IIIIIIDDDDEE01iiiissssdddd | RD = #II ; Rd = memub(Rs+#Ii)
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SL1_LOADRUB_IO;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 5;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // RD32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // II
+		hi->vals[1] = hi->ops[1].op.imm;
+		hi->ops[2].type = HEX_OP_TYPE_REG;
+		hi->ops[2].op.reg = (((hi_u32)&0xf) >> 0); // Rd16
+		hi->vals[2] = ST64_MAX;
+		hi->ops[3].type = HEX_OP_TYPE_REG;
+		hi->ops[3].op.reg = (((hi_u32)&0xf0) >> 4); // Rs16
+		hi->vals[3] = ST64_MAX;
+		hi->ops[4].type = HEX_OP_TYPE_IMM;
+		hi->ops[4].op.imm = (((hi_u32)&0xf00) >> 8); // Ii
+		hi->vals[4] = hi->ops[4].op.imm;
+		sprintf(hi->mnem, "%s %s = #0x%x ; %s = memub(%s+#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_sub_regs(hi->ops[2].op.reg), hex_get_general_sub_regs(hi->ops[3].op.reg), (ut32)hi->ops[4].op.imm, hi->pkt_info.syntax_postfix);
+		return;
+	}
 }
 
 void hexagon_disasm_duplex_0x5(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr) {
@@ -11605,6 +12237,23 @@ void hexagon_disasm_duplex_0x5(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		sprintf(hi->mnem, "%s %s = zxth(%s) ; deallocframe %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
+	if ((hi_u32 & 0xfc00ffff) == 0x48003f00) {
+		// 010010iiiiiiddddEE11111100000000 | Rd = #Ii ; deallocframe
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SL2_DEALLOCFRAME;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 2;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // Rd32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // Ii
+		hi->vals[1] = hi->ops[1].op.imm;
+		sprintf(hi->mnem, "%s %s = #0x%x ; deallocframe %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hi->pkt_info.syntax_postfix);
+		return;
+	}
 	if ((hi_u32 & 0xf800ffff) == 0x40003fc0) {
 		// 01000iiiiiiixxxxEE11111111000000 | Rx = add(Rxin,#Ii) ; jumpr r31
 		hi->instruction = HEX_INS_X2_AUTOJOIN_SA1_ADDI_SL2_JUMPR31;
@@ -12014,6 +12663,23 @@ void hexagon_disasm_duplex_0x5(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[1].op.reg = (((hi_u32)&0xf00000) >> 20); // Rs16
 		hi->vals[1] = ST64_MAX;
 		sprintf(hi->mnem, "%s %s = zxth(%s) ; jumpr R31 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xfc00ffff) == 0x48003fc0) {
+		// 010010iiiiiiddddEE11111111000000 | Rd = #Ii ; jumpr r31
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SL2_JUMPR31;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 2;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // Rd32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // Ii
+		hi->vals[1] = hi->ops[1].op.imm;
+		sprintf(hi->mnem, "%s %s = #0x%x ; jumpr R31 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xf800ffff) == 0x40003fc5) {
@@ -12427,6 +13093,23 @@ void hexagon_disasm_duplex_0x5(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		sprintf(hi->mnem, "%s %s = zxth(%s) ; if (!P0) jumpr R31 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
+	if ((hi_u32 & 0xfc00ffff) == 0x48003fc5) {
+		// 010010iiiiiiddddEE11111111000101 | Rd = #Ii ; if (!p0) jumpr r31
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SL2_JUMPR31_F;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 2;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // Rd32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // Ii
+		hi->vals[1] = hi->ops[1].op.imm;
+		sprintf(hi->mnem, "%s %s = #0x%x ; if (!P0) jumpr R31 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hi->pkt_info.syntax_postfix);
+		return;
+	}
 	if ((hi_u32 & 0xf800ffff) == 0x40003fc7) {
 		// 01000iiiiiiixxxxEE11111111000111 | Rx = add(Rxin,#Ii) ; if (!p0.new) jumpr:nt r31
 		hi->instruction = HEX_INS_X2_AUTOJOIN_SA1_ADDI_SL2_JUMPR31_FNEW;
@@ -12836,6 +13519,23 @@ void hexagon_disasm_duplex_0x5(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[1].op.reg = (((hi_u32)&0xf00000) >> 20); // Rs16
 		hi->vals[1] = ST64_MAX;
 		sprintf(hi->mnem, "%s %s = zxth(%s) ; if (!P0.new) jumpr:nt R31 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xfc00ffff) == 0x48003fc7) {
+		// 010010iiiiiiddddEE11111111000111 | Rd = #Ii ; if (!p0.new) jumpr:nt r31
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SL2_JUMPR31_FNEW;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 2;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // Rd32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // Ii
+		hi->vals[1] = hi->ops[1].op.imm;
+		sprintf(hi->mnem, "%s %s = #0x%x ; if (!P0.new) jumpr:nt R31 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xf800ffff) == 0x40003fc4) {
@@ -13249,6 +13949,23 @@ void hexagon_disasm_duplex_0x5(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		sprintf(hi->mnem, "%s %s = zxth(%s) ; if (P0) jumpr R31 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
+	if ((hi_u32 & 0xfc00ffff) == 0x48003fc4) {
+		// 010010iiiiiiddddEE11111111000100 | Rd = #Ii ; if (p0) jumpr r31
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SL2_JUMPR31_T;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 2;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // Rd32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // Ii
+		hi->vals[1] = hi->ops[1].op.imm;
+		sprintf(hi->mnem, "%s %s = #0x%x ; if (P0) jumpr R31 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hi->pkt_info.syntax_postfix);
+		return;
+	}
 	if ((hi_u32 & 0xf800ffff) == 0x40003fc6) {
 		// 01000iiiiiiixxxxEE11111111000110 | Rx = add(Rxin,#Ii) ; if (p0.new) jumpr:nt r31
 		hi->instruction = HEX_INS_X2_AUTOJOIN_SA1_ADDI_SL2_JUMPR31_TNEW;
@@ -13658,6 +14375,23 @@ void hexagon_disasm_duplex_0x5(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[1].op.reg = (((hi_u32)&0xf00000) >> 20); // Rs16
 		hi->vals[1] = ST64_MAX;
 		sprintf(hi->mnem, "%s %s = zxth(%s) ; if (P0.new) jumpr:nt R31 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xfc00ffff) == 0x48003fc6) {
+		// 010010iiiiiiddddEE11111111000110 | Rd = #Ii ; if (p0.new) jumpr:nt r31
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SL2_JUMPR31_TNEW;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 2;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // Rd32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // Ii
+		hi->vals[1] = hi->ops[1].op.imm;
+		sprintf(hi->mnem, "%s %s = #0x%x ; if (P0.new) jumpr:nt R31 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xf800f800) == 0x40003000) {
@@ -14287,6 +15021,32 @@ void hexagon_disasm_duplex_0x5(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		sprintf(hi->mnem, "%s %s = zxth(%s) ; %s = memb(%s+#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hex_get_general_sub_regs(hi->ops[2].op.reg), hex_get_general_sub_regs(hi->ops[3].op.reg), (ut32)hi->ops[4].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
+	if ((hi_u32 & 0xfc00f800) == 0x48003000) {
+		// 010010IIIIIIDDDDEE110iiissssdddd | RD = #II ; Rd = memb(Rs+#Ii)
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SL2_LOADRB_IO;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 5;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // RD32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // II
+		hi->vals[1] = hi->ops[1].op.imm;
+		hi->ops[2].type = HEX_OP_TYPE_REG;
+		hi->ops[2].op.reg = (((hi_u32)&0xf) >> 0); // Rd16
+		hi->vals[2] = ST64_MAX;
+		hi->ops[3].type = HEX_OP_TYPE_REG;
+		hi->ops[3].op.reg = (((hi_u32)&0xf0) >> 4); // Rs16
+		hi->vals[3] = ST64_MAX;
+		hi->ops[4].type = HEX_OP_TYPE_IMM;
+		hi->ops[4].op.imm = (((hi_u32)&0x700) >> 8); // Ii
+		hi->vals[4] = hi->ops[4].op.imm;
+		sprintf(hi->mnem, "%s %s = #0x%x ; %s = memb(%s+#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_sub_regs(hi->ops[2].op.reg), hex_get_general_sub_regs(hi->ops[3].op.reg), (ut32)hi->ops[4].op.imm, hi->pkt_info.syntax_postfix);
+		return;
+	}
 	if ((hi_u32 & 0xf800ff00) == 0x40003e00) {
 		// 01000IIIIIIIxxxxEE111110iiiiiddd | Rx = add(Rxin,#II) ; Rdd = memd(r29+#Ii)
 		hi->instruction = HEX_INS_X2_AUTOJOIN_SA1_ADDI_SL2_LOADRD_SP;
@@ -14888,6 +15648,31 @@ void hexagon_disasm_duplex_0x5(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[3].shift = 3;
 		hi->vals[3] = hi->ops[3].op.imm;
 		sprintf(hi->mnem, "%s %s = zxth(%s) ; %s = memd(R29+#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hex_get_general_double_low8_regs(hi->ops[2].op.reg), (ut32)hi->ops[3].op.imm, hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xfc00ff00) == 0x48003e00) {
+		// 010010IIIIIIDDDDEE111110iiiiiddd | RD = #II ; Rdd = memd(r29+#Ii)
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SL2_LOADRD_SP;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 4;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // RD32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // II
+		hi->vals[1] = hi->ops[1].op.imm;
+		hi->ops[2].type = HEX_OP_TYPE_REG;
+		hi->ops[2].op.reg = (((hi_u32)&0x7) >> 0); // Rdd8
+		hi->vals[2] = ST64_MAX;
+		hi->ops[3].type = HEX_OP_TYPE_IMM;
+		hi->ops[3].op.imm = (((hi_u32)&0xf8) >> 3) << 3; // scaled Ii
+		hi->ops[3].attr = HEX_OP_IMM_SCALED;
+		hi->ops[3].shift = 3;
+		hi->vals[3] = hi->ops[3].op.imm;
+		sprintf(hi->mnem, "%s %s = #0x%x ; %s = memd(R29+#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_double_low8_regs(hi->ops[2].op.reg), (ut32)hi->ops[3].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xf800f800) == 0x40002000) {
@@ -15565,6 +16350,34 @@ void hexagon_disasm_duplex_0x5(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		sprintf(hi->mnem, "%s %s = zxth(%s) ; %s = memh(%s+#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hex_get_general_sub_regs(hi->ops[2].op.reg), hex_get_general_sub_regs(hi->ops[3].op.reg), (ut32)hi->ops[4].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
+	if ((hi_u32 & 0xfc00f800) == 0x48002000) {
+		// 010010IIIIIIDDDDEE100iiissssdddd | RD = #II ; Rd = memh(Rs+#Ii)
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SL2_LOADRH_IO;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 5;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // RD32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // II
+		hi->vals[1] = hi->ops[1].op.imm;
+		hi->ops[2].type = HEX_OP_TYPE_REG;
+		hi->ops[2].op.reg = (((hi_u32)&0xf) >> 0); // Rd16
+		hi->vals[2] = ST64_MAX;
+		hi->ops[3].type = HEX_OP_TYPE_REG;
+		hi->ops[3].op.reg = (((hi_u32)&0xf0) >> 4); // Rs16
+		hi->vals[3] = ST64_MAX;
+		hi->ops[4].type = HEX_OP_TYPE_IMM;
+		hi->ops[4].op.imm = (((hi_u32)&0x700) >> 8) << 1; // scaled Ii
+		hi->ops[4].attr = HEX_OP_IMM_SCALED;
+		hi->ops[4].shift = 1;
+		hi->vals[4] = hi->ops[4].op.imm;
+		sprintf(hi->mnem, "%s %s = #0x%x ; %s = memh(%s+#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_sub_regs(hi->ops[2].op.reg), hex_get_general_sub_regs(hi->ops[3].op.reg), (ut32)hi->ops[4].op.imm, hi->pkt_info.syntax_postfix);
+		return;
+	}
 	if ((hi_u32 & 0xf800fe00) == 0x40003c00) {
 		// 01000IIIIIIIxxxxEE11110iiiiidddd | Rx = add(Rxin,#II) ; Rd = memw(r29+#Ii)
 		hi->instruction = HEX_INS_X2_AUTOJOIN_SA1_ADDI_SL2_LOADRI_SP;
@@ -16166,6 +16979,31 @@ void hexagon_disasm_duplex_0x5(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[3].shift = 2;
 		hi->vals[3] = hi->ops[3].op.imm;
 		sprintf(hi->mnem, "%s %s = zxth(%s) ; %s = memw(R29+#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hex_get_general_sub_regs(hi->ops[2].op.reg), (ut32)hi->ops[3].op.imm, hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xfc00fe00) == 0x48003c00) {
+		// 010010IIIIIIDDDDEE11110iiiiidddd | RD = #II ; Rd = memw(r29+#Ii)
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SL2_LOADRI_SP;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 4;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // RD32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // II
+		hi->vals[1] = hi->ops[1].op.imm;
+		hi->ops[2].type = HEX_OP_TYPE_REG;
+		hi->ops[2].op.reg = (((hi_u32)&0xf) >> 0); // Rd16
+		hi->vals[2] = ST64_MAX;
+		hi->ops[3].type = HEX_OP_TYPE_IMM;
+		hi->ops[3].op.imm = (((hi_u32)&0x1f0) >> 4) << 2; // scaled Ii
+		hi->ops[3].attr = HEX_OP_IMM_SCALED;
+		hi->ops[3].shift = 2;
+		hi->vals[3] = hi->ops[3].op.imm;
+		sprintf(hi->mnem, "%s %s = #0x%x ; %s = memw(R29+#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_sub_regs(hi->ops[2].op.reg), (ut32)hi->ops[3].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xf800f800) == 0x40002800) {
@@ -16843,6 +17681,34 @@ void hexagon_disasm_duplex_0x5(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		sprintf(hi->mnem, "%s %s = zxth(%s) ; %s = memuh(%s+#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hex_get_general_sub_regs(hi->ops[2].op.reg), hex_get_general_sub_regs(hi->ops[3].op.reg), (ut32)hi->ops[4].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
+	if ((hi_u32 & 0xfc00f800) == 0x48002800) {
+		// 010010IIIIIIDDDDEE101iiissssdddd | RD = #II ; Rd = memuh(Rs+#Ii)
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SL2_LOADRUH_IO;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 5;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // RD32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // II
+		hi->vals[1] = hi->ops[1].op.imm;
+		hi->ops[2].type = HEX_OP_TYPE_REG;
+		hi->ops[2].op.reg = (((hi_u32)&0xf) >> 0); // Rd16
+		hi->vals[2] = ST64_MAX;
+		hi->ops[3].type = HEX_OP_TYPE_REG;
+		hi->ops[3].op.reg = (((hi_u32)&0xf0) >> 4); // Rs16
+		hi->vals[3] = ST64_MAX;
+		hi->ops[4].type = HEX_OP_TYPE_IMM;
+		hi->ops[4].op.imm = (((hi_u32)&0x700) >> 8) << 1; // scaled Ii
+		hi->ops[4].attr = HEX_OP_IMM_SCALED;
+		hi->ops[4].shift = 1;
+		hi->vals[4] = hi->ops[4].op.imm;
+		sprintf(hi->mnem, "%s %s = #0x%x ; %s = memuh(%s+#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_sub_regs(hi->ops[2].op.reg), hex_get_general_sub_regs(hi->ops[3].op.reg), (ut32)hi->ops[4].op.imm, hi->pkt_info.syntax_postfix);
+		return;
+	}
 	if ((hi_u32 & 0xf800ffff) == 0x40003f40) {
 		// 01000iiiiiiixxxxEE11111101000000 | Rx = add(Rxin,#Ii) ; dealloc_return
 		hi->instruction = HEX_INS_X2_AUTOJOIN_SA1_ADDI_SL2_RETURN;
@@ -17252,6 +18118,23 @@ void hexagon_disasm_duplex_0x5(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[1].op.reg = (((hi_u32)&0xf00000) >> 20); // Rs16
 		hi->vals[1] = ST64_MAX;
 		sprintf(hi->mnem, "%s %s = zxth(%s) ; dealloc_return %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xfc00ffff) == 0x48003f40) {
+		// 010010iiiiiiddddEE11111101000000 | Rd = #Ii ; dealloc_return
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SL2_RETURN;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 2;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // Rd32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // Ii
+		hi->vals[1] = hi->ops[1].op.imm;
+		sprintf(hi->mnem, "%s %s = #0x%x ; dealloc_return %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xf800ffff) == 0x40003f45) {
@@ -17665,6 +18548,23 @@ void hexagon_disasm_duplex_0x5(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		sprintf(hi->mnem, "%s %s = zxth(%s) ; if (!P0) dealloc_return %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
+	if ((hi_u32 & 0xfc00ffff) == 0x48003f45) {
+		// 010010iiiiiiddddEE11111101000101 | Rd = #Ii ; if (!p0) dealloc_return
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SL2_RETURN_F;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 2;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // Rd32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // Ii
+		hi->vals[1] = hi->ops[1].op.imm;
+		sprintf(hi->mnem, "%s %s = #0x%x ; if (!P0) dealloc_return %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hi->pkt_info.syntax_postfix);
+		return;
+	}
 	if ((hi_u32 & 0xf800ffff) == 0x40003f47) {
 		// 01000iiiiiiixxxxEE11111101000111 | Rx = add(Rxin,#Ii) ; if (!p0.new) dealloc_return:nt
 		hi->instruction = HEX_INS_X2_AUTOJOIN_SA1_ADDI_SL2_RETURN_FNEW;
@@ -18074,6 +18974,23 @@ void hexagon_disasm_duplex_0x5(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[1].op.reg = (((hi_u32)&0xf00000) >> 20); // Rs16
 		hi->vals[1] = ST64_MAX;
 		sprintf(hi->mnem, "%s %s = zxth(%s) ; if (!P0.new) dealloc_return:nt %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xfc00ffff) == 0x48003f47) {
+		// 010010iiiiiiddddEE11111101000111 | Rd = #Ii ; if (!p0.new) dealloc_return:nt
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SL2_RETURN_FNEW;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 2;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // Rd32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // Ii
+		hi->vals[1] = hi->ops[1].op.imm;
+		sprintf(hi->mnem, "%s %s = #0x%x ; if (!P0.new) dealloc_return:nt %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xf800ffff) == 0x40003f44) {
@@ -18487,6 +19404,23 @@ void hexagon_disasm_duplex_0x5(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		sprintf(hi->mnem, "%s %s = zxth(%s) ; if (P0) dealloc_return %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
+	if ((hi_u32 & 0xfc00ffff) == 0x48003f44) {
+		// 010010iiiiiiddddEE11111101000100 | Rd = #Ii ; if (p0) dealloc_return
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SL2_RETURN_T;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 2;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // Rd32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // Ii
+		hi->vals[1] = hi->ops[1].op.imm;
+		sprintf(hi->mnem, "%s %s = #0x%x ; if (P0) dealloc_return %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hi->pkt_info.syntax_postfix);
+		return;
+	}
 	if ((hi_u32 & 0xf800ffff) == 0x40003f46) {
 		// 01000iiiiiiixxxxEE11111101000110 | Rx = add(Rxin,#Ii) ; if (p0.new) dealloc_return:nt
 		hi->instruction = HEX_INS_X2_AUTOJOIN_SA1_ADDI_SL2_RETURN_TNEW;
@@ -18896,6 +19830,23 @@ void hexagon_disasm_duplex_0x5(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[1].op.reg = (((hi_u32)&0xf00000) >> 20); // Rs16
 		hi->vals[1] = ST64_MAX;
 		sprintf(hi->mnem, "%s %s = zxth(%s) ; if (P0.new) dealloc_return:nt %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xfc00ffff) == 0x48003f46) {
+		// 010010iiiiiiddddEE11111101000110 | Rd = #Ii ; if (p0.new) dealloc_return:nt
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SL2_RETURN_TNEW;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 2;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // Rd32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // Ii
+		hi->vals[1] = hi->ops[1].op.imm;
+		sprintf(hi->mnem, "%s %s = #0x%x ; if (P0.new) dealloc_return:nt %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
 }
@@ -19527,6 +20478,32 @@ void hexagon_disasm_duplex_0x6(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[4].op.reg = (((hi_u32)&0xf) >> 0); // Rt16
 		hi->vals[4] = ST64_MAX;
 		sprintf(hi->mnem, "%s %s = zxth(%s) ; memb(%s+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hex_get_general_sub_regs(hi->ops[2].op.reg), (ut32)hi->ops[3].op.imm, hex_get_general_sub_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xfc00f000) == 0x68001000) {
+		// 011010IIIIIIddddEE01iiiisssstttt | Rd = #II ; memb(Rs+#Ii) = Rt
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SS1_STOREB_IO;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 5;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // Rd32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // II
+		hi->vals[1] = hi->ops[1].op.imm;
+		hi->ops[2].type = HEX_OP_TYPE_REG;
+		hi->ops[2].op.reg = (((hi_u32)&0xf0) >> 4); // Rs16
+		hi->vals[2] = ST64_MAX;
+		hi->ops[3].type = HEX_OP_TYPE_IMM;
+		hi->ops[3].op.imm = (((hi_u32)&0xf00) >> 8); // Ii
+		hi->vals[3] = hi->ops[3].op.imm;
+		hi->ops[4].type = HEX_OP_TYPE_REG;
+		hi->ops[4].op.reg = (((hi_u32)&0xf) >> 0); // Rt16
+		hi->vals[4] = ST64_MAX;
+		sprintf(hi->mnem, "%s %s = #0x%x ; memb(%s+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_sub_regs(hi->ops[2].op.reg), (ut32)hi->ops[3].op.imm, hex_get_general_sub_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xf800f000) == 0x60000000) {
@@ -20204,6 +21181,34 @@ void hexagon_disasm_duplex_0x6(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		sprintf(hi->mnem, "%s %s = zxth(%s) ; memw(%s+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hex_get_general_sub_regs(hi->ops[2].op.reg), (ut32)hi->ops[3].op.imm, hex_get_general_sub_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
+	if ((hi_u32 & 0xfc00f000) == 0x68000000) {
+		// 011010IIIIIIddddEE00iiiisssstttt | Rd = #II ; memw(Rs+#Ii) = Rt
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SS1_STOREW_IO;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 5;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // Rd32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // II
+		hi->vals[1] = hi->ops[1].op.imm;
+		hi->ops[2].type = HEX_OP_TYPE_REG;
+		hi->ops[2].op.reg = (((hi_u32)&0xf0) >> 4); // Rs16
+		hi->vals[2] = ST64_MAX;
+		hi->ops[3].type = HEX_OP_TYPE_IMM;
+		hi->ops[3].op.imm = (((hi_u32)&0xf00) >> 8) << 2; // scaled Ii
+		hi->ops[3].attr = HEX_OP_IMM_SCALED;
+		hi->ops[3].shift = 2;
+		hi->vals[3] = hi->ops[3].op.imm;
+		hi->ops[4].type = HEX_OP_TYPE_REG;
+		hi->ops[4].op.reg = (((hi_u32)&0xf) >> 0); // Rt16
+		hi->vals[4] = ST64_MAX;
+		sprintf(hi->mnem, "%s %s = #0x%x ; memw(%s+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_sub_regs(hi->ops[2].op.reg), (ut32)hi->ops[3].op.imm, hex_get_general_sub_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
 }
 
 void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr) {
@@ -20737,6 +21742,28 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[2].shift = 3;
 		hi->vals[2] = hi->ops[2].op.imm;
 		sprintf(hi->mnem, "%s %s = zxth(%s) ; allocframe(#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xfc00fe0f) == 0x68003c00) {
+		// 011010IIIIIIddddEE11110iiiii0000 | Rd = #II ; allocframe(#Ii)
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SS2_ALLOCFRAME;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 3;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // Rd32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // II
+		hi->vals[1] = hi->ops[1].op.imm;
+		hi->ops[2].type = HEX_OP_TYPE_IMM;
+		hi->ops[2].op.imm = (((hi_u32)&0x1f0) >> 4) << 3; // scaled Ii
+		hi->ops[2].attr = HEX_OP_IMM_SCALED;
+		hi->ops[2].shift = 3;
+		hi->vals[2] = hi->ops[2].op.imm;
+		sprintf(hi->mnem, "%s %s = #0x%x ; allocframe(#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, (ut32)hi->ops[2].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xf800ff00) == 0x60003200) {
@@ -21294,6 +22321,29 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		sprintf(hi->mnem, "%s %s = zxth(%s) ; memb(%s+#0x%x) = #0 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hex_get_general_sub_regs(hi->ops[2].op.reg), (ut32)hi->ops[3].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
+	if ((hi_u32 & 0xfc00ff00) == 0x68003200) {
+		// 011010IIIIIIddddEE110010ssssiiii | Rd = #II ; memb(Rs+#Ii) = #0
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SS2_STOREBI0;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 4;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // Rd32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // II
+		hi->vals[1] = hi->ops[1].op.imm;
+		hi->ops[2].type = HEX_OP_TYPE_REG;
+		hi->ops[2].op.reg = (((hi_u32)&0xf0) >> 4); // Rs16
+		hi->vals[2] = ST64_MAX;
+		hi->ops[3].type = HEX_OP_TYPE_IMM;
+		hi->ops[3].op.imm = (((hi_u32)&0xf) >> 0); // Ii
+		hi->vals[3] = hi->ops[3].op.imm;
+		sprintf(hi->mnem, "%s %s = #0x%x ; memb(%s+#0x%x) = #0 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_sub_regs(hi->ops[2].op.reg), (ut32)hi->ops[3].op.imm, hi->pkt_info.syntax_postfix);
+		return;
+	}
 	if ((hi_u32 & 0xf800ff00) == 0x60003300) {
 		// 01100IIIIIIIxxxxEE110011ssssiiii | Rx = add(Rxin,#II) ; memb(Rs+#Ii) = #1
 		hi->instruction = HEX_INS_X2_AUTOJOIN_SA1_ADDI_SS2_STOREBI1;
@@ -21847,6 +22897,29 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[3].op.imm = (((hi_u32)&0xf) >> 0); // Ii
 		hi->vals[3] = hi->ops[3].op.imm;
 		sprintf(hi->mnem, "%s %s = zxth(%s) ; memb(%s+#0x%x) = #1 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hex_get_general_sub_regs(hi->ops[2].op.reg), (ut32)hi->ops[3].op.imm, hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xfc00ff00) == 0x68003300) {
+		// 011010IIIIIIddddEE110011ssssiiii | Rd = #II ; memb(Rs+#Ii) = #1
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SS2_STOREBI1;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 4;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // Rd32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // II
+		hi->vals[1] = hi->ops[1].op.imm;
+		hi->ops[2].type = HEX_OP_TYPE_REG;
+		hi->ops[2].op.reg = (((hi_u32)&0xf0) >> 4); // Rs16
+		hi->vals[2] = ST64_MAX;
+		hi->ops[3].type = HEX_OP_TYPE_IMM;
+		hi->ops[3].op.imm = (((hi_u32)&0xf) >> 0); // Ii
+		hi->vals[3] = hi->ops[3].op.imm;
+		sprintf(hi->mnem, "%s %s = #0x%x ; memb(%s+#0x%x) = #1 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_sub_regs(hi->ops[2].op.reg), (ut32)hi->ops[3].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xf800fe00) == 0x60002a00) {
@@ -22644,6 +23717,39 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		sprintf(hi->mnem, "%s %s = zxth(%s) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
+	if ((hi_u32 & 0xfc00fe00) == 0x68002a00) {
+		// 011010IIIIIIddddEE10101iiiiiittt | Rd = #II ; memd(r29+#Ii) = Rtt
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SS2_STORED_SP;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 4;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // Rd32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // II
+		hi->vals[1] = hi->ops[1].op.imm;
+		hi->ops[2].type = HEX_OP_TYPE_IMM;
+		hi->ops[2].op.imm = (((hi_u32)&0x1f8) >> 3) << 3; // scaled Ii
+		hi->ops[2].attr = HEX_OP_IMM_SCALED;
+		hi->ops[2].shift = 3;
+		if (hi->ops[2].op.imm & (1 << 8)) { // signed
+			hi->ops[2].op.imm |= (0xffffffffffffffff << 8);
+		}
+		if (((st32)hi->ops[2].op.imm) < 0) {
+			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+		} else {
+			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+		}
+		hi->vals[2] = hi->ops[2].op.imm;
+		hi->ops[3].type = HEX_OP_TYPE_REG;
+		hi->ops[3].op.reg = (((hi_u32)&0x7) >> 0); // Rtt8
+		hi->vals[3] = ST64_MAX;
+		sprintf(hi->mnem, "%s %s = #0x%x ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, signed_imm, hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
 	if ((hi_u32 & 0xf800f800) == 0x60002000) {
 		// 01100IIIIIIIxxxxEE100iiisssstttt | Rx = add(Rxin,#II) ; memh(Rs+#Ii) = Rt
 		hi->instruction = HEX_INS_X2_AUTOJOIN_SA1_ADDI_SS2_STOREH_IO;
@@ -23319,6 +24425,34 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		sprintf(hi->mnem, "%s %s = zxth(%s) ; memh(%s+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hex_get_general_sub_regs(hi->ops[2].op.reg), (ut32)hi->ops[3].op.imm, hex_get_general_sub_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
+	if ((hi_u32 & 0xfc00f800) == 0x68002000) {
+		// 011010IIIIIIddddEE100iiisssstttt | Rd = #II ; memh(Rs+#Ii) = Rt
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SS2_STOREH_IO;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 5;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // Rd32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // II
+		hi->vals[1] = hi->ops[1].op.imm;
+		hi->ops[2].type = HEX_OP_TYPE_REG;
+		hi->ops[2].op.reg = (((hi_u32)&0xf0) >> 4); // Rs16
+		hi->vals[2] = ST64_MAX;
+		hi->ops[3].type = HEX_OP_TYPE_IMM;
+		hi->ops[3].op.imm = (((hi_u32)&0x700) >> 8) << 1; // scaled Ii
+		hi->ops[3].attr = HEX_OP_IMM_SCALED;
+		hi->ops[3].shift = 1;
+		hi->vals[3] = hi->ops[3].op.imm;
+		hi->ops[4].type = HEX_OP_TYPE_REG;
+		hi->ops[4].op.reg = (((hi_u32)&0xf) >> 0); // Rt16
+		hi->vals[4] = ST64_MAX;
+		sprintf(hi->mnem, "%s %s = #0x%x ; memh(%s+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_sub_regs(hi->ops[2].op.reg), (ut32)hi->ops[3].op.imm, hex_get_general_sub_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
 	if ((hi_u32 & 0xf800fe00) == 0x60002800) {
 		// 01100IIIIIIIxxxxEE10100iiiiitttt | Rx = add(Rxin,#II) ; memw(r29+#Ii) = Rt
 		hi->instruction = HEX_INS_X2_AUTOJOIN_SA1_ADDI_SS2_STOREW_SP;
@@ -23920,6 +25054,31 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[3].op.reg = (((hi_u32)&0xf) >> 0); // Rt16
 		hi->vals[3] = ST64_MAX;
 		sprintf(hi->mnem, "%s %s = zxth(%s) ; memw(R29+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, hex_get_general_sub_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xfc00fe00) == 0x68002800) {
+		// 011010IIIIIIddddEE10100iiiiitttt | Rd = #II ; memw(r29+#Ii) = Rt
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SS2_STOREW_SP;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 4;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // Rd32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // II
+		hi->vals[1] = hi->ops[1].op.imm;
+		hi->ops[2].type = HEX_OP_TYPE_IMM;
+		hi->ops[2].op.imm = (((hi_u32)&0x1f0) >> 4) << 2; // scaled Ii
+		hi->ops[2].attr = HEX_OP_IMM_SCALED;
+		hi->ops[2].shift = 2;
+		hi->vals[2] = hi->ops[2].op.imm;
+		hi->ops[3].type = HEX_OP_TYPE_REG;
+		hi->ops[3].op.reg = (((hi_u32)&0xf) >> 0); // Rt16
+		hi->vals[3] = ST64_MAX;
+		sprintf(hi->mnem, "%s %s = #0x%x ; memw(R29+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, (ut32)hi->ops[2].op.imm, hex_get_general_sub_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xf800ff00) == 0x60003000) {
@@ -24525,6 +25684,31 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		sprintf(hi->mnem, "%s %s = zxth(%s) ; memw(%s+#0x%x) = #0 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hex_get_general_sub_regs(hi->ops[2].op.reg), (ut32)hi->ops[3].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
+	if ((hi_u32 & 0xfc00ff00) == 0x68003000) {
+		// 011010IIIIIIddddEE110000ssssiiii | Rd = #II ; memw(Rs+#Ii) = #0
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SS2_STOREWI0;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 4;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // Rd32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // II
+		hi->vals[1] = hi->ops[1].op.imm;
+		hi->ops[2].type = HEX_OP_TYPE_REG;
+		hi->ops[2].op.reg = (((hi_u32)&0xf0) >> 4); // Rs16
+		hi->vals[2] = ST64_MAX;
+		hi->ops[3].type = HEX_OP_TYPE_IMM;
+		hi->ops[3].op.imm = (((hi_u32)&0xf) >> 0) << 2; // scaled Ii
+		hi->ops[3].attr = HEX_OP_IMM_SCALED;
+		hi->ops[3].shift = 2;
+		hi->vals[3] = hi->ops[3].op.imm;
+		sprintf(hi->mnem, "%s %s = #0x%x ; memw(%s+#0x%x) = #0 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_sub_regs(hi->ops[2].op.reg), (ut32)hi->ops[3].op.imm, hi->pkt_info.syntax_postfix);
+		return;
+	}
 	if ((hi_u32 & 0xf800ff00) == 0x60003100) {
 		// 01100IIIIIIIxxxxEE110001ssssiiii | Rx = add(Rxin,#II) ; memw(Rs+#Ii) = #1
 		hi->instruction = HEX_INS_X2_AUTOJOIN_SA1_ADDI_SS2_STOREWI1;
@@ -25126,6 +26310,31 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[3].shift = 2;
 		hi->vals[3] = hi->ops[3].op.imm;
 		sprintf(hi->mnem, "%s %s = zxth(%s) ; memw(%s+#0x%x) = #1 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hex_get_general_sub_regs(hi->ops[2].op.reg), (ut32)hi->ops[3].op.imm, hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xfc00ff00) == 0x68003100) {
+		// 011010IIIIIIddddEE110001ssssiiii | Rd = #II ; memw(Rs+#Ii) = #1
+		hi->instruction = HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SS2_STOREWI1;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->duplex = true;
+		hi->op_count = 4;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0xf0000) >> 16); // Rd32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_IMM;
+		hi->ops[1].op.imm = (((hi_u32)&0x3f00000) >> 20); // II
+		hi->vals[1] = hi->ops[1].op.imm;
+		hi->ops[2].type = HEX_OP_TYPE_REG;
+		hi->ops[2].op.reg = (((hi_u32)&0xf0) >> 4); // Rs16
+		hi->vals[2] = ST64_MAX;
+		hi->ops[3].type = HEX_OP_TYPE_IMM;
+		hi->ops[3].op.imm = (((hi_u32)&0xf) >> 0) << 2; // scaled Ii
+		hi->ops[3].attr = HEX_OP_IMM_SCALED;
+		hi->ops[3].shift = 2;
+		hi->vals[3] = hi->ops[3].op.imm;
+		sprintf(hi->mnem, "%s %s = #0x%x ; memw(%s+#0x%x) = #1 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_sub_regs(hi->ops[2].op.reg), (ut32)hi->ops[3].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
 }
@@ -49318,6 +50527,103 @@ void hexagon_disasm_0x5(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		sprintf(hi->mnem, "%s isync %s", hi->pkt_info.syntax_prefix, hi->pkt_info.syntax_postfix);
 		return;
 	}
+	if ((hi_u32 & 0xffff3fff) == 0x56c01000) {
+		// 0101011011000000PP01000000000000 | ickill
+		hi->instruction = HEX_INS_IMPORTED_ICKILL;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 0;
+		sprintf(hi->mnem, "%s ickill %s", hi->pkt_info.syntax_prefix, hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffe03fff) == 0x56c00800) {
+		// 01010110110sssssPP00100000000000 | icinvidx(Rs)
+		hi->instruction = HEX_INS_IMPORTED_ICINVIDX_RS;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 1;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rs32
+		hi->vals[0] = ST64_MAX;
+		sprintf(hi->mnem, "%s icinvidx(%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffe020ff) == 0x55c02000) {
+		// 01010101110sssssPP1ttttt00000000 | icdataw(Rs,Rt)
+		hi->instruction = HEX_INS_IMPORTED_ICDATAW_RS_RT;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 2;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rs32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_REG;
+		hi->ops[1].op.reg = (((hi_u32)&0x1f00) >> 8); // Rt32
+		hi->vals[1] = ST64_MAX;
+		sprintf(hi->mnem, "%s icdataw(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffff3fff) == 0x57e00000) {
+		// 0101011111100000PP00000000000000 | rte
+		hi->instruction = HEX_INS_IMPORTED_RTE;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 0;
+		sprintf(hi->mnem, "%s rte %s", hi->pkt_info.syntax_prefix, hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffe020ff) == 0x55c00000) {
+		// 01010101110sssssPP0ttttt00000000 | ictagw(Rs,Rt)
+		hi->instruction = HEX_INS_IMPORTED_ICTAGW_RS_RT;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 2;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rs32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_REG;
+		hi->ops[1].op.reg = (((hi_u32)&0x1f00) >> 8); // Rt32
+		hi->vals[1] = ST64_MAX;
+		sprintf(hi->mnem, "%s ictagw(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffe03fe0) == 0x55a00000) {
+		// 01010101101sssssPP000000000ddddd | Rd = icdatar(Rs)
+		hi->instruction = HEX_INS_IMPORTED_RD_ICDATAR_RS;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 2;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x1f) >> 0); // Rd32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_REG;
+		hi->ops[1].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rs32
+		hi->vals[1] = ST64_MAX;
+		sprintf(hi->mnem, "%s %s = icdatar(%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffe03fe0) == 0x55e00000) {
+		// 01010101111sssssPP000000000ddddd | Rd = ictagr(Rs)
+		hi->instruction = HEX_INS_IMPORTED_RD_ICTAGR_RS;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 2;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x1f) >> 0); // Rd32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_REG;
+		hi->ops[1].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rs32
+		hi->vals[1] = ST64_MAX;
+		sprintf(hi->mnem, "%s %s = ictagr(%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
 }
 
 void hexagon_disasm_0x6(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr) {
@@ -50257,7 +51563,7 @@ void hexagon_disasm_0x6(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hi->ops[0].type = HEX_OP_TYPE_REG;
 		hi->ops[0].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rs32
 		hi->vals[0] = ST64_MAX;
-		sprintf(hi->mnem, "%s diag(%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s DIAG(%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe020ff) == 0x62400040) {
@@ -50273,7 +51579,7 @@ void hexagon_disasm_0x6(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hi->ops[1].type = HEX_OP_TYPE_REG;
 		hi->ops[1].op.reg = (((hi_u32)&0x1f00) >> 8); // Rtt32
 		hi->vals[1] = ST64_MAX;
-		sprintf(hi->mnem, "%s diag0(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), hex_get_double_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s DIAG0(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), hex_get_double_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe020ff) == 0x62400060) {
@@ -50289,7 +51595,443 @@ void hexagon_disasm_0x6(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hi->ops[1].type = HEX_OP_TYPE_REG;
 		hi->ops[1].op.reg = (((hi_u32)&0x1f00) >> 8); // Rtt32
 		hi->vals[1] = ST64_MAX;
-		sprintf(hi->mnem, "%s diag1(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), hex_get_double_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s DIAG1(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), hex_get_double_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffe03fff) == 0x64400020) {
+		// 01100100010sssssPP00000000100000 | resume(Rs)
+		hi->instruction = HEX_INS_IMPORTED_RESUME_RS;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 1;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rs32
+		hi->vals[0] = ST64_MAX;
+		sprintf(hi->mnem, "%s resume(%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffff3fff) == 0x6c200080) {
+		// 0110110000100000PP00000010000000 | k0unlock
+		hi->instruction = HEX_INS_IMPORTED_K0UNLOCK;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 0;
+		sprintf(hi->mnem, "%s k0unlock %s", hi->pkt_info.syntax_prefix, hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffe03fff) == 0x64600000) {
+		// 01100100011sssssPP00000000000000 | stop(Rs)
+		hi->instruction = HEX_INS_IMPORTED_STOP_RS;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 1;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rs32
+		hi->vals[0] = ST64_MAX;
+		sprintf(hi->mnem, "%s stop(%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffe03fff) == 0x64000060) {
+		// 01100100000sssssPP00000001100000 | ciad(Rs)
+		hi->instruction = HEX_INS_IMPORTED_CIAD_RS;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 1;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rs32
+		hi->vals[0] = ST64_MAX;
+		sprintf(hi->mnem, "%s ciad(%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffe03fe0) == 0x66000000) {
+		// 01100110000sssssPP000000000ddddd | Rd = getimask(Rs)
+		hi->instruction = HEX_INS_IMPORTED_RD_GETIMASK_RS;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 2;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x1f) >> 0); // Rd32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_REG;
+		hi->ops[1].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rs32
+		hi->vals[1] = ST64_MAX;
+		sprintf(hi->mnem, "%s %s = getimask(%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffe03fff) == 0x64000000) {
+		// 01100100000sssssPP00000000000000 | swi(Rs)
+		hi->instruction = HEX_INS_IMPORTED_SWI_RS;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 1;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rs32
+		hi->vals[0] = ST64_MAX;
+		sprintf(hi->mnem, "%s swi(%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffe020ff) == 0x6c000000) {
+		// 01101100000sssssPP0ttttt00000000 | tlbw(Rss,Rt)
+		hi->instruction = HEX_INS_IMPORTED_TLBW_RSS_RT;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 2;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rss32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_REG;
+		hi->ops[1].op.reg = (((hi_u32)&0x1f00) >> 8); // Rt32
+		hi->vals[1] = ST64_MAX;
+		sprintf(hi->mnem, "%s tlbw(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffe020e0) == 0x6cc00000) {
+		// 01101100110sssssPP0ttttt000ddddd | Rd = ctlbw(Rss,Rt)
+		hi->instruction = HEX_INS_IMPORTED_RD_CTLBW_RSS_RT;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 3;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x1f) >> 0); // Rd32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_REG;
+		hi->ops[1].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rss32
+		hi->vals[1] = ST64_MAX;
+		hi->ops[2].type = HEX_OP_TYPE_REG;
+		hi->ops[2].op.reg = (((hi_u32)&0x1f00) >> 8); // Rt32
+		hi->vals[2] = ST64_MAX;
+		sprintf(hi->mnem, "%s %s = ctlbw(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_double_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffff3fff) == 0x6c200060) {
+		// 0110110000100000PP00000001100000 | k0lock
+		hi->instruction = HEX_INS_IMPORTED_K0LOCK;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 0;
+		sprintf(hi->mnem, "%s k0lock %s", hi->pkt_info.syntax_prefix, hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffe03fe0) == 0x66600000) {
+		// 01100110011sssssPP000000000ddddd | Rd = iassignr(Rs)
+		hi->instruction = HEX_INS_IMPORTED_RD_IASSIGNR_RS;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 2;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x1f) >> 0); // Rd32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_REG;
+		hi->ops[1].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rs32
+		hi->vals[1] = ST64_MAX;
+		sprintf(hi->mnem, "%s %s = iassignr(%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xff803fe0) == 0x6f000000) {
+		// 011011110sssssssPP000000000ddddd | Rdd = Sss
+		hi->instruction = HEX_INS_IMPORTED_RDD_SSS;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 2;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x1f) >> 0); // Rdd32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_REG;
+		hi->ops[1].op.reg = (((hi_u32)&0x7f0000) >> 16); // Sss32
+		hi->vals[1] = ST64_MAX;
+		sprintf(hi->mnem, "%s %s = %s %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), hex_get_sys_regs64(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xff803fe0) == 0x6e800000) {
+		// 011011101sssssssPP000000000ddddd | Rd = Ss
+		hi->instruction = HEX_INS_IMPORTED_RD_SS;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 2;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x1f) >> 0); // Rd32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_REG;
+		hi->ops[1].op.reg = (((hi_u32)&0x7f0000) >> 16); // Ss32
+		hi->vals[1] = ST64_MAX;
+		sprintf(hi->mnem, "%s %s = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_sys_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffe03fe0) == 0x6c800000) {
+		// 01101100100sssssPP000000000ddddd | Rd = tlbp(Rs)
+		hi->instruction = HEX_INS_IMPORTED_RD_TLBP_RS;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 2;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x1f) >> 0); // Rd32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_REG;
+		hi->ops[1].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rs32
+		hi->vals[1] = ST64_MAX;
+		sprintf(hi->mnem, "%s %s = tlbp(%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffe03fff) == 0x64000040) {
+		// 01100100000sssssPP00000001000000 | iassignw(Rs)
+		hi->instruction = HEX_INS_IMPORTED_IASSIGNW_RS;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 1;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rs32
+		hi->vals[0] = ST64_MAX;
+		sprintf(hi->mnem, "%s iassignw(%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffe03fff) == 0x64600040) {
+		// 01100100011sssssPP00000001000000 | nmi(Rs)
+		hi->instruction = HEX_INS_IMPORTED_NMI_RS;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 1;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rs32
+		hi->vals[0] = ST64_MAX;
+		sprintf(hi->mnem, "%s nmi(%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffe03fff) == 0x6ca00000) {
+		// 01101100101sssssPP00000000000000 | tlbinvasid(Rs)
+		hi->instruction = HEX_INS_IMPORTED_TLBINVASID_RS;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 1;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rs32
+		hi->vals[0] = ST64_MAX;
+		sprintf(hi->mnem, "%s tlbinvasid(%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffe03f80) == 0x6d000000) {
+		// 01101101000sssssPP0000000ddddddd | Sdd = Rss
+		hi->instruction = HEX_INS_IMPORTED_SDD_RSS;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 2;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x7f) >> 0); // Sdd32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_REG;
+		hi->ops[1].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rss32
+		hi->vals[1] = ST64_MAX;
+		sprintf(hi->mnem, "%s %s = %s %s", hi->pkt_info.syntax_prefix, hex_get_sys_regs64(hi->ops[0].op.reg), hex_get_double_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffe03cff) == 0x64800000) {
+		// 01100100100sssssPP0000tt00000000 | setimask(Pt,Rs)
+		hi->instruction = HEX_INS_IMPORTED_SETIMASK_PT_RS;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 2;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x300) >> 8); // Pt4
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_REG;
+		hi->ops[1].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rs32
+		hi->vals[1] = ST64_MAX;
+		sprintf(hi->mnem, "%s setimask(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffe03fff) == 0x65000000) {
+		// 01100101000xxxxxPP00000000000000 | crswap(Rx,sgp0)
+		hi->instruction = HEX_INS_IMPORTED_CRSWAP_RX_SGP0;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 1;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rx32
+		hi->vals[0] = ST64_MAX;
+		sprintf(hi->mnem, "%s crswap(%s,SGP0) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffff3fff) == 0x6c200020) {
+		// 0110110000100000PP00000000100000 | tlblock
+		hi->instruction = HEX_INS_IMPORTED_TLBLOCK;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 0;
+		sprintf(hi->mnem, "%s tlblock %s", hi->pkt_info.syntax_prefix, hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffe03fff) == 0x65200000) {
+		// 01100101001xxxxxPP00000000000000 | crswap(Rx,sgp1)
+		hi->instruction = HEX_INS_IMPORTED_CRSWAP_RX_SGP1;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 1;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rx32
+		hi->vals[0] = ST64_MAX;
+		sprintf(hi->mnem, "%s crswap(%s,SGP1) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffe03fe0) == 0x6c400000) {
+		// 01101100010sssssPP000000000ddddd | Rdd = tlbr(Rs)
+		hi->instruction = HEX_INS_IMPORTED_RDD_TLBR_RS;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 2;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x1f) >> 0); // Rdd32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_REG;
+		hi->ops[1].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rs32
+		hi->vals[1] = ST64_MAX;
+		sprintf(hi->mnem, "%s %s = tlbr(%s) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffe03f80) == 0x67000000) {
+		// 01100111000sssssPP0000000ddddddd | Sd = Rs
+		hi->instruction = HEX_INS_IMPORTED_SD_RS;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 2;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x7f) >> 0); // Sd32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_REG;
+		hi->ops[1].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rs32
+		hi->vals[1] = ST64_MAX;
+		sprintf(hi->mnem, "%s %s = %s %s", hi->pkt_info.syntax_prefix, hex_get_sys_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffff3fff) == 0x6c200040) {
+		// 0110110000100000PP00000001000000 | tlbunlock
+		hi->instruction = HEX_INS_IMPORTED_TLBUNLOCK;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 0;
+		sprintf(hi->mnem, "%s tlbunlock %s", hi->pkt_info.syntax_prefix, hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffe03fe0) == 0x6ce00000) {
+		// 01101100111sssssPP000000000ddddd | Rd = tlboc(Rss)
+		hi->instruction = HEX_INS_IMPORTED_RD_TLBOC_RSS;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 2;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x1f) >> 0); // Rd32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_REG;
+		hi->ops[1].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rss32
+		hi->vals[1] = ST64_MAX;
+		sprintf(hi->mnem, "%s %s = tlboc(%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_double_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffe03fff) == 0x6d800000) {
+		// 01101101100xxxxxPP00000000000000 | crswap(Rxx,sgp1:0)
+		hi->instruction = HEX_INS_IMPORTED_CRSWAP_RXX_SGP1_0;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 1;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rxx32
+		hi->vals[0] = ST64_MAX;
+		sprintf(hi->mnem, "%s crswap(%s,SGP1:0) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffe03cff) == 0x64800020) {
+		// 01100100100sssssPP0000tt00100000 | setprio(Pt,Rs)
+		hi->instruction = HEX_INS_IMPORTED_SETPRIO_PT_RS;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 2;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x300) >> 8); // Pt4
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_REG;
+		hi->ops[1].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rs32
+		hi->vals[1] = ST64_MAX;
+		sprintf(hi->mnem, "%s setprio(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffe03fff) == 0x64000020) {
+		// 01100100000sssssPP00000000100000 | cswi(Rs)
+		hi->instruction = HEX_INS_IMPORTED_CSWI_RS;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 1;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rs32
+		hi->vals[0] = ST64_MAX;
+		sprintf(hi->mnem, "%s CSwi(%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffe03fff) == 0x64800060) {
+		// 01100100100sssssPP00000001100000 | siad(Rs)
+		hi->instruction = HEX_INS_IMPORTED_SIAD_RS;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 1;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rs32
+		hi->vals[0] = ST64_MAX;
+		sprintf(hi->mnem, "%s siad(%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffe03f80) == 0x6f000000) {
+		// 01101111000sssssPP0000000ddddddd | Sdd = Rss
+		hi->instruction = HEX_INS_UNDOCUMENTED_SDD_RSS;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 2;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x7f) >> 0); // Sdd32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_REG;
+		hi->ops[1].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rss32
+		hi->vals[1] = ST64_MAX;
+		sprintf(hi->mnem, "%s %s = %s %s", hi->pkt_info.syntax_prefix, hex_get_sys_regs64(hi->ops[0].op.reg), hex_get_double_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffe03fff) == 0x64600020) {
+		// 01100100011sssssPP00000000100000 | start(Rs)
+		hi->instruction = HEX_INS_IMPORTED_START_RS;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 1;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rs32
+		hi->vals[0] = ST64_MAX;
+		sprintf(hi->mnem, "%s start(%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 }
@@ -58605,6 +60347,25 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		sprintf(hi->mnem, "%s dcfetch(%s+#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
+	if ((hi_u32 & 0xffe020e0) == 0x92002000) {
+		// 10010010000sssssPP1ttttt000ddddd | Rd = memw_phys(Rs,Rt)
+		hi->instruction = HEX_INS_IMPORTED_RD_MEMW_PHYS_RS_RT;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 3;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x1f) >> 0); // Rd32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_REG;
+		hi->ops[1].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rs32
+		hi->vals[1] = ST64_MAX;
+		hi->ops[2].type = HEX_OP_TYPE_REG;
+		hi->ops[2].op.reg = (((hi_u32)&0x1f00) >> 8); // Rt32
+		hi->vals[2] = ST64_MAX;
+		sprintf(hi->mnem, "%s %s = memw_phys(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
 }
 
 void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr) {
@@ -62102,6 +63863,253 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hi->ops[0].op.reg = (((hi_u32)&0x1f) >> 0); // Rd32
 		hi->vals[0] = ST64_MAX;
 		sprintf(hi->mnem, "%s %s = dmwait %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffe03fff) == 0xa2200000) {
+		// 10100010001sssssPP00000000000000 | dccleanidx(Rs)
+		hi->instruction = HEX_INS_IMPORTED_DCCLEANIDX_RS;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 1;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rs32
+		hi->vals[0] = ST64_MAX;
+		sprintf(hi->mnem, "%s dccleanidx(%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffff3fff) == 0xa8200000) {
+		// 1010100000100000PP00000000000000 | l2kill
+		hi->instruction = HEX_INS_IMPORTED_L2KILL;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 0;
+		sprintf(hi->mnem, "%s l2kill %s", hi->pkt_info.syntax_prefix, hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffe03fff) == 0xa2600000) {
+		// 10100010011sssssPP00000000000000 | dccleaninvidx(Rs)
+		hi->instruction = HEX_INS_IMPORTED_DCCLEANINVIDX_RS;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 1;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rs32
+		hi->vals[0] = ST64_MAX;
+		sprintf(hi->mnem, "%s dccleaninvidx(%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffff3fff) == 0xa8201800) {
+		// 1010100000100000PP01100000000000 | l2gcleaninv
+		hi->instruction = HEX_INS_IMPORTED_L2GCLEANINV;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 0;
+		sprintf(hi->mnem, "%s l2gcleaninv %s", hi->pkt_info.syntax_prefix, hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffe020ff) == 0xa4400000) {
+		// 10100100010sssssPP0ttttt00000000 | l2tagw(Rs,Rt)
+		hi->instruction = HEX_INS_IMPORTED_L2TAGW_RS_RT;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 2;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rs32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_REG;
+		hi->ops[1].op.reg = (((hi_u32)&0x1f00) >> 8); // Rt32
+		hi->vals[1] = ST64_MAX;
+		sprintf(hi->mnem, "%s l2tagw(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffe03fe0) == 0xa4200000) {
+		// 10100100001sssssPP000000000ddddd | Rd = dctagr(Rs)
+		hi->instruction = HEX_INS_IMPORTED_RD_DCTAGR_RS;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 2;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x1f) >> 0); // Rd32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_REG;
+		hi->ops[1].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rs32
+		hi->vals[1] = ST64_MAX;
+		sprintf(hi->mnem, "%s %s = dctagr(%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffe03fff) == 0xa2400000) {
+		// 10100010010sssssPP00000000000000 | dcinvidx(Rs)
+		hi->instruction = HEX_INS_IMPORTED_DCINVIDX_RS;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 1;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rs32
+		hi->vals[0] = ST64_MAX;
+		sprintf(hi->mnem, "%s dcinvidx(%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffff3fff) == 0xa8200800) {
+		// 1010100000100000PP00100000000000 | l2gunlock
+		hi->instruction = HEX_INS_IMPORTED_L2GUNLOCK;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 0;
+		sprintf(hi->mnem, "%s l2gunlock %s", hi->pkt_info.syntax_prefix, hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffe03ffc) == 0xa0e02000) {
+		// 10100000111sssssPP100000000000dd | Pd = l2locka(Rs)
+		hi->instruction = HEX_INS_IMPORTED_PD_L2LOCKA_RS;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 2;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x3) >> 0); // Pd4
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_REG;
+		hi->ops[1].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rs32
+		hi->vals[1] = ST64_MAX;
+		sprintf(hi->mnem, "%s %s = l2locka(%s) %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffe03fe0) == 0xa4600000) {
+		// 10100100011sssssPP000000000ddddd | Rd = l2tagr(Rs)
+		hi->instruction = HEX_INS_IMPORTED_RD_L2TAGR_RS;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 2;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x1f) >> 0); // Rd32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_REG;
+		hi->ops[1].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rs32
+		hi->vals[1] = ST64_MAX;
+		sprintf(hi->mnem, "%s %s = l2tagr(%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffe020ff) == 0xa4000000) {
+		// 10100100000sssssPP0ttttt00000000 | dctagw(Rs,Rt)
+		hi->instruction = HEX_INS_IMPORTED_DCTAGW_RS_RT;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 2;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rs32
+		hi->vals[0] = ST64_MAX;
+		hi->ops[1].type = HEX_OP_TYPE_REG;
+		hi->ops[1].op.reg = (((hi_u32)&0x1f00) >> 8); // Rt32
+		hi->vals[1] = ST64_MAX;
+		sprintf(hi->mnem, "%s dctagw(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffff3fff) == 0xa8201000) {
+		// 1010100000100000PP01000000000000 | l2gclean
+		hi->instruction = HEX_INS_IMPORTED_L2GCLEAN;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 0;
+		sprintf(hi->mnem, "%s l2gclean %s", hi->pkt_info.syntax_prefix, hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffff3fff) == 0xa2000000) {
+		// 1010001000000000PP00000000000000 | dckill
+		hi->instruction = HEX_INS_IMPORTED_DCKILL;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 0;
+		sprintf(hi->mnem, "%s dckill %s", hi->pkt_info.syntax_prefix, hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffe03fff) == 0xa6400000) {
+		// 10100110010sssssPP00000000000000 | l2invidx(Rs)
+		hi->instruction = HEX_INS_IMPORTED_L2INVIDX_RS;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 1;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rs32
+		hi->vals[0] = ST64_MAX;
+		sprintf(hi->mnem, "%s l2invidx(%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffff20ff) == 0xa6a00000) {
+		// 1010011010100000PP0ttttt00000000 | l2gclean(Rtt)
+		hi->instruction = HEX_INS_IMPORTED_L2GCLEAN_RTT;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 1;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x1f00) >> 8); // Rtt32
+		hi->vals[0] = ST64_MAX;
+		sprintf(hi->mnem, "%s l2gclean(%s) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffe03fff) == 0xa8600000) {
+		// 10101000011sssssPP00000000000000 | l2cleaninvidx(Rs)
+		hi->instruction = HEX_INS_IMPORTED_L2CLEANINVIDX_RS;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 1;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rs32
+		hi->vals[0] = ST64_MAX;
+		sprintf(hi->mnem, "%s l2cleaninvidx(%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffe03fff) == 0xa6600000) {
+		// 10100110011sssssPP00000000000000 | l2unlocka(Rs)
+		hi->instruction = HEX_INS_IMPORTED_L2UNLOCKA_RS;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 1;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rs32
+		hi->vals[0] = ST64_MAX;
+		sprintf(hi->mnem, "%s l2unlocka(%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffe03fff) == 0xa6200000) {
+		// 10100110001sssssPP00000000000000 | l2cleanidx(Rs)
+		hi->instruction = HEX_INS_IMPORTED_L2CLEANIDX_RS;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 1;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rs32
+		hi->vals[0] = ST64_MAX;
+		sprintf(hi->mnem, "%s l2cleanidx(%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hi->pkt_info.syntax_postfix);
+		return;
+	}
+	if ((hi_u32 & 0xffff20ff) == 0xa6c00000) {
+		// 1010011011000000PP0ttttt00000000 | l2gcleaninv(Rtt)
+		hi->instruction = HEX_INS_IMPORTED_L2GCLEANINV_RTT;
+		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
+		hi->pkt_info.loop_attr = HEX_NO_LOOP;
+		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
+		hi->op_count = 1;
+		hi->ops[0].type = HEX_OP_TYPE_REG;
+		hi->ops[0].op.reg = (((hi_u32)&0x1f00) >> 8); // Rtt32
+		hi->vals[0] = ST64_MAX;
+		sprintf(hi->mnem, "%s l2gcleaninv(%s) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 }
