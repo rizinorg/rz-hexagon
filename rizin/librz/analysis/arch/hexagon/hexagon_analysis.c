@@ -16688,11 +16688,6 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
 		op->val = UT64_MAX;
 		break;
-	case HEX_INS_UNDOCUMENTED_SDD_RSS:
-		// Sdd = Rss
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
-		op->val = UT64_MAX;
-		break;
 	case HEX_INS_IMPORTED_L2GCLEANINV_RTT:
 		// l2gcleaninv(Rtt)
 		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
