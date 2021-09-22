@@ -234,7 +234,9 @@ class InstructionTemplate:
                 )
 
                 if op.is_pc_relative:
-                    src = ", addr + (st32) hi->ops[{}].op.imm".format(op.syntax_index)
+                    src = ", hi->pkt_info.pkt_addr != 0 ? hi->pkt_info.pkt_addr : addr + (st32) hi->ops[{}].op.imm".format(
+                        op.syntax_index
+                    )
                     mnemonic = re.sub(op.explicit_syntax, "0x%x", mnemonic)
                 elif op.is_signed:
                     # TODO This is really complex and shouldn't be here

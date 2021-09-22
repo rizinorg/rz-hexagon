@@ -868,7 +868,7 @@ void hex_set_pkt_info(RZ_INOUT HexPktInfo *i_pkt_info, const ut32 addr, const ut
 	static bool new_pkt_starts = true;
 
 	// Only change valid_packet flag if the same instruction is not disassembled twice (e.g. for analysis and asm).
-	if (previous_addr != addr) {
+	if (previous_addr != addr || addr == 0) {
 		// We can only know for sure, if the current packet is a valid packet,
 		// if we have seen the instr. before the current one.
 		// (addr == (previous_addr - 4) || addr == 0)
@@ -881,24 +881,26 @@ void hex_set_pkt_info(RZ_INOUT HexPktInfo *i_pkt_info, const ut32 addr, const ut
 	if (valid_packet) {
 		memcpy(&pkt.i_infos[i], i_pkt_info, sizeof(HexPktInfo));
 	}
+	i_pkt_info->valid_pkt = valid_packet;
+
 	// Parse instr. position in pkt
 	if (new_pkt_starts && is_last_instr(i_pkt_info->parse_bits)) { // Single instruction packet.
 		new_pkt_starts = true;
+		i_pkt_info->first_insn = true;
+		i_pkt_info->last_insn = true;
 		// TODO No indent in visual mode for "[" without spaces.
 		if (valid_packet) {
 			strncpy(i_pkt_info->syntax_prefix, "[    ", 8);
-			i_pkt_info->first_insn = true;
-			i_pkt_info->last_insn = true;
 			i = 0;
 		} else {
 			strncpy(i_pkt_info->syntax_prefix, "?", 8);
 		}
 	} else if (new_pkt_starts) {
 		new_pkt_starts = false;
+		i_pkt_info->first_insn = true;
+		i_pkt_info->last_insn = false;
 		if (valid_packet) {
 			strncpy(i_pkt_info->syntax_prefix, "/", 8); // TODO Add utf8 option "┌"
-			i_pkt_info->first_insn = true;
-			i_pkt_info->last_insn = false;
 			// Just in case evil persons set the parsing bits incorrectly and pkts with more than 4 instr. occur.
 			i = (i + 1) % 4;
 		} else {
@@ -906,11 +908,10 @@ void hex_set_pkt_info(RZ_INOUT HexPktInfo *i_pkt_info, const ut32 addr, const ut
 		}
 	} else if (is_last_instr(i_pkt_info->parse_bits)) {
 		new_pkt_starts = true;
+		i_pkt_info->first_insn = false;
+		i_pkt_info->last_insn = true;
 		if (valid_packet) {
 			strncpy(i_pkt_info->syntax_prefix, "\\", 8); // TODO Add utf8 option "└"
-
-			i_pkt_info->first_insn = false;
-			i_pkt_info->last_insn = true;
 
 			p0 = pkt.i_infos[0].parse_bits;
 			p1 = pkt.i_infos[1].parse_bits;
@@ -930,6 +931,8 @@ void hex_set_pkt_info(RZ_INOUT HexPktInfo *i_pkt_info, const ut32 addr, const ut
 		}
 	} else {
 		new_pkt_starts = false;
+		i_pkt_info->first_insn = false;
+		i_pkt_info->last_insn = false;
 		if (valid_packet) {
 			strncpy(i_pkt_info->syntax_prefix, "|", 8); // TODO Add utf8 option "│"
 			i = (i + 1) % 4;
