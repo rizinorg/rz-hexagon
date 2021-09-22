@@ -2396,7 +2396,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J2_CALL:
 		// call Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CALL;
-		op->jump = op->addr + (st32)hi->ops[0].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[0].op.imm;
 		op->val = op->jump;
 		op->analysis_vals[0].imm = op->jump;
 		op->analysis_vals[1].imm = ST64_MAX;
@@ -2408,7 +2408,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J2_CALLF:
 		// if (!Pu) call Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CCALL;
-		op->jump = op->addr + (st32)hi->ops[1].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[1].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -2436,7 +2436,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J2_CALLT:
 		// if (Pu) call Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CCALL;
-		op->jump = op->addr + (st32)hi->ops[1].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[1].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -2449,7 +2449,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J2_JUMP:
 		// jump Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_JMP;
-		op->jump = op->addr + (st32)hi->ops[0].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[0].op.imm;
 		op->val = op->jump;
 		op->analysis_vals[0].imm = op->jump;
 		op->analysis_vals[1].imm = ST64_MAX;
@@ -2461,7 +2461,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J2_JUMPF:
 		// if (!Pu) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[1].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[1].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -2474,7 +2474,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J2_JUMPFNEW:
 		// if (!Pu.new) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[1].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[1].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -2487,7 +2487,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J2_JUMPFNEWPT:
 		// if (!Pu.new) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[1].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[1].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -2500,7 +2500,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J2_JUMPFPT:
 		// if (!Pu) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[1].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[1].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -2538,7 +2538,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J2_JUMPRGTEZ:
 		// if (Rs>=#0) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[1].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[1].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -2551,7 +2551,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J2_JUMPRGTEZPT:
 		// if (Rs>=#0) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[1].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[1].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -2564,7 +2564,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J2_JUMPRLTEZ:
 		// if (Rs<=#0) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[1].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[1].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -2577,7 +2577,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J2_JUMPRLTEZPT:
 		// if (Rs<=#0) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[1].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[1].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -2590,7 +2590,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J2_JUMPRNZ:
 		// if (Rs==#0) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[1].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[1].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -2603,7 +2603,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J2_JUMPRNZPT:
 		// if (Rs==#0) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[1].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[1].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -2636,7 +2636,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J2_JUMPRZ:
 		// if (Rs!=#0) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[1].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[1].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -2649,7 +2649,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J2_JUMPRZPT:
 		// if (Rs!=#0) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[1].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[1].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -2662,7 +2662,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J2_JUMPT:
 		// if (Pu) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[1].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[1].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -2675,7 +2675,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J2_JUMPTNEW:
 		// if (Pu.new) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[1].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[1].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -2688,7 +2688,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J2_JUMPTNEWPT:
 		// if (Pu.new) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[1].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[1].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -2701,7 +2701,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J2_JUMPTPT:
 		// if (Pu) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[1].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[1].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -2714,7 +2714,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J2_LOOP0I:
 		// loop0(Ii,#II)
 		op->type = RZ_ANALYSIS_OP_TYPE_JMP;
-		op->jump = op->addr + (st32)hi->ops[0].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[0].op.imm;
 		if (is_loop0_begin(hi)) {
 			hw_loop0_start = op->jump;
 		} else if (is_loop1_begin(hi)) {
@@ -2732,7 +2732,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J2_LOOP0R:
 		// loop0(Ii,Rs)
 		op->type = RZ_ANALYSIS_OP_TYPE_JMP;
-		op->jump = op->addr + (st32)hi->ops[0].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[0].op.imm;
 		if (is_loop0_begin(hi)) {
 			hw_loop0_start = op->jump;
 		} else if (is_loop1_begin(hi)) {
@@ -2749,7 +2749,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J2_LOOP1I:
 		// loop1(Ii,#II)
 		op->type = RZ_ANALYSIS_OP_TYPE_JMP;
-		op->jump = op->addr + (st32)hi->ops[0].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[0].op.imm;
 		if (is_loop0_begin(hi)) {
 			hw_loop0_start = op->jump;
 		} else if (is_loop1_begin(hi)) {
@@ -2767,7 +2767,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J2_LOOP1R:
 		// loop1(Ii,Rs)
 		op->type = RZ_ANALYSIS_OP_TYPE_JMP;
-		op->jump = op->addr + (st32)hi->ops[0].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[0].op.imm;
 		if (is_loop0_begin(hi)) {
 			hw_loop0_start = op->jump;
 		} else if (is_loop1_begin(hi)) {
@@ -2795,7 +2795,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J2_PLOOP1SI:
 		// p3 = sp1loop0(Ii,#II)
 		op->type = RZ_ANALYSIS_OP_TYPE_JMP;
-		op->jump = op->addr + (st32)hi->ops[0].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[0].op.imm;
 		if (is_loop0_begin(hi)) {
 			hw_loop0_start = op->jump;
 		} else if (is_loop1_begin(hi)) {
@@ -2813,7 +2813,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J2_PLOOP1SR:
 		// p3 = sp1loop0(Ii,Rs)
 		op->type = RZ_ANALYSIS_OP_TYPE_JMP;
-		op->jump = op->addr + (st32)hi->ops[0].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[0].op.imm;
 		if (is_loop0_begin(hi)) {
 			hw_loop0_start = op->jump;
 		} else if (is_loop1_begin(hi)) {
@@ -2830,7 +2830,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J2_PLOOP2SI:
 		// p3 = sp2loop0(Ii,#II)
 		op->type = RZ_ANALYSIS_OP_TYPE_JMP;
-		op->jump = op->addr + (st32)hi->ops[0].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[0].op.imm;
 		if (is_loop0_begin(hi)) {
 			hw_loop0_start = op->jump;
 		} else if (is_loop1_begin(hi)) {
@@ -2848,7 +2848,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J2_PLOOP2SR:
 		// p3 = sp2loop0(Ii,Rs)
 		op->type = RZ_ANALYSIS_OP_TYPE_JMP;
-		op->jump = op->addr + (st32)hi->ops[0].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[0].op.imm;
 		if (is_loop0_begin(hi)) {
 			hw_loop0_start = op->jump;
 		} else if (is_loop1_begin(hi)) {
@@ -2865,7 +2865,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J2_PLOOP3SI:
 		// p3 = sp3loop0(Ii,#II)
 		op->type = RZ_ANALYSIS_OP_TYPE_JMP;
-		op->jump = op->addr + (st32)hi->ops[0].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[0].op.imm;
 		if (is_loop0_begin(hi)) {
 			hw_loop0_start = op->jump;
 		} else if (is_loop1_begin(hi)) {
@@ -2883,7 +2883,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J2_PLOOP3SR:
 		// p3 = sp3loop0(Ii,Rs)
 		op->type = RZ_ANALYSIS_OP_TYPE_JMP;
-		op->jump = op->addr + (st32)hi->ops[0].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[0].op.imm;
 		if (is_loop0_begin(hi)) {
 			hw_loop0_start = op->jump;
 		} else if (is_loop1_begin(hi)) {
@@ -2922,7 +2922,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPEQ_F_JUMPNV_NT:
 		// if (!cmp.eq(Ns.new,Rt)) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -2935,7 +2935,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPEQ_F_JUMPNV_T:
 		// if (!cmp.eq(Ns.new,Rt)) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -2948,7 +2948,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPEQ_FP0_JUMP_NT:
 		// p0 = cmp.eq(Rs,Rt); if (!p0.new) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -2961,7 +2961,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPEQ_FP0_JUMP_T:
 		// p0 = cmp.eq(Rs,Rt); if (!p0.new) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -2974,7 +2974,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPEQ_FP1_JUMP_NT:
 		// p1 = cmp.eq(Rs,Rt); if (!p1.new) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -2987,7 +2987,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPEQ_FP1_JUMP_T:
 		// p1 = cmp.eq(Rs,Rt); if (!p1.new) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -3000,7 +3000,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPEQ_T_JUMPNV_NT:
 		// if (cmp.eq(Ns.new,Rt)) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -3013,7 +3013,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPEQ_T_JUMPNV_T:
 		// if (cmp.eq(Ns.new,Rt)) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -3026,7 +3026,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPEQ_TP0_JUMP_NT:
 		// p0 = cmp.eq(Rs,Rt); if (p0.new) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -3039,7 +3039,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPEQ_TP0_JUMP_T:
 		// p0 = cmp.eq(Rs,Rt); if (p0.new) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -3052,7 +3052,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPEQ_TP1_JUMP_NT:
 		// p1 = cmp.eq(Rs,Rt); if (p1.new) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -3065,7 +3065,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPEQ_TP1_JUMP_T:
 		// p1 = cmp.eq(Rs,Rt); if (p1.new) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -3078,7 +3078,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPEQI_F_JUMPNV_NT:
 		// if (!cmp.eq(Ns.new,#II)) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3092,7 +3092,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPEQI_F_JUMPNV_T:
 		// if (!cmp.eq(Ns.new,#II)) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3106,7 +3106,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPEQI_FP0_JUMP_NT:
 		// p0 = cmp.eq(Rs,#II); if (!p0.new) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3120,7 +3120,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPEQI_FP0_JUMP_T:
 		// p0 = cmp.eq(Rs,#II); if (!p0.new) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3134,7 +3134,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPEQI_FP1_JUMP_NT:
 		// p1 = cmp.eq(Rs,#II); if (!p1.new) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3148,7 +3148,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPEQI_FP1_JUMP_T:
 		// p1 = cmp.eq(Rs,#II); if (!p1.new) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3162,7 +3162,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPEQI_T_JUMPNV_NT:
 		// if (cmp.eq(Ns.new,#II)) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3176,7 +3176,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPEQI_T_JUMPNV_T:
 		// if (cmp.eq(Ns.new,#II)) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3190,7 +3190,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPEQI_TP0_JUMP_NT:
 		// p0 = cmp.eq(Rs,#II); if (p0.new) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3204,7 +3204,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPEQI_TP0_JUMP_T:
 		// p0 = cmp.eq(Rs,#II); if (p0.new) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3218,7 +3218,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPEQI_TP1_JUMP_NT:
 		// p1 = cmp.eq(Rs,#II); if (p1.new) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3232,7 +3232,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPEQI_TP1_JUMP_T:
 		// p1 = cmp.eq(Rs,#II); if (p1.new) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3246,7 +3246,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPEQN1_F_JUMPNV_NT:
 		// if (!cmp.eq(Ns.new,#n1)) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3260,7 +3260,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPEQN1_F_JUMPNV_T:
 		// if (!cmp.eq(Ns.new,#n1)) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3274,7 +3274,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPEQN1_FP0_JUMP_NT:
 		// p0 = cmp.eq(Rs,#n1); if (!p0.new) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3288,7 +3288,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPEQN1_FP0_JUMP_T:
 		// p0 = cmp.eq(Rs,#n1); if (!p0.new) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3302,7 +3302,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPEQN1_FP1_JUMP_NT:
 		// p1 = cmp.eq(Rs,#n1); if (!p1.new) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3316,7 +3316,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPEQN1_FP1_JUMP_T:
 		// p1 = cmp.eq(Rs,#n1); if (!p1.new) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3330,7 +3330,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPEQN1_T_JUMPNV_NT:
 		// if (cmp.eq(Ns.new,#n1)) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3344,7 +3344,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPEQN1_T_JUMPNV_T:
 		// if (cmp.eq(Ns.new,#n1)) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3358,7 +3358,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPEQN1_TP0_JUMP_NT:
 		// p0 = cmp.eq(Rs,#n1); if (p0.new) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3372,7 +3372,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPEQN1_TP0_JUMP_T:
 		// p0 = cmp.eq(Rs,#n1); if (p0.new) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3386,7 +3386,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPEQN1_TP1_JUMP_NT:
 		// p1 = cmp.eq(Rs,#n1); if (p1.new) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3400,7 +3400,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPEQN1_TP1_JUMP_T:
 		// p1 = cmp.eq(Rs,#n1); if (p1.new) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3414,7 +3414,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGT_F_JUMPNV_NT:
 		// if (!cmp.gt(Ns.new,Rt)) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -3427,7 +3427,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGT_F_JUMPNV_T:
 		// if (!cmp.gt(Ns.new,Rt)) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -3440,7 +3440,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGT_FP0_JUMP_NT:
 		// p0 = cmp.gt(Rs,Rt); if (!p0.new) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -3453,7 +3453,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGT_FP0_JUMP_T:
 		// p0 = cmp.gt(Rs,Rt); if (!p0.new) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -3466,7 +3466,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGT_FP1_JUMP_NT:
 		// p1 = cmp.gt(Rs,Rt); if (!p1.new) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -3479,7 +3479,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGT_FP1_JUMP_T:
 		// p1 = cmp.gt(Rs,Rt); if (!p1.new) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -3492,7 +3492,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGT_T_JUMPNV_NT:
 		// if (cmp.gt(Ns.new,Rt)) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -3505,7 +3505,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGT_T_JUMPNV_T:
 		// if (cmp.gt(Ns.new,Rt)) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -3518,7 +3518,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGT_TP0_JUMP_NT:
 		// p0 = cmp.gt(Rs,Rt); if (p0.new) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -3531,7 +3531,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGT_TP0_JUMP_T:
 		// p0 = cmp.gt(Rs,Rt); if (p0.new) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -3544,7 +3544,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGT_TP1_JUMP_NT:
 		// p1 = cmp.gt(Rs,Rt); if (p1.new) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -3557,7 +3557,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGT_TP1_JUMP_T:
 		// p1 = cmp.gt(Rs,Rt); if (p1.new) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -3570,7 +3570,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTI_F_JUMPNV_NT:
 		// if (!cmp.gt(Ns.new,#II)) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3584,7 +3584,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTI_F_JUMPNV_T:
 		// if (!cmp.gt(Ns.new,#II)) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3598,7 +3598,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTI_FP0_JUMP_NT:
 		// p0 = cmp.gt(Rs,#II); if (!p0.new) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3612,7 +3612,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTI_FP0_JUMP_T:
 		// p0 = cmp.gt(Rs,#II); if (!p0.new) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3626,7 +3626,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTI_FP1_JUMP_NT:
 		// p1 = cmp.gt(Rs,#II); if (!p1.new) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3640,7 +3640,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTI_FP1_JUMP_T:
 		// p1 = cmp.gt(Rs,#II); if (!p1.new) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3654,7 +3654,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTI_T_JUMPNV_NT:
 		// if (cmp.gt(Ns.new,#II)) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3668,7 +3668,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTI_T_JUMPNV_T:
 		// if (cmp.gt(Ns.new,#II)) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3682,7 +3682,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTI_TP0_JUMP_NT:
 		// p0 = cmp.gt(Rs,#II); if (p0.new) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3696,7 +3696,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTI_TP0_JUMP_T:
 		// p0 = cmp.gt(Rs,#II); if (p0.new) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3710,7 +3710,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTI_TP1_JUMP_NT:
 		// p1 = cmp.gt(Rs,#II); if (p1.new) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3724,7 +3724,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTI_TP1_JUMP_T:
 		// p1 = cmp.gt(Rs,#II); if (p1.new) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3738,7 +3738,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTN1_F_JUMPNV_NT:
 		// if (!cmp.gt(Ns.new,#n1)) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3752,7 +3752,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTN1_F_JUMPNV_T:
 		// if (!cmp.gt(Ns.new,#n1)) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3766,7 +3766,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTN1_FP0_JUMP_NT:
 		// p0 = cmp.gt(Rs,#n1); if (!p0.new) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3780,7 +3780,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTN1_FP0_JUMP_T:
 		// p0 = cmp.gt(Rs,#n1); if (!p0.new) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3794,7 +3794,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTN1_FP1_JUMP_NT:
 		// p1 = cmp.gt(Rs,#n1); if (!p1.new) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3808,7 +3808,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTN1_FP1_JUMP_T:
 		// p1 = cmp.gt(Rs,#n1); if (!p1.new) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3822,7 +3822,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTN1_T_JUMPNV_NT:
 		// if (cmp.gt(Ns.new,#n1)) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3836,7 +3836,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTN1_T_JUMPNV_T:
 		// if (cmp.gt(Ns.new,#n1)) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3850,7 +3850,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTN1_TP0_JUMP_NT:
 		// p0 = cmp.gt(Rs,#n1); if (p0.new) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3864,7 +3864,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTN1_TP0_JUMP_T:
 		// p0 = cmp.gt(Rs,#n1); if (p0.new) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3878,7 +3878,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTN1_TP1_JUMP_NT:
 		// p1 = cmp.gt(Rs,#n1); if (p1.new) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3892,7 +3892,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTN1_TP1_JUMP_T:
 		// p1 = cmp.gt(Rs,#n1); if (p1.new) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -3906,7 +3906,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTU_F_JUMPNV_NT:
 		// if (!cmp.gtu(Ns.new,Rt)) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -3919,7 +3919,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTU_F_JUMPNV_T:
 		// if (!cmp.gtu(Ns.new,Rt)) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -3932,7 +3932,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTU_FP0_JUMP_NT:
 		// p0 = cmp.gtu(Rs,Rt); if (!p0.new) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -3945,7 +3945,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTU_FP0_JUMP_T:
 		// p0 = cmp.gtu(Rs,Rt); if (!p0.new) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -3958,7 +3958,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTU_FP1_JUMP_NT:
 		// p1 = cmp.gtu(Rs,Rt); if (!p1.new) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -3971,7 +3971,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTU_FP1_JUMP_T:
 		// p1 = cmp.gtu(Rs,Rt); if (!p1.new) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -3984,7 +3984,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTU_T_JUMPNV_NT:
 		// if (cmp.gtu(Ns.new,Rt)) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -3997,7 +3997,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTU_T_JUMPNV_T:
 		// if (cmp.gtu(Ns.new,Rt)) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -4010,7 +4010,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTU_TP0_JUMP_NT:
 		// p0 = cmp.gtu(Rs,Rt); if (p0.new) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -4023,7 +4023,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTU_TP0_JUMP_T:
 		// p0 = cmp.gtu(Rs,Rt); if (p0.new) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -4036,7 +4036,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTU_TP1_JUMP_NT:
 		// p1 = cmp.gtu(Rs,Rt); if (p1.new) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -4049,7 +4049,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTU_TP1_JUMP_T:
 		// p1 = cmp.gtu(Rs,Rt); if (p1.new) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -4062,7 +4062,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTUI_F_JUMPNV_NT:
 		// if (!cmp.gtu(Ns.new,#II)) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -4076,7 +4076,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTUI_F_JUMPNV_T:
 		// if (!cmp.gtu(Ns.new,#II)) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -4090,7 +4090,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTUI_FP0_JUMP_NT:
 		// p0 = cmp.gtu(Rs,#II); if (!p0.new) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -4104,7 +4104,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTUI_FP0_JUMP_T:
 		// p0 = cmp.gtu(Rs,#II); if (!p0.new) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -4118,7 +4118,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTUI_FP1_JUMP_NT:
 		// p1 = cmp.gtu(Rs,#II); if (!p1.new) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -4132,7 +4132,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTUI_FP1_JUMP_T:
 		// p1 = cmp.gtu(Rs,#II); if (!p1.new) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -4146,7 +4146,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTUI_T_JUMPNV_NT:
 		// if (cmp.gtu(Ns.new,#II)) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -4160,7 +4160,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTUI_T_JUMPNV_T:
 		// if (cmp.gtu(Ns.new,#II)) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -4174,7 +4174,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTUI_TP0_JUMP_NT:
 		// p0 = cmp.gtu(Rs,#II); if (p0.new) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -4188,7 +4188,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTUI_TP0_JUMP_T:
 		// p0 = cmp.gtu(Rs,#II); if (p0.new) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -4202,7 +4202,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTUI_TP1_JUMP_NT:
 		// p1 = cmp.gtu(Rs,#II); if (p1.new) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -4216,7 +4216,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPGTUI_TP1_JUMP_T:
 		// p1 = cmp.gtu(Rs,#II); if (p1.new) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -4230,7 +4230,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPLT_F_JUMPNV_NT:
 		// if (!cmp.gt(Rt,Ns.new)) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -4243,7 +4243,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPLT_F_JUMPNV_T:
 		// if (!cmp.gt(Rt,Ns.new)) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -4256,7 +4256,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPLT_T_JUMPNV_NT:
 		// if (cmp.gt(Rt,Ns.new)) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -4269,7 +4269,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPLT_T_JUMPNV_T:
 		// if (cmp.gt(Rt,Ns.new)) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -4282,7 +4282,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPLTU_F_JUMPNV_NT:
 		// if (!cmp.gtu(Rt,Ns.new)) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -4295,7 +4295,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPLTU_F_JUMPNV_T:
 		// if (!cmp.gtu(Rt,Ns.new)) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -4308,7 +4308,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPLTU_T_JUMPNV_NT:
 		// if (cmp.gtu(Rt,Ns.new)) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -4321,7 +4321,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_CMPLTU_T_JUMPNV_T:
 		// if (cmp.gtu(Rt,Ns.new)) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -4339,7 +4339,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_JUMPSETI:
 		// Rd = #II ; jump Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_JMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
 		op->analysis_vals[1].imm = op->jump;
@@ -4352,7 +4352,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_JUMPSETR:
 		// Rd = Rs ; jump Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_JMP;
-		op->jump = op->addr + (st32)hi->ops[2].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[2].op.imm;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = op->jump;
@@ -4364,7 +4364,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_TSTBIT0_F_JUMPNV_NT:
 		// if (!tstbit(Ns.new,#0)) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[1].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[1].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -4377,7 +4377,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_TSTBIT0_F_JUMPNV_T:
 		// if (!tstbit(Ns.new,#0)) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[1].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[1].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -4390,7 +4390,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_TSTBIT0_FP0_JUMP_NT:
 		// p0 = tstbit(Rs,#0); if (!p0.new) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[1].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[1].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -4403,7 +4403,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_TSTBIT0_FP0_JUMP_T:
 		// p0 = tstbit(Rs,#0); if (!p0.new) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[1].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[1].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -4416,7 +4416,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_TSTBIT0_FP1_JUMP_NT:
 		// p1 = tstbit(Rs,#0); if (!p1.new) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[1].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[1].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -4429,7 +4429,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_TSTBIT0_FP1_JUMP_T:
 		// p1 = tstbit(Rs,#0); if (!p1.new) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[1].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[1].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -4442,7 +4442,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_TSTBIT0_T_JUMPNV_NT:
 		// if (tstbit(Ns.new,#0)) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[1].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[1].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -4455,7 +4455,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_TSTBIT0_T_JUMPNV_T:
 		// if (tstbit(Ns.new,#0)) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[1].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[1].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -4468,7 +4468,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_TSTBIT0_TP0_JUMP_NT:
 		// p0 = tstbit(Rs,#0); if (p0.new) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[1].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[1].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -4481,7 +4481,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_TSTBIT0_TP0_JUMP_T:
 		// p0 = tstbit(Rs,#0); if (p0.new) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[1].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[1].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -4494,7 +4494,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_TSTBIT0_TP1_JUMP_NT:
 		// p1 = tstbit(Rs,#0); if (p1.new) jump:nt Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[1].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[1].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;
@@ -4507,7 +4507,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 	case HEX_INS_J4_TSTBIT0_TP1_JUMP_T:
 		// p1 = tstbit(Rs,#0); if (p1.new) jump:t Ii
 		op->type = RZ_ANALYSIS_OP_TYPE_CJMP;
-		op->jump = op->addr + (st32)hi->ops[1].op.imm;
+		op->jump = hi->pkt_info.pkt_addr + (st32)hi->ops[1].op.imm;
 		op->fail = op->addr + op->size;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = op->jump;

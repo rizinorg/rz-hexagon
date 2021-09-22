@@ -668,7 +668,7 @@ class LLVMImporter:
                         )
 
                     f.write(
-                        "{}op->jump = op->addr + (st32) hi->ops[{}].op.imm;\n".format(
+                        "{}op->jump = hi->pkt_info.pkt_addr + (st32) hi->ops[{}].op.imm;\n".format(
                             indent * 3, index
                         )
                     )

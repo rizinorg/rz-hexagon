@@ -65,6 +65,8 @@ typedef enum {
 typedef struct {
 	bool first_insn;
 	bool last_insn;
+	bool valid_pkt;
+	ut32 pkt_addr;
 	char syntax_prefix[8]; // Package indicator
 	char syntax_postfix[16]; // for ":endloop" string.
 	unsigned int parse_bits;
