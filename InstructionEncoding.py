@@ -97,6 +97,8 @@ class InstructionEncoding:
                 if i == 14 or i == 15:
                     self.docs_mask = "P" + self.docs_mask
                     p_bits_mask[i] = 1
+            elif bit == "-":  # Reserved bit
+                self.docs_mask = "-" + self.docs_mask
             # Variable bits encoding a register or immediate
             else:
                 op_name = bit["var"]

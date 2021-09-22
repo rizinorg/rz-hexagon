@@ -51824,8 +51824,8 @@ void hexagon_disasm_0x6(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		sprintf(hi->mnem, "%s tlbinvasid(%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
-	if ((hi_u32 & 0xffe03f80) == 0x6d000000) {
-		// 01101101000sssssPP0000000ddddddd | Sdd = Rss
+	if ((hi_u32 & 0xffc00000) == 0x6d000000) {
+		// 0110110100-sssssPP-------ddddddd | Sdd = Rss
 		hi->instruction = HEX_INS_IMPORTED_SDD_RSS;
 		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
 		hi->pkt_info.loop_attr = HEX_NO_LOOP;
@@ -52003,22 +52003,6 @@ void hexagon_disasm_0x6(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hi->ops[0].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rs32
 		hi->vals[0] = ST64_MAX;
 		sprintf(hi->mnem, "%s siad(%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hi->pkt_info.syntax_postfix);
-		return;
-	}
-	if ((hi_u32 & 0xffe03f80) == 0x6f000000) {
-		// 01101111000sssssPP0000000ddddddd | Sdd = Rss
-		hi->instruction = HEX_INS_UNDOCUMENTED_SDD_RSS;
-		hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;
-		hi->pkt_info.loop_attr = HEX_NO_LOOP;
-		hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);
-		hi->op_count = 2;
-		hi->ops[0].type = HEX_OP_TYPE_REG;
-		hi->ops[0].op.reg = (((hi_u32)&0x7f) >> 0); // Sdd32
-		hi->vals[0] = ST64_MAX;
-		hi->ops[1].type = HEX_OP_TYPE_REG;
-		hi->ops[1].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rss32
-		hi->vals[1] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = %s %s", hi->pkt_info.syntax_prefix, hex_get_sys_regs64(hi->ops[0].op.reg), hex_get_double_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe03fff) == 0x64600020) {
