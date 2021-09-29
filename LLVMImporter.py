@@ -672,7 +672,7 @@ class LLVMImporter:
                             indent * 3, index
                         )
                     )
-                    if i.predicated:
+                    if i.is_predicated:
                         f.write(
                             "{}op->fail = op->addr + op->size;\n".format(indent * 3)
                         )

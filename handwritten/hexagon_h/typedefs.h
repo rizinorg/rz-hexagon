@@ -1,14 +1,12 @@
 // SPDX-FileCopyrightText: 2021 Rot127 <unisono@quyllur.org>
 // SPDX-License-Identifier: LGPL-3.0-only
 
-// TODO NOT IN USE
 // Predicates - declare the predicate state
 typedef enum {
 	HEX_NOPRED, // no conditional execution
 	HEX_PRED_TRUE, // if (Pd) ...
 	HEX_PRED_FALSE, // if (!Pd) ...
-	HEX_PRED_TRUE_NEW, // if (Pd.new) ...
-	HEX_PRED_FALSE_NEW, // if (!Pd.new) ...
+	HEX_PRED_NEW, // if (Pd.new) or if (!Pd.new)
 } HexPred;
 
 // TODO NOT IN USE
@@ -77,10 +75,7 @@ typedef struct {
 typedef struct {
 	int instruction;
 	ut32 mask;
-	// TODO
-	// ut16 pf; // additional prefixes (bitmap)
-	// TODO
-	// HexPred pred; // Predicate type
+	HexPred pred; // Predicate type
 	bool duplex; // is part of duplex container?
 	bool compound; // is part of compound instruction?
 	int shift; // Optional shift left is it true?

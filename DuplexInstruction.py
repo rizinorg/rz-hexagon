@@ -9,7 +9,7 @@ import HexagonArchInfo
 import PluginInfo
 from Immediate import Immediate
 from ImplementationException import ImplementationException
-from Instruction import PredicateInfo, LoopMembership
+from Instruction import LoopMembership
 from InstructionEncoding import InstructionEncoding
 from InstructionTemplate import InstructionTemplate
 from Operand import Operand, OperandType
@@ -144,7 +144,7 @@ class DuplexInstruction(InstructionTemplate):
                 )
                 operand = Register(op_name, op_type, is_new_value, index)
                 # Whether the predicate registers holds a new value is denoted in "isPredicatedNew".
-                if self.predicate_info.new_value and operand.is_predicate:
+                if self.is_pred_new and operand.is_predicate:
                     operand.is_new_value = True
 
             # Parse immediate operands
@@ -527,23 +527,22 @@ class DuplexInstruction(InstructionTemplate):
         low = self.low_instr
         high = self.high_instr
 
-        if low.llvm_instr["isPredicated"] == 1 and high.llvm_instr["isPredicated"] == 1:
-            raise ImplementationException(
-                "Both sub-instructions are predicated: {} ; {}".format(
-                    low.llvm_syntax, high.llvm_syntax
-                )
+        if low.llvm_instr["isPredicated"][0] == 1:
+            self.is_predicated = True
+            self.is_pred_false = low.llvm_instr["isPredicatedFalse"][0] == 1
+            self.is_pred_true = low.llvm_instr["isPredicatedFalse"][0] == 0
+            self.is_pred_new = low.llvm_instr["isPredicatedNew"][0] == 1
+        if high.llvm_instr["isPredicated"][0] == 1:
+            self.is_predicated = True
+            self.is_pred_false = self.is_pred_false or (
+                high.llvm_instr["isPredicatedFalse"][0] == 1
             )
-        self.predicated = (
-            low.llvm_instr["isPredicated"] == 1 or high.llvm_instr["isPredicated"] == 1
-        )
-        if low.llvm_instr["isPredicated"] == 1:
-            self.predicate_info = PredicateInfo(low.llvm_instr)
-        elif high.llvm_instr["isPredicated"] == 1:
-            self.predicate_info = PredicateInfo(high.llvm_instr)
-        else:
-            self.predicate_info = PredicateInfo(
-                self.llvm_instr
-            )  # Duplex llvm instructions are empty.
+            self.is_pred_true = self.is_pred_true or (
+                high.llvm_instr["isPredicatedFalse"][0] == 0
+            )
+            self.is_pred_new = self.is_pred_new or (
+                high.llvm_instr["isPredicatedNew"][0] == 1
+            )
 
     def set_register_new_values(self):
         """Sets the duplex instruction register flags according to its sub instructions."""

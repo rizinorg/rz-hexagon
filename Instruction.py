@@ -47,7 +47,6 @@ class Instruction(InstructionTemplate):
         "syntax",
         "llvm_syntax",
         "predicated",
-        "predicate_info",
         "llvm_filtered_operands",
         "is_sub_instruction",
         "has_extendable_imm",
@@ -92,8 +91,10 @@ class Instruction(InstructionTemplate):
         # Register operands
         self.has_new_non_predicate = self.llvm_instr["isNewValue"][0] == 1
         self.new_operand_index = list_to_int(self.llvm_instr["opNewValue"])
-        self.predicated = self.llvm_instr["isPredicated"][0] == 1
-        self.predicate_info = PredicateInfo(self.llvm_instr)
+        self.is_predicated = self.llvm_instr["isPredicated"][0] == 1
+        self.is_pred_false |= self.llvm_instr["isPredicatedFalse"][0] == 1
+        self.is_pred_true |= self.llvm_instr["isPredicatedFalse"][0] == 0
+        self.is_pred_new |= self.llvm_instr["isPredicatedNew"][0] == 1
 
         # Special
         self.is_endloop = "endloop" in self.name
@@ -151,7 +152,7 @@ class Instruction(InstructionTemplate):
                 )
                 operand = Register(op_name, op_type, is_new_value, syntax_index)
                 # Whether the predicate registers holds a new value is denoted in "isPredicatedNew".
-                if self.predicate_info.new_value and operand.is_predicate:
+                if self.is_pred_new and operand.is_predicate:
                     operand.is_new_value = True
             # Parse immediate operands
             elif Operand.get_operand_type(op_type) is OperandType.IMMEDIATE:
@@ -240,16 +241,3 @@ class Instruction(InstructionTemplate):
             return LoopMembership.HEX_LOOP_0 | LoopMembership.HEX_ENDS_LOOP_0
         else:
             return LoopMembership.HEX_NO_LOOP
-
-
-class PredicateInfo:
-    """Helper class to store the information about the predicate of the instruction."""
-
-    def __init__(self, llvm_instr: dict):
-        self.negative = llvm_instr["isPredicatedFalse"][0]
-        self.new_value = llvm_instr["isPredicatedNew"][0]
-        # What does isPredicateLate mean?
-        if "isPredicateLate" in llvm_instr:
-            self.late = llvm_instr["isPredicateLate"][0]
-        else:
-            self.late = None
