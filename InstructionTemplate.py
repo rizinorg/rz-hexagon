@@ -77,8 +77,12 @@ class InstructionTemplate:
         # Register operands
         self.has_new_non_predicate: bool = None
         self.llvm_new_operand_index: bool = None
-        self.predicated: bool = False
-        self.predicate_info: bool = None
+        self.is_predicated: bool = False
+        self.is_pred_new: bool = False
+        self.is_pred_false: bool = (
+            False  # Duplex can have both, true and false predicates.
+        )
+        self.is_pred_true: bool = False
 
         # Special
         self.is_imm_ext: bool = self.type == "TypeEXTENDER"
@@ -189,6 +193,7 @@ class InstructionTemplate:
         )
         code += "{}// {} | {}\n".format(indent, self.encoding.docs_mask, self.syntax)
         code += "{}hi->instruction = {};\n".format(indent, self.plugin_name)
+        code += self.get_predicate_init()
         code += "{}hi->pkt_info.parse_bits = (({}) & 0x{:x}) >> 14;\n".format(
             indent, var, self.encoding.parse_bits_mask
         )
@@ -296,6 +301,24 @@ class InstructionTemplate:
         return code
 
     # RIZIN SPECIFIC
+    def get_predicate_init(self) -> str:
+        code = "hi->pred = "
+        if not self.is_predicated:
+            code += "HEX_NOPRED;\n"
+            return code
+
+        if self.is_pred_false:
+            code += "| HEX_PRED_FALSE"
+        if self.is_pred_true:
+            code += "| HEX_PRED_TRUE"
+        if self.is_pred_new:
+            code += "| HEX_PRED_NEW"
+        if "= |" in code:
+            code = re.sub(r"= \|", "= ", code)
+        code += ";\n"
+        return code
+
+    # RIZIN SPECIFIC
     def get_rizin_op_type(self) -> str:
         """Returns the c code to assign the instruction type to the RzAnalysisOp.type member."""
 
@@ -308,7 +331,7 @@ class InstructionTemplate:
         elif self.name == "invalid_decode":
             return op_type + "RZ_ANALYSIS_OP_TYPE_ILL;"
 
-        if self.predicated:
+        if self.is_predicated:
             if self.is_call:
                 # Immediate and register call
                 op_type += (

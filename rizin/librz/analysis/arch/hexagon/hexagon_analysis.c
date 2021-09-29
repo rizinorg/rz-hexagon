@@ -16901,7 +16901,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDI_SA1_CLRF:
 		// Rx = add(Rxin,#Ii) ; if (!p0) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -16912,12 +16912,12 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDRX_SA1_CLRF:
 		// Rx = add(Rxin,Rs) ; if (!p0) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDSP_SA1_CLRF:
 		// RD = add(r29,#Ii) ; if (!p0) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -16928,32 +16928,32 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_AND1_SA1_CLRF:
 		// RD = and(Rs,#1) ; if (!p0) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRF_SA1_CLRF:
 		// if (!p0) RD = #0 ; if (!p0) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRFNEW_SA1_CLRF:
 		// if (!p0.new) RD = #0 ; if (!p0) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRT_SA1_CLRF:
 		// if (p0) RD = #0 ; if (!p0) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRTNEW_SA1_CLRF:
 		// if (p0.new) RD = #0 ; if (!p0) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CMPEQI_SA1_CLRF:
 		// p0 = cmp.eq(Rs,#Ii) ; if (!p0) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -16964,7 +16964,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_DEC_SA1_CLRF:
 		// RD = add(Rs,#n1) ; if (!p0) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -16975,12 +16975,12 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_INC_SA1_CLRF:
 		// RD = add(Rs,#1) ; if (!p0) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SETI_SA1_CLRF:
 		// RD = #Ii ; if (!p0) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -16991,7 +16991,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SETIN1_SA1_CLRF:
 		// RD = #n1 ; if (!p0) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -17002,32 +17002,32 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SXTB_SA1_CLRF:
 		// RD = sxtb(Rs) ; if (!p0) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SXTH_SA1_CLRF:
 		// RD = sxth(Rs) ; if (!p0) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_TFR_SA1_CLRF:
 		// RD = Rs ; if (!p0) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ZXTB_SA1_CLRF:
 		// RD = and(Rs,#255) ; if (!p0) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ZXTH_SA1_CLRF:
 		// RD = zxth(Rs) ; if (!p0) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SA1_CLRF:
 		// RD = #Ii ; if (!p0) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -17038,7 +17038,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDI_SA1_CLRFNEW:
 		// Rx = add(Rxin,#Ii) ; if (!p0.new) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -17049,12 +17049,12 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDRX_SA1_CLRFNEW:
 		// Rx = add(Rxin,Rs) ; if (!p0.new) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDSP_SA1_CLRFNEW:
 		// RD = add(r29,#Ii) ; if (!p0.new) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -17065,22 +17065,22 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_AND1_SA1_CLRFNEW:
 		// RD = and(Rs,#1) ; if (!p0.new) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRFNEW_SA1_CLRFNEW:
 		// if (!p0.new) RD = #0 ; if (!p0.new) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRTNEW_SA1_CLRFNEW:
 		// if (p0.new) RD = #0 ; if (!p0.new) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CMPEQI_SA1_CLRFNEW:
 		// p0 = cmp.eq(Rs,#Ii) ; if (!p0.new) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -17091,7 +17091,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_DEC_SA1_CLRFNEW:
 		// RD = add(Rs,#n1) ; if (!p0.new) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -17102,12 +17102,12 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_INC_SA1_CLRFNEW:
 		// RD = add(Rs,#1) ; if (!p0.new) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SETI_SA1_CLRFNEW:
 		// RD = #Ii ; if (!p0.new) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -17118,7 +17118,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SETIN1_SA1_CLRFNEW:
 		// RD = #n1 ; if (!p0.new) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -17129,32 +17129,32 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SXTB_SA1_CLRFNEW:
 		// RD = sxtb(Rs) ; if (!p0.new) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SXTH_SA1_CLRFNEW:
 		// RD = sxth(Rs) ; if (!p0.new) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_TFR_SA1_CLRFNEW:
 		// RD = Rs ; if (!p0.new) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ZXTB_SA1_CLRFNEW:
 		// RD = and(Rs,#255) ; if (!p0.new) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ZXTH_SA1_CLRFNEW:
 		// RD = zxth(Rs) ; if (!p0.new) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SA1_CLRFNEW:
 		// RD = #Ii ; if (!p0.new) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -17165,7 +17165,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDI_SA1_CLRT:
 		// Rx = add(Rxin,#Ii) ; if (p0) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -17176,12 +17176,12 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDRX_SA1_CLRT:
 		// Rx = add(Rxin,Rs) ; if (p0) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDSP_SA1_CLRT:
 		// RD = add(r29,#Ii) ; if (p0) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -17192,27 +17192,27 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_AND1_SA1_CLRT:
 		// RD = and(Rs,#1) ; if (p0) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRFNEW_SA1_CLRT:
 		// if (!p0.new) RD = #0 ; if (p0) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRT_SA1_CLRT:
 		// if (p0) RD = #0 ; if (p0) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRTNEW_SA1_CLRT:
 		// if (p0.new) RD = #0 ; if (p0) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CMPEQI_SA1_CLRT:
 		// p0 = cmp.eq(Rs,#Ii) ; if (p0) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -17223,7 +17223,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_DEC_SA1_CLRT:
 		// RD = add(Rs,#n1) ; if (p0) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -17234,12 +17234,12 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_INC_SA1_CLRT:
 		// RD = add(Rs,#1) ; if (p0) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SETI_SA1_CLRT:
 		// RD = #Ii ; if (p0) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -17250,7 +17250,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SETIN1_SA1_CLRT:
 		// RD = #n1 ; if (p0) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -17261,32 +17261,32 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SXTB_SA1_CLRT:
 		// RD = sxtb(Rs) ; if (p0) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SXTH_SA1_CLRT:
 		// RD = sxth(Rs) ; if (p0) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_TFR_SA1_CLRT:
 		// RD = Rs ; if (p0) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ZXTB_SA1_CLRT:
 		// RD = and(Rs,#255) ; if (p0) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ZXTH_SA1_CLRT:
 		// RD = zxth(Rs) ; if (p0) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SA1_CLRT:
 		// RD = #Ii ; if (p0) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -17297,7 +17297,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDI_SA1_CLRTNEW:
 		// Rx = add(Rxin,#Ii) ; if (p0.new) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -17308,12 +17308,12 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDRX_SA1_CLRTNEW:
 		// Rx = add(Rxin,Rs) ; if (p0.new) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDSP_SA1_CLRTNEW:
 		// RD = add(r29,#Ii) ; if (p0.new) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -17324,17 +17324,17 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_AND1_SA1_CLRTNEW:
 		// RD = and(Rs,#1) ; if (p0.new) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRTNEW_SA1_CLRTNEW:
 		// if (p0.new) RD = #0 ; if (p0.new) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CMPEQI_SA1_CLRTNEW:
 		// p0 = cmp.eq(Rs,#Ii) ; if (p0.new) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -17345,7 +17345,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_DEC_SA1_CLRTNEW:
 		// RD = add(Rs,#n1) ; if (p0.new) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -17356,12 +17356,12 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_INC_SA1_CLRTNEW:
 		// RD = add(Rs,#1) ; if (p0.new) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SETI_SA1_CLRTNEW:
 		// RD = #Ii ; if (p0.new) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -17372,7 +17372,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SETIN1_SA1_CLRTNEW:
 		// RD = #n1 ; if (p0.new) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -17383,32 +17383,32 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SXTB_SA1_CLRTNEW:
 		// RD = sxtb(Rs) ; if (p0.new) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SXTH_SA1_CLRTNEW:
 		// RD = sxth(Rs) ; if (p0.new) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_TFR_SA1_CLRTNEW:
 		// RD = Rs ; if (p0.new) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ZXTB_SA1_CLRTNEW:
 		// RD = and(Rs,#255) ; if (p0.new) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ZXTH_SA1_CLRTNEW:
 		// RD = zxth(Rs) ; if (p0.new) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SA1_CLRTNEW:
 		// RD = #Ii ; if (p0.new) Rd = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -17625,7 +17625,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRF_SA1_COMBINE0I:
 		// if (!p0) RD = #0 ; Rdd = combine(#0,#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -17636,7 +17636,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRFNEW_SA1_COMBINE0I:
 		// if (!p0.new) RD = #0 ; Rdd = combine(#0,#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -17647,7 +17647,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRT_SA1_COMBINE0I:
 		// if (p0) RD = #0 ; Rdd = combine(#0,#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -17658,7 +17658,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRTNEW_SA1_COMBINE0I:
 		// if (p0.new) RD = #0 ; Rdd = combine(#0,#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -17853,7 +17853,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRF_SA1_COMBINE1I:
 		// if (!p0) RD = #0 ; Rdd = combine(#1,#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -17864,7 +17864,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRFNEW_SA1_COMBINE1I:
 		// if (!p0.new) RD = #0 ; Rdd = combine(#1,#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -17875,7 +17875,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRT_SA1_COMBINE1I:
 		// if (p0) RD = #0 ; Rdd = combine(#1,#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -17886,7 +17886,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRTNEW_SA1_COMBINE1I:
 		// if (p0.new) RD = #0 ; Rdd = combine(#1,#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -18093,7 +18093,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRF_SA1_COMBINE2I:
 		// if (!p0) RD = #0 ; Rdd = combine(#2,#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -18104,7 +18104,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRFNEW_SA1_COMBINE2I:
 		// if (!p0.new) RD = #0 ; Rdd = combine(#2,#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -18115,7 +18115,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRT_SA1_COMBINE2I:
 		// if (p0) RD = #0 ; Rdd = combine(#2,#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -18126,7 +18126,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRTNEW_SA1_COMBINE2I:
 		// if (p0.new) RD = #0 ; Rdd = combine(#2,#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -18345,7 +18345,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRF_SA1_COMBINE3I:
 		// if (!p0) RD = #0 ; Rdd = combine(#3,#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -18356,7 +18356,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRFNEW_SA1_COMBINE3I:
 		// if (!p0.new) RD = #0 ; Rdd = combine(#3,#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -18367,7 +18367,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRT_SA1_COMBINE3I:
 		// if (p0) RD = #0 ; Rdd = combine(#3,#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -18378,7 +18378,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRTNEW_SA1_COMBINE3I:
 		// if (p0.new) RD = #0 ; Rdd = combine(#3,#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -18595,22 +18595,22 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRF_SA1_COMBINERZ:
 		// if (!p0) RD = #0 ; Rdd = combine(Rs,#0)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRFNEW_SA1_COMBINERZ:
 		// if (!p0.new) RD = #0 ; Rdd = combine(Rs,#0)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRT_SA1_COMBINERZ:
 		// if (p0) RD = #0 ; Rdd = combine(Rs,#0)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRTNEW_SA1_COMBINERZ:
 		// if (p0.new) RD = #0 ; Rdd = combine(Rs,#0)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CMPEQI_SA1_COMBINERZ:
@@ -18786,22 +18786,22 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRF_SA1_COMBINEZR:
 		// if (!p0) RD = #0 ; Rdd = combine(#0,Rs)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRFNEW_SA1_COMBINEZR:
 		// if (!p0.new) RD = #0 ; Rdd = combine(#0,Rs)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRT_SA1_COMBINEZR:
 		// if (p0) RD = #0 ; Rdd = combine(#0,Rs)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRTNEW_SA1_COMBINEZR:
 		// if (p0.new) RD = #0 ; Rdd = combine(#0,Rs)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CMPEQI_SA1_COMBINEZR:
@@ -19684,7 +19684,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRF_SL1_LOADRI_IO:
 		// if (!p0) RD = #0 ; Rd = memw(Rs+#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
@@ -19695,7 +19695,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRFNEW_SL1_LOADRI_IO:
 		// if (!p0.new) RD = #0 ; Rd = memw(Rs+#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
@@ -19706,7 +19706,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRT_SL1_LOADRI_IO:
 		// if (p0) RD = #0 ; Rd = memw(Rs+#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
@@ -19717,7 +19717,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRTNEW_SL1_LOADRI_IO:
 		// if (p0.new) RD = #0 ; Rd = memw(Rs+#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
@@ -19982,7 +19982,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRF_SL1_LOADRUB_IO:
 		// if (!p0) RD = #0 ; Rd = memub(Rs+#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
@@ -19993,7 +19993,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRFNEW_SL1_LOADRUB_IO:
 		// if (!p0.new) RD = #0 ; Rd = memub(Rs+#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
@@ -20004,7 +20004,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRT_SL1_LOADRUB_IO:
 		// if (p0) RD = #0 ; Rd = memub(Rs+#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
@@ -20015,7 +20015,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRTNEW_SL1_LOADRUB_IO:
 		// if (p0.new) RD = #0 ; Rd = memub(Rs+#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
@@ -20278,22 +20278,22 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRF_SL2_DEALLOCFRAME:
 		// if (!p0) Rd = #0 ; deallocframe
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRFNEW_SL2_DEALLOCFRAME:
 		// if (!p0.new) Rd = #0 ; deallocframe
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRT_SL2_DEALLOCFRAME:
 		// if (p0) Rd = #0 ; deallocframe
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRTNEW_SL2_DEALLOCFRAME:
 		// if (p0.new) Rd = #0 ; deallocframe
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CMPEQI_SL2_DEALLOCFRAME:
@@ -20551,22 +20551,22 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRF_SL2_JUMPR31:
 		// if (!p0) Rd = #0 ; jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRFNEW_SL2_JUMPR31:
 		// if (!p0.new) Rd = #0 ; jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRT_SL2_JUMPR31:
 		// if (p0) Rd = #0 ; jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRTNEW_SL2_JUMPR31:
 		// if (p0.new) Rd = #0 ; jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CMPEQI_SL2_JUMPR31:
@@ -20786,22 +20786,22 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_F_SL2_JUMPR31:
 		// if (!p0) dealloc_return ; jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_FNEW_SL2_JUMPR31:
 		// if (!p0.new) dealloc_return:nt ; jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_T_SL2_JUMPR31:
 		// if (p0) dealloc_return ; jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_TNEW_SL2_JUMPR31:
 		// if (p0.new) dealloc_return:nt ; jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SL2_JUMPR31:
@@ -20817,7 +20817,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDI_SL2_JUMPR31_F:
 		// Rx = add(Rxin,#Ii) ; if (!p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -20828,12 +20828,12 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDRX_SL2_JUMPR31_F:
 		// Rx = add(Rxin,Rs) ; if (!p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDSP_SL2_JUMPR31_F:
 		// Rd = add(r29,#Ii) ; if (!p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -20844,32 +20844,32 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_AND1_SL2_JUMPR31_F:
 		// Rd = and(Rs,#1) ; if (!p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRF_SL2_JUMPR31_F:
 		// if (!p0) Rd = #0 ; if (!p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRFNEW_SL2_JUMPR31_F:
 		// if (!p0.new) Rd = #0 ; if (!p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRT_SL2_JUMPR31_F:
 		// if (p0) Rd = #0 ; if (!p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRTNEW_SL2_JUMPR31_F:
 		// if (p0.new) Rd = #0 ; if (!p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CMPEQI_SL2_JUMPR31_F:
 		// p0 = cmp.eq(Rs,#Ii) ; if (!p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -20880,7 +20880,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINE0I_SL2_JUMPR31_F:
 		// Rdd = combine(#0,#Ii) ; if (!p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -20891,7 +20891,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINE1I_SL2_JUMPR31_F:
 		// Rdd = combine(#1,#Ii) ; if (!p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -20902,7 +20902,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINE2I_SL2_JUMPR31_F:
 		// Rdd = combine(#2,#Ii) ; if (!p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -20913,7 +20913,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINE3I_SL2_JUMPR31_F:
 		// Rdd = combine(#3,#Ii) ; if (!p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -20924,17 +20924,17 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINERZ_SL2_JUMPR31_F:
 		// Rdd = combine(Rs,#0) ; if (!p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINEZR_SL2_JUMPR31_F:
 		// Rdd = combine(#0,Rs) ; if (!p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_DEC_SL2_JUMPR31_F:
 		// Rd = add(Rs,#n1) ; if (!p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -20945,12 +20945,12 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_INC_SL2_JUMPR31_F:
 		// Rd = add(Rs,#1) ; if (!p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SETI_SL2_JUMPR31_F:
 		// Rd = #Ii ; if (!p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -20961,7 +20961,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SETIN1_SL2_JUMPR31_F:
 		// Rd = #n1 ; if (!p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -20972,32 +20972,32 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SXTB_SL2_JUMPR31_F:
 		// Rd = sxtb(Rs) ; if (!p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SXTH_SL2_JUMPR31_F:
 		// Rd = sxth(Rs) ; if (!p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_TFR_SL2_JUMPR31_F:
 		// Rd = Rs ; if (!p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ZXTB_SL2_JUMPR31_F:
 		// Rd = and(Rs,#255) ; if (!p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ZXTH_SL2_JUMPR31_F:
 		// Rd = zxth(Rs) ; if (!p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL1_LOADRI_IO_SL2_JUMPR31_F:
 		// Rd = memw(Rs+#Ii) ; if (!p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -21008,7 +21008,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL1_LOADRUB_IO_SL2_JUMPR31_F:
 		// Rd = memub(Rs+#Ii) ; if (!p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -21019,12 +21019,12 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_DEALLOCFRAME_SL2_JUMPR31_F:
 		// deallocframe ; if (!p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRB_IO_SL2_JUMPR31_F:
 		// Rd = memb(Rs+#Ii) ; if (!p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -21035,7 +21035,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRD_SP_SL2_JUMPR31_F:
 		// Rdd = memd(r29+#Ii) ; if (!p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -21046,7 +21046,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRH_IO_SL2_JUMPR31_F:
 		// Rd = memh(Rs+#Ii) ; if (!p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -21057,7 +21057,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRI_SP_SL2_JUMPR31_F:
 		// Rd = memw(r29+#Ii) ; if (!p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -21068,7 +21068,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRUH_IO_SL2_JUMPR31_F:
 		// Rd = memuh(Rs+#Ii) ; if (!p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -21079,32 +21079,32 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_SL2_JUMPR31_F:
 		// dealloc_return ; if (!p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_F_SL2_JUMPR31_F:
 		// if (!p0) dealloc_return ; if (!p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_FNEW_SL2_JUMPR31_F:
 		// if (!p0.new) dealloc_return:nt ; if (!p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_T_SL2_JUMPR31_F:
 		// if (p0) dealloc_return ; if (!p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_TNEW_SL2_JUMPR31_F:
 		// if (p0.new) dealloc_return:nt ; if (!p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SL2_JUMPR31_F:
 		// Rd = #Ii ; if (!p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -21115,7 +21115,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDI_SL2_JUMPR31_FNEW:
 		// Rx = add(Rxin,#Ii) ; if (!p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -21126,12 +21126,12 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDRX_SL2_JUMPR31_FNEW:
 		// Rx = add(Rxin,Rs) ; if (!p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDSP_SL2_JUMPR31_FNEW:
 		// Rd = add(r29,#Ii) ; if (!p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -21142,32 +21142,32 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_AND1_SL2_JUMPR31_FNEW:
 		// Rd = and(Rs,#1) ; if (!p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRF_SL2_JUMPR31_FNEW:
 		// if (!p0) Rd = #0 ; if (!p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRFNEW_SL2_JUMPR31_FNEW:
 		// if (!p0.new) Rd = #0 ; if (!p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRT_SL2_JUMPR31_FNEW:
 		// if (p0) Rd = #0 ; if (!p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRTNEW_SL2_JUMPR31_FNEW:
 		// if (p0.new) Rd = #0 ; if (!p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CMPEQI_SL2_JUMPR31_FNEW:
 		// p0 = cmp.eq(Rs,#Ii) ; if (!p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -21178,7 +21178,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINE0I_SL2_JUMPR31_FNEW:
 		// Rdd = combine(#0,#Ii) ; if (!p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -21189,7 +21189,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINE1I_SL2_JUMPR31_FNEW:
 		// Rdd = combine(#1,#Ii) ; if (!p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -21200,7 +21200,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINE2I_SL2_JUMPR31_FNEW:
 		// Rdd = combine(#2,#Ii) ; if (!p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -21211,7 +21211,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINE3I_SL2_JUMPR31_FNEW:
 		// Rdd = combine(#3,#Ii) ; if (!p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -21222,17 +21222,17 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINERZ_SL2_JUMPR31_FNEW:
 		// Rdd = combine(Rs,#0) ; if (!p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINEZR_SL2_JUMPR31_FNEW:
 		// Rdd = combine(#0,Rs) ; if (!p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_DEC_SL2_JUMPR31_FNEW:
 		// Rd = add(Rs,#n1) ; if (!p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -21243,12 +21243,12 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_INC_SL2_JUMPR31_FNEW:
 		// Rd = add(Rs,#1) ; if (!p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SETI_SL2_JUMPR31_FNEW:
 		// Rd = #Ii ; if (!p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -21259,7 +21259,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SETIN1_SL2_JUMPR31_FNEW:
 		// Rd = #n1 ; if (!p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -21270,32 +21270,32 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SXTB_SL2_JUMPR31_FNEW:
 		// Rd = sxtb(Rs) ; if (!p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SXTH_SL2_JUMPR31_FNEW:
 		// Rd = sxth(Rs) ; if (!p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_TFR_SL2_JUMPR31_FNEW:
 		// Rd = Rs ; if (!p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ZXTB_SL2_JUMPR31_FNEW:
 		// Rd = and(Rs,#255) ; if (!p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ZXTH_SL2_JUMPR31_FNEW:
 		// Rd = zxth(Rs) ; if (!p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL1_LOADRI_IO_SL2_JUMPR31_FNEW:
 		// Rd = memw(Rs+#Ii) ; if (!p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -21306,7 +21306,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL1_LOADRUB_IO_SL2_JUMPR31_FNEW:
 		// Rd = memub(Rs+#Ii) ; if (!p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -21317,12 +21317,12 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_DEALLOCFRAME_SL2_JUMPR31_FNEW:
 		// deallocframe ; if (!p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRB_IO_SL2_JUMPR31_FNEW:
 		// Rd = memb(Rs+#Ii) ; if (!p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -21333,7 +21333,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRD_SP_SL2_JUMPR31_FNEW:
 		// Rdd = memd(r29+#Ii) ; if (!p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -21344,7 +21344,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRH_IO_SL2_JUMPR31_FNEW:
 		// Rd = memh(Rs+#Ii) ; if (!p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -21355,7 +21355,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRI_SP_SL2_JUMPR31_FNEW:
 		// Rd = memw(r29+#Ii) ; if (!p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -21366,7 +21366,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRUH_IO_SL2_JUMPR31_FNEW:
 		// Rd = memuh(Rs+#Ii) ; if (!p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -21377,32 +21377,32 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_SL2_JUMPR31_FNEW:
 		// dealloc_return ; if (!p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_F_SL2_JUMPR31_FNEW:
 		// if (!p0) dealloc_return ; if (!p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_FNEW_SL2_JUMPR31_FNEW:
 		// if (!p0.new) dealloc_return:nt ; if (!p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_T_SL2_JUMPR31_FNEW:
 		// if (p0) dealloc_return ; if (!p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_TNEW_SL2_JUMPR31_FNEW:
 		// if (p0.new) dealloc_return:nt ; if (!p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SL2_JUMPR31_FNEW:
 		// Rd = #Ii ; if (!p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -21413,7 +21413,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDI_SL2_JUMPR31_T:
 		// Rx = add(Rxin,#Ii) ; if (p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -21424,12 +21424,12 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDRX_SL2_JUMPR31_T:
 		// Rx = add(Rxin,Rs) ; if (p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDSP_SL2_JUMPR31_T:
 		// Rd = add(r29,#Ii) ; if (p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -21440,32 +21440,32 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_AND1_SL2_JUMPR31_T:
 		// Rd = and(Rs,#1) ; if (p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRF_SL2_JUMPR31_T:
 		// if (!p0) Rd = #0 ; if (p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRFNEW_SL2_JUMPR31_T:
 		// if (!p0.new) Rd = #0 ; if (p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRT_SL2_JUMPR31_T:
 		// if (p0) Rd = #0 ; if (p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRTNEW_SL2_JUMPR31_T:
 		// if (p0.new) Rd = #0 ; if (p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CMPEQI_SL2_JUMPR31_T:
 		// p0 = cmp.eq(Rs,#Ii) ; if (p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -21476,7 +21476,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINE0I_SL2_JUMPR31_T:
 		// Rdd = combine(#0,#Ii) ; if (p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -21487,7 +21487,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINE1I_SL2_JUMPR31_T:
 		// Rdd = combine(#1,#Ii) ; if (p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -21498,7 +21498,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINE2I_SL2_JUMPR31_T:
 		// Rdd = combine(#2,#Ii) ; if (p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -21509,7 +21509,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINE3I_SL2_JUMPR31_T:
 		// Rdd = combine(#3,#Ii) ; if (p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -21520,17 +21520,17 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINERZ_SL2_JUMPR31_T:
 		// Rdd = combine(Rs,#0) ; if (p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINEZR_SL2_JUMPR31_T:
 		// Rdd = combine(#0,Rs) ; if (p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_DEC_SL2_JUMPR31_T:
 		// Rd = add(Rs,#n1) ; if (p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -21541,12 +21541,12 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_INC_SL2_JUMPR31_T:
 		// Rd = add(Rs,#1) ; if (p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SETI_SL2_JUMPR31_T:
 		// Rd = #Ii ; if (p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -21557,7 +21557,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SETIN1_SL2_JUMPR31_T:
 		// Rd = #n1 ; if (p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -21568,32 +21568,32 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SXTB_SL2_JUMPR31_T:
 		// Rd = sxtb(Rs) ; if (p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SXTH_SL2_JUMPR31_T:
 		// Rd = sxth(Rs) ; if (p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_TFR_SL2_JUMPR31_T:
 		// Rd = Rs ; if (p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ZXTB_SL2_JUMPR31_T:
 		// Rd = and(Rs,#255) ; if (p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ZXTH_SL2_JUMPR31_T:
 		// Rd = zxth(Rs) ; if (p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL1_LOADRI_IO_SL2_JUMPR31_T:
 		// Rd = memw(Rs+#Ii) ; if (p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -21604,7 +21604,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL1_LOADRUB_IO_SL2_JUMPR31_T:
 		// Rd = memub(Rs+#Ii) ; if (p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -21615,12 +21615,12 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_DEALLOCFRAME_SL2_JUMPR31_T:
 		// deallocframe ; if (p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRB_IO_SL2_JUMPR31_T:
 		// Rd = memb(Rs+#Ii) ; if (p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -21631,7 +21631,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRD_SP_SL2_JUMPR31_T:
 		// Rdd = memd(r29+#Ii) ; if (p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -21642,7 +21642,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRH_IO_SL2_JUMPR31_T:
 		// Rd = memh(Rs+#Ii) ; if (p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -21653,7 +21653,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRI_SP_SL2_JUMPR31_T:
 		// Rd = memw(r29+#Ii) ; if (p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -21664,7 +21664,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRUH_IO_SL2_JUMPR31_T:
 		// Rd = memuh(Rs+#Ii) ; if (p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -21675,32 +21675,32 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_SL2_JUMPR31_T:
 		// dealloc_return ; if (p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_F_SL2_JUMPR31_T:
 		// if (!p0) dealloc_return ; if (p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_FNEW_SL2_JUMPR31_T:
 		// if (!p0.new) dealloc_return:nt ; if (p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_T_SL2_JUMPR31_T:
 		// if (p0) dealloc_return ; if (p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_TNEW_SL2_JUMPR31_T:
 		// if (p0.new) dealloc_return:nt ; if (p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SL2_JUMPR31_T:
 		// Rd = #Ii ; if (p0) jumpr r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -21711,7 +21711,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDI_SL2_JUMPR31_TNEW:
 		// Rx = add(Rxin,#Ii) ; if (p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -21722,12 +21722,12 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDRX_SL2_JUMPR31_TNEW:
 		// Rx = add(Rxin,Rs) ; if (p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDSP_SL2_JUMPR31_TNEW:
 		// Rd = add(r29,#Ii) ; if (p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -21738,32 +21738,32 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_AND1_SL2_JUMPR31_TNEW:
 		// Rd = and(Rs,#1) ; if (p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRF_SL2_JUMPR31_TNEW:
 		// if (!p0) Rd = #0 ; if (p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRFNEW_SL2_JUMPR31_TNEW:
 		// if (!p0.new) Rd = #0 ; if (p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRT_SL2_JUMPR31_TNEW:
 		// if (p0) Rd = #0 ; if (p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRTNEW_SL2_JUMPR31_TNEW:
 		// if (p0.new) Rd = #0 ; if (p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CMPEQI_SL2_JUMPR31_TNEW:
 		// p0 = cmp.eq(Rs,#Ii) ; if (p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -21774,7 +21774,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINE0I_SL2_JUMPR31_TNEW:
 		// Rdd = combine(#0,#Ii) ; if (p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -21785,7 +21785,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINE1I_SL2_JUMPR31_TNEW:
 		// Rdd = combine(#1,#Ii) ; if (p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -21796,7 +21796,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINE2I_SL2_JUMPR31_TNEW:
 		// Rdd = combine(#2,#Ii) ; if (p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -21807,7 +21807,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINE3I_SL2_JUMPR31_TNEW:
 		// Rdd = combine(#3,#Ii) ; if (p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -21818,17 +21818,17 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINERZ_SL2_JUMPR31_TNEW:
 		// Rdd = combine(Rs,#0) ; if (p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINEZR_SL2_JUMPR31_TNEW:
 		// Rdd = combine(#0,Rs) ; if (p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_DEC_SL2_JUMPR31_TNEW:
 		// Rd = add(Rs,#n1) ; if (p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -21839,12 +21839,12 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_INC_SL2_JUMPR31_TNEW:
 		// Rd = add(Rs,#1) ; if (p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SETI_SL2_JUMPR31_TNEW:
 		// Rd = #Ii ; if (p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -21855,7 +21855,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SETIN1_SL2_JUMPR31_TNEW:
 		// Rd = #n1 ; if (p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -21866,32 +21866,32 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SXTB_SL2_JUMPR31_TNEW:
 		// Rd = sxtb(Rs) ; if (p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SXTH_SL2_JUMPR31_TNEW:
 		// Rd = sxth(Rs) ; if (p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_TFR_SL2_JUMPR31_TNEW:
 		// Rd = Rs ; if (p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ZXTB_SL2_JUMPR31_TNEW:
 		// Rd = and(Rs,#255) ; if (p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ZXTH_SL2_JUMPR31_TNEW:
 		// Rd = zxth(Rs) ; if (p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL1_LOADRI_IO_SL2_JUMPR31_TNEW:
 		// Rd = memw(Rs+#Ii) ; if (p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -21902,7 +21902,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL1_LOADRUB_IO_SL2_JUMPR31_TNEW:
 		// Rd = memub(Rs+#Ii) ; if (p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -21913,12 +21913,12 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_DEALLOCFRAME_SL2_JUMPR31_TNEW:
 		// deallocframe ; if (p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRB_IO_SL2_JUMPR31_TNEW:
 		// Rd = memb(Rs+#Ii) ; if (p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -21929,7 +21929,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRD_SP_SL2_JUMPR31_TNEW:
 		// Rdd = memd(r29+#Ii) ; if (p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -21940,7 +21940,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRH_IO_SL2_JUMPR31_TNEW:
 		// Rd = memh(Rs+#Ii) ; if (p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -21951,7 +21951,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRI_SP_SL2_JUMPR31_TNEW:
 		// Rd = memw(r29+#Ii) ; if (p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -21962,7 +21962,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRUH_IO_SL2_JUMPR31_TNEW:
 		// Rd = memuh(Rs+#Ii) ; if (p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -21973,32 +21973,32 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_SL2_JUMPR31_TNEW:
 		// dealloc_return ; if (p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_F_SL2_JUMPR31_TNEW:
 		// if (!p0) dealloc_return ; if (p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_FNEW_SL2_JUMPR31_TNEW:
 		// if (!p0.new) dealloc_return:nt ; if (p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_T_SL2_JUMPR31_TNEW:
 		// if (p0) dealloc_return ; if (p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_TNEW_SL2_JUMPR31_TNEW:
 		// if (p0.new) dealloc_return:nt ; if (p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SL2_JUMPR31_TNEW:
 		// Rd = #Ii ; if (p0.new) jumpr:nt r31
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -22055,7 +22055,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRF_SL2_LOADRB_IO:
 		// if (!p0) RD = #0 ; Rd = memb(Rs+#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
@@ -22066,7 +22066,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRFNEW_SL2_LOADRB_IO:
 		// if (!p0.new) RD = #0 ; Rd = memb(Rs+#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
@@ -22077,7 +22077,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRT_SL2_LOADRB_IO:
 		// if (p0) RD = #0 ; Rd = memb(Rs+#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
@@ -22088,7 +22088,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRTNEW_SL2_LOADRB_IO:
 		// if (p0.new) RD = #0 ; Rd = memb(Rs+#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
@@ -22401,7 +22401,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRF_SL2_LOADRD_SP:
 		// if (!p0) RD = #0 ; Rdd = memd(r29+#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -22412,7 +22412,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRFNEW_SL2_LOADRD_SP:
 		// if (!p0.new) RD = #0 ; Rdd = memd(r29+#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -22423,7 +22423,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRT_SL2_LOADRD_SP:
 		// if (p0) RD = #0 ; Rdd = memd(r29+#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -22434,7 +22434,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRTNEW_SL2_LOADRD_SP:
 		// if (p0.new) RD = #0 ; Rdd = memd(r29+#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -22771,7 +22771,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRF_SL2_LOADRH_IO:
 		// if (!p0) RD = #0 ; Rd = memh(Rs+#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
@@ -22782,7 +22782,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRFNEW_SL2_LOADRH_IO:
 		// if (!p0.new) RD = #0 ; Rd = memh(Rs+#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
@@ -22793,7 +22793,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRT_SL2_LOADRH_IO:
 		// if (p0) RD = #0 ; Rd = memh(Rs+#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
@@ -22804,7 +22804,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRTNEW_SL2_LOADRH_IO:
 		// if (p0.new) RD = #0 ; Rd = memh(Rs+#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
@@ -23093,7 +23093,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRF_SL2_LOADRI_SP:
 		// if (!p0) RD = #0 ; Rd = memw(r29+#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -23104,7 +23104,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRFNEW_SL2_LOADRI_SP:
 		// if (!p0.new) RD = #0 ; Rd = memw(r29+#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -23115,7 +23115,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRT_SL2_LOADRI_SP:
 		// if (p0) RD = #0 ; Rd = memw(r29+#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -23126,7 +23126,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRTNEW_SL2_LOADRI_SP:
 		// if (p0.new) RD = #0 ; Rd = memw(r29+#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -23451,7 +23451,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRF_SL2_LOADRUH_IO:
 		// if (!p0) RD = #0 ; Rd = memuh(Rs+#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
@@ -23462,7 +23462,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRFNEW_SL2_LOADRUH_IO:
 		// if (!p0.new) RD = #0 ; Rd = memuh(Rs+#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
@@ -23473,7 +23473,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRT_SL2_LOADRUH_IO:
 		// if (p0) RD = #0 ; Rd = memuh(Rs+#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
@@ -23484,7 +23484,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRTNEW_SL2_LOADRUH_IO:
 		// if (p0.new) RD = #0 ; Rd = memuh(Rs+#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->analysis_vals[2].imm = hi->vals[2];
@@ -23771,22 +23771,22 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRF_SL2_RETURN:
 		// if (!p0) Rd = #0 ; dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRFNEW_SL2_RETURN:
 		// if (!p0.new) Rd = #0 ; dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRT_SL2_RETURN:
 		// if (p0) Rd = #0 ; dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRTNEW_SL2_RETURN:
 		// if (p0.new) Rd = #0 ; dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CMPEQI_SL2_RETURN:
@@ -24017,7 +24017,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDI_SL2_RETURN_F:
 		// Rx = add(Rxin,#Ii) ; if (!p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -24028,12 +24028,12 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDRX_SL2_RETURN_F:
 		// Rx = add(Rxin,Rs) ; if (!p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDSP_SL2_RETURN_F:
 		// Rd = add(r29,#Ii) ; if (!p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -24044,32 +24044,32 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_AND1_SL2_RETURN_F:
 		// Rd = and(Rs,#1) ; if (!p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRF_SL2_RETURN_F:
 		// if (!p0) Rd = #0 ; if (!p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRFNEW_SL2_RETURN_F:
 		// if (!p0.new) Rd = #0 ; if (!p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRT_SL2_RETURN_F:
 		// if (p0) Rd = #0 ; if (!p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRTNEW_SL2_RETURN_F:
 		// if (p0.new) Rd = #0 ; if (!p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CMPEQI_SL2_RETURN_F:
 		// p0 = cmp.eq(Rs,#Ii) ; if (!p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -24080,7 +24080,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINE0I_SL2_RETURN_F:
 		// Rdd = combine(#0,#Ii) ; if (!p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -24091,7 +24091,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINE1I_SL2_RETURN_F:
 		// Rdd = combine(#1,#Ii) ; if (!p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -24102,7 +24102,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINE2I_SL2_RETURN_F:
 		// Rdd = combine(#2,#Ii) ; if (!p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -24113,7 +24113,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINE3I_SL2_RETURN_F:
 		// Rdd = combine(#3,#Ii) ; if (!p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -24124,17 +24124,17 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINERZ_SL2_RETURN_F:
 		// Rdd = combine(Rs,#0) ; if (!p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINEZR_SL2_RETURN_F:
 		// Rdd = combine(#0,Rs) ; if (!p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_DEC_SL2_RETURN_F:
 		// Rd = add(Rs,#n1) ; if (!p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -24145,12 +24145,12 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_INC_SL2_RETURN_F:
 		// Rd = add(Rs,#1) ; if (!p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SETI_SL2_RETURN_F:
 		// Rd = #Ii ; if (!p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -24161,7 +24161,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SETIN1_SL2_RETURN_F:
 		// Rd = #n1 ; if (!p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -24172,32 +24172,32 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SXTB_SL2_RETURN_F:
 		// Rd = sxtb(Rs) ; if (!p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SXTH_SL2_RETURN_F:
 		// Rd = sxth(Rs) ; if (!p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_TFR_SL2_RETURN_F:
 		// Rd = Rs ; if (!p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ZXTB_SL2_RETURN_F:
 		// Rd = and(Rs,#255) ; if (!p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ZXTH_SL2_RETURN_F:
 		// Rd = zxth(Rs) ; if (!p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL1_LOADRI_IO_SL2_RETURN_F:
 		// Rd = memw(Rs+#Ii) ; if (!p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -24208,7 +24208,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL1_LOADRUB_IO_SL2_RETURN_F:
 		// Rd = memub(Rs+#Ii) ; if (!p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -24219,12 +24219,12 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_DEALLOCFRAME_SL2_RETURN_F:
 		// deallocframe ; if (!p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRB_IO_SL2_RETURN_F:
 		// Rd = memb(Rs+#Ii) ; if (!p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -24235,7 +24235,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRD_SP_SL2_RETURN_F:
 		// Rdd = memd(r29+#Ii) ; if (!p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -24246,7 +24246,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRH_IO_SL2_RETURN_F:
 		// Rd = memh(Rs+#Ii) ; if (!p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -24257,7 +24257,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRI_SP_SL2_RETURN_F:
 		// Rd = memw(r29+#Ii) ; if (!p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -24268,7 +24268,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRUH_IO_SL2_RETURN_F:
 		// Rd = memuh(Rs+#Ii) ; if (!p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -24279,22 +24279,22 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_SL2_RETURN_F:
 		// dealloc_return ; if (!p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_F_SL2_RETURN_F:
 		// if (!p0) dealloc_return ; if (!p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_T_SL2_RETURN_F:
 		// if (p0) dealloc_return ; if (!p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SL2_RETURN_F:
 		// Rd = #Ii ; if (!p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -24305,7 +24305,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDI_SL2_RETURN_FNEW:
 		// Rx = add(Rxin,#Ii) ; if (!p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -24316,12 +24316,12 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDRX_SL2_RETURN_FNEW:
 		// Rx = add(Rxin,Rs) ; if (!p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDSP_SL2_RETURN_FNEW:
 		// Rd = add(r29,#Ii) ; if (!p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -24332,32 +24332,32 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_AND1_SL2_RETURN_FNEW:
 		// Rd = and(Rs,#1) ; if (!p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRF_SL2_RETURN_FNEW:
 		// if (!p0) Rd = #0 ; if (!p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRFNEW_SL2_RETURN_FNEW:
 		// if (!p0.new) Rd = #0 ; if (!p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRT_SL2_RETURN_FNEW:
 		// if (p0) Rd = #0 ; if (!p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRTNEW_SL2_RETURN_FNEW:
 		// if (p0.new) Rd = #0 ; if (!p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CMPEQI_SL2_RETURN_FNEW:
 		// p0 = cmp.eq(Rs,#Ii) ; if (!p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -24368,7 +24368,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINE0I_SL2_RETURN_FNEW:
 		// Rdd = combine(#0,#Ii) ; if (!p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -24379,7 +24379,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINE1I_SL2_RETURN_FNEW:
 		// Rdd = combine(#1,#Ii) ; if (!p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -24390,7 +24390,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINE2I_SL2_RETURN_FNEW:
 		// Rdd = combine(#2,#Ii) ; if (!p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -24401,7 +24401,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINE3I_SL2_RETURN_FNEW:
 		// Rdd = combine(#3,#Ii) ; if (!p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -24412,17 +24412,17 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINERZ_SL2_RETURN_FNEW:
 		// Rdd = combine(Rs,#0) ; if (!p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINEZR_SL2_RETURN_FNEW:
 		// Rdd = combine(#0,Rs) ; if (!p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_DEC_SL2_RETURN_FNEW:
 		// Rd = add(Rs,#n1) ; if (!p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -24433,12 +24433,12 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_INC_SL2_RETURN_FNEW:
 		// Rd = add(Rs,#1) ; if (!p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SETI_SL2_RETURN_FNEW:
 		// Rd = #Ii ; if (!p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -24449,7 +24449,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SETIN1_SL2_RETURN_FNEW:
 		// Rd = #n1 ; if (!p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -24460,32 +24460,32 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SXTB_SL2_RETURN_FNEW:
 		// Rd = sxtb(Rs) ; if (!p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SXTH_SL2_RETURN_FNEW:
 		// Rd = sxth(Rs) ; if (!p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_TFR_SL2_RETURN_FNEW:
 		// Rd = Rs ; if (!p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ZXTB_SL2_RETURN_FNEW:
 		// Rd = and(Rs,#255) ; if (!p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ZXTH_SL2_RETURN_FNEW:
 		// Rd = zxth(Rs) ; if (!p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL1_LOADRI_IO_SL2_RETURN_FNEW:
 		// Rd = memw(Rs+#Ii) ; if (!p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -24496,7 +24496,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL1_LOADRUB_IO_SL2_RETURN_FNEW:
 		// Rd = memub(Rs+#Ii) ; if (!p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -24507,12 +24507,12 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_DEALLOCFRAME_SL2_RETURN_FNEW:
 		// deallocframe ; if (!p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRB_IO_SL2_RETURN_FNEW:
 		// Rd = memb(Rs+#Ii) ; if (!p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -24523,7 +24523,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRD_SP_SL2_RETURN_FNEW:
 		// Rdd = memd(r29+#Ii) ; if (!p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -24534,7 +24534,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRH_IO_SL2_RETURN_FNEW:
 		// Rd = memh(Rs+#Ii) ; if (!p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -24545,7 +24545,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRI_SP_SL2_RETURN_FNEW:
 		// Rd = memw(r29+#Ii) ; if (!p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -24556,7 +24556,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRUH_IO_SL2_RETURN_FNEW:
 		// Rd = memuh(Rs+#Ii) ; if (!p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -24567,32 +24567,32 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_SL2_RETURN_FNEW:
 		// dealloc_return ; if (!p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_F_SL2_RETURN_FNEW:
 		// if (!p0) dealloc_return ; if (!p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_FNEW_SL2_RETURN_FNEW:
 		// if (!p0.new) dealloc_return:nt ; if (!p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_T_SL2_RETURN_FNEW:
 		// if (p0) dealloc_return ; if (!p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_TNEW_SL2_RETURN_FNEW:
 		// if (p0.new) dealloc_return:nt ; if (!p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SL2_RETURN_FNEW:
 		// Rd = #Ii ; if (!p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -24603,7 +24603,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDI_SL2_RETURN_T:
 		// Rx = add(Rxin,#Ii) ; if (p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -24614,12 +24614,12 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDRX_SL2_RETURN_T:
 		// Rx = add(Rxin,Rs) ; if (p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDSP_SL2_RETURN_T:
 		// Rd = add(r29,#Ii) ; if (p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -24630,32 +24630,32 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_AND1_SL2_RETURN_T:
 		// Rd = and(Rs,#1) ; if (p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRF_SL2_RETURN_T:
 		// if (!p0) Rd = #0 ; if (p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRFNEW_SL2_RETURN_T:
 		// if (!p0.new) Rd = #0 ; if (p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRT_SL2_RETURN_T:
 		// if (p0) Rd = #0 ; if (p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRTNEW_SL2_RETURN_T:
 		// if (p0.new) Rd = #0 ; if (p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CMPEQI_SL2_RETURN_T:
 		// p0 = cmp.eq(Rs,#Ii) ; if (p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -24666,7 +24666,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINE0I_SL2_RETURN_T:
 		// Rdd = combine(#0,#Ii) ; if (p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -24677,7 +24677,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINE1I_SL2_RETURN_T:
 		// Rdd = combine(#1,#Ii) ; if (p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -24688,7 +24688,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINE2I_SL2_RETURN_T:
 		// Rdd = combine(#2,#Ii) ; if (p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -24699,7 +24699,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINE3I_SL2_RETURN_T:
 		// Rdd = combine(#3,#Ii) ; if (p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -24710,17 +24710,17 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINERZ_SL2_RETURN_T:
 		// Rdd = combine(Rs,#0) ; if (p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINEZR_SL2_RETURN_T:
 		// Rdd = combine(#0,Rs) ; if (p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_DEC_SL2_RETURN_T:
 		// Rd = add(Rs,#n1) ; if (p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -24731,12 +24731,12 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_INC_SL2_RETURN_T:
 		// Rd = add(Rs,#1) ; if (p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SETI_SL2_RETURN_T:
 		// Rd = #Ii ; if (p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -24747,7 +24747,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SETIN1_SL2_RETURN_T:
 		// Rd = #n1 ; if (p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -24758,32 +24758,32 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SXTB_SL2_RETURN_T:
 		// Rd = sxtb(Rs) ; if (p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SXTH_SL2_RETURN_T:
 		// Rd = sxth(Rs) ; if (p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_TFR_SL2_RETURN_T:
 		// Rd = Rs ; if (p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ZXTB_SL2_RETURN_T:
 		// Rd = and(Rs,#255) ; if (p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ZXTH_SL2_RETURN_T:
 		// Rd = zxth(Rs) ; if (p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL1_LOADRI_IO_SL2_RETURN_T:
 		// Rd = memw(Rs+#Ii) ; if (p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -24794,7 +24794,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL1_LOADRUB_IO_SL2_RETURN_T:
 		// Rd = memub(Rs+#Ii) ; if (p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -24805,12 +24805,12 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_DEALLOCFRAME_SL2_RETURN_T:
 		// deallocframe ; if (p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRB_IO_SL2_RETURN_T:
 		// Rd = memb(Rs+#Ii) ; if (p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -24821,7 +24821,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRD_SP_SL2_RETURN_T:
 		// Rdd = memd(r29+#Ii) ; if (p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -24832,7 +24832,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRH_IO_SL2_RETURN_T:
 		// Rd = memh(Rs+#Ii) ; if (p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -24843,7 +24843,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRI_SP_SL2_RETURN_T:
 		// Rd = memw(r29+#Ii) ; if (p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -24854,7 +24854,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRUH_IO_SL2_RETURN_T:
 		// Rd = memuh(Rs+#Ii) ; if (p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -24865,17 +24865,17 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_SL2_RETURN_T:
 		// dealloc_return ; if (p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_T_SL2_RETURN_T:
 		// if (p0) dealloc_return ; if (p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SL2_RETURN_T:
 		// Rd = #Ii ; if (p0) dealloc_return
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -24886,7 +24886,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDI_SL2_RETURN_TNEW:
 		// Rx = add(Rxin,#Ii) ; if (p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -24897,12 +24897,12 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDRX_SL2_RETURN_TNEW:
 		// Rx = add(Rxin,Rs) ; if (p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ADDSP_SL2_RETURN_TNEW:
 		// Rd = add(r29,#Ii) ; if (p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -24913,32 +24913,32 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_AND1_SL2_RETURN_TNEW:
 		// Rd = and(Rs,#1) ; if (p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRF_SL2_RETURN_TNEW:
 		// if (!p0) Rd = #0 ; if (p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRFNEW_SL2_RETURN_TNEW:
 		// if (!p0.new) Rd = #0 ; if (p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRT_SL2_RETURN_TNEW:
 		// if (p0) Rd = #0 ; if (p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRTNEW_SL2_RETURN_TNEW:
 		// if (p0.new) Rd = #0 ; if (p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CMPEQI_SL2_RETURN_TNEW:
 		// p0 = cmp.eq(Rs,#Ii) ; if (p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -24949,7 +24949,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINE0I_SL2_RETURN_TNEW:
 		// Rdd = combine(#0,#Ii) ; if (p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -24960,7 +24960,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINE1I_SL2_RETURN_TNEW:
 		// Rdd = combine(#1,#Ii) ; if (p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -24971,7 +24971,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINE2I_SL2_RETURN_TNEW:
 		// Rdd = combine(#2,#Ii) ; if (p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -24982,7 +24982,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINE3I_SL2_RETURN_TNEW:
 		// Rdd = combine(#3,#Ii) ; if (p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -24993,17 +24993,17 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINERZ_SL2_RETURN_TNEW:
 		// Rdd = combine(Rs,#0) ; if (p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_COMBINEZR_SL2_RETURN_TNEW:
 		// Rdd = combine(#0,Rs) ; if (p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_DEC_SL2_RETURN_TNEW:
 		// Rd = add(Rs,#n1) ; if (p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -25014,12 +25014,12 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_INC_SL2_RETURN_TNEW:
 		// Rd = add(Rs,#1) ; if (p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SETI_SL2_RETURN_TNEW:
 		// Rd = #Ii ; if (p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -25030,7 +25030,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SETIN1_SL2_RETURN_TNEW:
 		// Rd = #n1 ; if (p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -25041,32 +25041,32 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SXTB_SL2_RETURN_TNEW:
 		// Rd = sxtb(Rs) ; if (p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_SXTH_SL2_RETURN_TNEW:
 		// Rd = sxth(Rs) ; if (p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_TFR_SL2_RETURN_TNEW:
 		// Rd = Rs ; if (p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ZXTB_SL2_RETURN_TNEW:
 		// Rd = and(Rs,#255) ; if (p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_ZXTH_SL2_RETURN_TNEW:
 		// Rd = zxth(Rs) ; if (p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL1_LOADRI_IO_SL2_RETURN_TNEW:
 		// Rd = memw(Rs+#Ii) ; if (p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -25077,7 +25077,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL1_LOADRUB_IO_SL2_RETURN_TNEW:
 		// Rd = memub(Rs+#Ii) ; if (p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -25088,12 +25088,12 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_DEALLOCFRAME_SL2_RETURN_TNEW:
 		// deallocframe ; if (p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRB_IO_SL2_RETURN_TNEW:
 		// Rd = memb(Rs+#Ii) ; if (p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -25104,7 +25104,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRD_SP_SL2_RETURN_TNEW:
 		// Rdd = memd(r29+#Ii) ; if (p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -25115,7 +25115,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRH_IO_SL2_RETURN_TNEW:
 		// Rd = memh(Rs+#Ii) ; if (p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -25126,7 +25126,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRI_SP_SL2_RETURN_TNEW:
 		// Rd = memw(r29+#Ii) ; if (p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -25137,7 +25137,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_LOADRUH_IO_SL2_RETURN_TNEW:
 		// Rd = memuh(Rs+#Ii) ; if (p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -25148,27 +25148,27 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_SL2_RETURN_TNEW:
 		// dealloc_return ; if (p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_F_SL2_RETURN_TNEW:
 		// if (!p0) dealloc_return ; if (p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_T_SL2_RETURN_TNEW:
 		// if (p0) dealloc_return ; if (p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_TNEW_SL2_RETURN_TNEW:
 		// if (p0.new) dealloc_return:nt ; if (p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = UT64_MAX;
 		break;
 	case HEX_INS_X2_AUTOJOIN_UNDOCUMENTED_SA2_TFRSI_SL2_RETURN_TNEW:
 		// Rd = #Ii ; if (p0.new) dealloc_return:nt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -25225,7 +25225,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRF_SS1_STOREB_IO:
 		// if (!p0) Rd = #0 ; memb(Rs+#Ii) = Rt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -25236,7 +25236,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRFNEW_SS1_STOREB_IO:
 		// if (!p0.new) Rd = #0 ; memb(Rs+#Ii) = Rt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -25247,7 +25247,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRT_SS1_STOREB_IO:
 		// if (p0) Rd = #0 ; memb(Rs+#Ii) = Rt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -25258,7 +25258,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRTNEW_SS1_STOREB_IO:
 		// if (p0.new) Rd = #0 ; memb(Rs+#Ii) = Rt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -25559,7 +25559,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_F_SS1_STOREB_IO:
 		// if (!p0) dealloc_return ; memb(Rs+#Ii) = Rt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -25570,7 +25570,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_FNEW_SS1_STOREB_IO:
 		// if (!p0.new) dealloc_return:nt ; memb(Rs+#Ii) = Rt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -25581,7 +25581,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_T_SS1_STOREB_IO:
 		// if (p0) dealloc_return ; memb(Rs+#Ii) = Rt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -25592,7 +25592,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_TNEW_SS1_STOREB_IO:
 		// if (p0.new) dealloc_return:nt ; memb(Rs+#Ii) = Rt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -25685,7 +25685,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRF_SS1_STOREW_IO:
 		// if (!p0) Rd = #0 ; memw(Rs+#Ii) = Rt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -25696,7 +25696,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRFNEW_SS1_STOREW_IO:
 		// if (!p0.new) Rd = #0 ; memw(Rs+#Ii) = Rt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -25707,7 +25707,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRT_SS1_STOREW_IO:
 		// if (p0) Rd = #0 ; memw(Rs+#Ii) = Rt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -25718,7 +25718,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRTNEW_SS1_STOREW_IO:
 		// if (p0.new) Rd = #0 ; memw(Rs+#Ii) = Rt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -26019,7 +26019,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_F_SS1_STOREW_IO:
 		// if (!p0) dealloc_return ; memw(Rs+#Ii) = Rt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -26030,7 +26030,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_FNEW_SS1_STOREW_IO:
 		// if (!p0.new) dealloc_return:nt ; memw(Rs+#Ii) = Rt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -26041,7 +26041,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_T_SS1_STOREW_IO:
 		// if (p0) dealloc_return ; memw(Rs+#Ii) = Rt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -26052,7 +26052,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_TNEW_SS1_STOREW_IO:
 		// if (p0.new) dealloc_return:nt ; memw(Rs+#Ii) = Rt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -26133,7 +26133,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRF_SS2_ALLOCFRAME:
 		// if (!p0) Rd = #0 ; allocframe(#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -26144,7 +26144,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRFNEW_SS2_ALLOCFRAME:
 		// if (!p0.new) Rd = #0 ; allocframe(#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -26155,7 +26155,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRT_SS2_ALLOCFRAME:
 		// if (p0) Rd = #0 ; allocframe(#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -26166,7 +26166,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRTNEW_SS2_ALLOCFRAME:
 		// if (p0.new) Rd = #0 ; allocframe(#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -26467,7 +26467,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_F_SS2_ALLOCFRAME:
 		// if (!p0) dealloc_return ; allocframe(#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = ST64_MAX;
@@ -26478,7 +26478,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_FNEW_SS2_ALLOCFRAME:
 		// if (!p0.new) dealloc_return:nt ; allocframe(#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = ST64_MAX;
@@ -26489,7 +26489,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_T_SS2_ALLOCFRAME:
 		// if (p0) dealloc_return ; allocframe(#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = ST64_MAX;
@@ -26500,7 +26500,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_TNEW_SS2_ALLOCFRAME:
 		// if (p0.new) dealloc_return:nt ; allocframe(#Ii)
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = ST64_MAX;
@@ -26677,7 +26677,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRF_SS2_STOREBI0:
 		// if (!p0) Rd = #0 ; memb(Rs+#Ii) = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -26688,7 +26688,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRFNEW_SS2_STOREBI0:
 		// if (!p0.new) Rd = #0 ; memb(Rs+#Ii) = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -26699,7 +26699,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRT_SS2_STOREBI0:
 		// if (p0) Rd = #0 ; memb(Rs+#Ii) = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -26710,7 +26710,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRTNEW_SS2_STOREBI0:
 		// if (p0.new) Rd = #0 ; memb(Rs+#Ii) = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -27011,7 +27011,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_F_SS2_STOREBI0:
 		// if (!p0) dealloc_return ; memb(Rs+#Ii) = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -27022,7 +27022,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_FNEW_SS2_STOREBI0:
 		// if (!p0.new) dealloc_return:nt ; memb(Rs+#Ii) = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -27033,7 +27033,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_T_SS2_STOREBI0:
 		// if (p0) dealloc_return ; memb(Rs+#Ii) = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -27044,7 +27044,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_TNEW_SS2_STOREBI0:
 		// if (p0.new) dealloc_return:nt ; memb(Rs+#Ii) = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -27209,7 +27209,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRF_SS2_STOREBI1:
 		// if (!p0) Rd = #0 ; memb(Rs+#Ii) = #1
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -27220,7 +27220,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRFNEW_SS2_STOREBI1:
 		// if (!p0.new) Rd = #0 ; memb(Rs+#Ii) = #1
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -27231,7 +27231,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRT_SS2_STOREBI1:
 		// if (p0) Rd = #0 ; memb(Rs+#Ii) = #1
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -27242,7 +27242,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRTNEW_SS2_STOREBI1:
 		// if (p0.new) Rd = #0 ; memb(Rs+#Ii) = #1
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -27543,7 +27543,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_F_SS2_STOREBI1:
 		// if (!p0) dealloc_return ; memb(Rs+#Ii) = #1
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -27554,7 +27554,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_FNEW_SS2_STOREBI1:
 		// if (!p0.new) dealloc_return:nt ; memb(Rs+#Ii) = #1
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -27565,7 +27565,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_T_SS2_STOREBI1:
 		// if (p0) dealloc_return ; memb(Rs+#Ii) = #1
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -27576,7 +27576,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_TNEW_SS2_STOREBI1:
 		// if (p0.new) dealloc_return:nt ; memb(Rs+#Ii) = #1
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -27753,7 +27753,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRF_SS2_STORED_SP:
 		// if (!p0) Rd = #0 ; memd(r29+#Ii) = Rtt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -27764,7 +27764,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRFNEW_SS2_STORED_SP:
 		// if (!p0.new) Rd = #0 ; memd(r29+#Ii) = Rtt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -27775,7 +27775,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRT_SS2_STORED_SP:
 		// if (p0) Rd = #0 ; memd(r29+#Ii) = Rtt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -27786,7 +27786,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRTNEW_SS2_STORED_SP:
 		// if (p0.new) Rd = #0 ; memd(r29+#Ii) = Rtt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -28087,7 +28087,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_F_SS2_STORED_SP:
 		// if (!p0) dealloc_return ; memd(r29+#Ii) = Rtt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -28098,7 +28098,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_FNEW_SS2_STORED_SP:
 		// if (!p0.new) dealloc_return:nt ; memd(r29+#Ii) = Rtt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -28109,7 +28109,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_T_SS2_STORED_SP:
 		// if (p0) dealloc_return ; memd(r29+#Ii) = Rtt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -28120,7 +28120,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_TNEW_SS2_STORED_SP:
 		// if (p0.new) dealloc_return:nt ; memd(r29+#Ii) = Rtt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -28249,7 +28249,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRF_SS2_STOREH_IO:
 		// if (!p0) Rd = #0 ; memh(Rs+#Ii) = Rt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -28260,7 +28260,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRFNEW_SS2_STOREH_IO:
 		// if (!p0.new) Rd = #0 ; memh(Rs+#Ii) = Rt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -28271,7 +28271,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRT_SS2_STOREH_IO:
 		// if (p0) Rd = #0 ; memh(Rs+#Ii) = Rt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -28282,7 +28282,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRTNEW_SS2_STOREH_IO:
 		// if (p0.new) Rd = #0 ; memh(Rs+#Ii) = Rt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -28583,7 +28583,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_F_SS2_STOREH_IO:
 		// if (!p0) dealloc_return ; memh(Rs+#Ii) = Rt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -28594,7 +28594,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_FNEW_SS2_STOREH_IO:
 		// if (!p0.new) dealloc_return:nt ; memh(Rs+#Ii) = Rt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -28605,7 +28605,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_T_SS2_STOREH_IO:
 		// if (p0) dealloc_return ; memh(Rs+#Ii) = Rt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -28616,7 +28616,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_TNEW_SS2_STOREH_IO:
 		// if (p0.new) dealloc_return:nt ; memh(Rs+#Ii) = Rt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -28721,7 +28721,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRF_SS2_STOREW_SP:
 		// if (!p0) Rd = #0 ; memw(r29+#Ii) = Rt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -28732,7 +28732,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRFNEW_SS2_STOREW_SP:
 		// if (!p0.new) Rd = #0 ; memw(r29+#Ii) = Rt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -28743,7 +28743,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRT_SS2_STOREW_SP:
 		// if (p0) Rd = #0 ; memw(r29+#Ii) = Rt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -28754,7 +28754,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRTNEW_SS2_STOREW_SP:
 		// if (p0.new) Rd = #0 ; memw(r29+#Ii) = Rt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -29055,7 +29055,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_F_SS2_STOREW_SP:
 		// if (!p0) dealloc_return ; memw(r29+#Ii) = Rt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -29066,7 +29066,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_FNEW_SS2_STOREW_SP:
 		// if (!p0.new) dealloc_return:nt ; memw(r29+#Ii) = Rt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -29077,7 +29077,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_T_SS2_STOREW_SP:
 		// if (p0) dealloc_return ; memw(r29+#Ii) = Rt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -29088,7 +29088,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_TNEW_SS2_STOREW_SP:
 		// if (p0.new) dealloc_return:nt ; memw(r29+#Ii) = Rt
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->val = (ut64)hi->vals[0];
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -29205,7 +29205,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRF_SS2_STOREWI0:
 		// if (!p0) Rd = #0 ; memw(Rs+#Ii) = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -29216,7 +29216,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRFNEW_SS2_STOREWI0:
 		// if (!p0.new) Rd = #0 ; memw(Rs+#Ii) = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -29227,7 +29227,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRT_SS2_STOREWI0:
 		// if (p0) Rd = #0 ; memw(Rs+#Ii) = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -29238,7 +29238,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRTNEW_SS2_STOREWI0:
 		// if (p0.new) Rd = #0 ; memw(Rs+#Ii) = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -29539,7 +29539,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_F_SS2_STOREWI0:
 		// if (!p0) dealloc_return ; memw(Rs+#Ii) = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -29550,7 +29550,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_FNEW_SS2_STOREWI0:
 		// if (!p0.new) dealloc_return:nt ; memw(Rs+#Ii) = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -29561,7 +29561,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_T_SS2_STOREWI0:
 		// if (p0) dealloc_return ; memw(Rs+#Ii) = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -29572,7 +29572,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_TNEW_SS2_STOREWI0:
 		// if (p0.new) dealloc_return:nt ; memw(Rs+#Ii) = #0
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -29713,7 +29713,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRF_SS2_STOREWI1:
 		// if (!p0) Rd = #0 ; memw(Rs+#Ii) = #1
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -29724,7 +29724,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRFNEW_SS2_STOREWI1:
 		// if (!p0.new) Rd = #0 ; memw(Rs+#Ii) = #1
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -29735,7 +29735,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRT_SS2_STOREWI1:
 		// if (p0) Rd = #0 ; memw(Rs+#Ii) = #1
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -29746,7 +29746,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SA1_CLRTNEW_SS2_STOREWI1:
 		// if (p0.new) Rd = #0 ; memw(Rs+#Ii) = #1
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->analysis_vals[1].imm = hi->vals[1];
 		op->val = (ut64)hi->vals[2];
@@ -30047,7 +30047,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_F_SS2_STOREWI1:
 		// if (!p0) dealloc_return ; memw(Rs+#Ii) = #1
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -30058,7 +30058,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_FNEW_SS2_STOREWI1:
 		// if (!p0.new) dealloc_return:nt ; memw(Rs+#Ii) = #1
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -30069,7 +30069,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_T_SS2_STOREWI1:
 		// if (p0) dealloc_return ; memw(Rs+#Ii) = #1
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
@@ -30080,7 +30080,7 @@ int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {
 		break;
 	case HEX_INS_X2_AUTOJOIN_SL2_RETURN_TNEW_SS2_STOREWI1:
 		// if (p0.new) dealloc_return:nt ; memw(Rs+#Ii) = #1
-		op->type = RZ_ANALYSIS_OP_TYPE_NULL;
+		op->type = RZ_ANALYSIS_OP_TYPE_COND;
 		op->analysis_vals[0].imm = hi->vals[0];
 		op->val = (ut64)hi->vals[1];
 		op->analysis_vals[1].imm = hi->vals[1];
