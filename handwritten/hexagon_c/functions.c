@@ -19,6 +19,14 @@ static inline bool is_endloop01_pkt(const ut8 pi_0, const ut8 pi_1) {
     return ((pi_0 == 0x2) && (pi_1 == 0x2));
 }
 
+/**
+ * \brief Sets several attributes of an instructions which are packet related.
+ * Like the position of the instruction in the packet or whether it ends a hardware loop etc.
+ *
+ * \param i_pkt_info The struct whichs attributes will be set.
+ * \param addr The address of the current instruction.
+ * \param previous_addr The address of the previously disassembled instruction.
+ */
 void hex_set_pkt_info(RZ_INOUT HexPktInfo* i_pkt_info, const ut32 addr, const ut32 previous_addr) {
     static HexPkt pkt = {0};  // Current packet
     static ut8 i = 0;  // Index of the instruction in the current packet.
@@ -36,8 +44,8 @@ void hex_set_pkt_info(RZ_INOUT HexPktInfo* i_pkt_info, const ut32 addr, const ut
 		// (addr == (previous_addr - 4) || addr == 0)
 		//
 		// In case the previous instruction belongs to a valid packet, we are still in a valid packet.
-		// If it was part of an *invalid* packet, a new *valid* packet only begins, if the previous instruction
-		// was the last of the invalid packet.
+		// If the previous instruction was the last of an invalid packet. The following instruciton
+        // belongs to a valid packet (because we know the first instruction of it). 
 		valid_packet = ((previous_addr == (addr - 4)) || (addr == 0)) && (valid_packet || new_pkt_starts);
 	}
 	if (valid_packet) {
@@ -114,11 +122,11 @@ static inline bool imm_is_scaled(const HexOpAttr attr) {
 }
 
 /**
- * @brief Applies the last constant extender to the immediate value of the given HexOp.
+ * \brief Applies the last constant extender to the immediate value of the given HexOp.
  *
- * @param op The operand the extender is applied to.
- * @param set_new_extender True if the immediate value of the op comes from immext() and sets the a new constant extender. False otherwise.
- * @param addr The address of the currently diassembled instruction.
+ * \param op The operand the extender is applied to.
+ * \param set_new_extender True if the immediate value of the op comes from immext() and sets the a new constant extender. False otherwise.
+ * \param addr The address of the currently diassembled instruction.
  */
 void hex_op_extend(RZ_INOUT HexOp *op, const bool set_new_extender, const ut32 addr) {
 	// Constant extender value
