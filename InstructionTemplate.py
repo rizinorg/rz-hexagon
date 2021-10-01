@@ -183,6 +183,10 @@ class InstructionTemplate:
     def get_instruction_init_in_c(self) -> str:
         """Returns one big c code block which parses one binary instruction. The blocks are used in hexagon_disas.c"""
 
+        only_one_imm_op = 1 == len(
+            [op for op in self.operands.values() if op.type == OperandType.IMMEDIATE]
+        )
+
         indent = PluginInfo.LINE_INDENT
         var = PluginInfo.HEX_INSTR_VAR_SYNTAX
         code = ""
@@ -204,8 +208,6 @@ class InstructionTemplate:
 
         if self.is_duplex:
             code += "{}hi->duplex = {};\n".format(indent, str(self.is_duplex).lower())
-
-        # TODO Set predicate state
 
         code += "{}hi->op_count = {};\n".format(
             indent, self.encoding.num_encoded_operands
@@ -237,6 +239,12 @@ class InstructionTemplate:
                 code += "{}hi->ops[{}].op.imm = {}".format(
                     indent, op.syntax_index, op.code_opcode_parsing
                 )
+                # If there is only one immediate operand in the instruction extend it anyways.
+                # LLVM marks some operands as not extendable, although they are.
+                if only_one_imm_op:
+                    code += "hex_op_extend(&(hi->ops[{}]), false, addr); // Only immediate, extension possible\n".format(
+                        op.syntax_index
+                    )
 
                 if op.is_pc_relative:
                     src = ", hi->pkt_info.pkt_addr != 0 ? hi->pkt_info.pkt_addr : addr + (st32) hi->ops[{}].op.imm".format(
