@@ -3248,7 +3248,7 @@ void hexagon_disasm_duplex_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 }
 
 void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr) {
-	char signed_imm[16] = "";
+	char signed_imm[6][16] = { 0 };
 	if ((hi_u32 & 0xf800ff00) == 0x20003800) {
 		// 00100iiiiiiiXXXXEE111000ssssxxxx | RX = add(RXin,#Ii) ; Rx = add(Rxin,Rs)
 		hi->instruction = HEX_INS_X2_AUTOJOIN_SA1_ADDI_SA1_ADDRX;
@@ -3272,9 +3272,9 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
@@ -3286,7 +3286,7 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[5].type = HEX_OP_TYPE_REG;
 		hi->ops[5].op.reg = (((hi_u32)&0xf0) >> 4); // Rs16
 		hi->vals[5] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = add(%sin,%s) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_sub_regs(hi->ops[3].op.reg), hex_get_general_sub_regs(hi->ops[4].op.reg), hex_get_general_sub_regs(hi->ops[5].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = add(%sin,%s) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_sub_regs(hi->ops[3].op.reg), hex_get_general_sub_regs(hi->ops[4].op.reg), hex_get_general_sub_regs(hi->ops[5].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00ff00) == 0x38003800) {
@@ -3644,9 +3644,9 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
@@ -3657,7 +3657,7 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[4].attr = HEX_OP_IMM_SCALED;
 		hi->ops[4].shift = 2;
 		hi->vals[4] = hi->ops[4].op.imm;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = add(R29,#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_sub_regs(hi->ops[3].op.reg), (ut32)hi->ops[4].op.imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = add(R29,#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_sub_regs(hi->ops[3].op.reg), (ut32)hi->ops[4].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xfc00fc00) == 0x2c002c00) {
@@ -3764,9 +3764,9 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
@@ -3775,7 +3775,7 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[4].type = HEX_OP_TYPE_REG;
 		hi->ops[4].op.reg = (((hi_u32)&0xf0) >> 4); // Rs16
 		hi->vals[4] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = and(%s,#1) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_sub_regs(hi->ops[3].op.reg), hex_get_general_sub_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = and(%s,#1) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_sub_regs(hi->ops[3].op.reg), hex_get_general_sub_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xfc00ff00) == 0x2c003200) {
@@ -3951,15 +3951,15 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0xf) >> 0); // Rd16
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; if (!P0) %s = #0 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_sub_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; if (!P0) %s = #0 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_sub_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00fff0) == 0x38003a70) {
@@ -4358,15 +4358,15 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0xf) >> 0); // Rd16
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; if (!P0.new) %s = #0 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_sub_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; if (!P0.new) %s = #0 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_sub_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00fff0) == 0x38003a50) {
@@ -4729,15 +4729,15 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0xf) >> 0); // Rd16
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; if (P0) %s = #0 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_sub_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; if (P0) %s = #0 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_sub_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00fff0) == 0x38003a60) {
@@ -5118,15 +5118,15 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0xf) >> 0); // Rd16
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; if (P0.new) %s = #0 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_sub_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; if (P0.new) %s = #0 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_sub_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00fff0) == 0x38003a40) {
@@ -5470,9 +5470,9 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
@@ -5481,7 +5481,7 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[4].type = HEX_OP_TYPE_IMM;
 		hi->ops[4].op.imm = (((hi_u32)&0x3) >> 0); // Ii
 		hi->vals[4] = hi->ops[4].op.imm;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; P0 = cmp.eq(%s,#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_sub_regs(hi->ops[3].op.reg), (ut32)hi->ops[4].op.imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; P0 = cmp.eq(%s,#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_sub_regs(hi->ops[3].op.reg), (ut32)hi->ops[4].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00ff0c) == 0x38003900) {
@@ -5832,9 +5832,9 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
@@ -5843,7 +5843,7 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[4].type = HEX_OP_TYPE_IMM;
 		hi->ops[4].op.imm = (((hi_u32)&0x60) >> 5); // Ii
 		hi->vals[4] = hi->ops[4].op.imm;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = combine(#0,#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_double_low8_regs(hi->ops[3].op.reg), (ut32)hi->ops[4].op.imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = combine(#0,#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_double_low8_regs(hi->ops[3].op.reg), (ut32)hi->ops[4].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00ff98) == 0x38003c00) {
@@ -6327,9 +6327,9 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
@@ -6338,7 +6338,7 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[4].type = HEX_OP_TYPE_IMM;
 		hi->ops[4].op.imm = (((hi_u32)&0x60) >> 5); // Ii
 		hi->vals[4] = hi->ops[4].op.imm;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = combine(#1,#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_double_low8_regs(hi->ops[3].op.reg), (ut32)hi->ops[4].op.imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = combine(#1,#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_double_low8_regs(hi->ops[3].op.reg), (ut32)hi->ops[4].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00ff98) == 0x38003c08) {
@@ -6846,9 +6846,9 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
@@ -6857,7 +6857,7 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[4].type = HEX_OP_TYPE_IMM;
 		hi->ops[4].op.imm = (((hi_u32)&0x60) >> 5); // Ii
 		hi->vals[4] = hi->ops[4].op.imm;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = combine(#2,#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_double_low8_regs(hi->ops[3].op.reg), (ut32)hi->ops[4].op.imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = combine(#2,#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_double_low8_regs(hi->ops[3].op.reg), (ut32)hi->ops[4].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00ff98) == 0x38003c10) {
@@ -7389,9 +7389,9 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
@@ -7400,7 +7400,7 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[4].type = HEX_OP_TYPE_IMM;
 		hi->ops[4].op.imm = (((hi_u32)&0x60) >> 5); // Ii
 		hi->vals[4] = hi->ops[4].op.imm;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = combine(#3,#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_double_low8_regs(hi->ops[3].op.reg), (ut32)hi->ops[4].op.imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = combine(#3,#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_double_low8_regs(hi->ops[3].op.reg), (ut32)hi->ops[4].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00ff98) == 0x38003c18) {
@@ -7957,9 +7957,9 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
@@ -7968,7 +7968,7 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[4].type = HEX_OP_TYPE_REG;
 		hi->ops[4].op.reg = (((hi_u32)&0xf0) >> 4); // Rs16
 		hi->vals[4] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = combine(%s,#0) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_double_low8_regs(hi->ops[3].op.reg), hex_get_general_sub_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = combine(%s,#0) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_double_low8_regs(hi->ops[3].op.reg), hex_get_general_sub_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00ff08) == 0x38003d08) {
@@ -8569,9 +8569,9 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
@@ -8580,7 +8580,7 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[4].type = HEX_OP_TYPE_REG;
 		hi->ops[4].op.reg = (((hi_u32)&0xf0) >> 4); // Rs16
 		hi->vals[4] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = combine(#0,%s) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_double_low8_regs(hi->ops[3].op.reg), hex_get_general_sub_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = combine(#0,%s) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_double_low8_regs(hi->ops[3].op.reg), hex_get_general_sub_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00ff08) == 0x38003d00) {
@@ -9156,9 +9156,9 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
@@ -9167,7 +9167,7 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[4].type = HEX_OP_TYPE_REG;
 		hi->ops[4].op.reg = (((hi_u32)&0xf0) >> 4); // Rs16
 		hi->vals[4] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = add(%s,#-1) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_sub_regs(hi->ops[3].op.reg), hex_get_general_sub_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = add(%s,#-1) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_sub_regs(hi->ops[3].op.reg), hex_get_general_sub_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xfc00ff00) == 0x2c003300) {
@@ -9364,9 +9364,9 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
@@ -9375,7 +9375,7 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[4].type = HEX_OP_TYPE_REG;
 		hi->ops[4].op.reg = (((hi_u32)&0xf0) >> 4); // Rs16
 		hi->vals[4] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = add(%s,#1) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_sub_regs(hi->ops[3].op.reg), hex_get_general_sub_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = add(%s,#1) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_sub_regs(hi->ops[3].op.reg), hex_get_general_sub_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xfc00ff00) == 0x2c003100) {
@@ -9526,15 +9526,15 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0xf) >> 0); // Rd16
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = #-1 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_sub_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = #-1 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_sub_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00fff0) == 0x38003a00) {
@@ -9857,9 +9857,9 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
@@ -9868,7 +9868,7 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[4].type = HEX_OP_TYPE_REG;
 		hi->ops[4].op.reg = (((hi_u32)&0xf0) >> 4); // Rs16
 		hi->vals[4] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = sxtb(%s) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_sub_regs(hi->ops[3].op.reg), hex_get_general_sub_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = sxtb(%s) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_sub_regs(hi->ops[3].op.reg), hex_get_general_sub_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xfc00ff00) == 0x2c003500) {
@@ -10116,9 +10116,9 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
@@ -10127,7 +10127,7 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[4].type = HEX_OP_TYPE_REG;
 		hi->ops[4].op.reg = (((hi_u32)&0xf0) >> 4); // Rs16
 		hi->vals[4] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = sxth(%s) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_sub_regs(hi->ops[3].op.reg), hex_get_general_sub_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = sxth(%s) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_sub_regs(hi->ops[3].op.reg), hex_get_general_sub_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xfc00ff00) == 0x2c003400) {
@@ -10351,9 +10351,9 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
@@ -10362,7 +10362,7 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[4].type = HEX_OP_TYPE_REG;
 		hi->ops[4].op.reg = (((hi_u32)&0xf0) >> 4); // Rs16
 		hi->vals[4] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_sub_regs(hi->ops[3].op.reg), hex_get_general_sub_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_sub_regs(hi->ops[3].op.reg), hex_get_general_sub_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xfc00ff00) == 0x2c003000) {
@@ -10490,9 +10490,9 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
@@ -10501,7 +10501,7 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[4].type = HEX_OP_TYPE_REG;
 		hi->ops[4].op.reg = (((hi_u32)&0xf0) >> 4); // Rs16
 		hi->vals[4] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = and(%s,#255) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_sub_regs(hi->ops[3].op.reg), hex_get_general_sub_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = and(%s,#255) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_sub_regs(hi->ops[3].op.reg), hex_get_general_sub_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xfc00ff00) == 0x2c003700) {
@@ -10797,9 +10797,9 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
@@ -10808,7 +10808,7 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[4].type = HEX_OP_TYPE_REG;
 		hi->ops[4].op.reg = (((hi_u32)&0xf0) >> 4); // Rs16
 		hi->vals[4] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = zxth(%s) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_sub_regs(hi->ops[3].op.reg), hex_get_general_sub_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = zxth(%s) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_sub_regs(hi->ops[3].op.reg), hex_get_general_sub_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xfc00ff00) == 0x2c003600) {
@@ -11079,9 +11079,9 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
@@ -11090,7 +11090,7 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[4].type = HEX_OP_TYPE_IMM;
 		hi->ops[4].op.imm = (((hi_u32)&0x3f0) >> 4); // Ii
 		hi->vals[4] = hi->ops[4].op.imm;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = #0x%x %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_sub_regs(hi->ops[3].op.reg), (ut32)hi->ops[4].op.imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = #0x%x %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_sub_regs(hi->ops[3].op.reg), (ut32)hi->ops[4].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xfc00fc00) == 0x28002800) {
@@ -11145,7 +11145,7 @@ void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 }
 
 void hexagon_disasm_duplex_0x4(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr) {
-	char signed_imm[16] = "";
+	char signed_imm[6][16] = { 0 };
 	if ((hi_u32 & 0xf800f000) == 0x40000000) {
 		// 01000IIIIIIIxxxxEE00iiiissssdddd | Rx = add(Rxin,#II) ; Rd = memw(Rs+#Ii)
 		hi->instruction = HEX_INS_X2_AUTOJOIN_SA1_ADDI_SL1_LOADRI_IO;
@@ -11168,9 +11168,9 @@ void hexagon_disasm_duplex_0x4(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
@@ -11184,7 +11184,7 @@ void hexagon_disasm_duplex_0x4(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[5].attr = HEX_OP_IMM_SCALED;
 		hi->ops[5].shift = 2;
 		hi->vals[5] = hi->ops[5].op.imm;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = memw(%s+#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_sub_regs(hi->ops[3].op.reg), hex_get_general_sub_regs(hi->ops[4].op.reg), (ut32)hi->ops[5].op.imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = memw(%s+#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_sub_regs(hi->ops[3].op.reg), hex_get_general_sub_regs(hi->ops[4].op.reg), (ut32)hi->ops[5].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00f000) == 0x58000000) {
@@ -11910,9 +11910,9 @@ void hexagon_disasm_duplex_0x4(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
@@ -11924,7 +11924,7 @@ void hexagon_disasm_duplex_0x4(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[5].type = HEX_OP_TYPE_IMM;
 		hi->ops[5].op.imm = (((hi_u32)&0xf00) >> 8); // Ii
 		hi->vals[5] = hi->ops[5].op.imm;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = memub(%s+#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_sub_regs(hi->ops[3].op.reg), hex_get_general_sub_regs(hi->ops[4].op.reg), (ut32)hi->ops[5].op.imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = memub(%s+#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_sub_regs(hi->ops[3].op.reg), hex_get_general_sub_regs(hi->ops[4].op.reg), (ut32)hi->ops[5].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00f000) == 0x58001000) {
@@ -12583,7 +12583,7 @@ void hexagon_disasm_duplex_0x4(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 }
 
 void hexagon_disasm_duplex_0x5(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr) {
-	char signed_imm[16] = "";
+	char signed_imm[6][16] = { 0 };
 	if ((hi_u32 & 0xf800ffff) == 0x40003f00) {
 		// 01000iiiiiiixxxxEE11111100000000 | Rx = add(Rxin,#Ii) ; deallocframe
 		hi->instruction = HEX_INS_X2_AUTOJOIN_SA1_ADDI_SL2_DEALLOCFRAME;
@@ -12607,12 +12607,12 @@ void hexagon_disasm_duplex_0x5(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; deallocframe %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; deallocframe %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00ffff) == 0x58003f00) {
@@ -13069,12 +13069,12 @@ void hexagon_disasm_duplex_0x5(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; jumpr R31 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; jumpr R31 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00ffff) == 0x58003fc0) {
@@ -13531,12 +13531,12 @@ void hexagon_disasm_duplex_0x5(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; if (!P0) jumpr R31 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; if (!P0) jumpr R31 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00ffff) == 0x58003fc5) {
@@ -13993,12 +13993,12 @@ void hexagon_disasm_duplex_0x5(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; if (!P0.new) jumpr:nt R31 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; if (!P0.new) jumpr:nt R31 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00ffff) == 0x58003fc7) {
@@ -14455,12 +14455,12 @@ void hexagon_disasm_duplex_0x5(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; if (P0) jumpr R31 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; if (P0) jumpr R31 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00ffff) == 0x58003fc4) {
@@ -14917,12 +14917,12 @@ void hexagon_disasm_duplex_0x5(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; if (P0.new) jumpr:nt R31 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; if (P0.new) jumpr:nt R31 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00ffff) == 0x58003fc6) {
@@ -15378,9 +15378,9 @@ void hexagon_disasm_duplex_0x5(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
@@ -15392,7 +15392,7 @@ void hexagon_disasm_duplex_0x5(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[5].type = HEX_OP_TYPE_IMM;
 		hi->ops[5].op.imm = (((hi_u32)&0x700) >> 8); // Ii
 		hi->vals[5] = hi->ops[5].op.imm;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = memb(%s+#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_sub_regs(hi->ops[3].op.reg), hex_get_general_sub_regs(hi->ops[4].op.reg), (ut32)hi->ops[5].op.imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = memb(%s+#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_sub_regs(hi->ops[3].op.reg), hex_get_general_sub_regs(hi->ops[4].op.reg), (ut32)hi->ops[5].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00f800) == 0x58003000) {
@@ -16070,9 +16070,9 @@ void hexagon_disasm_duplex_0x5(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
@@ -16083,7 +16083,7 @@ void hexagon_disasm_duplex_0x5(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[4].attr = HEX_OP_IMM_SCALED;
 		hi->ops[4].shift = 3;
 		hi->vals[4] = hi->ops[4].op.imm;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = memd(R29+#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_double_low8_regs(hi->ops[3].op.reg), (ut32)hi->ops[4].op.imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = memd(R29+#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_double_low8_regs(hi->ops[3].op.reg), (ut32)hi->ops[4].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00ff00) == 0x58003e00) {
@@ -16737,9 +16737,9 @@ void hexagon_disasm_duplex_0x5(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
@@ -16753,7 +16753,7 @@ void hexagon_disasm_duplex_0x5(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[5].attr = HEX_OP_IMM_SCALED;
 		hi->ops[5].shift = 1;
 		hi->vals[5] = hi->ops[5].op.imm;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = memh(%s+#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_sub_regs(hi->ops[3].op.reg), hex_get_general_sub_regs(hi->ops[4].op.reg), (ut32)hi->ops[5].op.imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = memh(%s+#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_sub_regs(hi->ops[3].op.reg), hex_get_general_sub_regs(hi->ops[4].op.reg), (ut32)hi->ops[5].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00f800) == 0x58002000) {
@@ -17479,9 +17479,9 @@ void hexagon_disasm_duplex_0x5(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
@@ -17492,7 +17492,7 @@ void hexagon_disasm_duplex_0x5(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[4].attr = HEX_OP_IMM_SCALED;
 		hi->ops[4].shift = 2;
 		hi->vals[4] = hi->ops[4].op.imm;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = memw(R29+#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_sub_regs(hi->ops[3].op.reg), (ut32)hi->ops[4].op.imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = memw(R29+#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_sub_regs(hi->ops[3].op.reg), (ut32)hi->ops[4].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00fe00) == 0x58003c00) {
@@ -18146,9 +18146,9 @@ void hexagon_disasm_duplex_0x5(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
@@ -18162,7 +18162,7 @@ void hexagon_disasm_duplex_0x5(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[5].attr = HEX_OP_IMM_SCALED;
 		hi->ops[5].shift = 1;
 		hi->vals[5] = hi->ops[5].op.imm;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = memuh(%s+#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_sub_regs(hi->ops[3].op.reg), hex_get_general_sub_regs(hi->ops[4].op.reg), (ut32)hi->ops[5].op.imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; %s = memuh(%s+#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_sub_regs(hi->ops[3].op.reg), hex_get_general_sub_regs(hi->ops[4].op.reg), (ut32)hi->ops[5].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00f800) == 0x58002800) {
@@ -18889,12 +18889,12 @@ void hexagon_disasm_duplex_0x5(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; dealloc_return %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; dealloc_return %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00ffff) == 0x58003f40) {
@@ -19351,12 +19351,12 @@ void hexagon_disasm_duplex_0x5(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; if (!P0) dealloc_return %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; if (!P0) dealloc_return %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00ffff) == 0x58003f45) {
@@ -19813,12 +19813,12 @@ void hexagon_disasm_duplex_0x5(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; if (!P0.new) dealloc_return:nt %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; if (!P0.new) dealloc_return:nt %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00ffff) == 0x58003f47) {
@@ -20275,12 +20275,12 @@ void hexagon_disasm_duplex_0x5(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; if (P0) dealloc_return %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; if (P0) dealloc_return %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00ffff) == 0x58003f44) {
@@ -20737,12 +20737,12 @@ void hexagon_disasm_duplex_0x5(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; if (P0.new) dealloc_return:nt %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; if (P0.new) dealloc_return:nt %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00ffff) == 0x58003f46) {
@@ -21179,7 +21179,7 @@ void hexagon_disasm_duplex_0x5(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 }
 
 void hexagon_disasm_duplex_0x6(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr) {
-	char signed_imm[16] = "";
+	char signed_imm[6][16] = { 0 };
 	if ((hi_u32 & 0xf800f000) == 0x60001000) {
 		// 01100IIIIIIIxxxxEE01iiiisssstttt | Rx = add(Rxin,#II) ; memb(Rs+#Ii) = Rt
 		hi->instruction = HEX_INS_X2_AUTOJOIN_SA1_ADDI_SS1_STOREB_IO;
@@ -21202,9 +21202,9 @@ void hexagon_disasm_duplex_0x6(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
@@ -21216,7 +21216,7 @@ void hexagon_disasm_duplex_0x6(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[5].type = HEX_OP_TYPE_REG;
 		hi->ops[5].op.reg = (((hi_u32)&0xf) >> 0); // Rt16
 		hi->vals[5] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; memb(%s+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_sub_regs(hi->ops[3].op.reg), (ut32)hi->ops[4].op.imm, hex_get_general_sub_regs(hi->ops[5].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; memb(%s+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_sub_regs(hi->ops[3].op.reg), (ut32)hi->ops[4].op.imm, hex_get_general_sub_regs(hi->ops[5].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00f000) == 0x78001000) {
@@ -21894,9 +21894,9 @@ void hexagon_disasm_duplex_0x6(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
@@ -21910,7 +21910,7 @@ void hexagon_disasm_duplex_0x6(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[5].type = HEX_OP_TYPE_REG;
 		hi->ops[5].op.reg = (((hi_u32)&0xf) >> 0); // Rt16
 		hi->vals[5] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; memw(%s+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_sub_regs(hi->ops[3].op.reg), (ut32)hi->ops[4].op.imm, hex_get_general_sub_regs(hi->ops[5].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; memw(%s+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_sub_regs(hi->ops[3].op.reg), (ut32)hi->ops[4].op.imm, hex_get_general_sub_regs(hi->ops[5].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00f000) == 0x78000000) {
@@ -22617,7 +22617,7 @@ void hexagon_disasm_duplex_0x6(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 }
 
 void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr) {
-	char signed_imm[16] = "";
+	char signed_imm[6][16] = { 0 };
 	if ((hi_u32 & 0xf800fe0f) == 0x60003c00) {
 		// 01100IIIIIIIxxxxEE11110iiiii0000 | Rx = add(Rxin,#II) ; allocframe(#Ii)
 		hi->instruction = HEX_INS_X2_AUTOJOIN_SA1_ADDI_SS2_ALLOCFRAME;
@@ -22640,9 +22640,9 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_IMM;
@@ -22650,7 +22650,7 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[3].attr = HEX_OP_IMM_SCALED;
 		hi->ops[3].shift = 3;
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; allocframe(#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, (ut32)hi->ops[3].op.imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; allocframe(#0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], (ut32)hi->ops[3].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00fe0f) == 0x78003c00) {
@@ -23232,9 +23232,9 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
@@ -23243,7 +23243,7 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[4].type = HEX_OP_TYPE_IMM;
 		hi->ops[4].op.imm = (((hi_u32)&0xf) >> 0); // Ii
 		hi->vals[4] = hi->ops[4].op.imm;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; memb(%s+#0x%x) = #0 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_sub_regs(hi->ops[3].op.reg), (ut32)hi->ops[4].op.imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; memb(%s+#0x%x) = #0 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_sub_regs(hi->ops[3].op.reg), (ut32)hi->ops[4].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00ff00) == 0x78003200) {
@@ -23849,9 +23849,9 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
@@ -23860,7 +23860,7 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[4].type = HEX_OP_TYPE_IMM;
 		hi->ops[4].op.imm = (((hi_u32)&0xf) >> 0); // Ii
 		hi->vals[4] = hi->ops[4].op.imm;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; memb(%s+#0x%x) = #1 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_sub_regs(hi->ops[3].op.reg), (ut32)hi->ops[4].op.imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; memb(%s+#0x%x) = #1 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_sub_regs(hi->ops[3].op.reg), (ut32)hi->ops[4].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00ff00) == 0x78003300) {
@@ -24466,9 +24466,9 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_IMM;
@@ -24479,15 +24479,15 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 			hi->ops[3].op.imm |= (0xffffffffffffffff << 8);
 		}
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
 		hi->ops[4].type = HEX_OP_TYPE_REG;
 		hi->ops[4].op.reg = (((hi_u32)&0x7) >> 0); // Rtt8
 		hi->vals[4] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, signed_imm, hex_get_general_double_low8_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], signed_imm[3], hex_get_general_double_low8_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00fe00) == 0x78002a00) {
@@ -24517,15 +24517,15 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
 		hi->ops[4].type = HEX_OP_TYPE_REG;
 		hi->ops[4].op.reg = (((hi_u32)&0x7) >> 0); // Rtt8
 		hi->vals[4] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hex_get_general_sub_regs(hi->ops[2].op.reg), signed_imm, hex_get_general_double_low8_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), hex_get_general_sub_regs(hi->ops[2].op.reg), signed_imm[3], hex_get_general_double_low8_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xfc00fe00) == 0x6c002a00) {
@@ -24553,15 +24553,15 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 			hi->ops[2].op.imm |= (0xffffffffffffffff << 8);
 		}
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x7) >> 0); // Rtt8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = add(R29,#0x%x) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, signed_imm, hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(R29,#0x%x) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, signed_imm[2], hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00fe00) == 0x72002a00) {
@@ -24588,15 +24588,15 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x7) >> 0); // Rtt8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = and(%s,#1) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = and(%s,#1) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xfff0fe00) == 0x7a702a00) {
@@ -24620,15 +24620,15 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "#", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
 		hi->ops[2].type = HEX_OP_TYPE_REG;
 		hi->ops[2].op.reg = (((hi_u32)&0x7) >> 0); // Rtt8
 		hi->vals[2] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (!P0) %s = #0 ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), signed_imm, hex_get_general_double_low8_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!P0) %s = #0 ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), signed_imm[1], hex_get_general_double_low8_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xfff0fe00) == 0x7a502a00) {
@@ -24652,15 +24652,15 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "#", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
 		hi->ops[2].type = HEX_OP_TYPE_REG;
 		hi->ops[2].op.reg = (((hi_u32)&0x7) >> 0); // Rtt8
 		hi->vals[2] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (!P0.new) %s = #0 ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), signed_imm, hex_get_general_double_low8_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!P0.new) %s = #0 ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), signed_imm[1], hex_get_general_double_low8_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xfff0fe00) == 0x7a602a00) {
@@ -24684,15 +24684,15 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "#", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
 		hi->ops[2].type = HEX_OP_TYPE_REG;
 		hi->ops[2].op.reg = (((hi_u32)&0x7) >> 0); // Rtt8
 		hi->vals[2] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (P0) %s = #0 ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), signed_imm, hex_get_general_double_low8_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (P0) %s = #0 ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), signed_imm[1], hex_get_general_double_low8_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xfff0fe00) == 0x7a402a00) {
@@ -24716,15 +24716,15 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "#", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
 		hi->ops[2].type = HEX_OP_TYPE_REG;
 		hi->ops[2].op.reg = (((hi_u32)&0x7) >> 0); // Rtt8
 		hi->vals[2] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (P0.new) %s = #0 ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), signed_imm, hex_get_general_double_low8_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (P0.new) %s = #0 ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), signed_imm[1], hex_get_general_double_low8_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff0cfe00) == 0x79002a00) {
@@ -24750,15 +24750,15 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 			hi->ops[2].op.imm |= (0xffffffffffffffff << 8);
 		}
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x7) >> 0); // Rtt8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s P0 = cmp.eq(%s,#0x%x) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, signed_imm, hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s P0 = cmp.eq(%s,#0x%x) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, signed_imm[2], hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff98fe00) == 0x7c002a00) {
@@ -24784,15 +24784,15 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 			hi->ops[2].op.imm |= (0xffffffffffffffff << 8);
 		}
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x7) >> 0); // Rtt8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = combine(#0,#0x%x) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_double_low8_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, signed_imm, hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = combine(#0,#0x%x) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_double_low8_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, signed_imm[2], hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff98fe00) == 0x7c082a00) {
@@ -24818,15 +24818,15 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 			hi->ops[2].op.imm |= (0xffffffffffffffff << 8);
 		}
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x7) >> 0); // Rtt8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = combine(#1,#0x%x) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_double_low8_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, signed_imm, hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = combine(#1,#0x%x) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_double_low8_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, signed_imm[2], hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff98fe00) == 0x7c102a00) {
@@ -24852,15 +24852,15 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 			hi->ops[2].op.imm |= (0xffffffffffffffff << 8);
 		}
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x7) >> 0); // Rtt8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = combine(#2,#0x%x) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_double_low8_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, signed_imm, hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = combine(#2,#0x%x) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_double_low8_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, signed_imm[2], hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff98fe00) == 0x7c182a00) {
@@ -24886,15 +24886,15 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 			hi->ops[2].op.imm |= (0xffffffffffffffff << 8);
 		}
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x7) >> 0); // Rtt8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = combine(#3,#0x%x) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_double_low8_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, signed_imm, hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = combine(#3,#0x%x) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_double_low8_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, signed_imm[2], hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff08fe00) == 0x7d082a00) {
@@ -24921,15 +24921,15 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x7) >> 0); // Rtt8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = combine(%s,#0) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_double_low8_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = combine(%s,#0) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_double_low8_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff08fe00) == 0x7d002a00) {
@@ -24956,15 +24956,15 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x7) >> 0); // Rtt8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = combine(#0,%s) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_double_low8_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = combine(#0,%s) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_double_low8_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00fe00) == 0x73002a00) {
@@ -24990,15 +24990,15 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 			hi->ops[3].op.imm |= (0xffffffffffffffff << 8);
 		}
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
 		hi->ops[4].type = HEX_OP_TYPE_REG;
 		hi->ops[4].op.reg = (((hi_u32)&0x7) >> 0); // Rtt8
 		hi->vals[4] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = add(%s,#-1) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_double_low8_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%s,#-1) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[3], hex_get_general_double_low8_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00fe00) == 0x71002a00) {
@@ -25025,15 +25025,15 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x7) >> 0); // Rtt8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = add(%s,#1) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%s,#1) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xfc00fe00) == 0x68002a00) {
@@ -25060,15 +25060,15 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 			hi->ops[2].op.imm |= (0xffffffffffffffff << 8);
 		}
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x7) >> 0); // Rtt8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = ##0x%x ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, signed_imm, hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = ##0x%x ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, signed_imm[2], hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xfff0fe00) == 0x7a002a00) {
@@ -25091,15 +25091,15 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 			hi->ops[2].op.imm |= (0xffffffffffffffff << 8);
 		}
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x7) >> 0); // Rtt8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = #-1 ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), signed_imm, hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = #-1 ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), signed_imm[2], hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00fe00) == 0x75002a00) {
@@ -25126,15 +25126,15 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x7) >> 0); // Rtt8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = sxtb(%s) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = sxtb(%s) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00fe00) == 0x74002a00) {
@@ -25161,15 +25161,15 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x7) >> 0); // Rtt8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = sxth(%s) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = sxth(%s) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00fe00) == 0x70002a00) {
@@ -25196,15 +25196,15 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x7) >> 0); // Rtt8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = %s ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = %s ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00fe00) == 0x77002a00) {
@@ -25231,15 +25231,15 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x7) >> 0); // Rtt8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = and(%s,#255) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = and(%s,#255) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00fe00) == 0x76002a00) {
@@ -25266,15 +25266,15 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x7) >> 0); // Rtt8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = zxth(%s) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = zxth(%s) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xfc00fe00) == 0x68002a00) {
@@ -25300,15 +25300,15 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 			hi->ops[2].op.imm |= (0xffffffffffffffff << 8);
 		}
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x7) >> 0); // Rtt8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = #0x%x ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, signed_imm, hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = #0x%x ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, signed_imm[2], hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xf800f800) == 0x60002000) {
@@ -25333,9 +25333,9 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
@@ -25349,7 +25349,7 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[5].type = HEX_OP_TYPE_REG;
 		hi->ops[5].op.reg = (((hi_u32)&0xf) >> 0); // Rt16
 		hi->vals[5] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; memh(%s+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_sub_regs(hi->ops[3].op.reg), (ut32)hi->ops[4].op.imm, hex_get_general_sub_regs(hi->ops[5].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; memh(%s+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_sub_regs(hi->ops[3].op.reg), (ut32)hi->ops[4].op.imm, hex_get_general_sub_regs(hi->ops[5].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00f800) == 0x78002000) {
@@ -26075,9 +26075,9 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_IMM;
@@ -26088,7 +26088,7 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[4].type = HEX_OP_TYPE_REG;
 		hi->ops[4].op.reg = (((hi_u32)&0xf) >> 0); // Rt16
 		hi->vals[4] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; memw(R29+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, (ut32)hi->ops[3].op.imm, hex_get_general_sub_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; memw(R29+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], (ut32)hi->ops[3].op.imm, hex_get_general_sub_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00fe00) == 0x78002800) {
@@ -26742,9 +26742,9 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
@@ -26755,7 +26755,7 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[4].attr = HEX_OP_IMM_SCALED;
 		hi->ops[4].shift = 2;
 		hi->vals[4] = hi->ops[4].op.imm;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; memw(%s+#0x%x) = #0 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_sub_regs(hi->ops[3].op.reg), (ut32)hi->ops[4].op.imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; memw(%s+#0x%x) = #0 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_sub_regs(hi->ops[3].op.reg), (ut32)hi->ops[4].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00ff00) == 0x78003000) {
@@ -27409,9 +27409,9 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
@@ -27422,7 +27422,7 @@ void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[4].attr = HEX_OP_IMM_SCALED;
 		hi->ops[4].shift = 2;
 		hi->vals[4] = hi->ops[4].op.imm;
-		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; memw(%s+#0x%x) = #1 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_sub_regs(hi->ops[3].op.reg), (ut32)hi->ops[4].op.imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%sin,%s) ; memw(%s+#0x%x) = #1 %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_sub_regs(hi->ops[3].op.reg), (ut32)hi->ops[4].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00ff00) == 0x78003100) {
@@ -28880,7 +28880,7 @@ void hexagon_disasm_duplex_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 }
 
 void hexagon_disasm_duplex_0xb(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr) {
-	char signed_imm[16] = "";
+	char signed_imm[6][16] = { 0 };
 	if ((hi_u32 & 0xf000fe0f) == 0xb0003c00) {
 		// 1011IIIIssssttttEE11110iiiii0000 | memb(Rs+#II) = Rt ; allocframe(#Ii)
 		hi->instruction = HEX_INS_X2_AUTOJOIN_SS1_STOREB_IO_SS2_ALLOCFRAME;
@@ -29073,15 +29073,15 @@ void hexagon_disasm_duplex_0xb(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 			hi->ops[3].op.imm |= (0xffffffffffffffff << 8);
 		}
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
 		hi->ops[4].type = HEX_OP_TYPE_REG;
 		hi->ops[4].op.reg = (((hi_u32)&0x7) >> 0); // Rtt8
 		hi->vals[4] = ST64_MAX;
-		sprintf(hi->mnem, "%s memb(%s+#0x%x) = %s ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_sub_regs(hi->ops[2].op.reg), signed_imm, hex_get_general_double_low8_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s memb(%s+#0x%x) = %s ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_sub_regs(hi->ops[2].op.reg), signed_imm[3], hex_get_general_double_low8_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xf000fe00) == 0xa0002a00) {
@@ -29112,15 +29112,15 @@ void hexagon_disasm_duplex_0xb(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 			hi->ops[3].op.imm |= (0xffffffffffffffff << 8);
 		}
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
 		hi->ops[4].type = HEX_OP_TYPE_REG;
 		hi->ops[4].op.reg = (((hi_u32)&0x7) >> 0); // Rtt8
 		hi->vals[4] = ST64_MAX;
-		sprintf(hi->mnem, "%s memw(%s+#0x%x) = %s ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_sub_regs(hi->ops[2].op.reg), signed_imm, hex_get_general_double_low8_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s memw(%s+#0x%x) = %s ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_sub_regs(hi->ops[2].op.reg), signed_imm[3], hex_get_general_double_low8_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xf000f800) == 0xb0002000) {
@@ -29372,7 +29372,7 @@ void hexagon_disasm_duplex_0xb(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 }
 
 void hexagon_disasm_duplex_0xc(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr) {
-	char signed_imm[16] = "";
+	char signed_imm[6][16] = { 0 };
 	if ((hi_u32 & 0xf000fe0f) == 0xc0001c00) {
 		// 1100IIIIssssddddEE01110iiiii0000 | Rd = memw(Rs+#II) ; allocframe(#Ii)
 		hi->instruction = HEX_INS_X2_AUTOJOIN_SL1_LOADRI_IO_SS2_ALLOCFRAME;
@@ -29567,15 +29567,15 @@ void hexagon_disasm_duplex_0xc(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 			hi->ops[3].op.imm |= (0xffffffffffffffff << 8);
 		}
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
 		hi->ops[4].type = HEX_OP_TYPE_REG;
 		hi->ops[4].op.reg = (((hi_u32)&0x7) >> 0); // Rtt8
 		hi->vals[4] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = memw(%s+#0x%x) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, signed_imm, hex_get_general_double_low8_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = memw(%s+#0x%x) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, signed_imm[3], hex_get_general_double_low8_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xf000fe00) == 0xd0000a00) {
@@ -29604,15 +29604,15 @@ void hexagon_disasm_duplex_0xc(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 			hi->ops[3].op.imm |= (0xffffffffffffffff << 8);
 		}
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
 		hi->ops[4].type = HEX_OP_TYPE_REG;
 		hi->ops[4].op.reg = (((hi_u32)&0x7) >> 0); // Rtt8
 		hi->vals[4] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = memub(%s+#0x%x) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, signed_imm, hex_get_general_double_low8_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = memub(%s+#0x%x) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, signed_imm[3], hex_get_general_double_low8_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xf000f800) == 0xc0000000) {
@@ -29864,7 +29864,7 @@ void hexagon_disasm_duplex_0xc(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 }
 
 void hexagon_disasm_duplex_0xd(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr) {
-	char signed_imm[16] = "";
+	char signed_imm[6][16] = { 0 };
 	if ((hi_u32 & 0xfffffe0f) == 0xdf003c00) {
 		// 1101111100000000EE11110iiiii0000 | deallocframe ; allocframe(#Ii)
 		hi->instruction = HEX_INS_X2_AUTOJOIN_SL2_DEALLOCFRAME_SS2_ALLOCFRAME;
@@ -30625,15 +30625,15 @@ void hexagon_disasm_duplex_0xd(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[0]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[0].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[0].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[0], "%s%s0x%x", "#", "-", abs((st32)hi->ops[0].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[0].op.imm);
+			sprintf(signed_imm[0], "%s0x%x", "#", (st32)hi->ops[0].op.imm);
 		}
 		hi->vals[0] = hi->ops[0].op.imm;
 		hi->ops[1].type = HEX_OP_TYPE_REG;
 		hi->ops[1].op.reg = (((hi_u32)&0x7) >> 0); // Rtt8
 		hi->vals[1] = ST64_MAX;
-		sprintf(hi->mnem, "%s deallocframe ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, signed_imm, hex_get_general_double_low8_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s deallocframe ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, signed_imm[0], hex_get_general_double_low8_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xf800fe00) == 0xd0002a00) {
@@ -30662,15 +30662,15 @@ void hexagon_disasm_duplex_0xd(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 			hi->ops[3].op.imm |= (0xffffffffffffffff << 8);
 		}
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
 		hi->ops[4].type = HEX_OP_TYPE_REG;
 		hi->ops[4].op.reg = (((hi_u32)&0x7) >> 0); // Rtt8
 		hi->vals[4] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = memb(%s+#0x%x) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, signed_imm, hex_get_general_double_low8_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = memb(%s+#0x%x) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, signed_imm[3], hex_get_general_double_low8_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff00fe00) == 0xde002a00) {
@@ -30698,15 +30698,15 @@ void hexagon_disasm_duplex_0xd(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 			hi->ops[2].op.imm |= (0xffffffffffffffff << 8);
 		}
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x7) >> 0); // Rtt8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = memd(R29+#0x%x) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_double_low8_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, signed_imm, hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = memd(R29+#0x%x) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_double_low8_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, signed_imm[2], hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xf800fe00) == 0xc0002a00) {
@@ -30737,15 +30737,15 @@ void hexagon_disasm_duplex_0xd(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 			hi->ops[3].op.imm |= (0xffffffffffffffff << 8);
 		}
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
 		hi->ops[4].type = HEX_OP_TYPE_REG;
 		hi->ops[4].op.reg = (((hi_u32)&0x7) >> 0); // Rtt8
 		hi->vals[4] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = memh(%s+#0x%x) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, signed_imm, hex_get_general_double_low8_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = memh(%s+#0x%x) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, signed_imm[3], hex_get_general_double_low8_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xfe00fe00) == 0xdc002a00) {
@@ -30773,15 +30773,15 @@ void hexagon_disasm_duplex_0xd(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 			hi->ops[2].op.imm |= (0xffffffffffffffff << 8);
 		}
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x7) >> 0); // Rtt8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = memw(R29+#0x%x) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, signed_imm, hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = memw(R29+#0x%x) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, signed_imm[2], hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xf800fe00) == 0xc8002a00) {
@@ -30812,15 +30812,15 @@ void hexagon_disasm_duplex_0xd(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 			hi->ops[3].op.imm |= (0xffffffffffffffff << 8);
 		}
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
 		hi->ops[4].type = HEX_OP_TYPE_REG;
 		hi->ops[4].op.reg = (((hi_u32)&0x7) >> 0); // Rtt8
 		hi->vals[4] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = memuh(%s+#0x%x) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, signed_imm, hex_get_general_double_low8_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = memuh(%s+#0x%x) ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), hex_get_general_sub_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, signed_imm[3], hex_get_general_double_low8_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xfffffe00) == 0xdf402a00) {
@@ -30841,15 +30841,15 @@ void hexagon_disasm_duplex_0xd(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[0]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[0].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[0].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[0], "%s%s0x%x", "#", "-", abs((st32)hi->ops[0].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[0].op.imm);
+			sprintf(signed_imm[0], "%s0x%x", "#", (st32)hi->ops[0].op.imm);
 		}
 		hi->vals[0] = hi->ops[0].op.imm;
 		hi->ops[1].type = HEX_OP_TYPE_REG;
 		hi->ops[1].op.reg = (((hi_u32)&0x7) >> 0); // Rtt8
 		hi->vals[1] = ST64_MAX;
-		sprintf(hi->mnem, "%s dealloc_return ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, signed_imm, hex_get_general_double_low8_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s dealloc_return ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, signed_imm[0], hex_get_general_double_low8_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xfffffe00) == 0xdf452a00) {
@@ -30870,15 +30870,15 @@ void hexagon_disasm_duplex_0xd(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[0]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[0].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[0].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[0], "%s%s0x%x", "#", "-", abs((st32)hi->ops[0].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[0].op.imm);
+			sprintf(signed_imm[0], "%s0x%x", "#", (st32)hi->ops[0].op.imm);
 		}
 		hi->vals[0] = hi->ops[0].op.imm;
 		hi->ops[1].type = HEX_OP_TYPE_REG;
 		hi->ops[1].op.reg = (((hi_u32)&0x7) >> 0); // Rtt8
 		hi->vals[1] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (!P0) dealloc_return ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, signed_imm, hex_get_general_double_low8_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!P0) dealloc_return ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, signed_imm[0], hex_get_general_double_low8_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xfffffe00) == 0xdf472a00) {
@@ -30899,15 +30899,15 @@ void hexagon_disasm_duplex_0xd(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[0]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[0].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[0].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[0], "%s%s0x%x", "#", "-", abs((st32)hi->ops[0].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[0].op.imm);
+			sprintf(signed_imm[0], "%s0x%x", "#", (st32)hi->ops[0].op.imm);
 		}
 		hi->vals[0] = hi->ops[0].op.imm;
 		hi->ops[1].type = HEX_OP_TYPE_REG;
 		hi->ops[1].op.reg = (((hi_u32)&0x7) >> 0); // Rtt8
 		hi->vals[1] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (!P0.new) dealloc_return:nt ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, signed_imm, hex_get_general_double_low8_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!P0.new) dealloc_return:nt ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, signed_imm[0], hex_get_general_double_low8_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xfffffe00) == 0xdf442a00) {
@@ -30928,15 +30928,15 @@ void hexagon_disasm_duplex_0xd(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[0]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[0].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[0].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[0], "%s%s0x%x", "#", "-", abs((st32)hi->ops[0].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[0].op.imm);
+			sprintf(signed_imm[0], "%s0x%x", "#", (st32)hi->ops[0].op.imm);
 		}
 		hi->vals[0] = hi->ops[0].op.imm;
 		hi->ops[1].type = HEX_OP_TYPE_REG;
 		hi->ops[1].op.reg = (((hi_u32)&0x7) >> 0); // Rtt8
 		hi->vals[1] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (P0) dealloc_return ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, signed_imm, hex_get_general_double_low8_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (P0) dealloc_return ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, signed_imm[0], hex_get_general_double_low8_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xfffffe00) == 0xdf462a00) {
@@ -30957,15 +30957,15 @@ void hexagon_disasm_duplex_0xd(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		}
 		hex_op_extend(&(hi->ops[0]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[0].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[0].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[0], "%s%s0x%x", "#", "-", abs((st32)hi->ops[0].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[0].op.imm);
+			sprintf(signed_imm[0], "%s0x%x", "#", (st32)hi->ops[0].op.imm);
 		}
 		hi->vals[0] = hi->ops[0].op.imm;
 		hi->ops[1].type = HEX_OP_TYPE_REG;
 		hi->ops[1].op.reg = (((hi_u32)&0x7) >> 0); // Rtt8
 		hi->vals[1] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (P0.new) dealloc_return:nt ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, signed_imm, hex_get_general_double_low8_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (P0.new) dealloc_return:nt ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, signed_imm[0], hex_get_general_double_low8_regs(hi->ops[1].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xfffff800) == 0xdf002000) {
@@ -32096,7 +32096,7 @@ void hexagon_disasm_duplex_0xd(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 }
 
 void hexagon_disasm_duplex_0xe(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr) {
-	char signed_imm[16] = "";
+	char signed_imm[6][16] = { 0 };
 	if ((hi_u32 & 0xff00fe0f) == 0xf2001c00) {
 		// 11110010ssssIIIIEE01110iiiii0000 | memb(Rs+#II) = #0 ; allocframe(#Ii)
 		hi->instruction = HEX_INS_X2_AUTOJOIN_SS2_STOREBI0_SS2_ALLOCFRAME;
@@ -32160,9 +32160,9 @@ void hexagon_disasm_duplex_0xe(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 			hi->ops[0].op.imm |= (0xffffffffffffffff << 8);
 		}
 		if (((st32)hi->ops[0].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[0].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[0], "%s%s0x%x", "#", "-", abs((st32)hi->ops[0].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[0].op.imm);
+			sprintf(signed_imm[0], "%s0x%x", "#", (st32)hi->ops[0].op.imm);
 		}
 		hi->vals[0] = hi->ops[0].op.imm;
 		hi->ops[1].type = HEX_OP_TYPE_REG;
@@ -32173,7 +32173,7 @@ void hexagon_disasm_duplex_0xe(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[2].attr = HEX_OP_IMM_SCALED;
 		hi->ops[2].shift = 3;
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s memd(R29+%s) = %s ; allocframe(#0x%x) %s", hi->pkt_info.syntax_prefix, signed_imm, hex_get_general_double_low8_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s memd(R29+%s) = %s ; allocframe(#0x%x) %s", hi->pkt_info.syntax_prefix, signed_imm[0], hex_get_general_double_low8_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xf800fe0f) == 0xe0001c00) {
@@ -32320,9 +32320,9 @@ void hexagon_disasm_duplex_0xe(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 			hi->ops[0].op.imm |= (0xffffffffffffffff << 8);
 		}
 		if (((st32)hi->ops[0].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[0].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[0], "%s%s0x%x", "#", "-", abs((st32)hi->ops[0].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[0].op.imm);
+			sprintf(signed_imm[0], "%s0x%x", "#", (st32)hi->ops[0].op.imm);
 		}
 		hi->vals[0] = hi->ops[0].op.imm;
 		hi->ops[1].type = HEX_OP_TYPE_REG;
@@ -32334,7 +32334,7 @@ void hexagon_disasm_duplex_0xe(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[3].type = HEX_OP_TYPE_IMM;
 		hi->ops[3].op.imm = (((hi_u32)&0xf) >> 0); // Ii
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s memd(R29+%s) = %s ; memb(%s+#0x%x) = #0 %s", hi->pkt_info.syntax_prefix, signed_imm, hex_get_general_double_low8_regs(hi->ops[1].op.reg), hex_get_general_sub_regs(hi->ops[2].op.reg), (ut32)hi->ops[3].op.imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s memd(R29+%s) = %s ; memb(%s+#0x%x) = #0 %s", hi->pkt_info.syntax_prefix, signed_imm[0], hex_get_general_double_low8_regs(hi->ops[1].op.reg), hex_get_general_sub_regs(hi->ops[2].op.reg), (ut32)hi->ops[3].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xf800ff00) == 0xe0001200) {
@@ -32509,9 +32509,9 @@ void hexagon_disasm_duplex_0xe(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 			hi->ops[0].op.imm |= (0xffffffffffffffff << 8);
 		}
 		if (((st32)hi->ops[0].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[0].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[0], "%s%s0x%x", "#", "-", abs((st32)hi->ops[0].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[0].op.imm);
+			sprintf(signed_imm[0], "%s0x%x", "#", (st32)hi->ops[0].op.imm);
 		}
 		hi->vals[0] = hi->ops[0].op.imm;
 		hi->ops[1].type = HEX_OP_TYPE_REG;
@@ -32523,7 +32523,7 @@ void hexagon_disasm_duplex_0xe(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[3].type = HEX_OP_TYPE_IMM;
 		hi->ops[3].op.imm = (((hi_u32)&0xf) >> 0); // Ii
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s memd(R29+%s) = %s ; memb(%s+#0x%x) = #1 %s", hi->pkt_info.syntax_prefix, signed_imm, hex_get_general_double_low8_regs(hi->ops[1].op.reg), hex_get_general_sub_regs(hi->ops[2].op.reg), (ut32)hi->ops[3].op.imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s memd(R29+%s) = %s ; memb(%s+#0x%x) = #1 %s", hi->pkt_info.syntax_prefix, signed_imm[0], hex_get_general_double_low8_regs(hi->ops[1].op.reg), hex_get_general_sub_regs(hi->ops[2].op.reg), (ut32)hi->ops[3].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xf800ff00) == 0xe0001300) {
@@ -32650,9 +32650,9 @@ void hexagon_disasm_duplex_0xe(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 			hi->ops[0].op.imm |= (0xffffffffffffffff << 8);
 		}
 		if (((st32)hi->ops[0].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[0].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[0], "%s%s0x%x", "#", "-", abs((st32)hi->ops[0].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[0].op.imm);
+			sprintf(signed_imm[0], "%s0x%x", "#", (st32)hi->ops[0].op.imm);
 		}
 		hi->vals[0] = hi->ops[0].op.imm;
 		hi->ops[1].type = HEX_OP_TYPE_REG;
@@ -32666,15 +32666,15 @@ void hexagon_disasm_duplex_0xe(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 			hi->ops[2].op.imm |= (0xffffffffffffffff << 8);
 		}
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x7) >> 0); // Rtt8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s memd(R29+%s) = %s ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, signed_imm, hex_get_general_double_low8_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s memd(R29+%s) = %s ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, signed_imm[0], hex_get_general_double_low8_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xf800fe00) == 0xe0000a00) {
@@ -32705,15 +32705,15 @@ void hexagon_disasm_duplex_0xe(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 			hi->ops[3].op.imm |= (0xffffffffffffffff << 8);
 		}
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
 		hi->ops[4].type = HEX_OP_TYPE_REG;
 		hi->ops[4].op.reg = (((hi_u32)&0x7) >> 0); // Rtt8
 		hi->vals[4] = ST64_MAX;
-		sprintf(hi->mnem, "%s memh(%s+#0x%x) = %s ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_sub_regs(hi->ops[2].op.reg), signed_imm, hex_get_general_double_low8_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s memh(%s+#0x%x) = %s ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_general_sub_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, hex_get_general_sub_regs(hi->ops[2].op.reg), signed_imm[3], hex_get_general_double_low8_regs(hi->ops[4].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xfe00fe00) == 0xe8000a00) {
@@ -32741,15 +32741,15 @@ void hexagon_disasm_duplex_0xe(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 			hi->ops[2].op.imm |= (0xffffffffffffffff << 8);
 		}
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x7) >> 0); // Rtt8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s memw(R29+#0x%x) = %s ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, (ut32)hi->ops[0].op.imm, hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm, hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s memw(R29+#0x%x) = %s ; memd(R29+%s) = %s %s", hi->pkt_info.syntax_prefix, (ut32)hi->ops[0].op.imm, hex_get_general_sub_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_general_double_low8_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xf800f800) == 0xe0000000) {
@@ -32862,9 +32862,9 @@ void hexagon_disasm_duplex_0xe(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 			hi->ops[0].op.imm |= (0xffffffffffffffff << 8);
 		}
 		if (((st32)hi->ops[0].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[0].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[0], "%s%s0x%x", "#", "-", abs((st32)hi->ops[0].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[0].op.imm);
+			sprintf(signed_imm[0], "%s0x%x", "#", (st32)hi->ops[0].op.imm);
 		}
 		hi->vals[0] = hi->ops[0].op.imm;
 		hi->ops[1].type = HEX_OP_TYPE_REG;
@@ -32878,7 +32878,7 @@ void hexagon_disasm_duplex_0xe(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[3].attr = HEX_OP_IMM_SCALED;
 		hi->ops[3].shift = 2;
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s memd(R29+%s) = %s ; memw(%s+#0x%x) = #0 %s", hi->pkt_info.syntax_prefix, signed_imm, hex_get_general_double_low8_regs(hi->ops[1].op.reg), hex_get_general_sub_regs(hi->ops[2].op.reg), (ut32)hi->ops[3].op.imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s memd(R29+%s) = %s ; memw(%s+#0x%x) = #0 %s", hi->pkt_info.syntax_prefix, signed_imm[0], hex_get_general_double_low8_regs(hi->ops[1].op.reg), hex_get_general_sub_regs(hi->ops[2].op.reg), (ut32)hi->ops[3].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xf800ff00) == 0xe0001000) {
@@ -32985,9 +32985,9 @@ void hexagon_disasm_duplex_0xe(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 			hi->ops[0].op.imm |= (0xffffffffffffffff << 8);
 		}
 		if (((st32)hi->ops[0].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[0].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[0], "%s%s0x%x", "#", "-", abs((st32)hi->ops[0].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[0].op.imm);
+			sprintf(signed_imm[0], "%s0x%x", "#", (st32)hi->ops[0].op.imm);
 		}
 		hi->vals[0] = hi->ops[0].op.imm;
 		hi->ops[1].type = HEX_OP_TYPE_REG;
@@ -33001,7 +33001,7 @@ void hexagon_disasm_duplex_0xe(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 		hi->ops[3].attr = HEX_OP_IMM_SCALED;
 		hi->ops[3].shift = 2;
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s memd(R29+%s) = %s ; memw(%s+#0x%x) = #1 %s", hi->pkt_info.syntax_prefix, signed_imm, hex_get_general_double_low8_regs(hi->ops[1].op.reg), hex_get_general_sub_regs(hi->ops[2].op.reg), (ut32)hi->ops[3].op.imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s memd(R29+%s) = %s ; memw(%s+#0x%x) = #1 %s", hi->pkt_info.syntax_prefix, signed_imm[0], hex_get_general_double_low8_regs(hi->ops[1].op.reg), hex_get_general_sub_regs(hi->ops[2].op.reg), (ut32)hi->ops[3].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xf800ff00) == 0xe0001100) {
@@ -43330,7 +43330,7 @@ void hexagon_disasm_0x1(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 }
 
 void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr) {
-	char signed_imm[16] = "";
+	char signed_imm[6][16] = { 0 };
 	if ((hi_u32 & 0xffc82001) == 0x20400000) {
 		// 0010000001ii0sssPP0tttttiiiiiii0 | if (!cmp.eq(Ns.new,Rt)) jump:nt Ii
 		hi->instruction = HEX_INS_J4_CMPEQ_F_JUMPNV_NT;
@@ -44484,12 +44484,12 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = vmemu(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = vmemu(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe038e0) == 0x290000e0) {
@@ -44513,12 +44513,12 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = vmemu(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = vmemu(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x2b0000e0) {
@@ -44562,12 +44562,12 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = vmem(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = vmem(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe018e0) == 0x28000020) {
@@ -44591,12 +44591,12 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s.cur = vmem(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s.cur = vmem(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe000e0) == 0x288000a0) {
@@ -44623,12 +44623,12 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (!%s) %s.cur = vmem(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[2].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) %s.cur = vmem(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[2].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe020e0) == 0x298000a0) {
@@ -44655,12 +44655,12 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (!%s) %s.cur = vmem(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) %s.cur = vmem(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe007e0) == 0x2b8000a0) {
@@ -44707,12 +44707,12 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s.cur = vmem(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s.cur = vmem(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x2b000020) {
@@ -44759,12 +44759,12 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (%s) %s.cur = vmem(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[2].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) %s.cur = vmem(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[2].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe020e0) == 0x29800080) {
@@ -44791,12 +44791,12 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (%s) %s.cur = vmem(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) %s.cur = vmem(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe007e0) == 0x2b800080) {
@@ -44846,12 +44846,12 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (!%s) %s = vmem(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[2].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) %s = vmem(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[2].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe020e0) == 0x29800060) {
@@ -44878,12 +44878,12 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (!%s) %s = vmem(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) %s = vmem(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe007e0) == 0x2b800060) {
@@ -44930,12 +44930,12 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = vmem(%s+%s):nt %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = vmem(%s+%s):nt %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe018e0) == 0x28400020) {
@@ -44959,12 +44959,12 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s.cur = vmem(%s+%s):nt %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s.cur = vmem(%s+%s):nt %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe000e0) == 0x28c000a0) {
@@ -44991,12 +44991,12 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (!%s) %s.cur = vmem(%s+%s):nt %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[2].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) %s.cur = vmem(%s+%s):nt %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[2].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe020e0) == 0x29c000a0) {
@@ -45023,12 +45023,12 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (!%s) %s.cur = vmem(%s++%s):nt %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) %s.cur = vmem(%s++%s):nt %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe007e0) == 0x2bc000a0) {
@@ -45075,12 +45075,12 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s.cur = vmem(%s++%s):nt %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s.cur = vmem(%s++%s):nt %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x2b400020) {
@@ -45127,12 +45127,12 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (%s) %s.cur = vmem(%s+%s):nt %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[2].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) %s.cur = vmem(%s+%s):nt %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[2].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe020e0) == 0x29c00080) {
@@ -45159,12 +45159,12 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (%s) %s.cur = vmem(%s++%s):nt %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) %s.cur = vmem(%s++%s):nt %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe007e0) == 0x2bc00080) {
@@ -45214,12 +45214,12 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (!%s) %s = vmem(%s+%s):nt %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[2].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) %s = vmem(%s+%s):nt %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[2].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe020e0) == 0x29c00060) {
@@ -45246,12 +45246,12 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (!%s) %s = vmem(%s++%s):nt %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) %s = vmem(%s++%s):nt %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe007e0) == 0x2bc00060) {
@@ -45298,12 +45298,12 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = vmem(%s++%s):nt %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = vmem(%s++%s):nt %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x2b400000) {
@@ -45350,12 +45350,12 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (%s) %s = vmem(%s+%s):nt %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[2].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) %s = vmem(%s+%s):nt %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[2].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe020e0) == 0x29c00040) {
@@ -45382,12 +45382,12 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (%s) %s = vmem(%s++%s):nt %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) %s = vmem(%s++%s):nt %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe007e0) == 0x2bc00040) {
@@ -45434,12 +45434,12 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s.tmp = vmem(%s+%s):nt %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s.tmp = vmem(%s+%s):nt %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe000e0) == 0x28c000e0) {
@@ -45466,12 +45466,12 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (!%s) %s.tmp = vmem(%s+%s):nt %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[2].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) %s.tmp = vmem(%s+%s):nt %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[2].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe020e0) == 0x29c000e0) {
@@ -45498,12 +45498,12 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (!%s) %s.tmp = vmem(%s++%s):nt %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) %s.tmp = vmem(%s++%s):nt %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe007e0) == 0x2bc000e0) {
@@ -45550,12 +45550,12 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s.tmp = vmem(%s++%s):nt %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s.tmp = vmem(%s++%s):nt %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x2b400040) {
@@ -45602,12 +45602,12 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (%s) %s.tmp = vmem(%s+%s):nt %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[2].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) %s.tmp = vmem(%s+%s):nt %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[2].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe020e0) == 0x29c000c0) {
@@ -45634,12 +45634,12 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (%s) %s.tmp = vmem(%s++%s):nt %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) %s.tmp = vmem(%s++%s):nt %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe007e0) == 0x2bc000c0) {
@@ -45686,12 +45686,12 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = vmem(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = vmem(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x2b000000) {
@@ -45738,12 +45738,12 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (%s) %s = vmem(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[2].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) %s = vmem(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[2].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe020e0) == 0x29800040) {
@@ -45770,12 +45770,12 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (%s) %s = vmem(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) %s = vmem(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe007e0) == 0x2b800040) {
@@ -45822,12 +45822,12 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s.tmp = vmem(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s.tmp = vmem(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe000e0) == 0x288000e0) {
@@ -45854,12 +45854,12 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (!%s) %s.tmp = vmem(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[2].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) %s.tmp = vmem(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[2].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe020e0) == 0x298000e0) {
@@ -45886,12 +45886,12 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (!%s) %s.tmp = vmem(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) %s.tmp = vmem(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe007e0) == 0x2b8000e0) {
@@ -45938,12 +45938,12 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s.tmp = vmem(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s.tmp = vmem(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x2b000040) {
@@ -45990,12 +45990,12 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (%s) %s.tmp = vmem(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[2].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) %s.tmp = vmem(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[2].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe020e0) == 0x298000c0) {
@@ -46022,12 +46022,12 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (%s) %s.tmp = vmem(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) %s.tmp = vmem(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_hvx_vr(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe007e0) == 0x2b8000c0) {
@@ -46071,15 +46071,15 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "#", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
 		hi->ops[2].type = HEX_OP_TYPE_REG;
 		hi->ops[2].op.reg = (((hi_u32)&0x1f) >> 0); // Vs32
 		hi->vals[2] = ST64_MAX;
-		sprintf(hi->mnem, "%s vmemu(%s+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm, hex_get_hvx_vr(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s vmemu(%s+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm[1], hex_get_hvx_vr(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe000e0) == 0x28a000e0) {
@@ -46103,15 +46103,15 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f) >> 0); // Vs32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (!%s) vmemu(%s+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) vmemu(%s+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe020e0) == 0x29a000e0) {
@@ -46135,15 +46135,15 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f) >> 0); // Vs32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (!%s) vmemu(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) vmemu(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe007e0) == 0x2ba000e0) {
@@ -46187,15 +46187,15 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "#", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
 		hi->ops[2].type = HEX_OP_TYPE_REG;
 		hi->ops[2].op.reg = (((hi_u32)&0x1f) >> 0); // Vs32
 		hi->vals[2] = ST64_MAX;
-		sprintf(hi->mnem, "%s vmemu(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm, hex_get_hvx_vr(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s vmemu(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm[1], hex_get_hvx_vr(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x2b2000e0) {
@@ -46239,15 +46239,15 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f) >> 0); // Vs32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (%s) vmemu(%s+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) vmemu(%s+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe020e0) == 0x29a000c0) {
@@ -46271,15 +46271,15 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f) >> 0); // Vs32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (%s) vmemu(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) vmemu(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe007e0) == 0x2ba000c0) {
@@ -46323,15 +46323,15 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "#", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
 		hi->ops[2].type = HEX_OP_TYPE_REG;
 		hi->ops[2].op.reg = (((hi_u32)&0x1f) >> 0); // Vs32
 		hi->vals[2] = ST64_MAX;
-		sprintf(hi->mnem, "%s vmem(%s+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm, hex_get_hvx_vr(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s vmem(%s+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm[1], hex_get_hvx_vr(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe018f8) == 0x28200020) {
@@ -46352,15 +46352,15 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "#", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
 		hi->ops[2].type = HEX_OP_TYPE_REG;
 		hi->ops[2].op.reg = (((hi_u32)&0x7) >> 0); // Os8
 		hi->vals[2] = ST64_MAX;
-		sprintf(hi->mnem, "%s vmem(%s+%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm, hex_get_hvx_vr(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s vmem(%s+%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm[1], hex_get_hvx_vr(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe000f8) == 0x28a00068) {
@@ -46384,15 +46384,15 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x7) >> 0); // Os8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (!%s) vmem(%s+%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) vmem(%s+%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe020f8) == 0x29a00068) {
@@ -46416,15 +46416,15 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x7) >> 0); // Os8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (!%s) vmem(%s++%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) vmem(%s++%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe007f8) == 0x2ba00068) {
@@ -46468,15 +46468,15 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "#", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
 		hi->ops[2].type = HEX_OP_TYPE_REG;
 		hi->ops[2].op.reg = (((hi_u32)&0x7) >> 0); // Os8
 		hi->vals[2] = ST64_MAX;
-		sprintf(hi->mnem, "%s vmem(%s++%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm, hex_get_hvx_vr(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s vmem(%s++%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm[1], hex_get_hvx_vr(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01ff8) == 0x2b200020) {
@@ -46520,15 +46520,15 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x7) >> 0); // Os8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (%s) vmem(%s+%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) vmem(%s+%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe020f8) == 0x29a00040) {
@@ -46552,15 +46552,15 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x7) >> 0); // Os8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (%s) vmem(%s++%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) vmem(%s++%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe007f8) == 0x2ba00040) {
@@ -46607,15 +46607,15 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f) >> 0); // Vs32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (!%s) vmem(%s+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) vmem(%s+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe020e0) == 0x29a00020) {
@@ -46639,15 +46639,15 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f) >> 0); // Vs32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (!%s) vmem(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) vmem(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe007e0) == 0x2ba00020) {
@@ -46694,15 +46694,15 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f) >> 0); // Vs32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (!%s) vmem(%s+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_hvx_qr(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) vmem(%s+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_hvx_qr(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe020e0) == 0x29800020) {
@@ -46726,15 +46726,15 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f) >> 0); // Vs32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (!%s) vmem(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_hvx_qr(hi->ops[0].op.reg), signed_imm, hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) vmem(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_hvx_qr(hi->ops[0].op.reg), signed_imm[2], hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe007e0) == 0x2b800020) {
@@ -46778,15 +46778,15 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "#", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
 		hi->ops[2].type = HEX_OP_TYPE_REG;
 		hi->ops[2].op.reg = (((hi_u32)&0x1f) >> 0); // Vs32
 		hi->vals[2] = ST64_MAX;
-		sprintf(hi->mnem, "%s vmem(%s+%s):nt = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm, hex_get_hvx_vr(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s vmem(%s+%s):nt = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm[1], hex_get_hvx_vr(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe018f8) == 0x28600020) {
@@ -46807,15 +46807,15 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "#", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
 		hi->ops[2].type = HEX_OP_TYPE_REG;
 		hi->ops[2].op.reg = (((hi_u32)&0x7) >> 0); // Os8
 		hi->vals[2] = ST64_MAX;
-		sprintf(hi->mnem, "%s vmem(%s+%s):nt = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm, hex_get_hvx_vr(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s vmem(%s+%s):nt = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm[1], hex_get_hvx_vr(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe000f8) == 0x28e00078) {
@@ -46839,15 +46839,15 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x7) >> 0); // Os8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (!%s) vmem(%s+%s):nt = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) vmem(%s+%s):nt = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe020f8) == 0x29e00078) {
@@ -46871,15 +46871,15 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x7) >> 0); // Os8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (!%s) vmem(%s++%s):nt = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) vmem(%s++%s):nt = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe007f8) == 0x2be00078) {
@@ -46923,15 +46923,15 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "#", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
 		hi->ops[2].type = HEX_OP_TYPE_REG;
 		hi->ops[2].op.reg = (((hi_u32)&0x7) >> 0); // Os8
 		hi->vals[2] = ST64_MAX;
-		sprintf(hi->mnem, "%s vmem(%s++%s):nt = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm, hex_get_hvx_vr(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s vmem(%s++%s):nt = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm[1], hex_get_hvx_vr(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01ff8) == 0x2b600020) {
@@ -46975,15 +46975,15 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x7) >> 0); // Os8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (%s) vmem(%s+%s):nt = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) vmem(%s+%s):nt = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe020f8) == 0x29e00050) {
@@ -47007,15 +47007,15 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x7) >> 0); // Os8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (%s) vmem(%s++%s):nt = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) vmem(%s++%s):nt = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe007f8) == 0x2be00050) {
@@ -47062,15 +47062,15 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f) >> 0); // Vs32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (!%s) vmem(%s+%s):nt = %s %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) vmem(%s+%s):nt = %s %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe020e0) == 0x29e00020) {
@@ -47094,15 +47094,15 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f) >> 0); // Vs32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (!%s) vmem(%s++%s):nt = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) vmem(%s++%s):nt = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe007e0) == 0x2be00020) {
@@ -47149,15 +47149,15 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f) >> 0); // Vs32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (!%s) vmem(%s+%s):nt = %s %s", hi->pkt_info.syntax_prefix, hex_get_hvx_qr(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) vmem(%s+%s):nt = %s %s", hi->pkt_info.syntax_prefix, hex_get_hvx_qr(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe020e0) == 0x29c00020) {
@@ -47181,15 +47181,15 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f) >> 0); // Vs32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (!%s) vmem(%s++%s):nt = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_hvx_qr(hi->ops[0].op.reg), signed_imm, hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) vmem(%s++%s):nt = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_hvx_qr(hi->ops[0].op.reg), signed_imm[2], hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe007e0) == 0x2bc00020) {
@@ -47233,15 +47233,15 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "#", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
 		hi->ops[2].type = HEX_OP_TYPE_REG;
 		hi->ops[2].op.reg = (((hi_u32)&0x1f) >> 0); // Vs32
 		hi->vals[2] = ST64_MAX;
-		sprintf(hi->mnem, "%s vmem(%s++%s):nt = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm, hex_get_hvx_vr(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s vmem(%s++%s):nt = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm[1], hex_get_hvx_vr(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x2b600000) {
@@ -47285,15 +47285,15 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f) >> 0); // Vs32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (%s) vmem(%s+%s):nt = %s %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) vmem(%s+%s):nt = %s %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe020e0) == 0x29e00000) {
@@ -47317,15 +47317,15 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f) >> 0); // Vs32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (%s) vmem(%s++%s):nt = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) vmem(%s++%s):nt = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe007e0) == 0x2be00000) {
@@ -47372,15 +47372,15 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f) >> 0); // Vs32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (%s) vmem(%s+%s):nt = %s %s", hi->pkt_info.syntax_prefix, hex_get_hvx_qr(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) vmem(%s+%s):nt = %s %s", hi->pkt_info.syntax_prefix, hex_get_hvx_qr(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe020e0) == 0x29c00000) {
@@ -47404,15 +47404,15 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f) >> 0); // Vs32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (%s) vmem(%s++%s):nt = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_hvx_qr(hi->ops[0].op.reg), signed_imm, hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) vmem(%s++%s):nt = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_hvx_qr(hi->ops[0].op.reg), signed_imm[2], hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe007e0) == 0x2bc00000) {
@@ -47456,15 +47456,15 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "#", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
 		hi->ops[2].type = HEX_OP_TYPE_REG;
 		hi->ops[2].op.reg = (((hi_u32)&0x1f) >> 0); // Vs32
 		hi->vals[2] = ST64_MAX;
-		sprintf(hi->mnem, "%s vmem(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm, hex_get_hvx_vr(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s vmem(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm[1], hex_get_hvx_vr(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x2b200000) {
@@ -47508,15 +47508,15 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f) >> 0); // Vs32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (%s) vmem(%s+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) vmem(%s+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe020e0) == 0x29a00000) {
@@ -47540,15 +47540,15 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f) >> 0); // Vs32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (%s) vmem(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) vmem(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe007e0) == 0x2ba00000) {
@@ -47595,15 +47595,15 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f) >> 0); // Vs32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (%s) vmem(%s+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_hvx_qr(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) vmem(%s+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_hvx_qr(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe020e0) == 0x29800000) {
@@ -47627,15 +47627,15 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f) >> 0); // Vs32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (%s) vmem(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_hvx_qr(hi->ops[0].op.reg), signed_imm, hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) vmem(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_hvx_qr(hi->ops[0].op.reg), signed_imm[2], hex_get_hvx_vr(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe007e0) == 0x2b800000) {
@@ -47679,12 +47679,12 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "#", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
-		sprintf(hi->mnem, "%s vmem(%s+%s):scatter_release %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s vmem(%s+%s):scatter_release %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm[1], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe038ff) == 0x29200028) {
@@ -47705,12 +47705,12 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "#", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
-		sprintf(hi->mnem, "%s vmem(%s++%s):scatter_release %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s vmem(%s++%s):scatter_release %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm[1], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fff) == 0x2b200028) {
@@ -48093,12 +48093,12 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "#", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
-		sprintf(hi->mnem, "%s z = vmem(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s z = vmem(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm[1], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe038ff) == 0x2d000000) {
@@ -48119,12 +48119,12 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "#", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
-		sprintf(hi->mnem, "%s z = vmem(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s z = vmem(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm[1], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fff) == 0x2d000001) {
@@ -48165,12 +48165,12 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s if (%s) z = vmem(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) z = vmem(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe020ff) == 0x2d800000) {
@@ -48194,12 +48194,12 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s if (%s) z = vmem(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) z = vmem(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe007ff) == 0x2d800001) {
@@ -48225,7 +48225,7 @@ void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 }
 
 void hexagon_disasm_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr) {
-	char signed_imm[16] = "";
+	char signed_imm[6][16] = { 0 };
 	if ((hi_u32 & 0xffe02060) == 0x3e000000) {
 		// 00111110000sssssPP0iiiiii00ttttt | memb(Rs+#Ii) += Rt
 		hi->instruction = HEX_INS_L4_ADD_MEMOPB_IO;
@@ -50451,12 +50451,12 @@ void hexagon_disasm_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s memb(%s+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s memb(%s+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe00000) == 0x38800000) {
@@ -50483,12 +50483,12 @@ void hexagon_disasm_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "##", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "##", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (!%s) memb(%s+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) memb(%s+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe00000) == 0x39800000) {
@@ -50515,12 +50515,12 @@ void hexagon_disasm_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "##", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "##", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (!%s.new) memb(%s+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s.new) memb(%s+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe00000) == 0x38000000) {
@@ -50547,12 +50547,12 @@ void hexagon_disasm_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "##", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "##", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (%s) memb(%s+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) memb(%s+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe00000) == 0x39000000) {
@@ -50579,12 +50579,12 @@ void hexagon_disasm_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "##", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "##", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (%s.new) memb(%s+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s.new) memb(%s+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe00000) == 0x3c200000) {
@@ -50610,12 +50610,12 @@ void hexagon_disasm_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s memh(%s+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s memh(%s+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe00000) == 0x38a00000) {
@@ -50644,12 +50644,12 @@ void hexagon_disasm_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "##", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "##", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (!%s) memh(%s+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) memh(%s+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe00000) == 0x39a00000) {
@@ -50678,12 +50678,12 @@ void hexagon_disasm_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "##", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "##", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (!%s.new) memh(%s+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s.new) memh(%s+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe00000) == 0x38200000) {
@@ -50712,12 +50712,12 @@ void hexagon_disasm_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "##", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "##", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (%s) memh(%s+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) memh(%s+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe00000) == 0x39200000) {
@@ -50746,12 +50746,12 @@ void hexagon_disasm_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "##", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "##", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (%s.new) memh(%s+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s.new) memh(%s+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe00000) == 0x3c400000) {
@@ -50777,12 +50777,12 @@ void hexagon_disasm_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s memw(%s+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s memw(%s+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), (ut32)hi->ops[1].op.imm, signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe00000) == 0x38c00000) {
@@ -50811,12 +50811,12 @@ void hexagon_disasm_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "##", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "##", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (!%s) memw(%s+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) memw(%s+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe00000) == 0x39c00000) {
@@ -50845,12 +50845,12 @@ void hexagon_disasm_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "##", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "##", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (!%s.new) memw(%s+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s.new) memw(%s+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe00000) == 0x38400000) {
@@ -50879,12 +50879,12 @@ void hexagon_disasm_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "##", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "##", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (%s) memw(%s+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) memw(%s+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe00000) == 0x39400000) {
@@ -50913,12 +50913,12 @@ void hexagon_disasm_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "##", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "##", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (%s.new) memw(%s+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s.new) memw(%s+#0x%x) = %s %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe00060) == 0x3b000000) {
@@ -55321,7 +55321,7 @@ void hexagon_disasm_0x6(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 }
 
 void hexagon_disasm_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr) {
-	char signed_imm[16] = "";
+	char signed_imm[6][16] = { 0 };
 	if ((hi_u32 & 0xffc00000) == 0x76000000) {
 		// 0111011000isssssPPiiiiiiiiiddddd | Rd = and(Rs,#Ii)
 		hi->instruction = HEX_INS_A2_ANDIR;
@@ -55344,12 +55344,12 @@ void hexagon_disasm_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = and(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = and(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe03fe0) == 0x70000000) {
@@ -55404,9 +55404,9 @@ void hexagon_disasm_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[1]), false, addr); // Extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "##", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "##", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
 		hi->ops[2].type = HEX_OP_TYPE_IMM;
@@ -55415,12 +55415,12 @@ void hexagon_disasm_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 			hi->ops[2].op.imm |= (0xffffffffffffffff << 7);
 		}
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = combine(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), signed_imm, signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = combine(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), signed_imm[1], signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffff3fff) == 0x7f000000) {
@@ -55456,12 +55456,12 @@ void hexagon_disasm_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = or(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = or(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff802000) == 0x74800000) {
@@ -55489,12 +55489,12 @@ void hexagon_disasm_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[3]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "##", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "##", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (!%s) %s = add(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[2].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) %s = add(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[2].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff802000) == 0x74802000) {
@@ -55522,12 +55522,12 @@ void hexagon_disasm_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[3]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "##", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "##", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (!%s.new) %s = add(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[2].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s.new) %s = add(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[2].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff802000) == 0x74000000) {
@@ -55555,12 +55555,12 @@ void hexagon_disasm_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[3]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "##", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "##", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (%s) %s = add(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[2].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) %s = add(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[2].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff802000) == 0x74002000) {
@@ -55588,12 +55588,12 @@ void hexagon_disasm_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[3]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "##", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "##", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (%s.new) %s = add(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[2].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s.new) %s = add(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[2].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffc00000) == 0x76400000) {
@@ -55615,15 +55615,15 @@ void hexagon_disasm_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[1]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "##", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "##", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
 		hi->ops[2].type = HEX_OP_TYPE_REG;
 		hi->ops[2].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rs32
 		hi->vals[2] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = sub(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = sub(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm[1], hex_get_int_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe03fe0) == 0x70a00000) {
@@ -55732,12 +55732,12 @@ void hexagon_disasm_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[1]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "##", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "##", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
-		sprintf(hi->mnem, "%s %s = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm[1], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe03fe0) == 0x70c00000) {
@@ -55774,16 +55774,16 @@ void hexagon_disasm_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 			hi->ops[1].op.imm |= (0xffffffffffffffff << 7);
 		}
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "#", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
 		hi->ops[2].type = HEX_OP_TYPE_IMM;
 		hi->ops[2].op.imm = ((((hi_u32)&0x1f0000) >> 15) | (((hi_u32)&0x2000) >> 13)); // II
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = combine(%s,##0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), signed_imm, (ut32)hi->ops[2].op.imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = combine(%s,##0x%x) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), signed_imm[1], (ut32)hi->ops[2].op.imm, hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe02000) == 0x73202000) {
@@ -55805,15 +55805,15 @@ void hexagon_disasm_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[1]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "##", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "##", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
 		hi->ops[2].type = HEX_OP_TYPE_REG;
 		hi->ops[2].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rs32
 		hi->vals[2] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = combine(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = combine(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), signed_imm[1], hex_get_int_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe02000) == 0x73002000) {
@@ -55838,12 +55838,12 @@ void hexagon_disasm_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = combine(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = combine(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe03ce0) == 0x70002800) {
@@ -56348,12 +56348,12 @@ void hexagon_disasm_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = cmp.eq(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = cmp.eq(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe02000) == 0x73602000) {
@@ -56378,12 +56378,12 @@ void hexagon_disasm_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = !cmp.eq(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = !cmp.eq(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff902000) == 0x7e800000) {
@@ -56408,12 +56408,12 @@ void hexagon_disasm_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s if (!%s) %s = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) %s = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff902000) == 0x7e000000) {
@@ -56438,12 +56438,12 @@ void hexagon_disasm_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s if (%s) %s = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) %s = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff902000) == 0x7e802000) {
@@ -56468,12 +56468,12 @@ void hexagon_disasm_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s if (!%s.new) %s = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s.new) %s = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff902000) == 0x7e002000) {
@@ -56498,12 +56498,12 @@ void hexagon_disasm_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s if (%s.new) %s = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s.new) %s = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffc0001c) == 0x75000000) {
@@ -56528,12 +56528,12 @@ void hexagon_disasm_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = cmp.eq(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = cmp.eq(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffc0001c) == 0x75400000) {
@@ -56558,12 +56558,12 @@ void hexagon_disasm_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = cmp.gt(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = cmp.gt(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe0001c) == 0x75800000) {
@@ -56609,9 +56609,9 @@ void hexagon_disasm_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_IMM;
@@ -56620,12 +56620,12 @@ void hexagon_disasm_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 			hi->ops[3].op.imm |= (0xffffffffffffffff << 7);
 		}
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s %s = mux(%s,%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_pred_regs(hi->ops[1].op.reg), signed_imm, signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = mux(%s,%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_pred_regs(hi->ops[1].op.reg), signed_imm[2], signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff802000) == 0x73000000) {
@@ -56653,12 +56653,12 @@ void hexagon_disasm_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[3]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "##", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "##", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s %s = mux(%s,%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_pred_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = mux(%s,%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_pred_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff802000) == 0x73800000) {
@@ -56683,15 +56683,15 @@ void hexagon_disasm_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f0000) >> 16); // Rs32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = mux(%s,%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_pred_regs(hi->ops[1].op.reg), signed_imm, hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = mux(%s,%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_pred_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffc0001c) == 0x75400010) {
@@ -56716,12 +56716,12 @@ void hexagon_disasm_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = !cmp.gt(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = !cmp.gt(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe0001c) == 0x75800010) {
@@ -56768,18 +56768,18 @@ void hexagon_disasm_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = !cmp.eq(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = !cmp.eq(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 }
 
 void hexagon_disasm_0x8(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr) {
-	char signed_imm[16] = "";
+	char signed_imm[6][16] = { 0 };
 	if ((hi_u32 & 0xffe03fe0) == 0x8c800080) {
 		// 10001100100sssssPP000000100ddddd | Rd = abs(Rs)
 		hi->instruction = HEX_INS_A2_ABS;
@@ -59253,12 +59253,12 @@ void hexagon_disasm_0x8(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 			hi->ops[3].op.imm |= (0xffffffffffffffff << 5);
 		}
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s %s = tableidxb(%s,#0x%x,%s):raw %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = tableidxb(%s,#0x%x,%s):raw %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffc00000) == 0x87c00000) {
@@ -59284,12 +59284,12 @@ void hexagon_disasm_0x8(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 			hi->ops[3].op.imm |= (0xffffffffffffffff << 5);
 		}
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s %s = tableidxd(%s,#0x%x,%s):raw %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = tableidxd(%s,#0x%x,%s):raw %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffc00000) == 0x87400000) {
@@ -59315,12 +59315,12 @@ void hexagon_disasm_0x8(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 			hi->ops[3].op.imm |= (0xffffffffffffffff << 5);
 		}
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s %s = tableidxh(%s,#0x%x,%s):raw %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = tableidxh(%s,#0x%x,%s):raw %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffc00000) == 0x87800000) {
@@ -59346,12 +59346,12 @@ void hexagon_disasm_0x8(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 			hi->ops[3].op.imm |= (0xffffffffffffffff << 5);
 		}
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s %s = tableidxw(%s,#0x%x,%s):raw %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = tableidxw(%s,#0x%x,%s):raw %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), (ut32)hi->ops[2].op.imm, signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe020e0) == 0x8cc00040) {
@@ -59723,12 +59723,12 @@ void hexagon_disasm_0x8(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = add(clb(%s),%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(clb(%s),%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe000e0) == 0x88600040) {
@@ -59752,12 +59752,12 @@ void hexagon_disasm_0x8(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = add(clb(%s),%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_double_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(clb(%s),%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_double_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe03fe0) == 0x88600000) {
@@ -60196,7 +60196,7 @@ void hexagon_disasm_0x8(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 }
 
 void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr) {
-	char signed_imm[16] = "";
+	char signed_imm[6][16] = { 0 };
 	if ((hi_u32 & 0xffe03fe0) == 0x90000000) {
 		// 10010000000sssssPP000000000ddddd | Rdd = deallocframe(Rs):raw
 		hi->instruction = HEX_INS_L2_DEALLOCFRAME;
@@ -60236,12 +60236,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = memb_fifo(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = memb_fifo(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x9e800000) {
@@ -60285,15 +60285,15 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x2000) >> 13); // Mu2
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = memb_fifo(%s++%s:circ(%s)) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hex_get_mod_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = memb_fifo(%s++%s:circ(%s)) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_mod_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x98800200) {
@@ -60337,12 +60337,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = memb_fifo(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = memb_fifo(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x9c800000) {
@@ -60389,12 +60389,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = memh_fifo(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = memh_fifo(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x9e400000) {
@@ -60440,15 +60440,15 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x2000) >> 13); // Mu2
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = memh_fifo(%s++%s:circ(%s)) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hex_get_mod_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = memh_fifo(%s++%s:circ(%s)) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_mod_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x98400200) {
@@ -60494,12 +60494,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = memh_fifo(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = memh_fifo(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x9c400000) {
@@ -60546,12 +60546,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = membh(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = membh(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x9e200000) {
@@ -60597,15 +60597,15 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x2000) >> 13); // Mu2
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = membh(%s++%s:circ(%s)) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hex_get_mod_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = membh(%s++%s:circ(%s)) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_mod_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x98200200) {
@@ -60651,12 +60651,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = membh(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = membh(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x9c200000) {
@@ -60703,12 +60703,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = membh(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = membh(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x9ee00000) {
@@ -60754,15 +60754,15 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x2000) >> 13); // Mu2
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = membh(%s++%s:circ(%s)) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hex_get_mod_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = membh(%s++%s:circ(%s)) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_mod_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x98e00200) {
@@ -60808,12 +60808,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = membh(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = membh(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x9ce00000) {
@@ -60860,12 +60860,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = memubh(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = memubh(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x9e600000) {
@@ -60911,15 +60911,15 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x2000) >> 13); // Mu2
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = memubh(%s++%s:circ(%s)) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hex_get_mod_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = memubh(%s++%s:circ(%s)) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_mod_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x98600200) {
@@ -60965,12 +60965,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = memubh(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = memubh(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x9c600000) {
@@ -61017,12 +61017,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = memubh(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = memubh(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x9ea00000) {
@@ -61068,15 +61068,15 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x2000) >> 13); // Mu2
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = memubh(%s++%s:circ(%s)) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hex_get_mod_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = memubh(%s++%s:circ(%s)) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_mod_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x98a00200) {
@@ -61122,12 +61122,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = memubh(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = memubh(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x9ca00000) {
@@ -61172,12 +61172,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = memb(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = memb(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x9f000000) {
@@ -61221,15 +61221,15 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x2000) >> 13); // Mu2
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = memb(%s++%s:circ(%s)) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hex_get_mod_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = memb(%s++%s:circ(%s)) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_mod_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x99000200) {
@@ -61273,12 +61273,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = memb(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = memb(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x9d000000) {
@@ -61325,12 +61325,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = memd(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = memd(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x9fc00000) {
@@ -61376,15 +61376,15 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x2000) >> 13); // Mu2
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = memd(%s++%s:circ(%s)) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hex_get_mod_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = memd(%s++%s:circ(%s)) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_mod_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x99c00200) {
@@ -61430,12 +61430,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = memd(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = memd(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x9dc00000) {
@@ -61482,12 +61482,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = memh(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = memh(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x9f400000) {
@@ -61533,15 +61533,15 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x2000) >> 13); // Mu2
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = memh(%s++%s:circ(%s)) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hex_get_mod_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = memh(%s++%s:circ(%s)) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_mod_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x99400200) {
@@ -61587,12 +61587,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = memh(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = memh(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x9d400000) {
@@ -61639,12 +61639,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = memw(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = memw(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x9f800000) {
@@ -61690,15 +61690,15 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x2000) >> 13); // Mu2
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = memw(%s++%s:circ(%s)) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hex_get_mod_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = memw(%s++%s:circ(%s)) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_mod_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x99800200) {
@@ -61744,12 +61744,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = memw(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = memw(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x9d800000) {
@@ -61794,12 +61794,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = memub(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = memub(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x9f200000) {
@@ -61843,15 +61843,15 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x2000) >> 13); // Mu2
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = memub(%s++%s:circ(%s)) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hex_get_mod_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = memub(%s++%s:circ(%s)) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_mod_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x99200200) {
@@ -61895,12 +61895,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = memub(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = memub(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x9d200000) {
@@ -61947,12 +61947,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = memuh(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = memuh(%s+%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x9f600000) {
@@ -61998,15 +61998,15 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x2000) >> 13); // Mu2
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = memuh(%s++%s:circ(%s)) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hex_get_mod_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = memuh(%s++%s:circ(%s)) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_mod_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x99600200) {
@@ -62052,12 +62052,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = memuh(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = memuh(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe01fe0) == 0x9d600000) {
@@ -62138,12 +62138,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (!%s) %s = memb(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) %s = memb(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe03800) == 0x9b003800) {
@@ -62170,12 +62170,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (!%s.new) %s = memb(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s.new) %s = memb(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe03800) == 0x9b002000) {
@@ -62202,12 +62202,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (%s) %s = memb(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) %s = memb(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe03800) == 0x9b003000) {
@@ -62234,12 +62234,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (%s.new) %s = memb(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s.new) %s = memb(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe03800) == 0x9bc02800) {
@@ -62268,12 +62268,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (!%s) %s = memd(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) %s = memd(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe03800) == 0x9bc03800) {
@@ -62302,12 +62302,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (!%s.new) %s = memd(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s.new) %s = memd(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe03800) == 0x9bc02000) {
@@ -62336,12 +62336,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (%s) %s = memd(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) %s = memd(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe03800) == 0x9bc03000) {
@@ -62370,12 +62370,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (%s.new) %s = memd(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s.new) %s = memd(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_double_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe03800) == 0x9b402800) {
@@ -62404,12 +62404,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (!%s) %s = memh(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) %s = memh(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe03800) == 0x9b403800) {
@@ -62438,12 +62438,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (!%s.new) %s = memh(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s.new) %s = memh(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe03800) == 0x9b402000) {
@@ -62472,12 +62472,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (%s) %s = memh(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) %s = memh(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe03800) == 0x9b403000) {
@@ -62506,12 +62506,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (%s.new) %s = memh(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s.new) %s = memh(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe03800) == 0x9b802800) {
@@ -62540,12 +62540,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (!%s) %s = memw(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) %s = memw(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe03800) == 0x9b803800) {
@@ -62574,12 +62574,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (!%s.new) %s = memw(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s.new) %s = memw(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe03800) == 0x9b802000) {
@@ -62608,12 +62608,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (%s) %s = memw(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) %s = memw(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe03800) == 0x9b803000) {
@@ -62642,12 +62642,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (%s.new) %s = memw(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s.new) %s = memw(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe03800) == 0x9b202800) {
@@ -62674,12 +62674,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (!%s) %s = memub(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) %s = memub(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe03800) == 0x9b203800) {
@@ -62706,12 +62706,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (!%s.new) %s = memub(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s.new) %s = memub(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe03800) == 0x9b202000) {
@@ -62738,12 +62738,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (%s) %s = memub(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) %s = memub(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe03800) == 0x9b203000) {
@@ -62770,12 +62770,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (%s.new) %s = memub(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s.new) %s = memub(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe03800) == 0x9b602800) {
@@ -62804,12 +62804,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (!%s) %s = memuh(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) %s = memuh(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe03800) == 0x9b603800) {
@@ -62838,12 +62838,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (!%s.new) %s = memuh(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s.new) %s = memuh(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe03800) == 0x9b602000) {
@@ -62872,12 +62872,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (%s) %s = memuh(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) %s = memuh(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe03800) == 0x9b603000) {
@@ -62906,12 +62906,12 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "#", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "#", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s if (%s.new) %s = memuh(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s.new) %s = memuh(%s++%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe03080) == 0x9a801000) {
@@ -64248,7 +64248,7 @@ void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 }
 
 void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr) {
-	char signed_imm[16] = "";
+	char signed_imm[6][16] = { 0 };
 	if ((hi_u32 & 0xffe020fc) == 0xa0e0000c) {
 		// 10100000111sssssPP0000011 | release(Rs):at
 		hi->instruction = HEX_INS_R6_RELEASE_AT_VI;
@@ -64318,15 +64318,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f00) >> 8); // Rt32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (!%s) memb(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) memb(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe02084) == 0xab002084) {
@@ -64350,15 +64350,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f00) >> 8); // Rt32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (!%s.new) memb(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s.new) memb(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe03884) == 0xaba02004) {
@@ -64382,15 +64382,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x700) >> 8); // Nt8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (!%s) memb(%s++%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) memb(%s++%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe03884) == 0xaba02084) {
@@ -64414,15 +64414,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x700) >> 8); // Nt8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (!%s.new) memb(%s++%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s.new) memb(%s++%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe03884) == 0xaba02000) {
@@ -64446,15 +64446,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x700) >> 8); // Nt8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (%s) memb(%s++%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) memb(%s++%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe03884) == 0xaba02080) {
@@ -64478,15 +64478,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x700) >> 8); // Nt8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (%s.new) memb(%s++%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s.new) memb(%s++%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe02084) == 0xab002000) {
@@ -64510,15 +64510,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f00) >> 8); // Rt32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (%s) memb(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) memb(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe02084) == 0xab002080) {
@@ -64542,15 +64542,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f00) >> 8); // Rt32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (%s.new) memb(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s.new) memb(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe02084) == 0xabc02004) {
@@ -64576,15 +64576,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f00) >> 8); // Rtt32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (!%s) memd(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hex_get_double_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) memd(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hex_get_double_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe02084) == 0xabc02084) {
@@ -64610,15 +64610,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f00) >> 8); // Rtt32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (!%s.new) memd(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hex_get_double_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s.new) memd(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hex_get_double_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe02084) == 0xabc02000) {
@@ -64644,15 +64644,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f00) >> 8); // Rtt32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (%s) memd(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hex_get_double_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) memd(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hex_get_double_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe02084) == 0xabc02080) {
@@ -64678,15 +64678,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f00) >> 8); // Rtt32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (%s.new) memd(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hex_get_double_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s.new) memd(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hex_get_double_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe02084) == 0xab602004) {
@@ -64712,15 +64712,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f00) >> 8); // Rt32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (!%s) memh(%s++%s) = %s.h %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) memh(%s++%s) = %s.h %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe02084) == 0xab602084) {
@@ -64746,15 +64746,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f00) >> 8); // Rt32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (!%s.new) memh(%s++%s) = %s.h %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s.new) memh(%s++%s) = %s.h %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe02084) == 0xab602000) {
@@ -64780,15 +64780,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f00) >> 8); // Rt32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (%s) memh(%s++%s) = %s.h %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) memh(%s++%s) = %s.h %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe02084) == 0xab602080) {
@@ -64814,15 +64814,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f00) >> 8); // Rt32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (%s.new) memh(%s++%s) = %s.h %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s.new) memh(%s++%s) = %s.h %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe02084) == 0xab402004) {
@@ -64848,15 +64848,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f00) >> 8); // Rt32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (!%s) memh(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) memh(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe02084) == 0xab402084) {
@@ -64882,15 +64882,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f00) >> 8); // Rt32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (!%s.new) memh(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s.new) memh(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe03884) == 0xaba02804) {
@@ -64916,15 +64916,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x700) >> 8); // Nt8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (!%s) memh(%s++%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) memh(%s++%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe03884) == 0xaba02884) {
@@ -64950,15 +64950,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x700) >> 8); // Nt8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (!%s.new) memh(%s++%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s.new) memh(%s++%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe03884) == 0xaba02800) {
@@ -64984,15 +64984,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x700) >> 8); // Nt8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (%s) memh(%s++%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) memh(%s++%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe03884) == 0xaba02880) {
@@ -65018,15 +65018,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x700) >> 8); // Nt8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (%s.new) memh(%s++%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s.new) memh(%s++%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe02084) == 0xab402000) {
@@ -65052,15 +65052,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f00) >> 8); // Rt32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (%s) memh(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) memh(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe02084) == 0xab402080) {
@@ -65086,15 +65086,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f00) >> 8); // Rt32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (%s.new) memh(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s.new) memh(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe02084) == 0xab802004) {
@@ -65120,15 +65120,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f00) >> 8); // Rt32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (!%s) memw(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) memw(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe02084) == 0xab802084) {
@@ -65154,15 +65154,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f00) >> 8); // Rt32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (!%s.new) memw(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s.new) memw(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe03884) == 0xaba03004) {
@@ -65188,15 +65188,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x700) >> 8); // Nt8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (!%s) memw(%s++%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s) memw(%s++%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe03884) == 0xaba03084) {
@@ -65222,15 +65222,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x700) >> 8); // Nt8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (!%s.new) memw(%s++%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (!%s.new) memw(%s++%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe03884) == 0xaba03000) {
@@ -65256,15 +65256,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x700) >> 8); // Nt8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (%s) memw(%s++%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) memw(%s++%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe03884) == 0xaba03080) {
@@ -65290,15 +65290,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x700) >> 8); // Nt8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (%s.new) memw(%s++%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s.new) memw(%s++%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe02084) == 0xab802000) {
@@ -65324,15 +65324,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f00) >> 8); // Rt32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (%s) memw(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s) memw(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe02084) == 0xab802080) {
@@ -65358,15 +65358,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f00) >> 8); // Rt32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s if (%s.new) memw(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s if (%s.new) memw(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[1].op.reg), hex_get_pred_regs(hi->ops[0].op.reg), signed_imm[2], hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xf9e00000) == 0xa1000000) {
@@ -65388,15 +65388,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[1]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "##", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "##", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
 		hi->ops[2].type = HEX_OP_TYPE_REG;
 		hi->ops[2].op.reg = (((hi_u32)&0x1f00) >> 8); // Rt32
 		hi->vals[2] = ST64_MAX;
-		sprintf(hi->mnem, "%s memb(%s+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s memb(%s+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm[1], hex_get_int_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe000ff) == 0xaf000000) {
@@ -65437,9 +65437,9 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "#", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
 		hi->ops[2].type = HEX_OP_TYPE_REG;
@@ -65448,7 +65448,7 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f00) >> 8); // Rt32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s memb(%s++%s:circ(%s)) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm, hex_get_mod_regs(hi->ops[2].op.reg), hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s memb(%s++%s:circ(%s)) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm[1], hex_get_mod_regs(hi->ops[2].op.reg), hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe000ff) == 0xa9000002) {
@@ -65489,15 +65489,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "#", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
 		hi->ops[2].type = HEX_OP_TYPE_REG;
 		hi->ops[2].op.reg = (((hi_u32)&0x1f00) >> 8); // Rt32
 		hi->vals[2] = ST64_MAX;
-		sprintf(hi->mnem, "%s memb(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s memb(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm[1], hex_get_int_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe000ff) == 0xad000000) {
@@ -65539,15 +65539,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[1]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "##", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "##", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
 		hi->ops[2].type = HEX_OP_TYPE_REG;
 		hi->ops[2].op.reg = (((hi_u32)&0x700) >> 8); // Nt8
 		hi->vals[2] = ST64_MAX;
-		sprintf(hi->mnem, "%s memb(%s+%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s memb(%s+%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm[1], hex_get_int_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe018ff) == 0xafa00000) {
@@ -65588,9 +65588,9 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "#", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
 		hi->ops[2].type = HEX_OP_TYPE_REG;
@@ -65599,7 +65599,7 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x700) >> 8); // Nt8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s memb(%s++%s:circ(%s)) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm, hex_get_mod_regs(hi->ops[2].op.reg), hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s memb(%s++%s:circ(%s)) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm[1], hex_get_mod_regs(hi->ops[2].op.reg), hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe018ff) == 0xa9a00002) {
@@ -65640,15 +65640,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "#", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
 		hi->ops[2].type = HEX_OP_TYPE_REG;
 		hi->ops[2].op.reg = (((hi_u32)&0x700) >> 8); // Nt8
 		hi->vals[2] = ST64_MAX;
-		sprintf(hi->mnem, "%s memb(%s++%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s memb(%s++%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm[1], hex_get_int_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe018ff) == 0xada00000) {
@@ -65692,15 +65692,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[1]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "##", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "##", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
 		hi->ops[2].type = HEX_OP_TYPE_REG;
 		hi->ops[2].op.reg = (((hi_u32)&0x1f00) >> 8); // Rtt32
 		hi->vals[2] = ST64_MAX;
-		sprintf(hi->mnem, "%s memd(%s+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm, hex_get_double_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s memd(%s+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm[1], hex_get_double_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe000ff) == 0xafc00000) {
@@ -65743,9 +65743,9 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "#", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
 		hi->ops[2].type = HEX_OP_TYPE_REG;
@@ -65754,7 +65754,7 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f00) >> 8); // Rtt32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s memd(%s++%s:circ(%s)) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm, hex_get_mod_regs(hi->ops[2].op.reg), hex_get_double_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s memd(%s++%s:circ(%s)) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm[1], hex_get_mod_regs(hi->ops[2].op.reg), hex_get_double_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe000ff) == 0xa9c00002) {
@@ -65797,15 +65797,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "#", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
 		hi->ops[2].type = HEX_OP_TYPE_REG;
 		hi->ops[2].op.reg = (((hi_u32)&0x1f00) >> 8); // Rtt32
 		hi->vals[2] = ST64_MAX;
-		sprintf(hi->mnem, "%s memd(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm, hex_get_double_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s memd(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm[1], hex_get_double_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe000ff) == 0xadc00000) {
@@ -65849,15 +65849,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[1]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "##", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "##", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
 		hi->ops[2].type = HEX_OP_TYPE_REG;
 		hi->ops[2].op.reg = (((hi_u32)&0x1f00) >> 8); // Rt32
 		hi->vals[2] = ST64_MAX;
-		sprintf(hi->mnem, "%s memh(%s+%s) = %s.h %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s memh(%s+%s) = %s.h %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm[1], hex_get_int_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe000ff) == 0xaf600000) {
@@ -65900,9 +65900,9 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "#", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
 		hi->ops[2].type = HEX_OP_TYPE_REG;
@@ -65911,7 +65911,7 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f00) >> 8); // Rt32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s memh(%s++%s:circ(%s)) = %s.h %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm, hex_get_mod_regs(hi->ops[2].op.reg), hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s memh(%s++%s:circ(%s)) = %s.h %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm[1], hex_get_mod_regs(hi->ops[2].op.reg), hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe000ff) == 0xa9600002) {
@@ -65954,15 +65954,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "#", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
 		hi->ops[2].type = HEX_OP_TYPE_REG;
 		hi->ops[2].op.reg = (((hi_u32)&0x1f00) >> 8); // Rt32
 		hi->vals[2] = ST64_MAX;
-		sprintf(hi->mnem, "%s memh(%s++%s) = %s.h %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s memh(%s++%s) = %s.h %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm[1], hex_get_int_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe000ff) == 0xad600000) {
@@ -66006,15 +66006,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[1]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "##", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "##", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
 		hi->ops[2].type = HEX_OP_TYPE_REG;
 		hi->ops[2].op.reg = (((hi_u32)&0x1f00) >> 8); // Rt32
 		hi->vals[2] = ST64_MAX;
-		sprintf(hi->mnem, "%s memh(%s+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s memh(%s+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm[1], hex_get_int_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe000ff) == 0xaf400000) {
@@ -66057,9 +66057,9 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "#", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
 		hi->ops[2].type = HEX_OP_TYPE_REG;
@@ -66068,7 +66068,7 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f00) >> 8); // Rt32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s memh(%s++%s:circ(%s)) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm, hex_get_mod_regs(hi->ops[2].op.reg), hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s memh(%s++%s:circ(%s)) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm[1], hex_get_mod_regs(hi->ops[2].op.reg), hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe000ff) == 0xa9400002) {
@@ -66111,15 +66111,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "#", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
 		hi->ops[2].type = HEX_OP_TYPE_REG;
 		hi->ops[2].op.reg = (((hi_u32)&0x1f00) >> 8); // Rt32
 		hi->vals[2] = ST64_MAX;
-		sprintf(hi->mnem, "%s memh(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s memh(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm[1], hex_get_int_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe000ff) == 0xad400000) {
@@ -66163,15 +66163,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[1]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "##", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "##", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
 		hi->ops[2].type = HEX_OP_TYPE_REG;
 		hi->ops[2].op.reg = (((hi_u32)&0x700) >> 8); // Nt8
 		hi->vals[2] = ST64_MAX;
-		sprintf(hi->mnem, "%s memh(%s+%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s memh(%s+%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm[1], hex_get_int_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe018ff) == 0xafa00800) {
@@ -66214,9 +66214,9 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "#", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
 		hi->ops[2].type = HEX_OP_TYPE_REG;
@@ -66225,7 +66225,7 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x700) >> 8); // Nt8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s memh(%s++%s:circ(%s)) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm, hex_get_mod_regs(hi->ops[2].op.reg), hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s memh(%s++%s:circ(%s)) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm[1], hex_get_mod_regs(hi->ops[2].op.reg), hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe018ff) == 0xa9a00802) {
@@ -66268,15 +66268,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "#", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
 		hi->ops[2].type = HEX_OP_TYPE_REG;
 		hi->ops[2].op.reg = (((hi_u32)&0x700) >> 8); // Nt8
 		hi->vals[2] = ST64_MAX;
-		sprintf(hi->mnem, "%s memh(%s++%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s memh(%s++%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm[1], hex_get_int_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe018ff) == 0xada00800) {
@@ -66320,15 +66320,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[1]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "##", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "##", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
 		hi->ops[2].type = HEX_OP_TYPE_REG;
 		hi->ops[2].op.reg = (((hi_u32)&0x1f00) >> 8); // Rt32
 		hi->vals[2] = ST64_MAX;
-		sprintf(hi->mnem, "%s memw(%s+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s memw(%s+%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm[1], hex_get_int_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe000ff) == 0xaf800000) {
@@ -66371,9 +66371,9 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "#", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
 		hi->ops[2].type = HEX_OP_TYPE_REG;
@@ -66382,7 +66382,7 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f00) >> 8); // Rt32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s memw(%s++%s:circ(%s)) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm, hex_get_mod_regs(hi->ops[2].op.reg), hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s memw(%s++%s:circ(%s)) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm[1], hex_get_mod_regs(hi->ops[2].op.reg), hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe000ff) == 0xa9800002) {
@@ -66425,15 +66425,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "#", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
 		hi->ops[2].type = HEX_OP_TYPE_REG;
 		hi->ops[2].op.reg = (((hi_u32)&0x1f00) >> 8); // Rt32
 		hi->vals[2] = ST64_MAX;
-		sprintf(hi->mnem, "%s memw(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s memw(%s++%s) = %s %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm[1], hex_get_int_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe000ff) == 0xad800000) {
@@ -66477,15 +66477,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[1]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "##", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "##", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
 		hi->ops[2].type = HEX_OP_TYPE_REG;
 		hi->ops[2].op.reg = (((hi_u32)&0x700) >> 8); // Nt8
 		hi->vals[2] = ST64_MAX;
-		sprintf(hi->mnem, "%s memw(%s+%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s memw(%s+%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm[1], hex_get_int_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe018ff) == 0xafa01000) {
@@ -66528,9 +66528,9 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "#", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
 		hi->ops[2].type = HEX_OP_TYPE_REG;
@@ -66539,7 +66539,7 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x700) >> 8); // Nt8
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s memw(%s++%s:circ(%s)) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm, hex_get_mod_regs(hi->ops[2].op.reg), hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s memw(%s++%s:circ(%s)) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm[1], hex_get_mod_regs(hi->ops[2].op.reg), hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe018ff) == 0xa9a01002) {
@@ -66582,15 +66582,15 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "#", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
 		hi->ops[2].type = HEX_OP_TYPE_REG;
 		hi->ops[2].op.reg = (((hi_u32)&0x700) >> 8); // Nt8
 		hi->vals[2] = ST64_MAX;
-		sprintf(hi->mnem, "%s memw(%s++%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s memw(%s++%s) = %s.new %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm[1], hex_get_int_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe018ff) == 0xada01000) {
@@ -68261,7 +68261,7 @@ void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 }
 
 void hexagon_disasm_0xb(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr) {
-	char signed_imm[16] = "";
+	char signed_imm[6][16] = { 0 };
 	if ((hi_u32 & 0xf0000000) == 0xb0000000) {
 		// 1011iiiiiiisssssPPiiiiiiiiiddddd | Rd = add(Rs,#Ii)
 		hi->instruction = HEX_INS_A2_ADDI;
@@ -68284,18 +68284,18 @@ void hexagon_disasm_0xb(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = add(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 }
 
 void hexagon_disasm_0xc(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr) {
-	char signed_imm[16] = "";
+	char signed_imm[6][16] = { 0 };
 	if ((hi_u32 & 0xffe02080) == 0xc2c00000) {
 		// 11000010110sssssPP0ttttt0xxddddd | Rdd = add(Rss,Rtt,Px):carry
 		hi->instruction = HEX_INS_A4_ADDP_C;
@@ -70638,15 +70638,15 @@ void hexagon_disasm_0xc(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[1]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[1].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[1], "%s%s0x%x", "#", "-", abs((st32)hi->ops[1].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[1].op.imm);
+			sprintf(signed_imm[1], "%s0x%x", "#", (st32)hi->ops[1].op.imm);
 		}
 		hi->vals[1] = hi->ops[1].op.imm;
 		hi->ops[2].type = HEX_OP_TYPE_REG;
 		hi->ops[2].op.reg = (((hi_u32)&0x1f00) >> 8); // Rt32
 		hi->vals[2] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = lsl(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm, hex_get_int_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = lsl(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), signed_imm[1], hex_get_int_regs(hi->ops[2].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe020fc) == 0xc7200000) {
@@ -70880,7 +70880,7 @@ void hexagon_disasm_0xc(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 }
 
 void hexagon_disasm_0xd(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr) {
-	char signed_imm[16] = "";
+	char signed_imm[6][16] = { 0 };
 	if ((hi_u32 & 0xffe020e0) == 0xd5400060) {
 		// 11010101010sssssPP0ttttt011ddddd | Rd = add(Rt.h,Rs.h):<<16
 		hi->instruction = HEX_INS_A2_ADDH_H16_HH;
@@ -72843,12 +72843,12 @@ void hexagon_disasm_0xd(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = cmpb.gt(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = cmpb.gt(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe0301c) == 0xdd400000) {
@@ -72895,12 +72895,12 @@ void hexagon_disasm_0xd(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = cmph.eq(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = cmph.eq(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe0201c) == 0xdd200008) {
@@ -72925,12 +72925,12 @@ void hexagon_disasm_0xd(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = cmph.gt(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = cmph.gt(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe0301c) == 0xdd400008) {
@@ -73097,12 +73097,12 @@ void hexagon_disasm_0xd(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = vcmpb.gt(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_double_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = vcmpb.gt(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_double_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe0301c) == 0xdc400000) {
@@ -73147,12 +73147,12 @@ void hexagon_disasm_0xd(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = vcmph.eq(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_double_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = vcmph.eq(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_double_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe0201c) == 0xdc200008) {
@@ -73176,12 +73176,12 @@ void hexagon_disasm_0xd(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = vcmph.gt(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_double_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = vcmph.gt(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_double_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe0301c) == 0xdc400008) {
@@ -73226,12 +73226,12 @@ void hexagon_disasm_0xd(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = vcmpw.eq(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_double_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = vcmpw.eq(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_double_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe0201c) == 0xdc200010) {
@@ -73255,12 +73255,12 @@ void hexagon_disasm_0xd(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		}
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "#", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "#", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "#", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s = vcmpw.gt(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_double_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = vcmpw.gt(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_pred_regs(hi->ops[0].op.reg), hex_get_double_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe0301c) == 0xdc400010) {
@@ -73705,12 +73705,12 @@ void hexagon_disasm_0xd(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[3]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "##", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "##", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s %s = add(%s,add(%s,%s)) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%s,add(%s,%s)) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff000017) == 0xde000004) {
@@ -73831,12 +73831,12 @@ void hexagon_disasm_0xd(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s |= and(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s |= and(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffc00000) == 0xda400000) {
@@ -73864,12 +73864,12 @@ void hexagon_disasm_0xd(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[3]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[3]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[3].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[3], "%s%s0x%x", "##", "-", abs((st32)hi->ops[3].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[3].op.imm);
+			sprintf(signed_imm[3], "%s0x%x", "##", (st32)hi->ops[3].op.imm);
 		}
 		hi->vals[3] = hi->ops[3].op.imm;
-		sprintf(hi->mnem, "%s %s = or(%s,and(%sin,%s)) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = or(%s,and(%sin,%s)) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), hex_get_int_regs(hi->ops[2].op.reg), signed_imm[3], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffc00000) == 0xda800000) {
@@ -73894,12 +73894,12 @@ void hexagon_disasm_0xd(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s |= or(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s |= or(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff000017) == 0xde000002) {
@@ -73992,15 +73992,15 @@ void hexagon_disasm_0xd(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
 		hi->ops[3].type = HEX_OP_TYPE_REG;
 		hi->ops[3].op.reg = (((hi_u32)&0x1f) >> 0); // Ru32
 		hi->vals[3] = ST64_MAX;
-		sprintf(hi->mnem, "%s %s = add(%s,sub(%s,%s)) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s = add(%s,sub(%s,%s)) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hex_get_int_regs(hi->ops[3].op.reg), hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xff000017) == 0xde000006) {
@@ -74114,7 +74114,7 @@ void hexagon_disasm_0xd(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 }
 
 void hexagon_disasm_0xe(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr) {
-	char signed_imm[16] = "";
+	char signed_imm[6][16] = { 0 };
 	if ((hi_u32 & 0xffe020e0) == 0xe8400020) {
 		// 11101000010sssssPP0ttttt001ddddd | Rdd = vraddub(Rss,Rtt)
 		hi->instruction = HEX_INS_A2_VRADDUB;
@@ -74709,12 +74709,12 @@ void hexagon_disasm_0xe(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s += add(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s += add(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe020e0) == 0xe7000020) {
@@ -79146,12 +79146,12 @@ void hexagon_disasm_0xe(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const u
 		hex_op_extend(&(hi->ops[2]), false, addr); // Extension possible
 		hex_op_extend(&(hi->ops[2]), false, addr); // Only immediate, extension possible
 		if (((st32)hi->ops[2].op.imm) < 0) {
-			sprintf(signed_imm, "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
+			sprintf(signed_imm[2], "%s%s0x%x", "##", "-", abs((st32)hi->ops[2].op.imm)); // Add a minus sign before hex number
 		} else {
-			sprintf(signed_imm, "%s0x%x", "##", (st32)hi->ops[2].op.imm);
+			sprintf(signed_imm[2], "%s0x%x", "##", (st32)hi->ops[2].op.imm);
 		}
 		hi->vals[2] = hi->ops[2].op.imm;
-		sprintf(hi->mnem, "%s %s -= add(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm, hi->pkt_info.syntax_postfix);
+		sprintf(hi->mnem, "%s %s -= add(%s,%s) %s", hi->pkt_info.syntax_prefix, hex_get_int_regs(hi->ops[0].op.reg), hex_get_int_regs(hi->ops[1].op.reg), signed_imm[2], hi->pkt_info.syntax_postfix);
 		return;
 	}
 	if ((hi_u32 & 0xffe020e0) == 0xef000060) {
