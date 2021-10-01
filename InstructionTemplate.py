@@ -258,7 +258,7 @@ class InstructionTemplate:
                         indent, op.syntax_index
                     )
                     code += (
-                        '{}sprintf(signed_imm, "%s%s0x%x", "'.format(indent * 2)
+                        'sprintf(signed_imm[{}], "%s%s0x%x", "'.format(op.syntax_index)
                         + h
                         + '", "-", abs((st32) hi->ops[{}].op.imm)); // Add a minus sign before hex number\n'.format(
                             op.syntax_index
@@ -268,13 +268,13 @@ class InstructionTemplate:
                     code += "{}else {{\n".format(indent)
 
                     code += (
-                        '{}sprintf(signed_imm, "%s0x%x", "'.format(indent * 2)
+                        'sprintf(signed_imm[{}], "%s0x%x", "'.format(op.syntax_index)
                         + h
                         + '", (st32) hi->ops[{}].op.imm);\n'.format(op.syntax_index)
                     )
                     code += "{}}}\n".format(indent)
 
-                    src = ", signed_imm"
+                    src = ", signed_imm[{}]".format(op.syntax_index)
                     mnemonic = re.sub(r"#?" + op.explicit_syntax, "%s", mnemonic)
                 else:
                     src = ", (ut32) hi->ops[{}].op.imm".format(op.syntax_index)
