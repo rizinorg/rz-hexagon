@@ -106,3 +106,18 @@ EXPECT=<<EOF
 0x000051f0   # 4: ? R28 = ##sym.coredump 
 EOF
 RUN
+
+NAME=hexagon extended immediates
+FILE==
+CMDS=<<EOF
+wx c045e401834080491ae24220
+e asm.arch=hexagon
+e analysis.arch=hexagon
+pi 3
+EOF
+EXPECT=<<EOF
+/ immext(##0x1e417000) 
+| R3 = memw(GP+##0x1e417004) 
+\ if (!cmp.eq(R2.new,R2)) jump:t 0x3c 
+EOF
+RUN
