@@ -352,6 +352,7 @@ class LLVMImporter:
         # TODO Clean up this method
         indent = PluginInfo.LINE_INDENT
         var = PluginInfo.HEX_INSTR_VAR_SYNTAX
+        signed_imm_array = "signed_imm[{}][16]".format(PluginInfo.MAX_OPERANDS)
         with open(path, "w+") as dest:
             dest.write(get_generation_warning_c_code())
 
@@ -386,9 +387,9 @@ class LLVMImporter:
                         )
                         if (
                             "sprintf(signed_imm" in func_body
-                            and "signed_imm[6][16]" not in func_header
+                            and signed_imm_array not in func_header
                         ):
-                            func_header += "char signed_imm[6][16] = {0};\n"
+                            func_header += "char " + signed_imm_array + " = {0};\n"
                 dest.write(func_header + func_body + "}\n\n")
                 main_function += "{}break;\n".format(indent * 4)
 
@@ -417,9 +418,9 @@ class LLVMImporter:
                         )
                         if (
                             "sprintf(signed_imm" in func_body
-                            and "signed_imm[6][16]" not in func_header
+                            and signed_imm_array not in func_header
                         ):
-                            func_header += "char signed_imm[6][16] = {0};\n"
+                            func_header += "char " + signed_imm_array + " = {0};\n"
                 dest.write(func_header + func_body + "}\n\n")
                 main_function += "{}break;\n".format(indent * 4)
 
