@@ -79,6 +79,9 @@ class DuplexInstruction(InstructionTemplate):
             + self.low_instr.llvm_in_operands
         )
 
+        # Flags
+        self.set_type_flags()
+
         # Predicates
         self.set_duplex_predicate_info()
 
@@ -624,3 +627,16 @@ class DuplexInstruction(InstructionTemplate):
             self.is_endloop = self.low_instr.is_endloop
             self.is_loop_begin = self.low_instr.is_loop_begin
             self.loop_member = self.low_instr.loop_member
+
+    def set_type_flags(self):
+        """Sets all type flags of the sub instruction."""
+        low = self.low_instr
+        high = self.high_instr
+
+        self.is_branch = low.is_branch or high.is_branch
+        self.is_call = low.is_call or high.is_call
+        self.is_pause = low.is_pause or high.is_pause
+        self.is_return = low.is_return or high.is_return
+        self.is_solo = low.is_solo or high.is_solo
+        self.is_terminator = low.is_terminator or high.is_terminator
+        self.is_trap = low.is_trap or high.is_trap
