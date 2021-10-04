@@ -121,3 +121,69 @@ EXPECT=<<EOF
 \ if (!cmp.eq(R2.new,R2)) jump:t 0x3c 
 EOF
 RUN
+
+NAME=hexagon hardware loop simple
+FILE==
+CMDS=<<EOF
+wx 12c03e6388c0006900c0007f0080007f00c0007f
+e asm.arch=hexagon
+e analysis.arch=hexagon
+pi 5
+EOF
+EXPECT=<<EOF
+[     C19:18 = R31:30 
+[     loop0(0x8,#0x10) 
+[     nop 
+/ nop 
+\ nop  < endloop0
+EOF
+RUN
+
+NAME=hexagon hardware loop nested I
+FILE==
+CMDS=<<EOF
+wx 00c0007f0bc0006900404d850040000076d09b9a0ac020690040007f07407c700040000087c40aab048063700080007f00c0007f
+e asm.arch=hexagon
+e analysis.arch=hexagon
+pi 13
+EOF
+EXPECT=<<EOF
+[     nop 
+[     loop0(0x8,#0x3) 
+/ P0 = R13 
+| immext(##0x0) 
+\ R23:22 = memb_fifo(R27=##0x3) 
+[     loop1(0x18,#0x2) 
+/ nop 
+| R7 = R28 
+| immext(##0x0) 
+\ memb(R10=##0x7) = R4 
+/ R4 = R3 
+| nop 
+\ nop  < endloop01
+EOF
+RUN
+
+NAME=hexagon hardware loop nested II
+FILE==
+CMDS=<<EOF
+wx 00c0007f0bc0206900404d850040000076d09b9a00c000580ac0006907807c7000c0007f044063700080007f00c0007f
+e asm.arch=hexagon
+e analysis.arch=hexagon
+pi 12
+EOF
+EXPECT=<<EOF
+[     nop 
+[     loop1(0x8,#0x3) 
+/ P0 = R13 
+| immext(##0x0) 
+\ R23:22 = memb_fifo(R27=##0x3) 
+[     jump 0x14 
+[     loop0(0x1c,#0x2) 
+/ R7 = R28 
+\ nop  < endloop0
+/ R4 = R3 
+| nop 
+\ nop  < endloop1
+EOF
+RUN
