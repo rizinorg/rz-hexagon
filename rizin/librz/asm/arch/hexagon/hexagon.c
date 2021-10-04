@@ -865,10 +865,9 @@ static inline bool is_endloop01_pkt(const ut8 pi_0, const ut8 pi_1) {
  * \param previous_addr The address of the previously disassembled instruction.
  */
 void hex_set_pkt_info(RZ_INOUT HexPktInfo *i_pkt_info, const ut32 addr, const ut32 previous_addr) {
-	static HexPkt pkt = { 0 }; // Current packet
 	static ut8 i = 0; // Index of the instruction in the current packet.
-	static ut8 p0 = 255;
-	static ut8 p1 = 255;
+	static ut8 p0 = UT8_MAX;
+	static ut8 p1 = UT8_MAX;
 	// Valid packet: A packet from which we know its *actual* first and last instruction.
 	// Does this instruction belong to a valid packet?
 	static bool valid_packet = true;
@@ -886,7 +885,14 @@ void hex_set_pkt_info(RZ_INOUT HexPktInfo *i_pkt_info, const ut32 addr, const ut
 		valid_packet = ((previous_addr == (addr - 4)) || (addr == 0)) && (valid_packet || new_pkt_starts);
 	}
 	if (valid_packet) {
-		memcpy(&pkt.i_infos[i], i_pkt_info, sizeof(HexPktInfo));
+		if (i == 0) {
+			p0 = i_pkt_info->parse_bits;
+		} else if (i == 1) {
+			p1 = i_pkt_info->parse_bits;
+		}
+	} else {
+		p0 = UT8_MAX;
+		p1 = UT8_MAX;
 	}
 	i_pkt_info->valid_pkt = valid_packet;
 
@@ -920,8 +926,6 @@ void hex_set_pkt_info(RZ_INOUT HexPktInfo *i_pkt_info, const ut32 addr, const ut
 		if (valid_packet) {
 			strncpy(i_pkt_info->syntax_prefix, "\\", 8); // TODO Add utf8 option "└"
 
-			p0 = pkt.i_infos[0].parse_bits;
-			p1 = pkt.i_infos[1].parse_bits;
 			if (is_endloop01_pkt(p0, p1)) {
 				strncpy(i_pkt_info->syntax_postfix, " < endloop01", 16); // TODO Add utf8 option "∎"
 				i_pkt_info->loop_attr |= (HEX_ENDS_LOOP_0 | HEX_ENDS_LOOP_1);
