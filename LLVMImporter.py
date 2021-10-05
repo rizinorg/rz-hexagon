@@ -614,38 +614,32 @@ class LLVMImporter:
             )
             f.write("{}static ut32 hw_loop0_start = 0;\n".format(indent))
             f.write("{}static ut32 hw_loop1_start = 0;\n\n".format(indent))
-            f.write("{}switch (hi->instruction) {{\n".format(indent))
 
-            default = "{}default:\n".format(indent * 2)
-            default += (
-                "{}if (is_endloop01_instr(hi) && hi->pkt_info.last_insn) {{\n".format(
-                    indent * 3
-                )
-                + "{}op->type = RZ_ANALYSIS_OP_TYPE_CJMP;\n".format(indent * 4)
-                + "{}op->fail = hw_loop0_start;\n".format(indent * 4)
-                + "{}op->jump = hw_loop1_start;\n".format(indent * 4)
-                + "{}hw_loop1_start = 0;\n".format(indent * 4)
-                + "{}hw_loop0_start = 0;\n{}}}\n".format(indent * 4, indent * 3)
+            endloop = (
+                "if (is_endloop01_instr(hi) && hi->pkt_info.last_insn) {\n"
+                + "op->type = RZ_ANALYSIS_OP_TYPE_CJMP;\n"
+                + "op->fail = hw_loop0_start;\n"
+                + "op->jump = hw_loop1_start;\n"
+                + "hw_loop1_start = 0;\n"
+                + "hw_loop0_start = 0;\n}\n"
             )
-            default += (
-                "{}else if (is_endloop0_instr(hi) && hi->pkt_info.last_insn) {{\n".format(
-                    indent * 3
-                )
-                + "{}op->type = RZ_ANALYSIS_OP_TYPE_CJMP;\n".format(indent * 4)
-                + "{}op->jump = hw_loop0_start;\n".format(indent * 4)
-                + "{}hw_loop0_start = 0;\n{}}}\n".format(indent * 4, indent * 3)
+            endloop += (
+                "else if (is_endloop0_instr(hi) && hi->pkt_info.last_insn) {\n"
+                + "op->type = RZ_ANALYSIS_OP_TYPE_CJMP;\n"
+                + "op->jump = hw_loop0_start;\n"
+                + "hw_loop0_start = 0;\n}\n"
             )
-            default += (
-                "{}else if (is_endloop1_instr(hi) && hi->pkt_info.last_insn) {{\n".format(
-                    indent * 3
-                )
-                + "{}op->type = RZ_ANALYSIS_OP_TYPE_CJMP;\n".format(indent * 4)
-                + "{}op->jump = hw_loop1_start;\n".format(indent * 4)
-                + "{}hw_loop1_start = 0;\n{}}}\n".format(indent * 4, indent * 3)
+            endloop += (
+                "else if (is_endloop1_instr(hi) && hi->pkt_info.last_insn) {\n"
+                + "op->type = RZ_ANALYSIS_OP_TYPE_CJMP;\n"
+                + "op->jump = hw_loop1_start;\n"
+                + "hw_loop1_start = 0;\n}\n"
             )
-            default += "{}break;\n".format(indent * 3)
+            f.write(endloop)
 
-            f.write(default)
+            switch = "switch (hi->instruction) {\n"
+            switch += "default:\n"
+            switch += "break;\n"
 
             all_instr = [i for i in self.normal_instructions.values()]
             for i in self.duplex_instructions.values():
@@ -653,9 +647,9 @@ class LLVMImporter:
 
             i: Instruction
             for i in all_instr:
-                f.write("{}case {}:\n".format(indent * 2, i.plugin_name))
-                f.write("{}// {}\n".format(indent * 3, i.syntax))
-                f.write("{}{}\n".format(indent * 3, i.get_rizin_op_type()))
+                switch += "case {}:\n".format(i.plugin_name)
+                switch += "// {}\n".format(i.syntax)
+                switch += "{}\n".format(i.get_rizin_op_type())
                 if i.has_imm_jmp_target():
                     index = i.get_jmp_operand_syntax_index()
                     if index < 0:
@@ -664,32 +658,24 @@ class LLVMImporter:
                             "{}".format(i.llvm_syntax)
                         )
 
-                    f.write(
-                        "{}op->jump = hi->pkt_info.pkt_addr + (st32) hi->ops[{}].op.imm;\n".format(
-                            indent * 3, index
-                        )
+                    switch += "op->jump = hi->pkt_info.pkt_addr + (st32) hi->ops[{}].op.imm;\n".format(
+                        index
                     )
                     if i.is_predicated:
-                        f.write(
-                            "{}op->fail = op->addr + op->size;\n".format(indent * 3)
-                        )
+                        switch += "op->fail = op->addr + op->size;\n"
                     if i.is_loop_begin:
-                        f.write(
-                            "{}if (is_loop0_begin(hi)) {{\n".format(indent * 3)
-                            + "{}hw_loop0_start = op->jump;\n{}}}\n".format(
-                                indent * 4, indent * 3
-                            )
+                        switch += (
+                            "if (is_loop0_begin(hi)) {\n"
+                            + "hw_loop0_start = op->jump;\n}\n"
                         )
-                        f.write(
-                            "{}else if (is_loop1_begin(hi)) {{\n".format(indent * 3)
-                            + "{}hw_loop1_start = op->jump;\n{}}}\n".format(
-                                indent * 4, indent * 3
-                            )
+                        switch += (
+                            "else if (is_loop1_begin(hi)) {\n"
+                            + "hw_loop1_start = op->jump;\n}\n"
                         )
                 if [o.type for o in i.operands.values()].count(
                     OperandType.IMMEDIATE
                 ) == 0:
-                    f.write("{i}op->val = UT64_MAX;\n".format(i=(indent * 3)))
+                    switch += "op->val = UT64_MAX;\n"
                 else:
                     keys = list(i.operands)
                     for k in range(6):  # RzAnalysisOp.analysis_vals has a size of 8.
@@ -699,36 +685,33 @@ class LLVMImporter:
                                 i.has_imm_jmp_target()
                                 and o.type == OperandType.IMMEDIATE
                             ):
-                                f.write(
-                                    "{i}op->val = op->jump;\n".format(i=(indent * 3))
-                                )
-                                f.write(
-                                    "{i}op->analysis_vals[{si}].imm = op->jump;\n".format(
-                                        i=(indent * 3), si=o.syntax_index
+                                switch += "op->val = op->jump;\n"
+                                switch += (
+                                    "op->analysis_vals[{si}].imm = op->jump;\n".format(
+                                        si=o.syntax_index
                                     )
                                 )
                             else:
                                 if o.type == OperandType.IMMEDIATE:
-                                    f.write(
-                                        "{i}op->val = (ut64) hi->vals[{si}];\n".format(
-                                            i=(indent * 3), si=o.syntax_index
+                                    switch += (
+                                        "op->val = (ut64) hi->vals[{si}];\n".format(
+                                            si=o.syntax_index
                                         )
                                     )
-                                f.write(
-                                    "{i}op->analysis_vals[{si}].imm = hi->vals[{si}];\n".format(
-                                        i=(indent * 3), si=o.syntax_index
-                                    )
+                                switch += "op->analysis_vals[{si}].imm = hi->vals[{si}];\n".format(
+                                    si=o.syntax_index
                                 )
                         else:
-                            f.write(
-                                "{i}op->analysis_vals[{s}].imm = ST64_MAX;\n".format(
-                                    i=(indent * 3), s=k
-                                )
+                            switch += "op->analysis_vals[{s}].imm = ST64_MAX;\n".format(
+                                s=k
                             )
 
-                f.write("{}break;\n".format(indent * 3, indent * 2))
+                switch += "break;\n"
 
-            f.write("{i}}}\n{i}return op->size;\n}}".format(i=indent))
+            switch += "}\nreturn op->size;\n}"
+
+            f.write(switch)
+
         log("hexagon_analysis.c written to: {}".format(path))
 
     # RIZIN SPECIFIC

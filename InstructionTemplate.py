@@ -330,7 +330,7 @@ class InstructionTemplate:
     def get_rizin_op_type(self) -> str:
         """Returns the c code to assign the instruction type to the RzAnalysisOp.type member."""
 
-        op_type = "op->type = "
+        op_type = "op->type |= "
 
         if self.is_trap:
             return op_type + "RZ_ANALYSIS_OP_TYPE_TRAP;"
@@ -376,7 +376,7 @@ class InstructionTemplate:
                     else "RZ_ANALYSIS_OP_TYPE_RJMP;"
                 )
 
-        if op_type == "op->type = ":
+        if op_type == "op->type |= ":
             log(
                 "Instruction: {} has no instr. type assigned to it yet.".format(
                     self.name
