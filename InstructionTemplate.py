@@ -216,7 +216,7 @@ class InstructionTemplate:
         sprint_src = ", hi->pkt_info.syntax_prefix"
 
         op: Immediate
-        for op in self.operands.values():
+        for op in sorted(self.operands.values(), key=lambda item: item.syntax_index):
             if op.type == OperandType.IMMEDIATE and op.is_constant:
                 mnemonic = re.sub(r"#[nN]1", r"#-1", mnemonic)
                 continue
