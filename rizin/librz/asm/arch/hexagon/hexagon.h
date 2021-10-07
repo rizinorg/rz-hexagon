@@ -48,7 +48,9 @@ typedef enum {
 	HEX_OP_REG_HI = 1 << 1, // Rn.H marker
 	HEX_OP_REG_LO = 1 << 2, // Rn.L marker
 	HEX_OP_REG_PAIR = 1 << 3, // Is this a register pair?
-	HEX_OP_IMM_SCALED = 1 << 4 // Is the immediate shifted?
+	HEX_OP_REG_QUADRUPLE = 1 << 4, // Is it a register with 4 sub registers?
+	HEX_OP_REG_OUT = 1 << 5, // Is the register the destination register?
+	HEX_OP_IMM_SCALED = 1 << 6 // Is the immediate shifted?
 } HexOpAttr;
 
 typedef enum {
@@ -76,7 +78,7 @@ typedef struct {
 		ut8 reg; // + additional Hi or Lo selector // + additional shift // + additional :brev //
 		st64 imm;
 	} op;
-	ut8 attr;
+	HexOpAttr attr;
 	ut8 shift;
 } HexOp;
 
@@ -92,18 +94,12 @@ typedef struct {
 	ut8 op_count;
 	HexOp ops[6];
 	char mnem[128]; // Instruction mnemonic
+	ut32 addr; // Memory address the instruction is located.
 } HexInsn;
 
 typedef struct {
-	HexPktInfo i_infos[4];
+	HexInsn ins[4];
 } HexPkt;
-
-// Instruction container (currently only 2 instructions)
-// Can handle duplexes
-typedef struct {
-	bool duplex;
-	HexInsn ins[2]; // Or make it pointer + size?
-} HexInsnCont;
 
 typedef enum {
 	HEX_REG_CTR_REGS_SA0 = 0, // c0
@@ -530,6 +526,7 @@ char *hex_get_sys_regs64(int opcode_reg);
 
 void hex_op_extend(RZ_INOUT HexOp *op, const bool set_new_extender, const ut32 addr);
 void hex_set_pkt_info(RZ_INOUT HexPktInfo *pkt_info, const ut32 addr, const ut32 previous_addr);
+int resolve_n_register(const int reg_num);
 int hexagon_disasm_instruction(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr);
 void hexagon_disasm_0x0(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr);
 void hexagon_disasm_0x1(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr);
@@ -562,4 +559,5 @@ void hexagon_disasm_duplex_0xc(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 void hexagon_disasm_duplex_0xd(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr);
 void hexagon_disasm_duplex_0xe(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr);
 
+extern HexPkt current_pkt;
 #endif

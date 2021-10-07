@@ -118,7 +118,7 @@ EOF
 EXPECT=<<EOF
 / immext(##0x1e417000) 
 | R3 = memw(GP+##0x1e417004) 
-\ if (!cmp.eq(R2.new,R2)) jump:t 0x3c 
+\ if (!cmp.eq(R3.new,R2)) jump:t 0x3c 
 EOF
 RUN
 
@@ -185,5 +185,38 @@ EXPECT=<<EOF
 / R4 = R3 
 | nop 
 \ nop  < endloop1
+EOF
+RUN
+
+NAME=hexagon Nt.new register
+FILE==
+CMDS=<<EOF
+wx ffffffff20400078e15f1076e25f107601d6bda120400078e15f1076e25f107601d4bda120400078e15f1076e25f107601d2bda1e15f107620400078e25f107601d4bda1fd5f10760040007fe25f107601d6bda1
+e asm.arch=hexagon
+e analysis.arch=hexagon
+pi 21
+EOF
+EXPECT=<<EOF
+? <invalid>
+/ R0 = ##0x1
+| R1 = and(R16,##0xff)
+| R2 = and(R16,##0xff)
+\ memw(R29+##0x4) = R0.new
+/ R0 = ##0x1
+| R1 = and(R16,##0xff)
+| R2 = and(R16,##0xff)
+\ memw(R29+##0x4) = R1.new
+/ R0 = ##0x1
+| R1 = and(R16,##0xff)
+| R2 = and(R16,##0xff)
+\ memw(R29+##0x4) = R2.new
+/ R1 = and(R16,##0xff)
+| R0 = ##0x1
+| R2 = and(R16,##0xff)
+\ memw(R29+##0x4) = R0.new
+/ R29 = and(R16,##0xff)
+| nop
+| R2 = and(R16,##0xff)
+\ memw(R29+##0x4) = R29.new
 EOF
 RUN

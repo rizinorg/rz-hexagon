@@ -48,6 +48,7 @@ class Register(Operand):
         "llvm_reg_class",
         "is_vector",
         "is_quadruple",
+        "is_n_reg"
     ]
 
     def __init__(
@@ -65,6 +66,8 @@ class Register(Operand):
         self.is_control = False
         self.is_hvx = False
         self.is_vector = False
+        # Nt.new register is one of the destination register of the other instructions in the packet.
+        self.is_n_reg = re.search(r"N.8", llvm_syntax) is not None
         # Register of the guest VM: GELR, GSR, GOSP, G3-15, GPMUCNT4-7, G20-23 etc.
         self.is_guest = False
         self.is_system = False

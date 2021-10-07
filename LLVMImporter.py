@@ -362,6 +362,7 @@ class LLVMImporter:
 
             main_function = (
                 "int hexagon_disasm_instruction(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr) {\n"
+                + "static ut8 pkt_i = 0;\n"
                 + "if (hi_u32 != 0x00000000) {\n"
                 + "{}// DUPLEXES\n".format(indent)
                 + "{}if ((({} >> 14) & 0x3) == 0) {{\n".format(indent, var)
@@ -438,6 +439,10 @@ class LLVMImporter:
                 + '{}sprintf(hi->mnem, "%s <invalid> %s", hi->pkt_info.syntax_prefix, hi->pkt_info.syntax_postfix);\n{}}}\n'.format(
                     indent * 2, indent
                 )
+                + "if (hi->pkt_info.first_insn) {\npkt_i = 0;\n}\n"
+                + "if (update_current_pkt(addr, previous_addr, hi)) {\n"
+                + "memcpy(&current_pkt.ins[pkt_i], hi, sizeof(current_pkt.ins[pkt_i]));\n"
+                + "pkt_i = (pkt_i % 4);\n}\n"
                 + "return 4;\n}"
             )
             dest.write(main_function)
@@ -500,6 +505,10 @@ class LLVMImporter:
                 set_pos_after_license(decl)
                 dest.writelines(decl.readlines())
 
+            with open("handwritten/hexagon_h/globals.h") as glob:
+                set_pos_after_license(glob)
+                dest.writelines(glob.readlines())
+
             dest.write("#endif")
 
         log("hexagon.h written to: {}".format(path))
@@ -519,7 +528,7 @@ class LLVMImporter:
 
             reg_class: str
             for reg_class in self.hardware_regs:
-                func_name = HardwareRegister.get_func_name_of_class(reg_class)
+                func_name = HardwareRegister.get_func_name_of_class(reg_class, False)
                 function = "char* {}(int opcode_reg)".format(func_name)
                 self.reg_resolve_decl.append(function + ";")
                 dest.write("\n{} {{\n".format(function))

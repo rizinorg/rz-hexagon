@@ -4,6 +4,7 @@
 
 void hex_op_extend(RZ_INOUT HexOp *op, const bool set_new_extender, const ut32 addr);
 void hex_set_pkt_info(RZ_INOUT HexPktInfo* pkt_info, const ut32 addr, const ut32 previous_addr);
+int resolve_n_register(const int reg_num);
 int hexagon_disasm_instruction(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr);
 void hexagon_disasm_0x0(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr);
 void hexagon_disasm_0x1(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr);
