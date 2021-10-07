@@ -334,13 +334,21 @@ class LLVMImporter:
             dest.write(get_include_guard("hexagon_insn.h"))
             dest.write("\n")
             dest.write("enum HEX_INS {\n")
+            enum = ""
             for name in self.normal_instruction_names + self.duplex_instructions_names:
-                dest.write(
-                    PluginInfo.LINE_INDENT
-                    + PluginInfo.INSTR_ENUM_PREFIX
-                    + name.upper()
-                    + ",\n"
-                )
+                if "invalid_decode" in name:
+                    enum = (
+                        PluginInfo.INSTR_ENUM_PREFIX
+                        + name.upper()
+                        + " = 0,\n"
+                    ) + enum
+                else:
+                    enum += (
+                        PluginInfo.INSTR_ENUM_PREFIX
+                        + name.upper()
+                        + ",\n"
+                    )
+            dest.write(enum)
             dest.write("};\n\n")
             dest.write("#endif")
             log("Hexagon instruction enum written to: {}".format(path))
