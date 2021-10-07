@@ -42,8 +42,17 @@ class HardwareRegister(Register):
 
     # RIZIN SPECIFIC
     @staticmethod
-    def get_func_name_of_class(reg_class: str) -> str:
-        """Generates the function name for register name retrieval in the disassembler code."""
+    def get_func_name_of_class(reg_class: str, is_n_reg: bool) -> str:
+        """
+        Generates the name of the function, which will return the register name for the given register number.
+        Args:
+            reg_class: The LLVM register class.
+            is_n_reg: True if the register is a Nt.new register, false otherwise.
+
+        Returns: Name of the function which resolves the register name for a given number.
+        """
+        if is_n_reg:
+            return "resolve_n_register"
         reg_func = HardwareRegister.register_class_name_to_upper(reg_class).lower()
         code = PluginInfo.GENERAL_ENUM_PREFIX.lower() + "get_" + reg_func
         return code

@@ -6,6 +6,7 @@ import re
 
 import HexagonArchInfo
 import PluginInfo
+import Register
 from HardwareRegister import HardwareRegister
 from Immediate import Immediate
 from ImplementationException import ImplementationException
@@ -215,7 +216,6 @@ class InstructionTemplate:
         mnemonic = '{}sprintf(hi->mnem, "%s {} %s"'.format(indent, self.syntax)
         sprint_src = ", hi->pkt_info.syntax_prefix"
 
-        op: Immediate
         for op in sorted(self.operands.values(), key=lambda item: item.syntax_index):
             if op.type == OperandType.IMMEDIATE and op.is_constant:
                 mnemonic = re.sub(r"#[nN]1", r"#-1", mnemonic)
@@ -226,14 +226,29 @@ class InstructionTemplate:
             )
 
             if op.type == OperandType.REGISTER:
+                op: Register
                 code += "{}hi->ops[{}].op.reg = {}".format(
                     indent, op.syntax_index, op.code_opcode_parsing
                 )
+                if op.is_out_operand:
+                    code += "hi->ops[{}].attr |= HEX_OP_REG_OUT;\n".format(op.syntax_index)
+                if op.is_double:
+                    code += "hi->ops[{}].attr |= HEX_OP_REG_PAIR;\n".format(op.syntax_index)
+                if op.is_quadruple:
+                    code += "hi->ops[{}].attr |= HEX_OP_REG_QUADRUPLE;\n".format(op.syntax_index)
+
                 mnemonic = re.sub(op.explicit_syntax, "%s", mnemonic)
                 src = "hi->ops[{}].op.reg".format(op.syntax_index)
-                sprint_src += ", {}({})".format(
-                    HardwareRegister.get_func_name_of_class(op.llvm_type), src
-                )
+                if op.is_n_reg:
+                    sprint_src += ", {}({}({}))".format(
+                        HardwareRegister.get_func_name_of_class(op.llvm_type, False),
+                        HardwareRegister.get_func_name_of_class(op.llvm_type, True),
+                        src
+                    )
+                else:
+                    sprint_src += ", {}({})".format(
+                        HardwareRegister.get_func_name_of_class(op.llvm_type, False), src
+                    )
 
             elif op.type == OperandType.IMMEDIATE and not op.is_constant:
                 code += "{}hi->ops[{}].op.imm = {}".format(

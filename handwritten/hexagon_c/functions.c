@@ -18,6 +18,34 @@ static inline bool is_endloop01_pkt(const ut8 pi_0, const ut8 pi_1) {
     return ((pi_0 == 0x2) && (pi_1 == 0x2));
 }
 
+HexPkt current_pkt = {0};
+
+int resolve_n_register(const int reg_num) {
+    HexInsn *instr;
+    switch(reg_num) {
+    default:
+        eprintf("reg_num %d case missing\n", reg_num);
+        return UT32_MAX;
+    case 6: // Out register of first instr.
+        instr = &current_pkt.ins[0];
+        break;
+    case 4: // Out register of second instr.
+        instr = &current_pkt.ins[1];
+        break;
+    case 2: // Out register of third instr.
+        instr = &current_pkt.ins[2];
+        break;
+    }
+        eprintf("Test instr: %s\n", instr->mnem);
+    for (ut8 i=0; i<6; ++i) {
+        if (instr->ops[i].attr & HEX_OP_REG_OUT) {
+            return instr->ops[i].op.reg;
+        }
+    }
+    eprintf("No out op for reg_num %d\n", reg_num);
+    return UT32_MAX;
+}
+
 /**
  * \brief Sets several attributes of an instructions which are packet related.
  * Like the position of the instruction in the packet or whether it ends a hardware loop etc.
