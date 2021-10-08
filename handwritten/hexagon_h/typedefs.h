@@ -56,12 +56,8 @@ typedef enum {
 typedef struct {
     bool first_insn;
     bool last_insn;
-	bool valid_pkt;
-	ut32 pkt_addr;
     char syntax_prefix[8];  // Package indicator
     char syntax_postfix[16];  // for ":endloop" string.
-    unsigned int parse_bits;
-    HexLoopAttr loop_attr;
 } HexPktInfo;
 
 typedef struct {
@@ -75,6 +71,8 @@ typedef struct {
 } HexOp;
 
 typedef struct {
+	ut32 opcode;
+	ut8 parse_bits;
 	int instruction;
 	ut32 mask;
 	HexPred pred; // Predicate type
@@ -90,5 +88,11 @@ typedef struct {
 } HexInsn;
 
 typedef struct {
-	HexInsn ins[4];
+	RzList *insn;
+	bool last_instr_present; // Has an instruction the parsing bits 0b11 set (is last instruction).
+    bool is_valid; // Is it a valid packet? Do we know which instruction is the first?
+	HexLoopAttr loop_attr;
+    ut32 constant_extenders[2];
+	ut64 last_access
+	ut32 pkt_addr; // Address of the packet. Equals the address of the first instruction.
 } HexPkt;

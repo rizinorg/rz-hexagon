@@ -449,7 +449,7 @@ class LLVMImporter:
                 )
                 + "if (hi->pkt_info.first_insn) {\npkt_i = 0;\n}\n"
                 + "if (update_current_pkt(addr, previous_addr, hi)) {\n"
-                + "memcpy(&current_pkt.ins[pkt_i], hi, sizeof(current_pkt.ins[pkt_i]));\n"
+                + "memcpy(&current_pkt.ins[pkt_i], hi, sizeof(HexInsn));\n"
                 + "pkt_i = (pkt_i % 4);\n}\n"
                 + "return 4;\n}"
             )
@@ -512,10 +512,6 @@ class LLVMImporter:
             with open("handwritten/hexagon_h/declarations.h") as decl:
                 set_pos_after_license(decl)
                 dest.writelines(decl.readlines())
-
-            with open("handwritten/hexagon_h/globals.h") as glob:
-                set_pos_after_license(glob)
-                dest.writelines(glob.readlines())
 
             dest.write("#endif")
 

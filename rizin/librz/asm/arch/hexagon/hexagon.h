@@ -64,12 +64,8 @@ typedef enum {
 typedef struct {
 	bool first_insn;
 	bool last_insn;
-	bool valid_pkt;
-	ut32 pkt_addr;
 	char syntax_prefix[8]; // Package indicator
 	char syntax_postfix[16]; // for ":endloop" string.
-	unsigned int parse_bits;
-	HexLoopAttr loop_attr;
 } HexPktInfo;
 
 typedef struct {
@@ -83,6 +79,8 @@ typedef struct {
 } HexOp;
 
 typedef struct {
+	ut32 opcode;
+	ut8 parse_bits;
 	int instruction;
 	ut32 mask;
 	HexPred pred; // Predicate type
@@ -99,6 +97,13 @@ typedef struct {
 
 typedef struct {
 	HexInsn ins[4];
+	ut8 instr_count; // Counts the instructions. If it is >4 it is no valid assembly.
+	ut32 addrs[4]; // Address of each instruction in the packet.
+	ut32 last_instr_addr; // Address of the last instruction in the packet.
+	bool last_instr_present; // Has an instruction the parsing bits 0b11 set (is last instruction).
+	bool is_valid; // Is it a valid packet? Do we know which instruction is the first?
+	HexLoopAttr loop_attr;
+	ut32 constant_extenders[2];
 } HexPkt;
 
 typedef enum {
@@ -559,5 +564,4 @@ void hexagon_disasm_duplex_0xc(const ut32 hi_u32, HexInsn *hi, const ut32 addr, 
 void hexagon_disasm_duplex_0xd(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr);
 void hexagon_disasm_duplex_0xe(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr);
 
-extern HexPkt current_pkt;
 #endif

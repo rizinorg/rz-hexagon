@@ -198,10 +198,11 @@ class InstructionTemplate:
         )
         code += "{}// {} | {}\n".format(indent, self.encoding.docs_mask, self.syntax)
         code += "{}hi->instruction = {};\n".format(indent, self.plugin_name)
-        code += self.get_predicate_init()
-        code += "{}hi->pkt_info.parse_bits = (({}) & 0x{:x}) >> 14;\n".format(
-            indent, var, self.encoding.parse_bits_mask
+        code += "hi->opcode = hi_u32;\n"
+        code += "hi->parse_bits = (({}) & 0x{:x}) >> 14;\n".format(
+            var, self.encoding.parse_bits_mask
         )
+        code += self.get_predicate_init()
         code += "{}hi->pkt_info.loop_attr = {};\n".format(indent, self.loop_member.name)
         code += "{}hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);\n".format(
             indent
