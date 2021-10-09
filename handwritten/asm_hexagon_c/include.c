@@ -7,3 +7,4 @@
 #include <rz_lib.h>
 #include "hexagon.h"
 #include "hexagon_insn.h"
+#include "hexagon_arch.h"

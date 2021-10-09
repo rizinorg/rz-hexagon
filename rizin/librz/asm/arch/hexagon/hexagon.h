@@ -64,6 +64,7 @@ typedef enum {
 typedef struct {
 	bool first_insn;
 	bool last_insn;
+	HexLoopAttr loop_attr;
 	char syntax_prefix[8]; // Package indicator
 	char syntax_postfix[16]; // for ":endloop" string.
 } HexPktInfo;
@@ -87,25 +88,31 @@ typedef struct {
 	bool duplex; // is part of duplex container?
 	bool compound; // is part of compound instruction?
 	int shift; // Optional shift left is it true?
-	st64 vals[6]; // Analysable values (yet only immediate operand values).
-	HexPktInfo pkt_info;
+	HexPktInfo pkt_info; // Packet related information. First/last instr., prefix and postfix for mnemonic etc.
 	ut8 op_count;
 	HexOp ops[6];
+	char mnem_infix[104]; // The mnemonic without the pre- and postfix.
 	char mnem[128]; // Instruction mnemonic
 	ut32 addr; // Memory address the instruction is located.
+	RzAsmOp asm_op;
+	RzAnalysisOp ana_op;
 } HexInsn;
 
 typedef struct {
-	HexInsn ins[4];
-	ut8 instr_count; // Counts the instructions. If it is >4 it is no valid assembly.
-	ut32 addrs[4]; // Address of each instruction in the packet.
-	ut32 last_instr_addr; // Address of the last instruction in the packet.
+	RzList *insn; // List of instructions.
 	bool last_instr_present; // Has an instruction the parsing bits 0b11 set (is last instruction).
 	bool is_valid; // Is it a valid packet? Do we know which instruction is the first?
-	HexLoopAttr loop_attr;
-	ut32 constant_extenders[2];
+	HexLoopAttr loop_attr; // Flags to which loops the packet might belongs to.
+	ut32 hw_loop0_addr; // Start address of hardware loop 0
+	ut32 hw_loop1_addr; // Start address of hardware loop 1
+	ut64 last_access; // Last time accessed in milliseconds
+	ut32 pkt_addr; // Address of the packet. Equals the address of the first instruction.
 } HexPkt;
 
+typedef struct {
+	ut32 addr; // Address of the instruction which gets the extender applied.
+	ut32 const_ext; // The constant extender value.
+} HexConstExt;
 typedef enum {
 	HEX_REG_CTR_REGS_SA0 = 0, // c0
 	HEX_REG_CTR_REGS_LC0 = 1, // c1
@@ -529,39 +536,37 @@ char *hex_get_pred_regs(int opcode_reg);
 char *hex_get_sys_regs(int opcode_reg);
 char *hex_get_sys_regs64(int opcode_reg);
 
-void hex_op_extend(RZ_INOUT HexOp *op, const bool set_new_extender, const ut32 addr);
-void hex_set_pkt_info(RZ_INOUT HexPktInfo *pkt_info, const ut32 addr, const ut32 previous_addr);
-int resolve_n_register(const int reg_num);
-int hexagon_disasm_instruction(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr);
-void hexagon_disasm_0x0(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr);
-void hexagon_disasm_0x1(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr);
-void hexagon_disasm_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr);
-void hexagon_disasm_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr);
-void hexagon_disasm_0x4(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr);
-void hexagon_disasm_0x5(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr);
-void hexagon_disasm_0x6(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr);
-void hexagon_disasm_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr);
-void hexagon_disasm_0x8(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr);
-void hexagon_disasm_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr);
-void hexagon_disasm_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr);
-void hexagon_disasm_0xb(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr);
-void hexagon_disasm_0xc(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr);
-void hexagon_disasm_0xd(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr);
-void hexagon_disasm_0xe(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr);
-void hexagon_disasm_duplex_0x0(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr);
-void hexagon_disasm_duplex_0x1(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr);
-void hexagon_disasm_duplex_0x2(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr);
-void hexagon_disasm_duplex_0x3(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr);
-void hexagon_disasm_duplex_0x4(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr);
-void hexagon_disasm_duplex_0x5(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr);
-void hexagon_disasm_duplex_0x6(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr);
-void hexagon_disasm_duplex_0x7(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr);
-void hexagon_disasm_duplex_0x8(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr);
-void hexagon_disasm_duplex_0x9(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr);
-void hexagon_disasm_duplex_0xa(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr);
-void hexagon_disasm_duplex_0xb(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr);
-void hexagon_disasm_duplex_0xc(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr);
-void hexagon_disasm_duplex_0xd(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr);
-void hexagon_disasm_duplex_0xe(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr);
-
+void hex_extend_op(RZ_INOUT HexOp *op, const bool set_new_extender, const ut32 addr);
+int resolve_n_register(const int reg_num, const HexPkt *p);
+int hexagon_disasm_instruction(const ut32 hi_u32, RZ_INOUT HexInsn *hi, HexPkt *pkt);
+void hexagon_disasm_0x0(const ut32 hi_u32, RZ_INOUT HexInsn *hi, const ut32 addr, HexPkt *pkt);
+void hexagon_disasm_0x1(const ut32 hi_u32, RZ_INOUT HexInsn *hi, const ut32 addr, HexPkt *pkt);
+void hexagon_disasm_0x2(const ut32 hi_u32, RZ_INOUT HexInsn *hi, const ut32 addr, HexPkt *pkt);
+void hexagon_disasm_0x3(const ut32 hi_u32, RZ_INOUT HexInsn *hi, const ut32 addr, HexPkt *pkt);
+void hexagon_disasm_0x4(const ut32 hi_u32, RZ_INOUT HexInsn *hi, const ut32 addr, HexPkt *pkt);
+void hexagon_disasm_0x5(const ut32 hi_u32, RZ_INOUT HexInsn *hi, const ut32 addr, HexPkt *pkt);
+void hexagon_disasm_0x6(const ut32 hi_u32, RZ_INOUT HexInsn *hi, const ut32 addr, HexPkt *pkt);
+void hexagon_disasm_0x7(const ut32 hi_u32, RZ_INOUT HexInsn *hi, const ut32 addr, HexPkt *pkt);
+void hexagon_disasm_0x8(const ut32 hi_u32, RZ_INOUT HexInsn *hi, const ut32 addr, HexPkt *pkt);
+void hexagon_disasm_0x9(const ut32 hi_u32, RZ_INOUT HexInsn *hi, const ut32 addr, HexPkt *pkt);
+void hexagon_disasm_0xa(const ut32 hi_u32, RZ_INOUT HexInsn *hi, const ut32 addr, HexPkt *pkt);
+void hexagon_disasm_0xb(const ut32 hi_u32, RZ_INOUT HexInsn *hi, const ut32 addr, HexPkt *pkt);
+void hexagon_disasm_0xc(const ut32 hi_u32, RZ_INOUT HexInsn *hi, const ut32 addr, HexPkt *pkt);
+void hexagon_disasm_0xd(const ut32 hi_u32, RZ_INOUT HexInsn *hi, const ut32 addr, HexPkt *pkt);
+void hexagon_disasm_0xe(const ut32 hi_u32, RZ_INOUT HexInsn *hi, const ut32 addr, HexPkt *pkt);
+void hexagon_disasm_duplex_0x0(const ut32 hi_u32, RZ_INOUT HexInsn *hi, const ut32 addr, HexPkt *pkt);
+void hexagon_disasm_duplex_0x1(const ut32 hi_u32, RZ_INOUT HexInsn *hi, const ut32 addr, HexPkt *pkt);
+void hexagon_disasm_duplex_0x2(const ut32 hi_u32, RZ_INOUT HexInsn *hi, const ut32 addr, HexPkt *pkt);
+void hexagon_disasm_duplex_0x3(const ut32 hi_u32, RZ_INOUT HexInsn *hi, const ut32 addr, HexPkt *pkt);
+void hexagon_disasm_duplex_0x4(const ut32 hi_u32, RZ_INOUT HexInsn *hi, const ut32 addr, HexPkt *pkt);
+void hexagon_disasm_duplex_0x5(const ut32 hi_u32, RZ_INOUT HexInsn *hi, const ut32 addr, HexPkt *pkt);
+void hexagon_disasm_duplex_0x6(const ut32 hi_u32, RZ_INOUT HexInsn *hi, const ut32 addr, HexPkt *pkt);
+void hexagon_disasm_duplex_0x7(const ut32 hi_u32, RZ_INOUT HexInsn *hi, const ut32 addr, HexPkt *pkt);
+void hexagon_disasm_duplex_0x8(const ut32 hi_u32, RZ_INOUT HexInsn *hi, const ut32 addr, HexPkt *pkt);
+void hexagon_disasm_duplex_0x9(const ut32 hi_u32, RZ_INOUT HexInsn *hi, const ut32 addr, HexPkt *pkt);
+void hexagon_disasm_duplex_0xa(const ut32 hi_u32, RZ_INOUT HexInsn *hi, const ut32 addr, HexPkt *pkt);
+void hexagon_disasm_duplex_0xb(const ut32 hi_u32, RZ_INOUT HexInsn *hi, const ut32 addr, HexPkt *pkt);
+void hexagon_disasm_duplex_0xc(const ut32 hi_u32, RZ_INOUT HexInsn *hi, const ut32 addr, HexPkt *pkt);
+void hexagon_disasm_duplex_0xd(const ut32 hi_u32, RZ_INOUT HexInsn *hi, const ut32 addr, HexPkt *pkt);
+void hexagon_disasm_duplex_0xe(const ut32 hi_u32, RZ_INOUT HexInsn *hi, const ut32 addr, HexPkt *pkt);
 #endif

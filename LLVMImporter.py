@@ -69,11 +69,11 @@ class LLVMImporter:
         self.generate_duplex_instructions()
         self.check_insn_syntax_length()
         if not test_mode:
-            self.generate_asm_code()
-            self.generate_analysis_code()
+            self.generate_rizin_code()
             self.generate_decompiler_code()
             self.add_license_header()
             self.apply_clang_format()
+        log("Done")
 
     def update_hex_arch(self):
         """Imports system instructions and registers described in the manual but not implemented by LLVM."""
@@ -286,24 +286,21 @@ class LLVMImporter:
         return cc_regs
 
     # RIZIN SPECIFIC
-    def generate_asm_code(self) -> None:
+    def generate_rizin_code(self) -> None:
+        log("Generate and write source code.")
         self.build_hexagon_insn_enum_h()
         self.build_hexagon_disas_c()
         self.build_hexagon_c()
         self.build_hexagon_h()
         self.build_asm_hexagon_c()
+        self.build_hexagon_arch_c()
+        self.build_hexagon_arch_h()
         self.copy_tests()
+        self.build_hexagon_regs()
+        self.build_cc_hexagon_32_sdb_txt()
 
         # TODO hexagon.h: Gen - HexOpType, IClasses, Regs and its aliases (system = guest),
         #  + corresponding functions in hexagon.c: hex_get_sub_regpair etc.
-
-    # RIZIN SPECIFIC
-    def generate_analysis_code(self) -> None:
-        self.build_hexagon_analysis_h()
-        self.build_hexagon_analysis_c()
-        self.build_hexagon_regs()
-        self.build_cc_hexagon_32_sdb_txt()
-        pass
 
     # RIZIN SPECIFIC
     # TODO Wouldn't it be a wonderful world...
@@ -338,20 +335,14 @@ class LLVMImporter:
             for name in self.normal_instruction_names + self.duplex_instructions_names:
                 if "invalid_decode" in name:
                     enum = (
-                        PluginInfo.INSTR_ENUM_PREFIX
-                        + name.upper()
-                        + " = 0,\n"
+                        PluginInfo.INSTR_ENUM_PREFIX + name.upper() + " = 0,\n"
                     ) + enum
                 else:
-                    enum += (
-                        PluginInfo.INSTR_ENUM_PREFIX
-                        + name.upper()
-                        + ",\n"
-                    )
+                    enum += PluginInfo.INSTR_ENUM_PREFIX + name.upper() + ",\n"
             dest.write(enum)
             dest.write("};\n\n")
             dest.write("#endif")
-            log("Hexagon instruction enum written to: {}".format(path))
+            log("Hexagon instruction enum written to: {}".format(path), LogLevel.DEBUG)
 
     # RIZIN SPECIFIC
     def build_hexagon_disas_c(
@@ -368,25 +359,57 @@ class LLVMImporter:
                 set_pos_after_license(include)
                 dest.writelines(include.readlines())
 
+            with open("handwritten/hexagon_disas_c/functions.c") as functions:
+                set_pos_after_license(functions)
+                dest.writelines(functions.readlines())
+
             main_function = (
-                "int hexagon_disasm_instruction(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr) {\n"
-                + "static ut8 pkt_i = 0;\n"
-                + "if (hi_u32 != 0x00000000) {\n"
-                + "{}// DUPLEXES\n".format(indent)
-                + "{}if ((({} >> 14) & 0x3) == 0) {{\n".format(indent, var)
-                + "{}switch (((({} >> 29) & 0xF) << 1) | (({} >> 13) & 1)) {{\n".format(
-                    indent * 2, var, var
+                "int hexagon_disasm_instruction(const ut32 hi_u32, RZ_INOUT HexInsn *hi, HexPkt *pkt) {\n"
+                + "ut32 addr = hi->addr;\n"
+            )
+
+            main_function += (
+                "if (is_endloop01_instr(hi, pkt)) {\n"
+                + "hi->ana_op.type = RZ_ANALYSIS_OP_TYPE_CJMP;\n"
+                + "hi->ana_op.fail = pkt->hw_loop0_addr;\n"
+                + "hi->ana_op.jump = pkt->hw_loop1_addr;\n"
+                + "hi->ana_op.val = hi->ana_op.jump;"
+                + "hi->ana_op.analysis_vals[0].imm = (st64) hi->ana_op.fail;"
+                + "pkt->hw_loop1_addr = 0;\n"
+                + "pkt->hw_loop0_addr = 0;\n}\n"
+            )
+            main_function += (
+                "else if (is_endloop0_instr(hi, pkt)) {\n"
+                + "hi->ana_op.type = RZ_ANALYSIS_OP_TYPE_CJMP;\n"
+                + "hi->ana_op.jump = pkt->hw_loop0_addr;\n"
+                + "hi->ana_op.val = hi->ana_op.jump;"
+                + "pkt->hw_loop0_addr = 0;\n}\n"
+            )
+            main_function += (
+                "else if (is_endloop1_instr(hi, pkt)) {\n"
+                + "hi->ana_op.type = RZ_ANALYSIS_OP_TYPE_CJMP;\n"
+                + "hi->ana_op.jump = pkt->hw_loop1_addr;\n"
+                + "hi->ana_op.val = hi->ana_op.jump;"
+                + "pkt->hw_loop1_addr = 0;\n}\n"
+            )
+
+            main_function += (
+                "if (hi_u32 != 0x00000000) {\n"
+                + "// DUPLEXES\n"
+                + "if ((({} >> 14) & 0x3) == 0) {{\n".format(var)
+                + "switch (((({} >> 29) & 0xF) << 1) | (({} >> 13) & 1)) {{\n".format(
+                    var, var
                 )
             )
 
             # Duplexes
             for c in range(0xF):  # Class 0xf is reserved yet.
                 main_function += "{}case 0x{:x}:\n".format(indent * 3, c)
-                main_function += "hexagon_disasm_duplex_0x{:x}(hi_u32, hi, addr, previous_addr);\n".format(
-                    c
+                main_function += (
+                    "hexagon_disasm_duplex_0x{:x}(hi_u32, hi, addr, pkt);\n".format(c)
                 )
                 func_body = ""
-                func_header = "void hexagon_disasm_duplex_0x{:x}(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr) {{\n".format(
+                func_header = "void hexagon_disasm_duplex_0x{:x}(const ut32 hi_u32, HexInsn *hi, const ut32 addr, HexPkt *pkt) {{\n".format(
                     c
                 )
                 for d_instr in self.duplex_instructions.values():
@@ -404,20 +427,16 @@ class LLVMImporter:
 
             # Normal instructions
             # Brackets for switch, if
-            main_function += "{}}}\n{}}}\n{}else {{\n".format(
-                indent * 2, indent, indent
-            )
-            main_function += "{}switch (({} >> 28) & 0xF) {{\n".format(indent * 2, var)
+            main_function += "}\n}\nelse {\n"
+            main_function += "switch (({} >> 28) & 0xF) {{\n".format(var)
             for c in range(0x10):
-                main_function += "{}case 0x{:x}:\n".format(indent * 3, c)
+                main_function += "case 0x{:x}:\n".format(c)
                 main_function += (
-                    "hexagon_disasm_0x{:x}(hi_u32, hi, addr, previous_addr);\n".format(
-                        c
-                    )
+                    "hexagon_disasm_0x{:x}(hi_u32, hi, addr, pkt);\n".format(c)
                 )
 
                 func_body = ""
-                func_header = "void hexagon_disasm_0x{:x}(const ut32 hi_u32, HexInsn *hi, const ut32 addr, const ut32 previous_addr) {{\n".format(
+                func_header = "void hexagon_disasm_0x{:x}(const ut32 hi_u32, HexInsn *hi, const ut32 addr, HexPkt *pkt) {{\n".format(
                     c
                 )
                 for instr in self.normal_instructions.values():
@@ -434,27 +453,23 @@ class LLVMImporter:
                 main_function += "{}break;\n".format(indent * 4)
 
             # Closing brackets for switch, else, function
-            main_function += "{}}}\n{}}}\n{}}}".format(indent * 3, indent * 2, indent)
+            main_function += "}\n}\n}"
             main_function += (
-                "{}if (hi->instruction == HEX_INS_INVALID_DECODE) {{\n".format(indent)
-                + "{}hi->pkt_info.parse_bits = ((hi_u32)&0xc000) >> 14;\n".format(
-                    indent * 2
-                )
-                + "{}hi->pkt_info.loop_attr = HEX_NO_LOOP;\n".format(indent * 2)
-                + "{}hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);\n".format(
-                    indent * 2
-                )
-                + '{}sprintf(hi->mnem, "%s <invalid> %s", hi->pkt_info.syntax_prefix, hi->pkt_info.syntax_postfix);\n{}}}\n'.format(
-                    indent * 2, indent
-                )
-                + "if (hi->pkt_info.first_insn) {\npkt_i = 0;\n}\n"
-                + "if (update_current_pkt(addr, previous_addr, hi)) {\n"
-                + "memcpy(&current_pkt.ins[pkt_i], hi, sizeof(HexInsn));\n"
-                + "pkt_i = (pkt_i % 4);\n}\n"
+                "if (hi->instruction == HEX_INS_INVALID_DECODE) {\n"
+                + "hi->parse_bits = ((hi_u32) & 0xc000) >> 14;\n"
+                + "hi->pkt_info.loop_attr = HEX_NO_LOOP;\n"
+                + 'sprintf(hi->mnem_infix, "<invalid>");\n'
+                + 'sprintf(hi->mnem, "%s%s%s", hi->pkt_info.syntax_prefix, hi->mnem_infix, hi->pkt_info.syntax_postfix);\n'
+                + "}\n"
+                + "rz_strbuf_set(&hi->asm_op.buf_asm, hi->mnem);\n"
+                + ""
                 + "return 4;\n}"
             )
             dest.write(main_function)
-        log("Hexagon instruction disassembler code written to: {}".format(path))
+        log(
+            "Hexagon instruction disassembler code written to: {}".format(path),
+            LogLevel.DEBUG,
+        )
 
     # RIZIN SPECIFIC
     def build_hexagon_h(
@@ -515,7 +530,7 @@ class LLVMImporter:
 
             dest.write("#endif")
 
-        log("hexagon.h written to: {}".format(path))
+        log("hexagon.h written to: {}".format(path), LogLevel.DEBUG)
 
     # RIZIN SPECIFIC
     def build_hexagon_c(
@@ -566,7 +581,7 @@ class LLVMImporter:
                 dest.writelines(func.readlines())
             dest.write("\n")
 
-        log("hexagon.c written to: {}".format(path))
+        log("hexagon.c written to: {}".format(path), LogLevel.DEBUG)
 
     # RIZIN SPECIFIC
     @staticmethod
@@ -580,7 +595,36 @@ class LLVMImporter:
             with open("handwritten/asm_hexagon_c/initialization.c") as init:
                 set_pos_after_license(init)
                 f.writelines(init.readlines())
-        log("asm_hexagon.c written to {}".format(path))
+        log("asm_hexagon.c written to {}".format(path), LogLevel.DEBUG)
+
+    # RIZIN SPECIFIC
+    @staticmethod
+    def build_hexagon_arch_c(path: str = "rizin/librz/asm/arch/hexagon/hexagon_arch.c"):
+        with open(path, "w+") as f:
+            f.write(get_generation_warning_c_code())
+
+            with open("handwritten/hexagon_arch_c/include.c") as include:
+                set_pos_after_license(include)
+                f.writelines(include.readlines())
+            with open("handwritten/hexagon_arch_c/functions.c") as functions:
+                set_pos_after_license(functions)
+                f.writelines(functions.readlines())
+
+    # RIZIN SPECIFIC
+    @staticmethod
+    def build_hexagon_arch_h(path: str = "rizin/librz/asm/arch/hexagon/hexagon_arch.h"):
+        with open(path, "w+") as f:
+            f.write(get_generation_warning_c_code())
+
+            f.write(get_include_guard("hexagon_arch.h"))
+
+            with open("handwritten/hexagon_arch_h/typedefs.h") as typedefs:
+                set_pos_after_license(typedefs)
+                f.writelines(typedefs.readlines())
+            with open("handwritten/hexagon_arch_h/declarations.h") as declarations:
+                set_pos_after_license(declarations)
+                f.writelines(declarations.readlines())
+            f.write("#endif\n")
 
     # RIZIN SPECIFIC
     @staticmethod
@@ -594,138 +638,7 @@ class LLVMImporter:
             with open("./rizin/test/db/asm/hexagon", "w+") as g:
                 set_pos_after_license(g)
                 g.writelines(f.readlines())
-        log("Copied test files to ./rizin/test/db/")
-
-    # RIZIN SPECIFIC
-    @staticmethod
-    def build_hexagon_analysis_h(
-        path: str = "./rizin/librz/analysis/arch/hexagon/hexagon_analysis.h",
-    ) -> None:
-        with open(path, "w+") as f:
-            f.write(get_generation_warning_c_code())
-            with open("handwritten/hexagon_analysis_h/include.h") as include:
-                set_pos_after_license(include)
-                f.writelines(include.readlines())
-        log("hexagon_analysis.h written to {}".format(path))
-
-    # RIZIN SPECIFIC
-    def build_hexagon_analysis_c(
-        self, path: str = "./rizin/librz/analysis/arch/hexagon/hexagon_analysis.c"
-    ) -> None:
-        indent = PluginInfo.LINE_INDENT
-
-        with open(path, "w+") as f:
-            f.write(get_generation_warning_c_code())
-
-            with open("handwritten/hexagon_analysis_c/include.c") as include:
-                set_pos_after_license(include)
-                f.writelines(include.readlines())
-            f.write("\n")
-
-            f.write(
-                "int hexagon_analysis_instruction(HexInsn *hi, RzAnalysisOp *op) {\n"
-            )
-            f.write("{}static ut32 hw_loop0_start = 0;\n".format(indent))
-            f.write("{}static ut32 hw_loop1_start = 0;\n\n".format(indent))
-
-            endloop = (
-                "if (is_endloop01_instr(hi) && hi->pkt_info.last_insn) {\n"
-                + "op->type = RZ_ANALYSIS_OP_TYPE_CJMP;\n"
-                + "op->fail = hw_loop0_start;\n"
-                + "op->jump = hw_loop1_start;\n"
-                + "hw_loop1_start = 0;\n"
-                + "hw_loop0_start = 0;\n}\n"
-            )
-            endloop += (
-                "else if (is_endloop0_instr(hi) && hi->pkt_info.last_insn) {\n"
-                + "op->type = RZ_ANALYSIS_OP_TYPE_CJMP;\n"
-                + "op->jump = hw_loop0_start;\n"
-                + "hw_loop0_start = 0;\n}\n"
-            )
-            endloop += (
-                "else if (is_endloop1_instr(hi) && hi->pkt_info.last_insn) {\n"
-                + "op->type = RZ_ANALYSIS_OP_TYPE_CJMP;\n"
-                + "op->jump = hw_loop1_start;\n"
-                + "hw_loop1_start = 0;\n}\n"
-            )
-            f.write(endloop)
-
-            switch = "switch (hi->instruction) {\n"
-            switch += "default:\n"
-            switch += "break;\n"
-
-            all_instr = [i for i in self.normal_instructions.values()]
-            for i in self.duplex_instructions.values():
-                all_instr.append(i)
-
-            i: Instruction
-            for i in all_instr:
-                switch += "case {}:\n".format(i.plugin_name)
-                switch += "// {}\n".format(i.syntax)
-                switch += "{}\n".format(i.get_rizin_op_type())
-                if i.has_imm_jmp_target():
-                    index = i.get_jmp_operand_syntax_index()
-                    if index < 0:
-                        raise ImplementationException(
-                            "No PC relative operand given. But the jump needs one."
-                            "{}".format(i.llvm_syntax)
-                        )
-
-                    switch += "op->jump = hi->pkt_info.pkt_addr + (st32) hi->ops[{}].op.imm;\n".format(
-                        index
-                    )
-                    if i.is_predicated:
-                        switch += "op->fail = op->addr + op->size;\n"
-                    if i.is_loop_begin:
-                        switch += (
-                            "if (is_loop0_begin(hi)) {\n"
-                            + "hw_loop0_start = op->jump;\n}\n"
-                        )
-                        switch += (
-                            "else if (is_loop1_begin(hi)) {\n"
-                            + "hw_loop1_start = op->jump;\n}\n"
-                        )
-                if [o.type for o in i.operands.values()].count(
-                    OperandType.IMMEDIATE
-                ) == 0:
-                    switch += "op->val = UT64_MAX;\n"
-                else:
-                    keys = list(i.operands)
-                    for k in range(6):  # RzAnalysisOp.analysis_vals has a size of 8.
-                        if k < len(i.operands.values()):
-                            o = i.operands[keys[k]]
-                            if (
-                                i.has_imm_jmp_target()
-                                and o.type == OperandType.IMMEDIATE
-                            ):
-                                switch += "op->val = op->jump;\n"
-                                switch += (
-                                    "op->analysis_vals[{si}].imm = op->jump;\n".format(
-                                        si=o.syntax_index
-                                    )
-                                )
-                            else:
-                                if o.type == OperandType.IMMEDIATE:
-                                    switch += (
-                                        "op->val = (ut64) hi->vals[{si}];\n".format(
-                                            si=o.syntax_index
-                                        )
-                                    )
-                                switch += "op->analysis_vals[{si}].imm = hi->vals[{si}];\n".format(
-                                    si=o.syntax_index
-                                )
-                        else:
-                            switch += "op->analysis_vals[{s}].imm = ST64_MAX;\n".format(
-                                s=k
-                            )
-
-                switch += "break;\n"
-
-            switch += "}\nreturn op->size;\n}"
-
-            f.write(switch)
-
-        log("hexagon_analysis.c written to: {}".format(path))
+        log("Copied test files to ./rizin/test/db/", LogLevel.DEBUG)
 
     # RIZIN SPECIFIC
     def build_hexagon_regs(

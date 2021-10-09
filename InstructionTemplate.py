@@ -196,17 +196,14 @@ class InstructionTemplate:
             self.encoding.instruction_mask,
             self.encoding.op_code,
         )
-        code += "{}// {} | {}\n".format(indent, self.encoding.docs_mask, self.syntax)
-        code += "{}hi->instruction = {};\n".format(indent, self.plugin_name)
+        code += "// {} | {}\n".format(self.encoding.docs_mask, self.syntax)
+        code += "hi->instruction = {};\n".format(self.plugin_name)
         code += "hi->opcode = hi_u32;\n"
         code += "hi->parse_bits = (({}) & 0x{:x}) >> 14;\n".format(
             var, self.encoding.parse_bits_mask
         )
         code += self.get_predicate_init()
-        code += "{}hi->pkt_info.loop_attr = {};\n".format(indent, self.loop_member.name)
-        code += "{}hex_set_pkt_info(&(hi->pkt_info), addr, previous_addr);\n".format(
-            indent
-        )
+        code += "{}pkt->loop_attr |= {};\n".format(indent, self.loop_member.name)
 
         if self.is_duplex:
             code += "{}hi->duplex = {};\n".format(indent, str(self.is_duplex).lower())
@@ -214,9 +211,8 @@ class InstructionTemplate:
         code += "{}hi->op_count = {};\n".format(
             indent, self.encoding.num_encoded_operands
         )
-        mnemonic = '{}sprintf(hi->mnem, "%s {} %s"'.format(indent, self.syntax)
-        sprint_src = ", hi->pkt_info.syntax_prefix"
-
+        mnemonic = 'sprintf(hi->mnem_infix, "{}"'.format(self.syntax)
+        sprint_src = ""
         for op in sorted(self.operands.values(), key=lambda item: item.syntax_index):
             if op.type == OperandType.IMMEDIATE and op.is_constant:
                 mnemonic = re.sub(r"#[nN]1", r"#-1", mnemonic)
@@ -232,23 +228,30 @@ class InstructionTemplate:
                     indent, op.syntax_index, op.code_opcode_parsing
                 )
                 if op.is_out_operand:
-                    code += "hi->ops[{}].attr |= HEX_OP_REG_OUT;\n".format(op.syntax_index)
+                    code += "hi->ops[{}].attr |= HEX_OP_REG_OUT;\n".format(
+                        op.syntax_index
+                    )
                 if op.is_double:
-                    code += "hi->ops[{}].attr |= HEX_OP_REG_PAIR;\n".format(op.syntax_index)
+                    code += "hi->ops[{}].attr |= HEX_OP_REG_PAIR;\n".format(
+                        op.syntax_index
+                    )
                 if op.is_quadruple:
-                    code += "hi->ops[{}].attr |= HEX_OP_REG_QUADRUPLE;\n".format(op.syntax_index)
+                    code += "hi->ops[{}].attr |= HEX_OP_REG_QUADRUPLE;\n".format(
+                        op.syntax_index
+                    )
 
                 mnemonic = re.sub(op.explicit_syntax, "%s", mnemonic)
                 src = "hi->ops[{}].op.reg".format(op.syntax_index)
                 if op.is_n_reg:
-                    sprint_src += ", {}({}({}))".format(
+                    sprint_src += ", {}({}({}, pkt))".format(
                         HardwareRegister.get_func_name_of_class(op.llvm_type, False),
                         HardwareRegister.get_func_name_of_class(op.llvm_type, True),
-                        src
+                        src,
                     )
                 else:
                     sprint_src += ", {}({})".format(
-                        HardwareRegister.get_func_name_of_class(op.llvm_type, False), src
+                        HardwareRegister.get_func_name_of_class(op.llvm_type, False),
+                        src,
                     )
 
             elif op.type == OperandType.IMMEDIATE and not op.is_constant:
@@ -257,13 +260,13 @@ class InstructionTemplate:
                 )
                 # If there is only one immediate operand in the instruction extend it anyways.
                 # LLVM marks some operands as not extendable, although they are.
-                if only_one_imm_op:
-                    code += "hex_op_extend(&(hi->ops[{}]), false, addr); // Only immediate, extension possible\n".format(
+                if only_one_imm_op and not op.is_extendable:
+                    code += "hex_extend_op(&(hi->ops[{}]), false, addr); // Only immediate, extension possible\n".format(
                         op.syntax_index
                     )
 
                 if op.is_pc_relative:
-                    src = ", hi->pkt_info.pkt_addr != 0 ? hi->pkt_info.pkt_addr : addr + (st32) hi->ops[{}].op.imm".format(
+                    src = ", pkt->pkt_addr + (st32) hi->ops[{}].op.imm".format(
                         op.syntax_index
                     )
                     mnemonic = re.sub(op.explicit_syntax, "0x%x", mnemonic)
@@ -288,7 +291,7 @@ class InstructionTemplate:
                         + h
                         + '", (st32) hi->ops[{}].op.imm);\n'.format(op.syntax_index)
                     )
-                    code += "{}}}\n".format(indent)
+                    code += "}\n"
 
                     src = ", signed_imm[{}]".format(op.syntax_index)
                     mnemonic = re.sub(r"#?" + op.explicit_syntax, "%s", mnemonic)
@@ -305,22 +308,69 @@ class InstructionTemplate:
             else:
                 raise ImplementationException("Unhandled operand: {}".format(op.syntax))
 
-            if op.type == OperandType.IMMEDIATE:
-                code += "{i}hi->vals[{si}] = hi->ops[{si}].op.imm;\n".format(
-                    i=indent, si=op.syntax_index
-                )
-            else:
-                code += "{i}hi->vals[{si}] = ST64_MAX;\n".format(
-                    i=indent, si=op.syntax_index
-                )
-
+        code += self.get_analysis_code()
         mnemonic = self.register_names_to_upper(mnemonic)
 
-        code += mnemonic + sprint_src + ", hi->pkt_info.syntax_postfix" + ");\n"
+        code += mnemonic + sprint_src + ");\n"
+        code += 'sprintf(hi->mnem, "%s%s%s", hi->pkt_info.syntax_prefix, hi->mnem_infix, hi->pkt_info.syntax_postfix);\n'
         if self.name == "A4_ext":
-            code += "{}hex_op_extend(&(hi->ops[0]), true, addr);\n".format(indent)
+            code += "{}hex_extend_op(&(hi->ops[0]), true, addr);\n".format(indent)
         code += "{}return;\n}}\n".format(indent)
         # log("\n" + code)
+
+        return code
+
+    # RIZIN SPECIFIC
+    def get_analysis_code(self):
+        code = "// Set RzAnalysisOp values\n"
+        code += "hi->ana_op.addr = hi->addr;\n"
+        code += "hi->ana_op.id = hi->instruction;\n"
+        code += "hi->ana_op.size = 4;\n"
+        code += self.get_rizin_op_type()
+        if self.has_imm_jmp_target():
+            if not self.is_call and not self.is_predicated:
+                code += "hi->ana_op.eob = true;\n"  # Marks potentially end of block
+
+            index = self.get_jmp_operand_syntax_index()
+            if index < 0:
+                raise ImplementationException(
+                    "No PC relative operand given. But the jump needs one."
+                    "{}".format(self.llvm_syntax)
+                )
+
+            code += (
+                "hi->ana_op.jump = pkt->pkt_addr + (st32) hi->ops[{}].op.imm;\n".format(
+                    index
+                )
+            )
+            if self.is_predicated:
+                code += "hi->ana_op.fail = hi->ana_op.addr + 4;\n"
+            if self.is_loop_begin:
+                code += (
+                    "if (is_loop0_begin(hi)) {\n"
+                    + "pkt->hw_loop0_addr = hi->ana_op.jump;\n}\n"
+                )
+                code += (
+                    "else if (is_loop1_begin(hi)) {\n"
+                    + "pkt->hw_loop1_addr = hi->ana_op.jump;\n}\n"
+                )
+
+        keys = list(self.operands)
+        for k in range(6):  # RzAnalysisOp.analysis_vals has a size of 8.
+            if k < len(self.operands.values()):
+                o = self.operands[keys[k]]
+                if self.has_imm_jmp_target() and o.type == OperandType.IMMEDIATE:
+                    code += "hi->ana_op.val = hi->ana_op.jump;\n"
+                    code += (
+                        "hi->ana_op.analysis_vals[{}].imm = hi->ana_op.jump;\n".format(
+                            o.syntax_index
+                        )
+                    )
+                else:
+                    if o.type == OperandType.IMMEDIATE:
+                        code += "hi->ana_op.analysis_vals[{si}].imm = hi->ops[{si}].op.imm;\n".format(
+                            si=o.syntax_index
+                        )
 
         return code
 
@@ -346,7 +396,7 @@ class InstructionTemplate:
     def get_rizin_op_type(self) -> str:
         """Returns the c code to assign the instruction type to the RzAnalysisOp.type member."""
 
-        op_type = "op->type |= "
+        op_type = "hi->ana_op.type |= "
 
         if self.is_trap:
             return op_type + "RZ_ANALYSIS_OP_TYPE_TRAP;"
@@ -392,7 +442,7 @@ class InstructionTemplate:
                     else "RZ_ANALYSIS_OP_TYPE_RJMP;"
                 )
 
-        if op_type == "op->type |= ":
+        if op_type == "hi->ana_op.type |= ":
             log(
                 "Instruction: {} has no instr. type assigned to it yet.".format(
                     self.name
