@@ -7,5 +7,7 @@
 #include <rz_lib.h>
 #include <rz_util.h>
 #include <rz_asm.h>
+#include <rz_analysis.h>
 #include <rz_util/rz_assert.h>
 #include "hexagon.h"
+#include "hexagon_arch.h"

@@ -12,8 +12,10 @@
 #include <rz_lib.h>
 #include <rz_util.h>
 #include <rz_asm.h>
+#include <rz_analysis.h>
 #include <rz_util/rz_assert.h>
 #include "hexagon.h"
+#include "hexagon_arch.h"
 
 char *hex_get_ctr_regs(int opcode_reg) {
 	switch (opcode_reg) {
@@ -839,188 +841,25 @@ char *hex_get_sys_regs64(int opcode_reg) {
 	}
 }
 
-static inline bool is_last_instr(const ut8 parse_bits) {
-	// Duplex instr. (parse bits = 0) are always the last.
-	return ((parse_bits == 0x3) || (parse_bits == 0x0));
-}
-
-static inline bool is_endloop0_pkt(const ut8 pi_0, const ut8 pi_1) {
-	return ((pi_0 == 0x2) && ((pi_1 == 0x1) || (pi_1 == 0x3)));
-}
-
-static inline bool is_endloop1_pkt(const ut8 pi_0, const ut8 pi_1) {
-	return ((pi_0 == 0x1) && (pi_1 == 0x2));
-}
-
-static inline bool is_endloop01_pkt(const ut8 pi_0, const ut8 pi_1) {
-	return ((pi_0 == 0x2) && (pi_1 == 0x2));
-}
-
-HexPkt current_pkt = { 0 };
-
-int resolve_n_register(const int reg_num) {
-	HexInsn *instr;
-	switch (reg_num) {
-	default:
-		eprintf("reg_num %d case missing\n", reg_num);
+int resolve_n_register(const int reg_num, const HexPkt *p) {
+	if (!p->is_valid || reg_num == 0 || reg_num >= 8) {
 		return UT32_MAX;
-	case 6: // Out register of first instr.
-		instr = &current_pkt.ins[0];
-		break;
-	case 4: // Out register of second instr.
-		instr = &current_pkt.ins[1];
-		break;
-	case 2: // Out register of third instr.
-		instr = &current_pkt.ins[2];
-		break;
 	}
-	eprintf("Test instr: %s\n", instr->mnem);
+	// (reg_num >> 1) is the instruction index whichs out operand is the new value.
+	// In this plugin the last instruction in a packet is located at the higher index.
+	// Hexagon seems to place it at index 0.
+	// Switch indices.
+	ut8 i_pos = rz_list_length(p->insn) - 1 - (reg_num >> 1);
+	HexInsn *instr = rz_list_get_n(p->insn, i_pos);
+
+	if (!instr) {
+		RZ_LOG_WARN("Did not find .new register in packet @ 0x%x\n", p->pkt_addr);
+		return UT32_MAX;
+	}
 	for (ut8 i = 0; i < 6; ++i) {
 		if (instr->ops[i].attr & HEX_OP_REG_OUT) {
 			return instr->ops[i].op.reg;
 		}
 	}
-	eprintf("No out op for reg_num %d\n", reg_num);
 	return UT32_MAX;
-}
-
-/**
- * \brief Sets several attributes of an instructions which are packet related.
- * Like the position of the instruction in the packet or whether it ends a hardware loop etc.
- *
- * \param i_pkt_info The struct whichs attributes will be set.
- * \param addr The address of the current instruction.
- * \param previous_addr The address of the previously disassembled instruction.
- */
-void hex_set_pkt_info(RZ_INOUT HexPktInfo *i_pkt_info, const ut32 addr, const ut32 previous_addr) {
-	static ut8 i = 0; // Index of the instruction in the current packet.
-	static ut8 p0 = UT8_MAX;
-	static ut8 p1 = UT8_MAX;
-	// Valid packet: A packet from which we know its *actual* first and last instruction.
-	// Does this instruction belong to a valid packet?
-	static bool valid_packet = true;
-	static bool new_pkt_starts = true;
-
-	// Only change valid_packet flag if the same instruction is not disassembled twice (e.g. for analysis and asm).
-	if (previous_addr != addr || addr == 0) {
-		// We can only know for sure, if the current packet is a valid packet,
-		// if we have seen the instr. before the current one.
-		// (addr == (previous_addr - 4) || addr == 0)
-		//
-		// In case the previous instruction belongs to a valid packet, we are still in a valid packet.
-		// If the previous instruction was the last of an invalid packet. The following instruciton
-		// belongs to a valid packet (because we know the first instruction of it).
-		valid_packet = ((previous_addr == (addr - 4)) || (addr == 0)) && (valid_packet || new_pkt_starts);
-	}
-	if (valid_packet) {
-		if (i == 0) {
-			p0 = i_pkt_info->parse_bits;
-		} else if (i == 1) {
-			p1 = i_pkt_info->parse_bits;
-		}
-	} else {
-		p0 = UT8_MAX;
-		p1 = UT8_MAX;
-	}
-	i_pkt_info->valid_pkt = valid_packet;
-
-	// Parse instr. position in pkt
-	if (new_pkt_starts && is_last_instr(i_pkt_info->parse_bits)) { // Single instruction packet.
-		new_pkt_starts = true;
-		i_pkt_info->first_insn = true;
-		i_pkt_info->last_insn = true;
-		// TODO No indent in visual mode for "[" without spaces.
-		if (valid_packet) {
-			strncpy(i_pkt_info->syntax_prefix, "[    ", 8);
-			i = 0;
-		} else {
-			strncpy(i_pkt_info->syntax_prefix, "?", 8);
-		}
-	} else if (new_pkt_starts) {
-		new_pkt_starts = false;
-		i_pkt_info->first_insn = true;
-		i_pkt_info->last_insn = false;
-		if (valid_packet) {
-			strncpy(i_pkt_info->syntax_prefix, "/", 8); // TODO Add utf8 option "┌"
-			// Just in case evil persons set the parsing bits incorrectly and pkts with more than 4 instr. occur.
-			i = (i + 1) % 4;
-		} else {
-			strncpy(i_pkt_info->syntax_prefix, "?", 8);
-		}
-	} else if (is_last_instr(i_pkt_info->parse_bits)) {
-		new_pkt_starts = true;
-		i_pkt_info->first_insn = false;
-		i_pkt_info->last_insn = true;
-		if (valid_packet) {
-			strncpy(i_pkt_info->syntax_prefix, "\\", 8); // TODO Add utf8 option "└"
-
-			if (is_endloop01_pkt(p0, p1)) {
-				strncpy(i_pkt_info->syntax_postfix, " < endloop01", 16); // TODO Add utf8 option "∎"
-				i_pkt_info->loop_attr |= (HEX_ENDS_LOOP_0 | HEX_ENDS_LOOP_1);
-			} else if (is_endloop0_pkt(p0, p1)) {
-				strncpy(i_pkt_info->syntax_postfix, " < endloop0", 16);
-				i_pkt_info->loop_attr |= HEX_ENDS_LOOP_0;
-			} else if (is_endloop1_pkt(p0, p1)) {
-				strncpy(i_pkt_info->syntax_postfix, " < endloop1", 16);
-				i_pkt_info->loop_attr |= HEX_ENDS_LOOP_1;
-			}
-			i = 0;
-		} else {
-			strncpy(i_pkt_info->syntax_prefix, "?", 8);
-		}
-	} else {
-		new_pkt_starts = false;
-		i_pkt_info->first_insn = false;
-		i_pkt_info->last_insn = false;
-		if (valid_packet) {
-			strncpy(i_pkt_info->syntax_prefix, "|", 8); // TODO Add utf8 option "│"
-			i = (i + 1) % 4;
-		} else {
-			strncpy(i_pkt_info->syntax_prefix, "?", 8);
-		}
-	}
-}
-
-static inline bool imm_is_scaled(const HexOpAttr attr) {
-	return (attr & HEX_OP_IMM_SCALED);
-}
-
-/**
- * \brief Applies the last constant extender to the immediate value of the given HexOp.
- *
- * \param op The operand the extender is applied to.
- * \param set_new_extender True if the immediate value of the op comes from immext() and sets the a new constant extender. False otherwise.
- * \param addr The address of the currently diassembled instruction.
- */
-void hex_op_extend(RZ_INOUT HexOp *op, const bool set_new_extender, const ut32 addr) {
-	// Constant extender value
-	static ut64 constant_extender = 0;
-	static ut32 prev_addr = UT32_MAX;
-
-	if (op->type != HEX_OP_TYPE_IMM) {
-		goto set_prev_addr_ret;
-	}
-
-	if (set_new_extender) {
-		constant_extender = op->op.imm;
-		goto set_prev_addr_ret;
-	}
-
-	if ((addr - 4) != prev_addr) {
-		// Disassembler jumped to somewhere else in memory than the next address.
-		if (!set_new_extender) {
-			constant_extender = 0;
-		}
-		goto set_prev_addr_ret;
-	}
-
-	if (constant_extender != 0) {
-		op->op.imm = imm_is_scaled(op->attr) ? (op->op.imm >> op->shift) : op->op.imm;
-		op->op.imm = ((op->op.imm & 0x3F) | constant_extender);
-		constant_extender = 0;
-	}
-
-set_prev_addr_ret:
-	prev_addr = addr;
-	return;
 }

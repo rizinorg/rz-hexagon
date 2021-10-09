@@ -31,7 +31,7 @@ class LogLevel(IntEnum):
     VERBOSE = 5
 
 
-LOG_LEVEL = LogLevel.DEBUG
+LOG_LEVEL = LogLevel.INFO
 
 
 def log(msg: str, verbosity: LogLevel = LogLevel.INFO) -> None:

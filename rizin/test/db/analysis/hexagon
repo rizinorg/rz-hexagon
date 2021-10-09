@@ -3,18 +3,17 @@ FILE=bins/elf/analysis/hexagon-hello-loop
 CMDS=<<EOF
 b 0x100000
 s sym.main
-af
-aar
+aaa
 afx
 EOF
 EXPECT=<<EOF
-c 0x00005124 -> 0x00005128 ? jump 0x5128 
-c 0x00005130 -> 0x00005154 ? if (P0) jump:nt 0x5154 
-c 0x00005134 -> 0x00005138 [     jump 0x5138 
-C 0x00005138 -> 0x000050e0 [     call sym.pHello 
-C 0x0000513c -> 0x000050f8 [     call sym.pWorld 
-c 0x00005140 -> 0x00005144 [     jump 0x5144 
-c 0x00005150 -> 0x00005128 ? jump 0x5128 
+c 0x00005124 -> 0x00005128 ? jump 0x5128
+c 0x00005130 -> 0x00005154 ? if (P0) jump:nt 0x5154
+c 0x00005134 -> 0x00005138 [     jump 0x5138
+C 0x00005138 -> 0x000050e0 [     call sym.pHello
+C 0x0000513c -> 0x000050f8 [     call sym.pWorld
+c 0x00005140 -> 0x00005144 [     jump 0x5144
+c 0x00005150 -> 0x00005128 ? jump 0x5128
 EOF
 RUN
 
@@ -28,12 +27,12 @@ s 0x0000539c
 pi 4
 EOF
 EXPECT=<<EOF
-? immext(##0xb0c0) 
-? R0 = ##0xb0d0 
-? immext(##0xd180) 
-? R2 = ##0xd1ac 
-? immext(##0xfe105000) 
-? R3 = ##-0x1efb000 
+? immext(##0xb0c0)
+? R0 = ##0xb0d0
+? immext(##0xd180)
+? R2 = ##0xd1ac
+? immext(##0xfe105000)
+? R3 = ##-0x1efb000
 EOF
 RUN
 
@@ -48,43 +47,43 @@ aar
 /ai 0x1c00
 EOF
 EXPECT=<<EOF
-0x00000b80   # 4: ? R0.h = #0xdead 
-0x00000b84   # 4: [     R0.l = #0xbeef 
-0x00001e68   # 4: ? R4.l = #0xbeef 
-0x0000342c   # 4: ? if (!P3) memh(R23++#-0x8) = R11.h 
-0x0000511c   # 4: ? R2 = add(R30,##-0x8) 
-0x00005128   # 4: ? R2 = memw(R30+##-0x8) 
-0x00005144   # 4: ? R2 = memw(R30+##-0x8) 
-0x0000514c   # 4: ? memw(R30+##-0x8) = R2 
-0x0000564c   # 4: ? R2 = memw(R0+##-0x8) 
-0x00005654   # 4: ? if (P0.new) R17 = add(R16,##-0x8) 
-0x00005740   # 4: ? R17 = and(R2,##-0x8) 
-0x00005840   # 4: ? R4 = add(R2,##-0x8) 
-0x00005970   # 4: ? if (P2.new) R2 = add(R2,##-0x8) 
-0x000059d0   # 4: ? R1 = and(R1,##-0x8) 
-0x00005c88   # 4: ? if (P0.new) R2 = add(R2,##-0x8) 
-0x00005d00   # 4: ? if (P0.new) R2 = add(R2,##-0x8) 
-0x00006394   # 4: ? R4 = and(R4,##-0x8) 
-0x000063f8   # 4: ? R4 = and(R4,##-0x8) 
-0x0000641c   # 4: ? R4 = and(R4,##-0x8) 
-0x00006510   # 4: ? R4 = and(R4,##-0x8) 
-0x00006534   # 4: ? R4 = and(R4,##-0x8) 
-0x00007134   # 4: ? R3 = mux(P0,##-0x4,#-0x8) 
-0x0000747c   # 4: ? R2 = add(R2,##-0x8) 
-0x00007ee0   # 4: ? R17 = add(R17,##-0x8) 
-0x00008484   # 4: ? R2 = add(R16,add(R2,##-0x8)) 
-0x0000848c   # 4: ? R2 = add(R2,##-0x8) 
-0x00008500   # 4: ? memd(R2+##-0x8) = R1:0 
-0x00008598   # 4: ? memd(R2+##-0x8) = R1:0 
-0x000087b8   # 4: ? memd(R3+##-0x8) = R1:0 
-0x00009b64   # 4: ? R2 = memw(R18+##-0x8) 
-0x0000afd8   # 4: ? R3 = and(R3,##-0x8) 
-0x00000aac   # 4: ? immext(##0x1c00) 
-0x00000ab4   # 4: ? immext(##0x1c00) 
-0x00000b44   # 4: ? immext(##0x1c00) 
-0x00005170   # 4: ? immext(##0x1c00) 
-0x00005178   # 4: ? immext(##0x1c00) 
-0x00005180   # 4: ? immext(##0x1c00) 
+0x00000b80   # 4: ? R0.h = #0xdead
+0x00000b84   # 4: [     R0.l = #0xbeef
+0x00001e68   # 4: ? R4.l = #0xbeef
+0x0000342c   # 4: ? if (!P3) memh(R23++#-0x8) = R11.h
+0x0000511c   # 4: ? R2 = add(R30,##-0x8)
+0x00005128   # 4: ? R2 = memw(R30+##-0x8)
+0x00005144   # 4: ? R2 = memw(R30+##-0x8)
+0x0000514c   # 4: ? memw(R30+##-0x8) = R2
+0x0000564c   # 4: ? R2 = memw(R0+##-0x8)
+0x00005654   # 4: ? if (P0.new) R17 = add(R16,##-0x8)
+0x00005740   # 4: ? R17 = and(R2,##-0x8)
+0x00005840   # 4: ? R4 = add(R2,##-0x8)
+0x00005970   # 4: ? if (P2.new) R2 = add(R2,##-0x8)
+0x000059d0   # 4: ? R1 = and(R1,##-0x8)
+0x00005c88   # 4: ? if (P0.new) R2 = add(R2,##-0x8)
+0x00005d00   # 4: ? if (P0.new) R2 = add(R2,##-0x8)
+0x00006394   # 4: ? R4 = and(R4,##-0x8)
+0x000063f8   # 4: ? R4 = and(R4,##-0x8)
+0x0000641c   # 4: ? R4 = and(R4,##-0x8)
+0x00006510   # 4: ? R4 = and(R4,##-0x8)
+0x00006534   # 4: ? R4 = and(R4,##-0x8)
+0x00007134   # 4: ? R3 = mux(P0,##-0x4,#-0x8)
+0x0000747c   # 4: ? R2 = add(R2,##-0x8)
+0x00007ee0   # 4: ? R17 = add(R17,##-0x8)
+0x00008484   # 4: ? R2 = add(R16,add(R2,##-0x8))
+0x0000848c   # 4: ? R2 = add(R2,##-0x8)
+0x00008500   # 4: ? memd(R2+##-0x8) = R1:0
+0x00008598   # 4: ? memd(R2+##-0x8) = R1:0
+0x000087b8   # 4: ? memd(R3+##-0x8) = R1:0
+0x00009b64   # 4: ? R2 = memw(R18+##-0x8)
+0x0000afd8   # 4: ? R3 = and(R3,##-0x8)
+0x00000aac   # 4: ? immext(##0x1c00)
+0x00000ab4   # 4: ? immext(##0x1c00)
+0x00000b44   # 4: ? immext(##0x1c00)
+0x00005170   # 4: ? immext(##0x1c00)
+0x00005178   # 4: ? immext(##0x1c00)
+0x00005180   # 4: ? immext(##0x1c00)
 EOF
 RUN
 
@@ -99,26 +98,27 @@ aar
 EOF
 EXPECT=<<EOF
 0x000051d4   # 4: ? R1 = ##0x5410
-0x00000b70   # 4: ? jump sym.coredump 
-0x00000b7c   # 4: ? jump sym.coredump 
-0x00000b8c   # 4: ? jump sym.coredump 
-0x00000f48   # 4: ? jump sym.coredump 
-0x000051f0   # 4: ? R28 = ##sym.coredump 
+0x00000b70   # 4: ? jump sym.coredump
+0x00000b7c   # 4: ? jump sym.coredump
+0x00000b8c   # 4: ? jump sym.coredump
+0x00000f48   # 4: ? jump sym.coredump
+0x000051f0   # 4: ? R28 = ##sym.coredump
 EOF
 RUN
 
 NAME=hexagon extended immediates
 FILE==
 CMDS=<<EOF
-wx c045e401834080491ae24220
+wx 00c0007fc045e401834080491ae24220
 e asm.arch=hexagon
 e analysis.arch=hexagon
-pi 3
+pi 4
 EOF
 EXPECT=<<EOF
-/ immext(##0x1e417000) 
-| R3 = memw(GP+##0x1e417004) 
-\ if (!cmp.eq(R3.new,R2)) jump:t 0x3c 
+? nop
+/ immext(##0x1e417000)
+| R3 = memw(GP+##0x1e417004)
+\ if (!cmp.eq(R3.new,R2)) jump:t 0x38
 EOF
 RUN
 
@@ -131,11 +131,11 @@ e analysis.arch=hexagon
 pi 5
 EOF
 EXPECT=<<EOF
-[     C19:18 = R31:30 
-[     loop0(0x8,#0x10) 
-[     nop 
-/ nop 
-\ nop  < endloop0
+? C19:18 = R31:30
+[     loop0(0x8,#0x10)
+[     nop
+/ nop
+\ nop   < endloop0
 EOF
 RUN
 
@@ -148,19 +148,19 @@ e analysis.arch=hexagon
 pi 13
 EOF
 EXPECT=<<EOF
-[     nop 
-[     loop0(0x8,#0x3) 
-/ P0 = R13 
-| immext(##0x0) 
-\ R23:22 = memb_fifo(R27=##0x3) 
-[     loop1(0x18,#0x2) 
-/ nop 
-| R7 = R28 
-| immext(##0x0) 
-\ memb(R10=##0x7) = R4 
-/ R4 = R3 
-| nop 
-\ nop  < endloop01
+? nop
+[     loop0(0x8,#0x3)
+/ P0 = R13
+| immext(##0x0)
+\ R23:22 = memb_fifo(R27=##0x3)
+[     loop1(0x18,#0x2)
+/ nop
+| R7 = R28
+| immext(##0x0)
+\ memb(R10=##0x7) = R4
+/ R4 = R3
+| nop
+\ nop   < endloop01
 EOF
 RUN
 
@@ -173,28 +173,28 @@ e analysis.arch=hexagon
 pi 12
 EOF
 EXPECT=<<EOF
-[     nop 
-[     loop1(0x8,#0x3) 
-/ P0 = R13 
-| immext(##0x0) 
-\ R23:22 = memb_fifo(R27=##0x3) 
-[     jump 0x14 
-[     loop0(0x1c,#0x2) 
-/ R7 = R28 
-\ nop  < endloop0
-/ R4 = R3 
-| nop 
-\ nop  < endloop1
+? nop
+[     loop1(0x8,#0x3)
+/ P0 = R13
+| immext(##0x0)
+\ R23:22 = memb_fifo(R27=##0x3)
+[     jump 0x14
+[     loop0(0x1c,#0x2)
+/ R7 = R28
+\ nop   < endloop0
+/ R4 = R3
+| nop
+\ nop   < endloop1
 EOF
 RUN
 
 NAME=hexagon Nt.new register
 FILE==
 CMDS=<<EOF
-wx ffffffff20400078e15f1076e25f107601d6bda120400078e15f1076e25f107601d4bda120400078e15f1076e25f107601d2bda1e15f107620400078e25f107601d4bda1fd5f10760040007fe25f107601d6bda1
+wx ffffffff20400078e15f1076e25f107601d6bda120400078e15f1076e25f107601d4bda120400078e15f1076e25f107601d2bda1e15f107620400078e25f107601d4bda1fd5f10760040007fe25f107601d6bda1044411f30ae24221cc7fff59024402f300d2a3a1
 e asm.arch=hexagon
 e analysis.arch=hexagon
-pi 21
+pi 26
 EOF
 EXPECT=<<EOF
 ? <invalid>
@@ -218,5 +218,10 @@ EXPECT=<<EOF
 | nop
 | R2 = and(R16,##0xff)
 \ memw(R29+##0x4) = R29.new
+/ R4 = add(R17,R4)
+\ if (!cmp.gtu(R4.new,R2)) jump:t 0x68
+/ jump 0xfffffff4
+| R2 = add(R2,R4)
+\ memw(R3+##0x0) = R2.new
 EOF
 RUN

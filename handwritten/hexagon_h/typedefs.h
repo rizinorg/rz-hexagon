@@ -13,25 +13,25 @@ typedef enum {
 // Pre/post-fixes, different types
 typedef enum {
 	HEX_PF_RND = 1, // :rnd
-	HEX_PF_CRND = 1<<1, // :crnd
-	HEX_PF_RAW = 1<<2, // :raw
-	HEX_PF_CHOP = 1<<3, // :chop
-	HEX_PF_SAT = 1<<4, // :sat
-	HEX_PF_HI = 1<<5, // :hi
-	HEX_PF_LO = 1<<6, // :lo
-	HEX_PF_LSH1 = 1<<7, // :<<1
-	HEX_PF_LSH16 = 1<<8, // :<<16
-	HEX_PF_RSH1 = 1<<9, // :>>1
-	HEX_PF_NEG = 1<<10, // :neg
-	HEX_PF_POS = 1<<11, // :pos
-	HEX_PF_SCALE = 1<<12, // :scale, for FMA instructions
-	HEX_PF_DEPRECATED = 1<<15, // :deprecated
+	HEX_PF_CRND = 1 << 1, // :crnd
+	HEX_PF_RAW = 1 << 2, // :raw
+	HEX_PF_CHOP = 1 << 3, // :chop
+	HEX_PF_SAT = 1 << 4, // :sat
+	HEX_PF_HI = 1 << 5, // :hi
+	HEX_PF_LO = 1 << 6, // :lo
+	HEX_PF_LSH1 = 1 << 7, // :<<1
+	HEX_PF_LSH16 = 1 << 8, // :<<16
+	HEX_PF_RSH1 = 1 << 9, // :>>1
+	HEX_PF_NEG = 1 << 10, // :neg
+	HEX_PF_POS = 1 << 11, // :pos
+	HEX_PF_SCALE = 1 << 12, // :scale, for FMA instructions
+	HEX_PF_DEPRECATED = 1 << 15, // :deprecated
 } HexPf;
 
 typedef enum {
 	HEX_OP_TYPE_IMM,
 	HEX_OP_TYPE_REG,
-    // TODO It might be useful to differ between control, HVX, guest regs etc. Also see HexOp
+	// TODO It might be useful to differ between control, HVX, guest regs etc. Also see HexOp
 } HexOpType;
 
 // Attributes - .H/.L, const extender
@@ -46,18 +46,19 @@ typedef enum {
 } HexOpAttr;
 
 typedef enum {
-    HEX_NO_LOOP = 0,
-    HEX_LOOP_0 = 1,  // Is packet of loop0
-    HEX_LOOP_1 = 1 << 1,  // Is packet of loop1
-    HEX_ENDS_LOOP_0 = 1 << 2,  // Packet ends loop0?
-    HEX_ENDS_LOOP_1 = 1 << 3,  // Packet ends loop1?
+	HEX_NO_LOOP = 0,
+	HEX_LOOP_0 = 1, // Is packet of loop0
+	HEX_LOOP_1 = 1 << 1, // Is packet of loop1
+	HEX_ENDS_LOOP_0 = 1 << 2, // Packet ends loop0?
+	HEX_ENDS_LOOP_1 = 1 << 3, // Packet ends loop1?
 } HexLoopAttr;
 
 typedef struct {
-    bool first_insn;
-    bool last_insn;
-    char syntax_prefix[8];  // Package indicator
-    char syntax_postfix[16];  // for ":endloop" string.
+	bool first_insn;
+	bool last_insn;
+	HexLoopAttr loop_attr;
+	char syntax_prefix[8]; // Package indicator
+	char syntax_postfix[16]; // for ":endloop" string.
 } HexPktInfo;
 
 typedef struct {
@@ -79,20 +80,28 @@ typedef struct {
 	bool duplex; // is part of duplex container?
 	bool compound; // is part of compound instruction?
 	int shift; // Optional shift left is it true?
-	st64 vals[6]; // Analysable values (yet only immediate operand values).
-	HexPktInfo pkt_info;
+	HexPktInfo pkt_info; // Packet related information. First/last instr., prefix and postfix for mnemonic etc.
 	ut8 op_count;
 	HexOp ops[6];
+	char mnem_infix[104]; // The mnemonic without the pre- and postfix.
 	char mnem[128]; // Instruction mnemonic
 	ut32 addr; // Memory address the instruction is located.
+	RzAsmOp asm_op;
+	RzAnalysisOp ana_op;
 } HexInsn;
 
 typedef struct {
-	RzList *insn;
+	RzList *insn; // List of instructions.
 	bool last_instr_present; // Has an instruction the parsing bits 0b11 set (is last instruction).
-    bool is_valid; // Is it a valid packet? Do we know which instruction is the first?
-	HexLoopAttr loop_attr;
-    ut32 constant_extenders[2];
-	ut64 last_access
+	bool is_valid; // Is it a valid packet? Do we know which instruction is the first?
+	HexLoopAttr loop_attr; // Flags to which loops the packet might belongs to.
+	ut32 hw_loop0_addr; // Start address of hardware loop 0
+	ut32 hw_loop1_addr; // Start address of hardware loop 1
+	ut64 last_access; // Last time accessed in milliseconds
 	ut32 pkt_addr; // Address of the packet. Equals the address of the first instruction.
 } HexPkt;
+
+typedef struct {
+	ut32 addr; // Address of the instruction which gets the extender applied.
+	ut32 const_ext; // The constant extender value.
+} HexConstExt;

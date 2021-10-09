@@ -48,7 +48,7 @@ class Register(Operand):
         "llvm_reg_class",
         "is_vector",
         "is_quadruple",
-        "is_n_reg"
+        "is_n_reg",
     ]
 
     def __init__(
