@@ -67,6 +67,28 @@ HexInsn *hex_get_instr_at_addr(const ut32 addr) {
 }
 
 /**
+ * \brief Returns the index of an addr in a given packet.
+ * 
+ * \param addr Address of an instruction.
+ * \param p The packet. to search in.
+ * \return ut8 The index of the addr if it is in the packet. UT8_MAX otherwise.
+ */
+ut8 hexagon_get_pkt_index_of_addr(const ut32 addr, const HexPkt *p) {
+	rz_return_val_if_fail(p, UT8_MAX);
+
+	HexInsn *hi;
+	RzListIter *it;
+	ut8 i = 0;
+	rz_list_foreach(p->insn, it, hi) {
+		if (hi->addr == addr) {
+			return i;
+		}
+		++i;
+	}
+	return UT8_MAX;
+}
+
+/**
  * \brief Clears a packet and sets its attributes to invalid values.
  * 
  * \param p The packet to clear.

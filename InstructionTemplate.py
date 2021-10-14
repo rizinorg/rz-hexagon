@@ -243,7 +243,7 @@ class InstructionTemplate:
                 mnemonic = re.sub(op.explicit_syntax, "%s", mnemonic)
                 src = "hi->ops[{}].op.reg".format(op.syntax_index)
                 if op.is_n_reg:
-                    sprint_src += ", {}({}({}, pkt))".format(
+                    sprint_src += ", {}({}({}, hi->addr, pkt))".format(
                         HardwareRegister.get_func_name_of_class(op.llvm_type, False),
                         HardwareRegister.get_func_name_of_class(op.llvm_type, True),
                         src,
