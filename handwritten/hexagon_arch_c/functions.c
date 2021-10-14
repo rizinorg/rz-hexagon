@@ -581,7 +581,7 @@ static HexConstExt *get_const_ext_from_addr(const RzList *ce_list, const ut32 ad
  */
 void hex_extend_op(RZ_INOUT HexOp *op, const bool set_new_extender, const ut32 addr) {
 	if (rz_list_length(hexagon_state.const_ext_l) > MAX_CONST_EXT) {
-		RZ_LOG_FATAL("%d constant extenders were saved but never used! There might be something wrong...", MAX_CONST_EXT);
+		rz_list_purge(hexagon_state.const_ext_l);
 	}
 
 	if (op->type != HEX_OP_TYPE_IMM) {

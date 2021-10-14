@@ -8,7 +8,7 @@
 #ifndef HEXAGON_ARCH_H
 #define HEXAGON_ARCH_H
 
-#define MAX_CONST_EXT      8192
+#define MAX_CONST_EXT      512
 #define HEXAGON_STATE_PKTS 8
 
 // The type of opcode reversing which is be done on the opcode.

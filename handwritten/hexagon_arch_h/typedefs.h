@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2021 Rot127 <unisono@quyllur.org>
 // SPDX-License-Identifier: LGPL-3.0-only
 
-#define MAX_CONST_EXT 8192
+#define MAX_CONST_EXT 512
 #define HEXAGON_STATE_PKTS 8
 
 // The type of opcode reversing which is be done on the opcode.
