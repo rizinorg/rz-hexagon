@@ -853,7 +853,6 @@ int resolve_n_register(const int reg_num, const HexPkt *p) {
 	HexInsn *instr = rz_list_get_n(p->insn, i_pos);
 
 	if (!instr) {
-		RZ_LOG_WARN("Did not find .new register in packet @ 0x%x\n", p->pkt_addr);
 		return UT32_MAX;
 	}
 	for (ut8 i = 0; i < 6; ++i) {
