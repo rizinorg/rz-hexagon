@@ -842,27 +842,55 @@ char *hex_get_sys_regs64(int opcode_reg) {
 	}
 }
 
-int resolve_n_register(const int reg_num, const HexPkt *p) {
-	if (!p->is_valid || reg_num == 0 || reg_num >= 8) {
+/**
+ * \brief Resolves the 3 bit value of an Nt.new reg to the general register of the producer. 
+ * 
+ * \param addr The address of the current instruction.
+ * \param reg_num Bits of Nt.new reg.
+ * \param p The current packet.
+ * \return int The number of the general register. Or UT32_MAX if any error occured.
+ */
+int resolve_n_register(const int reg_num, const ut32 addr, const HexPkt *p) {
+	// .new values are documented in Programmers Reference Manual
+	if (reg_num <= 1 || reg_num >= 8) {
 		return UT32_MAX;
-	}
-	// (reg_num >> 1) is the instruction index whichs out operand is the new value.
-	// In this plugin the last instruction in a packet is located at the higher index.
-	// Hexagon seems to place it at index 0.
-	// Switch indices.
-	ut8 i_pos = rz_list_length(p->insn) - 1 - (reg_num >> 1);
-	HexInsn *instr = rz_list_get_n(p->insn, i_pos);
-	if (instr && instr->instruction == HEX_INS_A4_EXT) {
-		// immext() instructions are not counted.
-		instr = rz_list_get_n(p->insn, i_pos - 1);
 	}
 
-	if (!instr) {
+	ut8 ahead = (reg_num >> 1);
+	ut8 i = hexagon_get_pkt_index_of_addr(addr, p);
+	if (i == UT8_MAX) {
 		return UT32_MAX;
 	}
+
+	ut8 prod_i = i; // Producer index
+	HexInsn *hi;
+	RzListIter *it;
+	rz_list_foreach_prev(p->insn, it, hi) {
+		if (ahead == 0) {
+			break;
+		}
+		if (hi->addr < addr) {
+			if (hi->instruction == HEX_INS_A4_EXT) {
+				--prod_i;
+				continue;
+			}
+			--ahead;
+			--prod_i;
+		}
+	}
+
+	hi = rz_list_get_n(p->insn, prod_i);
+
+	if (!hi) {
+		return UT32_MAX;
+	}
+	if (hi->instruction == HEX_INS_A4_EXT) {
+		return UT32_MAX;
+	}
+
 	for (ut8 i = 0; i < 6; ++i) {
-		if (instr->ops[i].attr & HEX_OP_REG_OUT) {
-			return instr->ops[i].op.reg;
+		if (hi->ops[i].attr & HEX_OP_REG_OUT) {
+			return hi->ops[i].op.reg;
 		}
 	}
 	return UT32_MAX;

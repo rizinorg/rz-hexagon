@@ -16,3 +16,4 @@ void free_const_ext(HexConstExt *ce);
 void hex_extend_op(RZ_INOUT HexOp *op, const bool set_new_extender, const ut32 addr);
 void hexeagon_reverse_opcode(HexReversedOpcode *rz_reverse, const ut8 *buf, const ut64 addr);
 HexInsn *get_new_instruction();
+ut8 hexagon_get_pkt_index_of_addr(const ut32 addr, const HexPkt *p);

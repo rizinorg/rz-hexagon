@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: LGPL-3.0-only
 
 void hex_extend_op(RZ_INOUT HexOp *op, const bool set_new_extender, const ut32 addr);
-int resolve_n_register(const int reg_num, const HexPkt *p);
+int resolve_n_register(const int reg_num, const ut32 addr, const HexPkt *p);
 int hexagon_disasm_instruction(const ut32 hi_u32, RZ_INOUT HexInsn *hi, HexPkt *pkt);
 void hexagon_disasm_0x0(const ut32 hi_u32, RZ_INOUT HexInsn *hi, const ut32 addr, HexPkt *pkt);
 void hexagon_disasm_0x1(const ut32 hi_u32, RZ_INOUT HexInsn *hi, const ut32 addr, HexPkt *pkt);
