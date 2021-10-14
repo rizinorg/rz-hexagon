@@ -15,6 +15,7 @@
 #include <rz_analysis.h>
 #include <rz_util/rz_assert.h>
 #include "hexagon.h"
+#include "hexagon_insn.h"
 #include "hexagon_arch.h"
 
 char *hex_get_ctr_regs(int opcode_reg) {
@@ -851,6 +852,10 @@ int resolve_n_register(const int reg_num, const HexPkt *p) {
 	// Switch indices.
 	ut8 i_pos = rz_list_length(p->insn) - 1 - (reg_num >> 1);
 	HexInsn *instr = rz_list_get_n(p->insn, i_pos);
+	if (instr && instr->instruction == HEX_INS_A4_EXT) {
+		// immext() instructions are not counted.
+		instr = rz_list_get_n(p->insn, i_pos - 1);
+	}
 
 	if (!instr) {
 		return UT32_MAX;
