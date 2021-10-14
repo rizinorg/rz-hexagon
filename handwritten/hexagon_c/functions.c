@@ -11,6 +11,10 @@ int resolve_n_register(const int reg_num, const HexPkt *p) {
 	// Switch indices.
 	ut8 i_pos = rz_list_length(p->insn) - 1 - (reg_num >> 1);
 	HexInsn *instr = rz_list_get_n(p->insn, i_pos);
+	if (instr && instr->instruction == HEX_INS_A4_EXT) {
+		// immext() instructions are not counted.
+		instr = rz_list_get_n(p->insn, i_pos - 1);
+	}
 
 	if (!instr) {
 		return UT32_MAX;
