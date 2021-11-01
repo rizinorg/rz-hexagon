@@ -261,7 +261,7 @@ class InstructionTemplate:
                 # If there is only one immediate operand in the instruction extend it anyways.
                 # LLVM marks some operands as not extendable, although they are.
                 if only_one_imm_op and not op.is_extendable:
-                    code += "hex_extend_op(&(hi->ops[{}]), false, addr); // Only immediate, extension possible\n".format(
+                    code += "hex_extend_op(state, &(hi->ops[{}]), false, addr); // Only immediate, extension possible\n".format(
                         op.syntax_index
                     )
 
@@ -314,7 +314,9 @@ class InstructionTemplate:
         code += mnemonic + sprint_src + ");\n"
         code += 'sprintf(hi->mnem, "%s%s%s", hi->pkt_info.syntax_prefix, hi->mnem_infix, hi->pkt_info.syntax_postfix);\n'
         if self.name == "A4_ext":
-            code += "{}hex_extend_op(&(hi->ops[0]), true, addr);\n".format(indent)
+            code += "{}hex_extend_op(state, &(hi->ops[0]), true, addr);\n".format(
+                indent
+            )
         code += "{}return;\n}}\n".format(indent)
         # log("\n" + code)
 

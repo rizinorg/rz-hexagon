@@ -10,6 +10,7 @@ RzAnalysisPlugin rz_analysis_plugin_hexagon = {
 	.op = hexagon_v6_op,
 	.esil = false,
 	.set_reg_profile = set_reg_profile,
+	.init = &hex_plugin_init,
 };
 
 #ifndef RZ_PLUGIN_INCORE

@@ -1,6 +1,9 @@
 // SPDX-FileCopyrightText: 2021 Rot127 <unisono@quyllur.org>
 // SPDX-License-Identifier: LGPL-3.0-only
 
+#define MAX_CONST_EXT 512
+#define HEXAGON_STATE_PKTS 8
+
 // Predicates - declare the predicate state
 typedef enum {
 	HEX_NOPRED, // no conditional execution
@@ -105,3 +108,12 @@ typedef struct {
 	ut32 addr; // Address of the instruction which gets the extender applied.
 	ut32 const_ext; // The constant extender value.
 } HexConstExt;
+
+/**
+ * \brief Buffer packets for reversed instructions.
+ * 
+ */
+typedef struct {
+    HexPkt pkts[HEXAGON_STATE_PKTS]; // buffered instructions
+    RzList *const_ext_l; // Constant extender values.
+} HexState;
