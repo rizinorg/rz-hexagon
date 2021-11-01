@@ -22,7 +22,7 @@ static int hexagon_v6_op(RzAnalysis *analysis, RzAnalysisOp *op, ut64 addr, cons
 
 	HexReversedOpcode rev = { .action = HEXAGON_ANALYSIS, .ana_op = op, .asm_op = NULL };
 
-	hexeagon_reverse_opcode(&rev, buf, addr);
+	hexagon_reverse_opcode(&rev, buf, addr);
 
 	return op->size;
 }
@@ -387,6 +387,7 @@ RzAnalysisPlugin rz_analysis_plugin_hexagon = {
 	.op = hexagon_v6_op,
 	.esil = false,
 	.set_reg_profile = set_reg_profile,
+	.init = &hex_plugin_init,
 };
 
 #ifndef RZ_PLUGIN_INCORE

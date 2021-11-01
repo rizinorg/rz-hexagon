@@ -1,11 +1,20 @@
 // SPDX-FileCopyrightText: 2021 Rot127 <unisono@quyllur.org>
 // SPDX-License-Identifier: LGPL-3.0-only
 
+/**
+ * \brief Disassembles a hexagon opcode, write info to op and returns its size.
+ * 
+ * \param a The current RzAsm struct.
+ * \param op The RzAsmOp which is be filled with the reversed opcode information. 
+ * \param buf The buffer with the opcode.
+ * \param l The size to read from the buffer.
+ * \return int Size of the reversed opcode.
+ */
 static int disassemble(RzAsm *a, RzAsmOp *op, const ut8 *buf, int l) {
 	ut32 addr = (ut32) a->pc;
 	HexReversedOpcode rev = { .action = HEXAGON_DISAS, .ana_op = NULL, .asm_op = op };
 
-	hexeagon_reverse_opcode(&rev, buf, addr);
+	hexagon_reverse_opcode(&rev, buf, addr);
 
 	return op->size;
 }
@@ -18,6 +27,8 @@ RzAsmPlugin rz_asm_plugin_hexagon = {
 	.bits = 32,
 	.desc = "Qualcomm Hexagon (QDSP6) V6",
 	.disassemble = &disassemble,
+	.init = &hex_plugin_init,
+	.fini = &hex_plugin_fini,
 };
 
 #ifndef RZ_PLUGIN_INCORE
