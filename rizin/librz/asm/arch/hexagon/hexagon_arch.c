@@ -61,9 +61,9 @@ static inline bool is_endloop01_pkt(const ut8 pb_hi_0, const ut8 pb_hi_1) {
  * \param addr The address of the instruction.
  * \return Pointer to instruction or NULL if none was found.
  */
-HexInsn *hex_get_instr_at_addr(HexState *state, const ut32 addr) {
+static HexInsn *hex_get_instr_at_addr(HexState *state, const ut32 addr) {
 	HexPkt *p;
-	for (int i = 0; i < HEXAGON_STATE_PKTS; ++i) {
+	for (ut8 i = 0; i < HEXAGON_STATE_PKTS; ++i) {
 		p = &state->pkts[i];
 		HexInsn *pi = NULL;
 		RzListIter *iter = NULL;
@@ -84,7 +84,7 @@ HexInsn *hex_get_instr_at_addr(HexState *state, const ut32 addr) {
  * \param p The packet. to search in.
  * \return ut8 The index of the addr if it is in the packet. UT8_MAX otherwise.
  */
-ut8 hexagon_get_pkt_index_of_addr(const ut32 addr, const HexPkt *p) {
+RZ_API ut8 hexagon_get_pkt_index_of_addr(const ut32 addr, const HexPkt *p) {
 	rz_return_val_if_fail(p, UT8_MAX);
 
 	HexInsn *hi = NULL;
@@ -104,7 +104,7 @@ ut8 hexagon_get_pkt_index_of_addr(const ut32 addr, const HexPkt *p) {
  * 
  * \param p The packet to clear.
  */
-void hex_clear_pkt(RZ_NONNULL HexPkt *p) {
+static void hex_clear_pkt(RZ_NONNULL HexPkt *p) {
 	p->loop_attr = HEX_NO_LOOP;
 	p->last_instr_present = false;
 	p->is_valid = false;
@@ -118,11 +118,11 @@ void hex_clear_pkt(RZ_NONNULL HexPkt *p) {
  * \param state The state to operade on.
  * \return HexPkt* Pointer to the least used packet.
  */
-HexPkt *hex_get_stale_pkt(HexState *state) {
+static HexPkt *hex_get_stale_pkt(HexState *state) {
 	HexPkt *stale_state_pkt = &state->pkts[0];
 	ut64 oldest = UT64_MAX;
 
-	for (int i = 0; i < HEXAGON_STATE_PKTS; ++i) {
+	for (ut8 i = 0; i < HEXAGON_STATE_PKTS; ++i) {
 		if (state->pkts[i].last_access < oldest) {
 			stale_state_pkt = &state->pkts[i];
 		}
@@ -137,11 +137,11 @@ HexPkt *hex_get_stale_pkt(HexState *state) {
  * \param addr The address of an instruction.
  * \return HexPkt* The packet to which this address belongs to or NULL if no packet was found.
  */
-HexPkt *hex_get_pkt(HexState *state, const ut32 addr) {
+static HexPkt *hex_get_pkt(HexState *state, const ut32 addr) {
 	HexPkt *p = NULL;
 	HexInsn *pi = NULL;
 	RzListIter *iter = NULL;
-	for (int i = 0; i < HEXAGON_STATE_PKTS; ++i) {
+	for (ut8 i = 0; i < HEXAGON_STATE_PKTS; ++i) {
 		p = &state->pkts[i];
 		rz_list_foreach (p->insn, iter, pi) {
 			if (addr == pi->addr) {
@@ -157,7 +157,7 @@ HexPkt *hex_get_pkt(HexState *state, const ut32 addr) {
  * 
  * \param i The instruction to be freed.
  */
-void hex_insn_free(HexInsn *i) {
+RZ_API void hex_insn_free(HexInsn *i) {
 	if (i) {
 		free(i);
 	}
@@ -168,38 +168,10 @@ void hex_insn_free(HexInsn *i) {
  * 
  * \param ce The constant extender to be freed.
  */
-void free_const_ext(HexConstExt *ce) {
+RZ_API void hex_const_ext_free(HexConstExt *ce) {
 	if (ce) {
 		free(ce);
 	}
-}
-
-/**
- * \brief Gives the packet address for a given instruction address.
- * 
- * \param state The state to operade on.
- * \param addr The address of the instruction.
- * \return ut32 The address of the packet.
- */
-ut32 hex_get_pkt_addr(HexState *state, const ut32 addr) {
-	HexPkt *p = NULL;
-	HexInsn *pi = NULL;
-	RzListIter *iter = NULL;
-	for (int i = 0; i < HEXAGON_STATE_PKTS; ++i) {
-		p = &state->pkts[i];
-		rz_list_foreach (p->insn, iter, pi) {
-			if (addr == pi->addr) {
-				return p->pkt_addr;
-			} else if ((addr == pi->addr + 4)) {
-				if (pi->pkt_info.last_insn) {
-					return addr;
-				} else {
-					return p->pkt_addr;
-				}
-			}
-		}
-	}
-	return addr;
 }
 
 /**
@@ -211,7 +183,7 @@ ut32 hex_get_pkt_addr(HexState *state, const ut32 addr) {
  */
 static ut8 get_state_pkt_index(HexState *state, const HexPkt *p) {
 	HexPkt *sp;
-	for (int i = 0; i < HEXAGON_STATE_PKTS; ++i) {
+	for (ut8 i = 0; i < HEXAGON_STATE_PKTS; ++i) {
 		sp = &state->pkts[i];
 		if (sp->pkt_addr == p->pkt_addr) {
 			return i;
@@ -221,25 +193,11 @@ static ut8 get_state_pkt_index(HexState *state, const HexPkt *p) {
 }
 
 /**
- * \brief Removes the plugins state.
- */
-bool hex_fini_state(HexState *state) {
-	if (!state) {
-		RZ_LOG_FATAL("Can not destruct non existing Hexagon state.");
-	}
-	for (ut8 i = 0; i < HEXAGON_STATE_PKTS; ++i) {
-		rz_list_free(state->pkts[i].insn);
-	}
-	free(state);
-	return true;
-}
-
-/**
  * \brief Initializes each packet of the state once.
  * 
  * \return The initialized state of the plugins.
  */
-HexState *hex_state(bool destruct) {
+RZ_API HexState *hexagon_get_state() {
 	static HexState *state = NULL;
 	if (!state) {
 		state = calloc(1, sizeof(HexState));
@@ -253,17 +211,9 @@ HexState *hex_state(bool destruct) {
 			}
 			hex_clear_pkt(&(state->pkts[i]));
 		}
-		state->const_ext_l = rz_list_newf((RzListFree)free_const_ext);
+		state->const_ext_l = rz_list_newf((RzListFree)hex_const_ext_free);
 	}
 	return state;
-}
-
-bool hex_plugin_init() {
-	return hex_state(false) != NULL;
-}
-
-bool hex_plugin_fini() {
-	return hex_state(true) == NULL;
 }
 
 /**
@@ -294,6 +244,69 @@ static void unset_ended_loop_flags(HexPkt *p) {
 	if (p->loop_attr & HEX_ENDS_LOOP_1) {
 		p->loop_attr &= ~(HEX_ENDS_LOOP_1 | HEX_LOOP_1);
 		p->hw_loop1_addr = 0;
+	}
+}
+
+/**
+ * \brief Sets the packet related information in an instruction.
+ * 
+ * \param hi The instruction.
+ * \param p The packet the instruction belongs to.
+ * \param k The index of the instruction wihin the packet.
+ */
+static void hex_set_pkt_info(RZ_INOUT HexInsn *hi, const HexPkt *p, const ut8 k, const bool update_mnemonic) {
+	rz_return_if_fail(hi && p);
+	bool is_first = (k == 0);
+	HexPktInfo *hi_pi = &hi->pkt_info;
+
+	hi_pi->loop_attr |= p->loop_attr;
+
+	// Parse instr. position in pkt
+	if (is_first && is_last_instr(hi->parse_bits)) { // Single instruction packet.
+		hi_pi->first_insn = true;
+		hi_pi->last_insn = true;
+		// TODO No indent in visual mode for "[" without spaces.
+		if (p->is_valid) {
+			strncpy(hi_pi->syntax_prefix, "[     ", 8);
+		} else {
+			strncpy(hi_pi->syntax_prefix, "? ", 8);
+		}
+	} else if (is_first) {
+		hi_pi->first_insn = true;
+		hi_pi->last_insn = false;
+		if (p->is_valid) {
+			strncpy(hi_pi->syntax_prefix, "/ ", 8); // TODO Add utf8 option "┌"
+		} else {
+			strncpy(hi_pi->syntax_prefix, "? ", 8);
+		}
+	} else if (is_last_instr(hi->parse_bits)) {
+		hi_pi->first_insn = false;
+		hi_pi->last_insn = true;
+		ut8 endloop01 = (HEX_ENDS_LOOP_0 | HEX_ENDS_LOOP_1);
+		if (p->is_valid) {
+			strncpy(hi_pi->syntax_prefix, "\\ ", 8); // TODO Add utf8 option "└"
+
+			if ((hi_pi->loop_attr & endloop01) == endloop01) {
+				strncpy(hi_pi->syntax_postfix, "   < endloop01", 16); // TODO Add utf8 option "∎"
+			} else if (hi_pi->loop_attr & HEX_ENDS_LOOP_0) {
+				strncpy(hi_pi->syntax_postfix, "   < endloop0", 16);
+			} else if (hi_pi->loop_attr & HEX_ENDS_LOOP_1) {
+				strncpy(hi_pi->syntax_postfix, "   < endloop1", 16);
+			}
+		} else {
+			strncpy(hi_pi->syntax_prefix, "? ", 8);
+		}
+	} else {
+		hi_pi->first_insn = false;
+		hi_pi->last_insn = false;
+		if (p->is_valid) {
+			strncpy(hi_pi->syntax_prefix, "| ", 8); // TODO Add utf8 option "│"
+		} else {
+			strncpy(hi_pi->syntax_prefix, "? ", 8);
+		}
+	}
+	if (update_mnemonic) {
+		sprintf(hi->mnem, "%s%s%s", hi_pi->syntax_prefix, hi->mnem_infix, hi_pi->syntax_postfix);
 	}
 }
 
@@ -358,7 +371,7 @@ static void make_next_packet_valid(HexState *state, const HexPkt *pkt) {
  * 
  * @return HexInsn* The new instruction.
  */
-HexInsn *alloc_instr() {
+RZ_API HexInsn *alloc_instr() {
 	HexInsn *hi = calloc(1, sizeof(HexInsn));
 	if (!hi) {
 		RZ_LOG_FATAL("Could not allocate memory for new instruction.\n");
@@ -468,7 +481,7 @@ static HexInsn *hex_add_to_stale_pkt(HexState *state, const HexInsn *new_ins) {
  * \param new_ins The instruction to be copied.
  * \return The pointer to the added instruction. Null if the instruction could not be copied.
  */
-HexInsn *hex_add_instr_to_state(HexState *state, const HexInsn *new_ins) {
+static HexInsn *hex_add_instr_to_state(HexState *state, const HexInsn *new_ins) {
 	if (!new_ins) {
 		return NULL;
 	}
@@ -478,24 +491,18 @@ HexInsn *hex_add_instr_to_state(HexState *state, const HexInsn *new_ins) {
 	bool insert_before_pkt_hi = false;
 	ut8 k = 0; // New instruction position in packet.
 
-	HexInsn *hi = hex_get_instr_at_addr(state, new_ins->addr);
-	if (hi) {
-		// Instruction already present.
-		return hi;
-	}
-
 	HexPkt *p;
 	if (new_ins->addr == 0x0) {
 		return hex_add_to_stale_pkt(state, new_ins);
 	}
 
-	for (int i = 0; i < HEXAGON_STATE_PKTS; ++i, k = 0) {
+	for (ut8 i = 0; i < HEXAGON_STATE_PKTS; ++i, k = 0) {
 		p = &(state->pkts[i]);
 
 		HexInsn *pkt_instr = NULL; // Instructions already in the packet.
 		RzListIter *iter = NULL;
 		rz_list_foreach (p->insn, iter, pkt_instr) {
-			if (new_ins->addr == pkt_instr->addr - 4) {
+			if (new_ins->addr == (pkt_instr->addr - 4)) {
 				// Instruction preceeds one in the packet.
 				if (is_last_instr(new_ins->parse_bits) || is_pkt_full(p)) {
 					write_to_stale_pkt = true;
@@ -505,7 +512,7 @@ HexInsn *hex_add_instr_to_state(HexState *state, const HexInsn *new_ins) {
 					add_to_pkt = true;
 					break;
 				}
-			} else if (new_ins->addr == pkt_instr->addr + 4) {
+			} else if (new_ins->addr == (pkt_instr->addr + 4)) {
 				if (is_last_instr(pkt_instr->parse_bits) || is_pkt_full(p)) {
 					new_pkt = true;
 					break;
@@ -567,69 +574,6 @@ static void setup_new_instr(HexInsn *hi, const HexReversedOpcode *rz_reverse, co
 	hi->ana_op.size = 4;
 }
 
-/**
- * \brief Sets the packet related information in an instruction.
- * 
- * \param hi The instruction.
- * \param p The packet the instruction belongs to.
- * \param k The index of the instruction wihin the packet.
- */
-void hex_set_pkt_info(RZ_INOUT HexInsn *hi, const HexPkt *p, const ut8 k, const bool update_mnemonic) {
-	rz_return_if_fail(hi && p);
-	bool is_first = (k == 0);
-	HexPktInfo *hi_pi = &hi->pkt_info;
-
-	hi_pi->loop_attr |= p->loop_attr;
-
-	// Parse instr. position in pkt
-	if (is_first && is_last_instr(hi->parse_bits)) { // Single instruction packet.
-		hi_pi->first_insn = true;
-		hi_pi->last_insn = true;
-		// TODO No indent in visual mode for "[" without spaces.
-		if (p->is_valid) {
-			strncpy(hi_pi->syntax_prefix, "[     ", 8);
-		} else {
-			strncpy(hi_pi->syntax_prefix, "? ", 8);
-		}
-	} else if (is_first) {
-		hi_pi->first_insn = true;
-		hi_pi->last_insn = false;
-		if (p->is_valid) {
-			strncpy(hi_pi->syntax_prefix, "/ ", 8); // TODO Add utf8 option "┌"
-		} else {
-			strncpy(hi_pi->syntax_prefix, "? ", 8);
-		}
-	} else if (is_last_instr(hi->parse_bits)) {
-		hi_pi->first_insn = false;
-		hi_pi->last_insn = true;
-		ut8 endloop01 = (HEX_ENDS_LOOP_0 | HEX_ENDS_LOOP_1);
-		if (p->is_valid) {
-			strncpy(hi_pi->syntax_prefix, "\\ ", 8); // TODO Add utf8 option "└"
-
-			if ((hi_pi->loop_attr & endloop01) == endloop01) {
-				strncpy(hi_pi->syntax_postfix, "   < endloop01", 16); // TODO Add utf8 option "∎"
-			} else if (hi_pi->loop_attr & HEX_ENDS_LOOP_0) {
-				strncpy(hi_pi->syntax_postfix, "   < endloop0", 16);
-			} else if (hi_pi->loop_attr & HEX_ENDS_LOOP_1) {
-				strncpy(hi_pi->syntax_postfix, "   < endloop1", 16);
-			}
-		} else {
-			strncpy(hi_pi->syntax_prefix, "? ", 8);
-		}
-	} else {
-		hi_pi->first_insn = false;
-		hi_pi->last_insn = false;
-		if (p->is_valid) {
-			strncpy(hi_pi->syntax_prefix, "| ", 8); // TODO Add utf8 option "│"
-		} else {
-			strncpy(hi_pi->syntax_prefix, "? ", 8);
-		}
-	}
-	if (update_mnemonic) {
-		sprintf(hi->mnem, "%s%s%s", hi_pi->syntax_prefix, hi->mnem_infix, hi_pi->syntax_postfix);
-	}
-}
-
 static inline bool imm_is_scaled(const HexOpAttr attr) {
 	return (attr & HEX_OP_IMM_SCALED);
 }
@@ -660,7 +604,7 @@ static HexConstExt *get_const_ext_from_addr(const RzList *ce_list, const ut32 ad
  * \param set_new_extender True if the immediate value of the op comes from immext() and sets the a new constant extender. False otherwise.
  * \param addr The address of the currently disassembled instruction.
  */
-void hex_extend_op(HexState *state, RZ_INOUT HexOp *op, const bool set_new_extender, const ut32 addr) {
+RZ_API void hex_extend_op(HexState *state, RZ_INOUT HexOp *op, const bool set_new_extender, const ut32 addr) {
 	if (rz_list_length(state->const_ext_l) > MAX_CONST_EXT) {
 		rz_list_purge(state->const_ext_l);
 	}
@@ -694,8 +638,8 @@ void hex_extend_op(HexState *state, RZ_INOUT HexOp *op, const bool set_new_exten
  * \param buf The buffer which stores the current opcode.
  * \param addr The address of the current opcode.
  */
-void hexagon_reverse_opcode(HexReversedOpcode *rz_reverse, const ut8 *buf, const ut64 addr) {
-	HexState *state = hex_state(false);
+RZ_API void hexagon_reverse_opcode(HexReversedOpcode *rz_reverse, const ut8 *buf, const ut64 addr) {
+	HexState *state = hexagon_get_state();
 	if (!state) {
 		RZ_LOG_FATAL("HexState was NULL.");
 	}

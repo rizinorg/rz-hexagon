@@ -15,7 +15,7 @@
 #include "hexagon_insn.h"
 #include "hexagon_arch.h"
 
-static int hexagon_v6_op(RzAnalysis *analysis, RzAnalysisOp *op, ut64 addr, const ut8 *buf, int len, RzAnalysisOpMask mask) {
+RZ_API int hexagon_v6_op(RzAnalysis *analysis, RzAnalysisOp *op, ut64 addr, const ut8 *buf, int len, RzAnalysisOpMask mask) {
 	if (analysis->pcalign == 0) {
 		analysis->pcalign = 0x4;
 	}
@@ -27,7 +27,7 @@ static int hexagon_v6_op(RzAnalysis *analysis, RzAnalysisOp *op, ut64 addr, cons
 	return op->size;
 }
 
-static bool set_reg_profile(RzAnalysis *analysis) {
+RZ_API bool set_reg_profile(RzAnalysis *analysis) {
 	const char *p =
 
 		"=PC	pc\n"
@@ -387,7 +387,6 @@ RzAnalysisPlugin rz_analysis_plugin_hexagon = {
 	.op = hexagon_v6_op,
 	.esil = false,
 	.set_reg_profile = set_reg_profile,
-	.init = &hex_plugin_init,
 };
 
 #ifndef RZ_PLUGIN_INCORE
