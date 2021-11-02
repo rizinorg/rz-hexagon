@@ -230,26 +230,20 @@ bool hex_fini_state(HexState *state) {
  */
 HexState *hex_state(bool destruct) {
 	static HexState *state = NULL;
-	if (destruct) {
-		hex_fini_state(state);
-		return NULL;
-	}
-	if (state) {
-		return state;
-	}
-
-	state = calloc(1, sizeof(HexState));
 	if (!state) {
-		RZ_LOG_FATAL("Could not allocate memory for HexState!");
-	}
-	for (int i = 0; i < HEXAGON_STATE_PKTS; ++i) {
-		state->pkts[i].insn = rz_list_newf((RzListFree)hex_insn_free);
-		if (!state->pkts[i].insn) {
-			RZ_LOG_FATAL("Could not initilize instruction list!");
+		state = calloc(1, sizeof(HexState));
+		if (!state) {
+			RZ_LOG_FATAL("Could not allocate memory for HexState!");
 		}
-		hex_clear_pkt(&(state->pkts[i]));
+		for (int i = 0; i < HEXAGON_STATE_PKTS; ++i) {
+			state->pkts[i].insn = rz_list_newf((RzListFree)hex_insn_free);
+			if (!state->pkts[i].insn) {
+				RZ_LOG_FATAL("Could not initilize instruction list!");
+			}
+			hex_clear_pkt(&(state->pkts[i]));
+		}
+		state->const_ext_l = rz_list_newf((RzListFree)free_const_ext);
 	}
-	state->const_ext_l = rz_list_newf((RzListFree)free_const_ext);
 	return state;
 }
 
