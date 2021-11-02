@@ -63,10 +63,10 @@ static inline bool is_endloop01_pkt(const ut8 pb_hi_0, const ut8 pb_hi_1) {
  */
 HexInsn *hex_get_instr_at_addr(HexState *state, const ut32 addr) {
 	HexPkt *p;
-	for (ut8 i = 0; i < HEXAGON_STATE_PKTS; ++i) {
+	for (int i = 0; i < HEXAGON_STATE_PKTS; ++i) {
 		p = &state->pkts[i];
-		HexInsn *pi;
-		RzListIter *iter;
+		HexInsn *pi = NULL;
+		RzListIter *iter = NULL;
 		rz_list_foreach (p->insn, iter, pi) {
 			if (addr == pi->addr) {
 				p->last_access = rz_time_now();
@@ -87,8 +87,8 @@ HexInsn *hex_get_instr_at_addr(HexState *state, const ut32 addr) {
 ut8 hexagon_get_pkt_index_of_addr(const ut32 addr, const HexPkt *p) {
 	rz_return_val_if_fail(p, UT8_MAX);
 
-	HexInsn *hi;
-	RzListIter *it;
+	HexInsn *hi = NULL;
+	RzListIter *it = NULL;
 	ut8 i = 0;
 	rz_list_foreach (p->insn, it, hi) {
 		if (hi->addr == addr) {
@@ -122,7 +122,7 @@ HexPkt *hex_get_stale_pkt(HexState *state) {
 	HexPkt *stale_state_pkt = &state->pkts[0];
 	ut64 oldest = UT64_MAX;
 
-	for (ut8 i = 0; i < HEXAGON_STATE_PKTS; ++i) {
+	for (int i = 0; i < HEXAGON_STATE_PKTS; ++i) {
 		if (state->pkts[i].last_access < oldest) {
 			stale_state_pkt = &state->pkts[i];
 		}
@@ -138,10 +138,10 @@ HexPkt *hex_get_stale_pkt(HexState *state) {
  * \return HexPkt* The packet to which this address belongs to or NULL if no packet was found.
  */
 HexPkt *hex_get_pkt(HexState *state, const ut32 addr) {
-	HexPkt *p;
-	HexInsn *pi;
-	RzListIter *iter;
-	for (ut8 i = 0; i < HEXAGON_STATE_PKTS; ++i) {
+	HexPkt *p = NULL;
+	HexInsn *pi = NULL;
+	RzListIter *iter = NULL;
+	for (int i = 0; i < HEXAGON_STATE_PKTS; ++i) {
 		p = &state->pkts[i];
 		rz_list_foreach (p->insn, iter, pi) {
 			if (addr == pi->addr) {
@@ -182,10 +182,10 @@ void free_const_ext(HexConstExt *ce) {
  * \return ut32 The address of the packet.
  */
 ut32 hex_get_pkt_addr(HexState *state, const ut32 addr) {
-	HexPkt *p;
-	HexInsn *pi;
-	RzListIter *iter;
-	for (ut8 i = 0; i < HEXAGON_STATE_PKTS; ++i) {
+	HexPkt *p = NULL;
+	HexInsn *pi = NULL;
+	RzListIter *iter = NULL;
+	for (int i = 0; i < HEXAGON_STATE_PKTS; ++i) {
 		p = &state->pkts[i];
 		rz_list_foreach (p->insn, iter, pi) {
 			if (addr == pi->addr) {
@@ -204,14 +204,14 @@ ut32 hex_get_pkt_addr(HexState *state, const ut32 addr) {
 
 /**
  * \brief Get the index of a packet in the state
- * 
+ *
  * \param state The state to operade on.
  * \param p The packet whichs index should be determined.
  * \return ut8 The index of the packet in the given state. UT8_MAX if it is not in the state.
  */
 static ut8 get_state_pkt_index(HexState *state, const HexPkt *p) {
 	HexPkt *sp;
-	for (ut8 i = 0; i < HEXAGON_STATE_PKTS; ++i) {
+	for (int i = 0; i < HEXAGON_STATE_PKTS; ++i) {
 		sp = &state->pkts[i];
 		if (sp->pkt_addr == p->pkt_addr) {
 			return i;
@@ -346,12 +346,12 @@ static void make_next_packet_valid(HexState *state, const HexPkt *pkt) {
 				break;
 			}
 			p->is_valid = true;
-			HexInsn *hi;
-			RzListIter *it;
-			ut8 i = 0;
+			HexInsn *hi = NULL;
+			RzListIter *it = NULL;
+			ut8 k = 0;
 			rz_list_foreach (p->insn, it, hi) {
-				hex_set_pkt_info(hi, p, i, true);
-				++i;
+				hex_set_pkt_info(hi, p, k, true);
+				++k;
 			}
 			p->last_access = rz_time_now();
 			break;
@@ -495,11 +495,11 @@ HexInsn *hex_add_instr_to_state(HexState *state, const HexInsn *new_ins) {
 		return hex_add_to_stale_pkt(state, new_ins);
 	}
 
-	for (ut8 i = 0; i < HEXAGON_STATE_PKTS; ++i, k = 0) {
+	for (int i = 0; i < HEXAGON_STATE_PKTS; ++i, k = 0) {
 		p = &(state->pkts[i]);
 
-		HexInsn *pkt_instr; // Instructions already in the packet.
-		RzListIter *iter;
+		HexInsn *pkt_instr = NULL; // Instructions already in the packet.
+		RzListIter *iter = NULL;
 		rz_list_foreach (p->insn, iter, pkt_instr) {
 			if (new_ins->addr == pkt_instr->addr - 4) {
 				// Instruction preceeds one in the packet.
@@ -648,8 +648,8 @@ static inline bool imm_is_scaled(const HexOpAttr attr) {
  * \return HexConstExt* A const. ext., if there is one which should be applied on the instruction at addr. Otherwise NULL.
  */
 static HexConstExt *get_const_ext_from_addr(const RzList *ce_list, const ut32 addr) {
-	HexConstExt *ce;
-	RzListIter *iter;
+	HexConstExt *ce = NULL;
+	RzListIter *iter = NULL;
 	rz_list_foreach (ce_list, iter, ce) {
 		if (addr == ce->addr) {
 			return ce;
