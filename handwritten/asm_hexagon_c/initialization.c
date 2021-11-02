@@ -27,8 +27,6 @@ RzAsmPlugin rz_asm_plugin_hexagon = {
 	.bits = 32,
 	.desc = "Qualcomm Hexagon (QDSP6) V6",
 	.disassemble = &disassemble,
-	.init = &hex_plugin_init,
-	.fini = &hex_plugin_fini,
 };
 
 #ifndef RZ_PLUGIN_INCORE

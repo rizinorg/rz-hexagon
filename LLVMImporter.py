@@ -682,7 +682,7 @@ class LLVMImporter:
             tmp += profile
             tmp = make_c_block(
                 lines=tmp,
-                begin="static bool set_reg_profile(RzAnalysis *analysis)",
+                begin="RZ_API bool set_reg_profile(RzAnalysis *analysis)",
                 ret="return rz_reg_set_profile_string(analysis->reg, p);\n",
             )
             f.writelines(tmp)
