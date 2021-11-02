@@ -52,7 +52,7 @@ static inline bool is_endloop01_pkt(const ut8 pb_hi_0, const ut8 pb_hi_1) {
  */
 HexInsn *hex_get_instr_at_addr(HexState *state, const ut32 addr) {
 	HexPkt *p;
-	for (ut8 i = 0; i < HEXAGON_STATE_PKTS; ++i) {
+	for (int i = 0; i < HEXAGON_STATE_PKTS; ++i) {
 		p = &state->pkts[i];
 		HexInsn *pi;
 		RzListIter *iter;
@@ -111,7 +111,7 @@ HexPkt *hex_get_stale_pkt(HexState *state) {
 	HexPkt *stale_state_pkt = &state->pkts[0];
 	ut64 oldest = UT64_MAX;
 
-	for (ut8 i = 0; i < HEXAGON_STATE_PKTS; ++i) {
+	for (int i = 0; i < HEXAGON_STATE_PKTS; ++i) {
 		if (state->pkts[i].last_access < oldest) {
 			stale_state_pkt = &state->pkts[i];
 		}
@@ -130,7 +130,7 @@ HexPkt *hex_get_pkt(HexState *state, const ut32 addr) {
 	HexPkt *p;
 	HexInsn *pi;
 	RzListIter *iter;
-	for (ut8 i = 0; i < HEXAGON_STATE_PKTS; ++i) {
+	for (int i = 0; i < HEXAGON_STATE_PKTS; ++i) {
 		p = &state->pkts[i];
 		rz_list_foreach (p->insn, iter, pi) {
 			if (addr == pi->addr) {
@@ -174,7 +174,7 @@ ut32 hex_get_pkt_addr(HexState *state, const ut32 addr) {
 	HexPkt *p;
 	HexInsn *pi;
 	RzListIter *iter;
-	for (ut8 i = 0; i < HEXAGON_STATE_PKTS; ++i) {
+	for (int i = 0; i < HEXAGON_STATE_PKTS; ++i) {
 		p = &state->pkts[i];
 		rz_list_foreach (p->insn, iter, pi) {
 			if (addr == pi->addr) {
@@ -189,6 +189,24 @@ ut32 hex_get_pkt_addr(HexState *state, const ut32 addr) {
 		}
 	}
 	return addr;
+}
+
+/**
+ * \brief Get the index of a packet in the state
+ *
+ * \param state The state to operade on.
+ * \param p The packet whichs index should be determined.
+ * \return ut8 The index of the packet in the given state. UT8_MAX if it is not in the state.
+ */
+static ut8 get_state_pkt_index(HexState *state, const HexPkt *p) {
+	HexPkt *sp;
+	for (int i = 0; i < HEXAGON_STATE_PKTS; ++i) {
+		sp = &state->pkts[i];
+		if (sp->pkt_addr == p->pkt_addr) {
+			return i;
+		}
+	}
+	return UT8_MAX;
 }
 
 /**
@@ -319,10 +337,10 @@ static void make_next_packet_valid(HexState *state, const HexPkt *pkt) {
             p->is_valid = true;
             HexInsn *hi;
             RzListIter *it;
-            ut8 i = 0;
+            ut8 k = 0;
             rz_list_foreach(p->insn, it, hi) {
-                hex_set_pkt_info(hi, p, i, true);
-                ++i;
+                hex_set_pkt_info(hi, p, k, true);
+                ++k;
             }
             p->last_access = rz_time_now();
             break;
@@ -387,29 +405,24 @@ static HexInsn *hex_add_to_pkt(HexState *state, const HexInsn *new_ins, RZ_INOUT
  * \param p The packet which will be cleaned and which will hold the instruction.
  * \return HexInsn* Pointer to the copied instruction on the heap.
  */
-static HexInsn *hex_overwrite_pkt(HexState *state, const HexInsn *new_ins, RZ_INOUT HexPkt *p) {
-	HexLoopAttr loop_attr = p->loop_attr;
-	ut32 hw0 = p->hw_loop0_addr;
-	ut32 hw1 = p->hw_loop1_addr;
-	bool valid = (p->is_valid || p->last_instr_present);
-
-	hex_clear_pkt(p);
+static HexInsn *hex_to_new_pkt(HexState *state, const HexInsn *new_ins, const HexPkt *p, RZ_INOUT HexPkt *new_p) {
+	hex_clear_pkt(new_p);
 
 	HexInsn *hi = alloc_instr();
 	memcpy(hi, new_ins, sizeof(HexInsn));
-	rz_list_insert(p->insn, 0, hi);
+	rz_list_insert(new_p->insn, 0, hi);
 
-	p->last_instr_present |= is_last_instr(hi->parse_bits);
-	p->loop_attr = loop_attr;
-	p->hw_loop0_addr = hw0;
-	p->hw_loop1_addr = hw1;
-	unset_ended_loop_flags(p);
-	p->is_valid = valid;
-	p->pkt_addr = hi->addr;
-	p->last_access = rz_time_now();
-	hex_set_pkt_info(hi, p, 0, false);
-	if (p->last_instr_present) {
-        make_next_packet_valid(state, p);
+	new_p->last_instr_present |= is_last_instr(hi->parse_bits);
+	new_p->loop_attr = p->loop_attr;
+	new_p->hw_loop0_addr = p->hw_loop0_addr;
+	new_p->hw_loop1_addr = p->hw_loop1_addr;
+	unset_ended_loop_flags(new_p);
+	new_p->is_valid = (p->is_valid || p->last_instr_present);
+	new_p->pkt_addr = hi->addr;
+	new_p->last_access = rz_time_now();
+	hex_set_pkt_info(hi, new_p, 0, false);
+	if (new_p->last_instr_present) {
+        make_next_packet_valid(state, new_p);
     }
 	return hi;
 }
@@ -455,7 +468,7 @@ HexInsn *hex_add_instr_to_state(HexState *state, const HexInsn *new_ins) {
 		return NULL;
 	}
 	bool add_to_pkt = false;
-	bool overwrite_pkt = false;
+	bool new_pkt = false;
 	bool write_to_stale_pkt = false;
 	bool insert_before_pkt_hi = false;
 	ut8 k = 0; // New instruction position in packet.
@@ -471,7 +484,7 @@ HexInsn *hex_add_instr_to_state(HexState *state, const HexInsn *new_ins) {
 		return hex_add_to_stale_pkt(state, new_ins);
 	}
 
-	for (ut8 i = 0; i < HEXAGON_STATE_PKTS; ++i, k = 0) {
+	for (int i = 0; i < HEXAGON_STATE_PKTS; ++i, k = 0) {
 		p = &(state->pkts[i]);
 
 		HexInsn *pkt_instr; // Instructions already in the packet.
@@ -489,7 +502,7 @@ HexInsn *hex_add_instr_to_state(HexState *state, const HexInsn *new_ins) {
 				}
 			} else if (new_ins->addr == pkt_instr->addr + 4) {
 				if (is_last_instr(pkt_instr->parse_bits) || is_pkt_full(p)) {
-					overwrite_pkt = true;
+					new_pkt = true;
 					break;
 				} else {
 					add_to_pkt = true;
@@ -498,7 +511,7 @@ HexInsn *hex_add_instr_to_state(HexState *state, const HexInsn *new_ins) {
 			}
 			++k;
 		}
-		if (add_to_pkt || overwrite_pkt || write_to_stale_pkt) {
+		if (add_to_pkt || new_pkt || write_to_stale_pkt) {
 			break;
 		}
 	}
@@ -510,8 +523,9 @@ HexInsn *hex_add_instr_to_state(HexState *state, const HexInsn *new_ins) {
 		}
 		return hex_add_to_pkt(state, new_ins, p, k + 1);
 
-	} else if (overwrite_pkt) {
-		return hex_overwrite_pkt(state, new_ins, p);
+	} else if (new_pkt) {
+		ut8 ni = (get_state_pkt_index(state, p) + 1) % HEXAGON_STATE_PKTS;
+		return hex_to_new_pkt(state, new_ins, p, &state->pkts[ni]);
 	} else {
 		return hex_add_to_stale_pkt(state, new_ins);
 	}
