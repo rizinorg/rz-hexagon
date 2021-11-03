@@ -2,6 +2,7 @@ NAME=hexagon jumps
 FILE=bins/elf/analysis/hexagon-hello-loop
 CMDS=<<EOF
 b 0x100000
+e analysis.jmp.cref=true
 s sym.main
 aaa
 afx
