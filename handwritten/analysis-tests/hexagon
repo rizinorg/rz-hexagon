@@ -198,7 +198,7 @@ e analysis.arch=hexagon
 pi 46
 EOF
 EXPECT=<<EOF
-? <invalid>
+? invalid
 / R0 = ##0x1
 | R1 = and(R16,##0xff)
 | R2 = and(R16,##0xff)
