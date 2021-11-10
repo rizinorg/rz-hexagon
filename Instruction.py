@@ -3,23 +3,14 @@
 # SPDX-License-Identifier: LGPL-3.0-only
 
 from copy import deepcopy
-from enum import IntFlag
 
 from Immediate import Immediate
 from ImplementationException import ImplementationException
-from InstructionTemplate import InstructionTemplate
+from InstructionTemplate import InstructionTemplate, LoopMembership
 from Operand import Operand, OperandType
 from InstructionEncoding import InstructionEncoding
 from Register import Register
 from helperFunctions import *
-
-
-class LoopMembership(IntFlag):
-    HEX_NO_LOOP = 0
-    HEX_LOOP_0 = 1
-    HEX_LOOP_1 = 2
-    HEX_ENDS_LOOP_0 = 4
-    HEX_ENDS_LOOP_1 = 8
 
 
 class Instruction(InstructionTemplate):

@@ -105,7 +105,6 @@ RZ_API ut8 hexagon_get_pkt_index_of_addr(const ut32 addr, const HexPkt *p) {
  * \param p The packet to clear.
  */
 static void hex_clear_pkt(RZ_NONNULL HexPkt *p) {
-	p->loop_attr = HEX_NO_LOOP;
 	p->last_instr_present = false;
 	p->is_valid = false;
 	p->last_access = 0;
@@ -228,26 +227,6 @@ static inline bool is_pkt_full(const HexPkt *p) {
 }
 
 /**
- * \brief If a HEX_ENDS_LOOP flag is set, this and the corresponding loop flag will be unset.
- * 
- * \param la The loop attribute.
- */
-static void unset_ended_loop_flags(HexPkt *p) {
-	if (!p) {
-		return;
-	}
-
-	if (p->loop_attr & HEX_ENDS_LOOP_0) {
-		p->loop_attr &= ~(HEX_ENDS_LOOP_0 | HEX_LOOP_0);
-		p->hw_loop0_addr = 0;
-	}
-	if (p->loop_attr & HEX_ENDS_LOOP_1) {
-		p->loop_attr &= ~(HEX_ENDS_LOOP_1 | HEX_LOOP_1);
-		p->hw_loop1_addr = 0;
-	}
-}
-
-/**
  * \brief Sets the packet related information in an instruction.
  * 
  * \param hi The instruction.
@@ -258,8 +237,6 @@ static void hex_set_pkt_info(RZ_INOUT HexInsn *hi, const HexPkt *p, const ut8 k,
 	rz_return_if_fail(hi && p);
 	bool is_first = (k == 0);
 	HexPktInfo *hi_pi = &hi->pkt_info;
-
-	hi_pi->loop_attr |= p->loop_attr;
 
 	strncpy(hi_pi->syntax_postfix, "", 16);
 	// Parse instr. position in pkt
@@ -283,16 +260,21 @@ static void hex_set_pkt_info(RZ_INOUT HexInsn *hi, const HexPkt *p, const ut8 k,
 	} else if (is_last_instr(hi->parse_bits)) {
 		hi_pi->first_insn = false;
 		hi_pi->last_insn = true;
-		ut8 endloop01 = (HEX_ENDS_LOOP_0 | HEX_ENDS_LOOP_1);
 		if (p->is_valid) {
 			strncpy(hi_pi->syntax_prefix, "\\ ", 8); // TODO Add utf8 option "└"
 
-			if ((hi_pi->loop_attr & endloop01) == endloop01) {
+			switch (hex_get_loop_flag(p)) {
+			default:
+				break;
+			case HEX_LOOP_01:
 				strncpy(hi_pi->syntax_postfix, "   < endloop01", 16); // TODO Add utf8 option "∎"
-			} else if (hi_pi->loop_attr & HEX_ENDS_LOOP_0) {
+				break;
+			case HEX_LOOP_0:
 				strncpy(hi_pi->syntax_postfix, "   < endloop0", 16);
-			} else if (hi_pi->loop_attr & HEX_ENDS_LOOP_1) {
+				break;
+			case HEX_LOOP_1:
 				strncpy(hi_pi->syntax_postfix, "   < endloop1", 16);
+				break;
 			}
 		} else {
 			strncpy(hi_pi->syntax_prefix, "? ", 8);
@@ -312,24 +294,29 @@ static void hex_set_pkt_info(RZ_INOUT HexInsn *hi, const HexPkt *p, const ut8 k,
 }
 
 /**
- * \brief Set the end loop flags of a packet with at least two instruction.
+ * \brief Returns the loop type of a packet. Though only if this packet is
+ * 	the last packet in last packet in a harwadr loop. Otherwise it returns
+ * 	HEX_NO_LOOP.
  * 
- * \param p The packet whichs flags are set.
+ * \param p The instruction packet.
+ * \return HexLoopAttr The loop type this packet belongs to.
  */
-static void set_end_loop_flags(HexPkt *p) {
+RZ_API HexLoopAttr hex_get_loop_flag(const HexPkt *p) {
 	if (!p || rz_list_length(p->insn) < 2) {
-		return;
+		return HEX_NO_LOOP;
 	}
 
 	ut8 pb_0 = ((HexInsn *)rz_list_get_n(p->insn, 0))->parse_bits;
 	ut8 pb_1 = ((HexInsn *)rz_list_get_n(p->insn, 1))->parse_bits;
 
 	if (is_endloop0_pkt(pb_0, pb_1)) {
-		p->loop_attr |= HEX_ENDS_LOOP_0;
+		return HEX_LOOP_0;
 	} else if (is_endloop1_pkt(pb_0, pb_1)) {
-		p->loop_attr |= HEX_ENDS_LOOP_1;
+		return HEX_LOOP_1;
 	} else if (is_endloop01_pkt(pb_0, pb_1)) {
-		p->loop_attr |= (HEX_ENDS_LOOP_0 | HEX_ENDS_LOOP_1);
+		return HEX_LOOP_01;
+	} else {
+		return HEX_NO_LOOP;
 	}
 }
 
@@ -402,7 +389,6 @@ static HexInsn *hex_add_to_pkt(HexState *state, const HexInsn *new_ins, RZ_INOUT
 		p->pkt_addr = hi->addr;
 	}
 	p->last_instr_present |= is_last_instr(hi->parse_bits);
-	set_end_loop_flags(p);
 	ut32 p_l = rz_list_length(p->insn);
 	hex_set_pkt_info(hi, p, k, false);
 	if (k == 0 && p_l > 1) {
@@ -432,10 +418,8 @@ static HexInsn *hex_to_new_pkt(HexState *state, const HexInsn *new_ins, const He
 	rz_list_insert(new_p->insn, 0, hi);
 
 	new_p->last_instr_present |= is_last_instr(hi->parse_bits);
-	new_p->loop_attr = p->loop_attr;
 	new_p->hw_loop0_addr = p->hw_loop0_addr;
 	new_p->hw_loop1_addr = p->hw_loop1_addr;
-	unset_ended_loop_flags(new_p);
 	new_p->is_valid = (p->is_valid || p->last_instr_present);
 	new_p->pkt_addr = hi->addr;
 	new_p->last_access = rz_time_now();

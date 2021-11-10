@@ -52,14 +52,12 @@ typedef enum {
 	HEX_NO_LOOP = 0,
 	HEX_LOOP_0 = 1, // Is packet of loop0
 	HEX_LOOP_1 = 1 << 1, // Is packet of loop1
-	HEX_ENDS_LOOP_0 = 1 << 2, // Packet ends loop0?
-	HEX_ENDS_LOOP_1 = 1 << 3, // Packet ends loop1?
+	HEX_LOOP_01 = 1 << 2 // Belongs to loop 0 and 1
 } HexLoopAttr;
 
 typedef struct {
 	bool first_insn;
 	bool last_insn;
-	HexLoopAttr loop_attr;
 	char syntax_prefix[8]; // Package indicator
 	char syntax_postfix[16]; // for ":endloop" string.
 } HexPktInfo;
@@ -97,7 +95,6 @@ typedef struct {
 	RzList *insn; // List of instructions.
 	bool last_instr_present; // Has an instruction the parsing bits 0b11 set (is last instruction).
 	bool is_valid; // Is it a valid packet? Do we know which instruction is the first?
-	HexLoopAttr loop_attr; // Flags to which loops the packet might belongs to.
 	ut32 hw_loop0_addr; // Start address of hardware loop 0
 	ut32 hw_loop1_addr; // Start address of hardware loop 1
 	ut64 last_access; // Last time accessed in milliseconds
