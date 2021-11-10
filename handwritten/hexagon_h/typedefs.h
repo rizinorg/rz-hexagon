@@ -86,8 +86,8 @@ typedef struct {
 	HexPktInfo pkt_info; // Packet related information. First/last instr., prefix and postfix for mnemonic etc.
 	ut8 op_count;
 	HexOp ops[6];
-	char mnem_infix[104]; // The mnemonic without the pre- and postfix.
-	char mnem[128]; // Instruction mnemonic
+	char mnem_infix[128]; // The mnemonic without the pre- and postfix.
+	char mnem[192]; // Instruction mnemonic
 	ut32 addr; // Memory address the instruction is located.
 	RzAsmOp asm_op;
 	RzAnalysisOp ana_op;

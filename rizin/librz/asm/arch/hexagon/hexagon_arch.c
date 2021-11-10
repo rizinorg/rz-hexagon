@@ -261,6 +261,7 @@ static void hex_set_pkt_info(RZ_INOUT HexInsn *hi, const HexPkt *p, const ut8 k,
 
 	hi_pi->loop_attr |= p->loop_attr;
 
+	strncpy(hi_pi->syntax_postfix, "", 16);
 	// Parse instr. position in pkt
 	if (is_first && is_last_instr(hi->parse_bits)) { // Single instruction packet.
 		hi_pi->first_insn = true;
