@@ -359,39 +359,40 @@ class LLVMImporter:
                 set_pos_after_license(include)
                 dest.writelines(include.readlines())
 
-            with open("handwritten/hexagon_disas_c/functions.c") as functions:
-                set_pos_after_license(functions)
-                dest.writelines(functions.readlines())
-
             main_function = (
                 "int hexagon_disasm_instruction(HexState *state, const ut32 hi_u32, RZ_INOUT HexInsn *hi, HexPkt *pkt) {\n"
                 + "ut32 addr = hi->addr;\n"
             )
 
+            main_function += "switch (hex_get_loop_flag(pkt)) {" + "default: break;"
             main_function += (
-                "if (is_endloop01_instr(hi, pkt)) {\n"
-                + "hi->ana_op.type = RZ_ANALYSIS_OP_TYPE_CJMP;\n"
-                + "hi->ana_op.fail = pkt->hw_loop0_addr;\n"
-                + "hi->ana_op.jump = pkt->hw_loop1_addr;\n"
+                "case HEX_LOOP_01:"
+                + "hi->ana_op.type = RZ_ANALYSIS_OP_TYPE_CJMP;"
+                + "hi->ana_op.fail = pkt->hw_loop0_addr;"
+                + "hi->ana_op.jump = pkt->hw_loop1_addr;"
                 + "hi->ana_op.val = hi->ana_op.jump;"
                 + "hi->ana_op.analysis_vals[0].imm = (st64) hi->ana_op.fail;"
-                + "pkt->hw_loop1_addr = 0;\n"
-                + "pkt->hw_loop0_addr = 0;\n}\n"
+                + "pkt->hw_loop1_addr = 0;"
+                + "pkt->hw_loop0_addr = 0;"
+                + "break;\n"
             )
             main_function += (
-                "else if (is_endloop0_instr(hi, pkt)) {\n"
-                + "hi->ana_op.type = RZ_ANALYSIS_OP_TYPE_CJMP;\n"
-                + "hi->ana_op.jump = pkt->hw_loop0_addr;\n"
+                "case HEX_LOOP_0:\n"
+                + "hi->ana_op.type = RZ_ANALYSIS_OP_TYPE_CJMP;"
+                + "hi->ana_op.jump = pkt->hw_loop0_addr;"
                 + "hi->ana_op.val = hi->ana_op.jump;"
-                + "pkt->hw_loop0_addr = 0;\n}\n"
+                + "pkt->hw_loop0_addr = 0;"
+                + "break;\n"
             )
             main_function += (
-                "else if (is_endloop1_instr(hi, pkt)) {\n"
-                + "hi->ana_op.type = RZ_ANALYSIS_OP_TYPE_CJMP;\n"
-                + "hi->ana_op.jump = pkt->hw_loop1_addr;\n"
+                "case HEX_LOOP_1:\n"
+                + "hi->ana_op.type = RZ_ANALYSIS_OP_TYPE_CJMP;"
+                + "hi->ana_op.jump = pkt->hw_loop1_addr;"
                 + "hi->ana_op.val = hi->ana_op.jump;"
-                + "pkt->hw_loop1_addr = 0;\n}\n"
+                + "pkt->hw_loop1_addr = 0;"
+                + "break;"
             )
+            main_function += "}"
 
             main_function += (
                 "if (hi_u32 != 0x00000000) {\n"
@@ -457,7 +458,6 @@ class LLVMImporter:
             main_function += (
                 "if (hi->instruction == HEX_INS_INVALID_DECODE) {\n"
                 + "hi->parse_bits = ((hi_u32) & 0xc000) >> 14;\n"
-                + "hi->pkt_info.loop_attr = HEX_NO_LOOP;\n"
                 + 'sprintf(hi->mnem_infix, "invalid");\n'
                 + 'sprintf(hi->mnem, "%s%s%s", hi->pkt_info.syntax_prefix, hi->mnem_infix, hi->pkt_info.syntax_postfix);\n'
                 + "}\n"

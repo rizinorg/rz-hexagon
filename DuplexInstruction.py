@@ -9,9 +9,8 @@ import HexagonArchInfo
 import PluginInfo
 from Immediate import Immediate
 from ImplementationException import ImplementationException
-from Instruction import LoopMembership
 from InstructionEncoding import InstructionEncoding
-from InstructionTemplate import InstructionTemplate
+from InstructionTemplate import InstructionTemplate, LoopMembership
 from Operand import Operand, OperandType
 from Register import Register
 from SubInstruction import SubInstruction, SubInstrNamespace

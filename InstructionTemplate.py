@@ -2,6 +2,7 @@
 #
 # SPDX-License-Identifier: LGPL-3.0-only
 
+from enum import IntFlag
 import re
 
 import HexagonArchInfo
@@ -14,6 +15,14 @@ from InstructionEncoding import InstructionEncoding
 from Operand import Operand, OperandType
 from UnexpectedException import UnexpectedException
 from helperFunctions import bitarray_to_uint, log, LogLevel
+
+
+class LoopMembership(IntFlag):
+    HEX_NO_LOOP = 0
+    HEX_LOOP_0 = 1
+    HEX_LOOP_1 = 2
+    HEX_ENDS_LOOP_0 = 4
+    HEX_ENDS_LOOP_1 = 8
 
 
 class InstructionTemplate:
@@ -203,7 +212,6 @@ class InstructionTemplate:
             var, self.encoding.parse_bits_mask
         )
         code += self.get_predicate_init()
-        code += "{}pkt->loop_attr |= {};\n".format(indent, self.loop_member.name)
 
         if self.is_duplex:
             code += "{}hi->duplex = {};\n".format(indent, str(self.is_duplex).lower())
@@ -348,14 +356,10 @@ class InstructionTemplate:
             if self.is_predicated:
                 code += "hi->ana_op.fail = hi->ana_op.addr + 4;\n"
             if self.is_loop_begin:
-                code += (
-                    "if (is_loop0_begin(hi)) {\n"
-                    + "pkt->hw_loop0_addr = hi->ana_op.jump;\n}\n"
-                )
-                code += (
-                    "else if (is_loop1_begin(hi)) {\n"
-                    + "pkt->hw_loop1_addr = hi->ana_op.jump;\n}\n"
-                )
+                if self.loop_member == LoopMembership.HEX_LOOP_0:
+                    code += "pkt->hw_loop0_addr = hi->ana_op.jump;"
+                if self.loop_member == LoopMembership.HEX_LOOP_1:
+                    code += "pkt->hw_loop1_addr = hi->ana_op.jump;"
 
         keys = list(self.operands)
         for k in range(6):  # RzAnalysisOp.analysis_vals has a size of 8.
