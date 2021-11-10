@@ -19,6 +19,19 @@ static inline bool is_endloop0_pkt(const ut8 pb_hi_0, const ut8 pb_hi_1) {
 }
 
 /**
+ * \brief Checks if packet ends hardware loop 0. But for an undocumented variant
+ * 	where the packet has only two instructions and the last one is a Duplex.
+ * 
+ * \param pb_hi_0 Parse bits instruction 0.
+ * \param pb_hi_1 Parse bits instruction 1 (duplex and end of packet).
+ * \return true Packet ends hardware loop 0.
+ * \return false Packet does not end hardware loop 0.
+ */
+static inline bool is_undoc_endloop0_pkt(const ut8 pb_hi_0, const ut8 pb_hi_1) {
+	return ((pb_hi_0 == 0x2) && (pb_hi_1 == 0x0));
+}
+
+/**
  * \brief Checks if packet ends hardware loop 1.
  * 
  * \param pb_hi_0 Parse bits instruction 0.
@@ -304,6 +317,9 @@ RZ_API HexLoopAttr hex_get_loop_flag(const HexPkt *p) {
 		return HEX_LOOP_1;
 	} else if (is_endloop01_pkt(pb_0, pb_1)) {
 		return HEX_LOOP_01;
+	} else if (is_undoc_endloop0_pkt(pb_0, pb_1)) {
+		RZ_LOG_VERBOSE("Undocumented hardware loop 0 endloop packet.");
+		return HEX_LOOP_0;
 	} else {
 		return HEX_NO_LOOP;
 	}
