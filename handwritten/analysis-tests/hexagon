@@ -46,6 +46,7 @@ aar
 /ai 0xbeef
 /ai -8
 /ai 0x1c00
+/ai 0xffffff40 0xffffffff
 EOF
 EXPECT=<<EOF
 0x00000b80   # 4: [     R0.h = #0xdead
@@ -85,6 +86,16 @@ EXPECT=<<EOF
 0x00005170   # 4: / immext(##0x1c00)
 0x00005178   # 4: | immext(##0x1c00)
 0x00005180   # 4: / immext(##0x1c00)
+0x000060e4   # 4: / immext(##0xffffffc0)
+0x000060e8   # 4: | R2 = add(R2,add(R3,##-0x30))
+0x000061e4   # 4: / immext(##0xffffffc0)
+0x000061e8   # 4: | R2 = add(R2,add(R3,##-0x30))
+0x00006264   # 4: / immext(##0xffffffc0)
+0x00006268   # 4: | R2 = add(R2,add(R3,##-0x30))
+0x00007140   # 4: | immext(##0xffffffc0)
+0x00007144   # 4: | R0 = add(##0xfffffffa,mpyi(R2,#0x6))
+0x00009684   # 4: | immext(##0xffffff40)
+0x00009688   # 4: \ memh(R0+#0x0) = ##-0x81
 EOF
 RUN
 
