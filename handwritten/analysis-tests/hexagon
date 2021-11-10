@@ -200,6 +200,26 @@ EXPECT=<<EOF
 EOF
 RUN
 
+NAME=hexagon undocumented hardware loop
+FILE==
+CMDS=<<EOF
+wx 04c0947c20410069414041752240017543c00175838003b055314420
+e asm.arch=hexagon
+e analysis.arch=hexagon
+pi 7
+EOF
+EXPECT=<<EOF
+? R5:4 = combine(#0x0,##0x28)
+/ loop0(0x14,#0x4)
+| P1 = cmp.gt(R1,##0x2)
+| P2 = cmp.eq(R1,##0x1)
+\ P3 = cmp.eq(R1,##0x2)
+/ R3 = add(R3,##0x4)
+\ R4 = add(R4in,##0x4) ; R5 = add(R5,#1)   < endloop0
+EOF
+RUN
+
+
 NAME=hexagon Nt.new register
 FILE==
 CMDS=<<EOF
