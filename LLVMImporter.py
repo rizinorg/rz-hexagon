@@ -359,6 +359,10 @@ class LLVMImporter:
                 set_pos_after_license(include)
                 dest.writelines(include.readlines())
 
+            with open("handwritten/hexagon_disas_c/functions.c") as functions:
+                set_pos_after_license(functions)
+                dest.writelines(functions.readlines())
+
             main_function = (
                 "int hexagon_disasm_instruction(HexState *state, const ut32 hi_u32, RZ_INOUT HexInsn *hi, HexPkt *pkt) {\n"
                 + "ut32 addr = hi->addr;\n"
@@ -455,6 +459,10 @@ class LLVMImporter:
 
             # Closing brackets for switch, else, function
             main_function += "}\n}\n}"
+            main_function += (
+                "if (pkt->is_eob && is_last_instr(hi->parse_bits)) {"
+                + "hi->ana_op.eob = true;}"
+            )
             main_function += (
                 "if (hi->instruction == HEX_INS_INVALID_DECODE) {\n"
                 + "hi->parse_bits = ((hi_u32) & 0xc000) >> 14;\n"
