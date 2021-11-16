@@ -339,7 +339,7 @@ class InstructionTemplate:
         code += self.get_rizin_op_type()
         if self.has_imm_jmp_target():
             if not self.is_call and not self.is_predicated:
-                code += "hi->ana_op.eob = true;\n"  # Marks potentially end of block
+                code += "pkt->is_eob = true;\n"  # Marks potentially end of block
 
             index = self.get_jmp_operand_syntax_index()
             if index < 0:

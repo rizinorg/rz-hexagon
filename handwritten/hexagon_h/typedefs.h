@@ -99,6 +99,7 @@ typedef struct {
 	ut32 hw_loop1_addr; // Start address of hardware loop 1
 	ut64 last_access; // Last time accessed in milliseconds
 	ut32 pkt_addr; // Address of the packet. Equals the address of the first instruction.
+	bool is_eob; // Is this packet the end of a code block? E.g. contains unconditional jmp.
 } HexPkt;
 
 typedef struct {
