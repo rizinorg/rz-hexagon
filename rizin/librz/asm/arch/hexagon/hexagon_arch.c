@@ -419,11 +419,12 @@ static HexInsn *hex_add_to_pkt(HexState *state, const HexInsn *new_ins, RZ_INOUT
 }
 
 /**
- * \brief Cleans the packet p and copies the instruction to it. 
+ * \brief Cleans the packet \p new_p, copies the instruction \p new_ins and the attributes of \p p to it.
  * 
  * \param state The state to operade on.
  * \param new_ins The instruction to copy.
- * \param p The packet which will be cleaned and which will hold the instruction.
+ * \param p The old packet whichs attributes are copied to the new one.
+ * \param new_p The new packet will hold the instruction.
  * \return HexInsn* Pointer to the copied instruction on the heap.
  */
 static HexInsn *hex_to_new_pkt(HexState *state, const HexInsn *new_ins, const HexPkt *p, RZ_INOUT HexPkt *new_p) {
