@@ -27,7 +27,7 @@ static int disassemble(RzAsm *a, RzAsmOp *op, const ut8 *buf, int l) {
 	ut32 addr = (ut32)a->pc;
 	HexReversedOpcode rev = { .action = HEXAGON_DISAS, .ana_op = NULL, .asm_op = op };
 
-	hexagon_reverse_opcode(&rev, buf, addr);
+	hexagon_reverse_opcode(a, &rev, buf, addr);
 
 	return op->size;
 }

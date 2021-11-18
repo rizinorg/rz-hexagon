@@ -223,7 +223,7 @@ class InstructionTemplate:
         sprint_src = ""
         for op in sorted(self.operands.values(), key=lambda item: item.syntax_index):
             if op.type == OperandType.IMMEDIATE and op.is_constant:
-                mnemonic = re.sub(r"#[nN]1", r"#-1", mnemonic)
+                mnemonic = re.sub(r"[nN]1", r"-1", mnemonic)
                 continue
 
             code += "{}hi->ops[{}].type = {};\n".format(
@@ -266,6 +266,7 @@ class InstructionTemplate:
                 code += "{}hi->ops[{}].op.imm = {}".format(
                     indent, op.syntax_index, op.code_opcode_parsing
                 )
+                h = "#" if op.total_width != 32 else "##"
                 # If there is only one immediate operand in the instruction extend it anyways.
                 # LLVM marks some operands as not extendable, although they are.
                 if only_one_imm_op and not op.is_extendable:
@@ -279,15 +280,15 @@ class InstructionTemplate:
                     )
                     mnemonic = re.sub(op.explicit_syntax, "0x%x", mnemonic)
                 elif op.is_signed:
-                    # TODO This is really complex and shouldn't be here
-                    h = "#" if op.total_width != 32 else "##"
                     code += "{}if (((st32) hi->ops[{}].op.imm) < 0) {{\n".format(
                         indent, op.syntax_index
                     )
                     code += (
-                        'sprintf(signed_imm[{}], "%s%s0x%x", "'.format(op.syntax_index)
+                        'sprintf(signed_imm[{}], "%s%s0x%x", '.format(op.syntax_index)
+                        + '!rz_asm->immdisp ? "'
                         + h
-                        + '", "-", abs((st32) hi->ops[{}].op.imm)); // Add a minus sign before hex number\n'.format(
+                        + '" : "", '
+                        + '"-", abs((st32) hi->ops[{}].op.imm)); // Add a minus sign before hex number\n'.format(
                             op.syntax_index
                         )
                     )
@@ -295,22 +296,23 @@ class InstructionTemplate:
                     code += "{}else {{\n".format(indent)
 
                     code += (
-                        'sprintf(signed_imm[{}], "%s0x%x", "'.format(op.syntax_index)
+                        'sprintf(signed_imm[{}], "%s0x%x", '.format(op.syntax_index)
+                        + '!rz_asm->immdisp ? "'
                         + h
-                        + '", (st32) hi->ops[{}].op.imm);\n'.format(op.syntax_index)
+                        + '" : "", '
+                        + "(st32) hi->ops[{}].op.imm);\n".format(op.syntax_index)
                     )
                     code += "}\n"
 
                     src = ", signed_imm[{}]".format(op.syntax_index)
-                    mnemonic = re.sub(r"#?" + op.explicit_syntax, "%s", mnemonic)
+                    mnemonic = re.sub(r"#{0,2}" + op.explicit_syntax, "%s", mnemonic)
                 else:
-                    src = ", (ut32) hi->ops[{}].op.imm".format(op.syntax_index)
-                    if op.total_width == 32:
-                        # 32bit values are marked with ##. Non 32bit values with #. Don't care without.
-                        # Add the second # to the syntax in case of 32bit value.
-                        mnemonic = re.sub(op.explicit_syntax, "#0x%x", mnemonic)
-                    else:
-                        mnemonic = re.sub(op.explicit_syntax, "0x%x", mnemonic)
+                    mnemonic = re.sub(op.explicit_syntax, "%s0x%x", mnemonic)
+                    src = (
+                        ', !rz_asm->immdisp ? "'
+                        + h
+                        + '" : "" ,(ut32) hi->ops[{}].op.imm'.format(op.syntax_index)
+                    )
 
                 sprint_src += src
             else:

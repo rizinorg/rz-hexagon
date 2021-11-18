@@ -22,7 +22,7 @@ RZ_API int hexagon_v6_op(RzAnalysis *analysis, RzAnalysisOp *op, ut64 addr, cons
 
 	HexReversedOpcode rev = { .action = HEXAGON_ANALYSIS, .ana_op = op, .asm_op = NULL };
 
-	hexagon_reverse_opcode(&rev, buf, addr);
+	hexagon_reverse_opcode(NULL, &rev, buf, addr);
 
 	return op->size;
 }

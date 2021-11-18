@@ -364,7 +364,7 @@ class LLVMImporter:
                 dest.writelines(functions.readlines())
 
             main_function = (
-                "int hexagon_disasm_instruction(HexState *state, const ut32 hi_u32, RZ_INOUT HexInsn *hi, HexPkt *pkt) {\n"
+                "int hexagon_disasm_instruction(const RzAsm *rz_asm, HexState *state, const ut32 hi_u32, RZ_INOUT HexInsn *hi, HexPkt *pkt) {\n"
                 + "ut32 addr = hi->addr;\n"
             )
 
@@ -410,11 +410,11 @@ class LLVMImporter:
             # Duplexes
             for c in range(0xF):  # Class 0xf is reserved yet.
                 main_function += "{}case 0x{:x}:\n".format(indent * 3, c)
-                main_function += "hexagon_disasm_duplex_0x{:x}(state, hi_u32, hi, addr, pkt);\n".format(
+                main_function += "hexagon_disasm_duplex_0x{:x}(rz_asm, state, hi_u32, hi, addr, pkt);\n".format(
                     c
                 )
                 func_body = ""
-                func_header = "void hexagon_disasm_duplex_0x{:x}(HexState *state, const ut32 hi_u32, HexInsn *hi, const ut32 addr, HexPkt *pkt) {{\n".format(
+                func_header = "void hexagon_disasm_duplex_0x{:x}(const RzAsm *rz_asm, HexState *state, const ut32 hi_u32, HexInsn *hi, const ut32 addr, HexPkt *pkt) {{\n".format(
                     c
                 )
                 for d_instr in self.duplex_instructions.values():
@@ -436,12 +436,12 @@ class LLVMImporter:
             main_function += "switch (({} >> 28) & 0xF) {{\n".format(var)
             for c in range(0x10):
                 main_function += "case 0x{:x}:\n".format(c)
-                main_function += (
-                    "hexagon_disasm_0x{:x}(state, hi_u32, hi, addr, pkt);\n".format(c)
+                main_function += "hexagon_disasm_0x{:x}(rz_asm, state, hi_u32, hi, addr, pkt);\n".format(
+                    c
                 )
 
                 func_body = ""
-                func_header = "void hexagon_disasm_0x{:x}(HexState *state, const ut32 hi_u32, HexInsn *hi, const ut32 addr, HexPkt *pkt) {{\n".format(
+                func_header = "void hexagon_disasm_0x{:x}(const RzAsm *rz_asm, HexState *state, const ut32 hi_u32, HexInsn *hi, const ut32 addr, HexPkt *pkt) {{\n".format(
                     c
                 )
                 for instr in self.normal_instructions.values():

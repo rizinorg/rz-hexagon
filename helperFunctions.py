@@ -297,7 +297,7 @@ def surround_with_include_guard(filename: str, lines: list) -> list:
 
 
 def normalize_llvm_syntax(llvm_syntax: str) -> str:
-    syntax = re.sub(r"\$", "", llvm_syntax)
+    syntax = re.sub(r"#{0,2}\$", "", llvm_syntax)
     # Any number which stands before a register or immediate letter.
     syntax = re.sub(r"([A-Z][a-z,A-Z]+)[0-9]+", r"\1", syntax)
     # log("Normalized syntax: {} -> {}".format(llvm_syntax, syntax), LogLevel.DEBUG)
