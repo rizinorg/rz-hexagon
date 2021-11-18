@@ -277,3 +277,29 @@ EXPECT=<<EOF
 \ memw(R29+##-0x3d0cc000) = R3.new
 EOF
 RUN
+
+NAME=hexagon hash prefix
+FILE==
+CMDS=<<EOF
+wx 00c0007f0bc0006900404d850040000076d09b9a0ac020690040007f07407c700040000087c40aab048063700080007f00c0007f
+e asm.arch=hexagon
+e analysis.arch=hexagon
+e asm.imm.hash=1
+pi 13
+EOF
+EXPECT=<<EOF
+? nop
+[     loop0(0x8,0x3)
+/ P0 = R13
+| immext(0x0)
+\ R23:22 = memb_fifo(R27=0x3)
+[     loop1(0x18,0x2)
+/ nop
+| R7 = R28
+| immext(0x0)
+\ memb(R10=0x7) = R4
+/ R4 = R3
+| nop
+\ nop   < endloop01
+EOF
+RUN

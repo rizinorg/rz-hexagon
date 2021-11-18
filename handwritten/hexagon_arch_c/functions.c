@@ -629,12 +629,14 @@ RZ_API void hex_extend_op(HexState *state, RZ_INOUT HexOp *op, const bool set_ne
  * \param buf The buffer which stores the current opcode.
  * \param addr The address of the current opcode.
  */
-RZ_API void hexagon_reverse_opcode(HexReversedOpcode *rz_reverse, const ut8 *buf, const ut64 addr) {
+RZ_API void hexagon_reverse_opcode(const RzAsm *rz_asm, HexReversedOpcode *rz_reverse, const ut8 *buf, const ut64 addr) {
 	HexState *state = hexagon_get_state();
 	if (!state) {
 		RZ_LOG_FATAL("HexState was NULL.");
 	}
-
+	if (rz_asm) {
+		memcpy(&state->rz_asm, rz_asm, sizeof(RzAsm));
+	}
 	HexInsn *hi = hex_get_instr_at_addr(state, addr);
 	if (hi) {
 		// Opcode was already reversed and is still in the state. Copy the result and return.
@@ -664,7 +666,7 @@ RZ_API void hexagon_reverse_opcode(HexReversedOpcode *rz_reverse, const ut8 *buf
 	HexPkt *p = hex_get_pkt(state, hi->addr);
 
 	// Do disasassembly and analysis
-	hexagon_disasm_instruction(state, data, hi, p);
+	hexagon_disasm_instruction(&state->rz_asm, state, data, hi, p);
 
 	switch (rz_reverse->action) {
 	default:
