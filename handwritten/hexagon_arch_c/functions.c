@@ -234,7 +234,7 @@ static inline bool is_pkt_full(const HexPkt *p) {
  * \param p The packet the instruction belongs to.
  * \param k The index of the instruction wihin the packet.
  */
-static void hex_set_pkt_info(RZ_INOUT HexInsn *hi, const HexPkt *p, const ut8 k, const bool update_mnemonic) {
+static void hex_set_pkt_info(const RzAsm *rz_asm, RZ_INOUT HexInsn *hi, const HexPkt *p, const ut8 k, const bool update_mnemonic) {
 	rz_return_if_fail(hi && p);
 	bool is_first = (k == 0);
 	HexPktInfo *hi_pi = &hi->pkt_info;
@@ -254,7 +254,7 @@ static void hex_set_pkt_info(RZ_INOUT HexInsn *hi, const HexPkt *p, const ut8 k,
 		hi_pi->first_insn = true;
 		hi_pi->last_insn = false;
 		if (p->is_valid) {
-			strncpy(hi_pi->syntax_prefix, "/ ", 8); // TODO Add utf8 option "┌"
+			strncpy(hi_pi->syntax_prefix, rz_asm->utf8 ? "┌   " : "/ ", 8);
 		} else {
 			strncpy(hi_pi->syntax_prefix, "? ", 8);
 		}
@@ -262,19 +262,19 @@ static void hex_set_pkt_info(RZ_INOUT HexInsn *hi, const HexPkt *p, const ut8 k,
 		hi_pi->first_insn = false;
 		hi_pi->last_insn = true;
 		if (p->is_valid) {
-			strncpy(hi_pi->syntax_prefix, "\\ ", 8); // TODO Add utf8 option "└"
+			strncpy(hi_pi->syntax_prefix, rz_asm->utf8 ? "└   " : "\\ ", 8);
 
 			switch(hex_get_loop_flag(p)) {
 			default:
 				break;
 			case HEX_LOOP_01:
-				strncpy(hi_pi->syntax_postfix, "   < endloop01", 16); // TODO Add utf8 option "∎"
+				strncpy(hi_pi->syntax_postfix, rz_asm->utf8 ? "   ∎ endloop01" : "   < endloop01", 16);
 				break;
 			case HEX_LOOP_0:
-				strncpy(hi_pi->syntax_postfix, "   < endloop0", 16);
+				strncpy(hi_pi->syntax_postfix, rz_asm->utf8 ? "   ∎ endloop0" : "   < endloop0", 16);
 				break;
 			case HEX_LOOP_1:
-				strncpy(hi_pi->syntax_postfix, "   < endloop1", 16);
+				strncpy(hi_pi->syntax_postfix, rz_asm->utf8 ? "   ∎ endloop1" : "   < endloop1", 16);
 				break;
 			}
 		} else {
@@ -284,7 +284,7 @@ static void hex_set_pkt_info(RZ_INOUT HexInsn *hi, const HexPkt *p, const ut8 k,
 		hi_pi->first_insn = false;
 		hi_pi->last_insn = false;
 		if (p->is_valid) {
-			strncpy(hi_pi->syntax_prefix, "| ", 8); // TODO Add utf8 option "│"
+			strncpy(hi_pi->syntax_prefix, rz_asm->utf8 ? "│   " : "| ", 8);
 		} else {
 			strncpy(hi_pi->syntax_prefix, "? ", 8);
 		}
@@ -350,7 +350,7 @@ static void make_next_packet_valid(HexState *state, const HexPkt *pkt) {
 			RzListIter *it = NULL;
 			ut8 k = 0;
 			rz_list_foreach (p->insn, it, hi) {
-				hex_set_pkt_info(hi, p, k, true);
+				hex_set_pkt_info(&state->rz_asm, hi, p, k, true);
 				++k;
 			}
 			p->last_access = rz_time_now();
@@ -395,10 +395,10 @@ static HexInsn *hex_add_to_pkt(HexState *state, const HexInsn *new_ins, RZ_INOUT
 	}
 	p->last_instr_present |= is_last_instr(hi->parse_bits);
 	ut32 p_l = rz_list_length(p->insn);
-	hex_set_pkt_info(hi, p, k, false);
+	hex_set_pkt_info(&state->rz_asm, hi, p, k, false);
 	if (k == 0 && p_l > 1) {
 		// Update the instruction which was previously the first one.
-		hex_set_pkt_info(rz_list_get_n(p->insn, 1), p, 1, true);
+		hex_set_pkt_info(&state->rz_asm, rz_list_get_n(p->insn, 1), p, 1, true);
 	}
 	p->last_access = rz_time_now();
 	if (p->last_instr_present) {
@@ -429,7 +429,7 @@ static HexInsn *hex_to_new_pkt(HexState *state, const HexInsn *new_ins, const He
 	new_p->is_valid = (p->is_valid || p->last_instr_present);
 	new_p->pkt_addr = hi->addr;
 	new_p->last_access = rz_time_now();
-	hex_set_pkt_info(hi, new_p, 0, false);
+	hex_set_pkt_info(&state->rz_asm, hi, new_p, 0, false);
 	if (new_p->last_instr_present) {
 		make_next_packet_valid(state, new_p);
 	}
@@ -455,7 +455,7 @@ static HexInsn *hex_add_to_stale_pkt(HexState *state, const HexInsn *new_ins) {
 	p->pkt_addr = new_ins->addr;
 	// p->is_valid = true; // Setting it true also detects a lot of data as valid assembly.
 	p->last_access = rz_time_now();
-	hex_set_pkt_info(hi, p, 0, false);
+	hex_set_pkt_info(&state->rz_asm, hi, p, 0, false);
 	if (p->last_instr_present) {
 		make_next_packet_valid(state, p);
 	}
