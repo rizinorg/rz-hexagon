@@ -280,20 +280,21 @@ class InstructionTemplate:
                     )
                     mnemonic = re.sub(op.explicit_syntax, "0x%x", mnemonic)
                 elif op.is_signed:
-                    code += "{}if (((st32) hi->ops[{}].op.imm) < 0) {{\n".format(
-                        indent, op.syntax_index
+                    code += "if (rz_asm->immsign && ((st32) hi->ops[{}].op.imm) < 0) {{\n".format(
+                        op.syntax_index
                     )
                     code += (
-                        'sprintf(signed_imm[{}], "%s%s0x%x", '.format(op.syntax_index)
+                        "char tmp[28] = {0};"
+                        + "rz_hex_ut2st_str(hi->ops[{}].op.imm, tmp, 28);".format(
+                            op.syntax_index
+                        )
+                        + 'sprintf(signed_imm[{}], "%s%s", '.format(op.syntax_index)
                         + '!rz_asm->immdisp ? "'
                         + h
                         + '" : "", '
-                        + '"-", abs((st32) hi->ops[{}].op.imm)); // Add a minus sign before hex number\n'.format(
-                            op.syntax_index
-                        )
+                        + "tmp);"
                     )
-                    code += "{}}}\n".format(indent)
-                    code += "{}else {{\n".format(indent)
+                    code += "} else {\n"
 
                     code += (
                         'sprintf(signed_imm[{}], "%s0x%x", '.format(op.syntax_index)

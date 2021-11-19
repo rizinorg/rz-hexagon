@@ -303,3 +303,54 @@ EXPECT=<<EOF
 \ nop   < endloop01
 EOF
 RUN
+
+NAME=hexagon negative immediates without sign
+FILE=bins/elf/analysis/hexagon-hello-loop
+CMDS=<<EOF
+b 0x100000
+aar
+e asm.imm.sign=false
+/ai -8
+/ai 0xffffff40 0xffffffff
+EOF
+EXPECT=<<EOF
+0x0000342c   # 4: | if (!P3) memh(R23++#0xfffffff8) = R11.h
+0x0000511c   # 4: [     R2 = add(R30,##0xfffffff8)
+0x00005128   # 4: [     R2 = memw(R30+##0xfffffff8)
+0x00005144   # 4: [     R2 = memw(R30+##0xfffffff8)
+0x0000514c   # 4: [     memw(R30+##0xfffffff8) = R2
+0x0000564c   # 4: \ R2 = memw(R0+##0xfffffff8)
+0x00005654   # 4: \ if (P0.new) R17 = add(R16,##0xfffffff8)
+0x00005740   # 4: \ R17 = and(R2,##0xfffffff8)
+0x00005840   # 4: / R4 = add(R2,##0xfffffff8)
+0x00005970   # 4: \ if (P2.new) R2 = add(R2,##0xfffffff8)
+0x000059d0   # 4: \ R1 = and(R1,##0xfffffff8)
+0x00005c88   # 4: | if (P0.new) R2 = add(R2,##0xfffffff8)
+0x00005d00   # 4: | if (P0.new) R2 = add(R2,##0xfffffff8)
+0x00006394   # 4: [     R4 = and(R4,##0xfffffff8)
+0x000063f8   # 4: [     R4 = and(R4,##0xfffffff8)
+0x0000641c   # 4: [     R4 = and(R4,##0xfffffff8)
+0x00006510   # 4: [     R4 = and(R4,##0xfffffff8)
+0x00006534   # 4: [     R4 = and(R4,##0xfffffff8)
+0x00007134   # 4: | R3 = mux(P0,##0xfffffffc,#0xfffffff8)
+0x0000747c   # 4: \ R2 = add(R2,##0xfffffff8)
+0x00007ee0   # 4: / R17 = add(R17,##0xfffffff8)
+0x00008484   # 4: \ R2 = add(R16,add(R2,##0xfffffff8))
+0x0000848c   # 4: / R2 = add(R2,##0xfffffff8)
+0x00008500   # 4: \ memd(R2+##0xfffffff8) = R1:0
+0x00008598   # 4: \ memd(R2+##0xfffffff8) = R1:0
+0x000087b8   # 4: \ memd(R3+##0xfffffff8) = R1:0
+0x00009b64   # 4: [     R2 = memw(R18+##0xfffffff8)
+0x0000afd8   # 4: / R3 = and(R3,##0xfffffff8)
+0x000060e4   # 4: / immext(##0xffffffc0)
+0x000060e8   # 4: | R2 = add(R2,add(R3,##0xffffffd0))
+0x000061e4   # 4: / immext(##0xffffffc0)
+0x000061e8   # 4: | R2 = add(R2,add(R3,##0xffffffd0))
+0x00006264   # 4: / immext(##0xffffffc0)
+0x00006268   # 4: | R2 = add(R2,add(R3,##0xffffffd0))
+0x00007140   # 4: | immext(##0xffffffc0)
+0x00007144   # 4: | R0 = add(##0xfffffffa,mpyi(R2,#0x6))
+0x00009684   # 4: | immext(##0xffffff40)
+0x00009688   # 4: \ memh(R0+#0x0) = ##0xffffff7f
+EOF
+RUN

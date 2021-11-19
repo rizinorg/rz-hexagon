@@ -351,7 +351,7 @@ class LLVMImporter:
         # TODO Clean up this method
         indent = PluginInfo.LINE_INDENT
         var = PluginInfo.HEX_INSTR_VAR_SYNTAX
-        signed_imm_array = "signed_imm[{}][16]".format(PluginInfo.MAX_OPERANDS)
+        signed_imm_array = "signed_imm[{}][32]".format(PluginInfo.MAX_OPERANDS)
         with open(path, "w+") as dest:
             dest.write(get_generation_warning_c_code())
 
