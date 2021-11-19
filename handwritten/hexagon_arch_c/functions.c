@@ -268,13 +268,13 @@ static void hex_set_pkt_info(const RzAsm *rz_asm, RZ_INOUT HexInsn *hi, const He
 			default:
 				break;
 			case HEX_LOOP_01:
-				strncpy(hi_pi->syntax_postfix, rz_asm->utf8 ? "   ∎ endloop01" : "   < endloop01", 16);
+				strncpy(hi_pi->syntax_postfix, rz_asm->utf8 ? "     ∎ endloop01" : "     < endloop01", 24);
 				break;
 			case HEX_LOOP_0:
-				strncpy(hi_pi->syntax_postfix, rz_asm->utf8 ? "   ∎ endloop0" : "   < endloop0", 16);
+				strncpy(hi_pi->syntax_postfix, rz_asm->utf8 ? "     ∎ endloop0" : "     < endloop0", 24);
 				break;
 			case HEX_LOOP_1:
-				strncpy(hi_pi->syntax_postfix, rz_asm->utf8 ? "   ∎ endloop1" : "   < endloop1", 16);
+				strncpy(hi_pi->syntax_postfix, rz_asm->utf8 ? "     ∎ endloop1" : "     < endloop1", 24);
 				break;
 			}
 		} else {

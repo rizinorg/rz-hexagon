@@ -147,7 +147,7 @@ EXPECT=<<EOF
 [     loop0(0x8,#0x10)
 [     nop
 / nop
-\ nop   < endloop0
+\ nop     < endloop0
 EOF
 RUN
 
@@ -172,7 +172,7 @@ EXPECT=<<EOF
 \ memb(R10=##0x7) = R4
 / R4 = R3
 | nop
-\ nop   < endloop01
+\ nop     < endloop01
 EOF
 RUN
 
@@ -193,10 +193,10 @@ EXPECT=<<EOF
 [     jump 0x14
 [     loop0(0x1c,#0x2)
 / R7 = R28
-\ nop   < endloop0
+\ nop     < endloop0
 / R4 = R3
 | nop
-\ nop   < endloop1
+\ nop     < endloop1
 EOF
 RUN
 
@@ -215,7 +215,7 @@ EXPECT=<<EOF
 | P2 = cmp.eq(R1,##0x1)
 \ P3 = cmp.eq(R1,##0x2)
 / R3 = add(R3,##0x4)
-\ R4 = add(R4in,##0x4) ; R5 = add(R5,#1)   < endloop0
+\ R4 = add(R4in,##0x4) ; R5 = add(R5,#1)     < endloop0
 EOF
 RUN
 
@@ -300,7 +300,7 @@ EXPECT=<<EOF
 \ memb(R10=0x7) = R4
 / R4 = R3
 | nop
-\ nop   < endloop01
+\ nop     < endloop01
 EOF
 RUN
 
