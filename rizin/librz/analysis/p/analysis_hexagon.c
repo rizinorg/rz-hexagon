@@ -31,9 +31,9 @@ RZ_API bool set_reg_profile(RzAnalysis *analysis) {
 	const char *p =
 
 		"=PC	pc\n"
-		"=SP	r29\n"
-		"=BP	r30\n"
-		"=LR	r31\n"
+		"=SP	R29\n"
+		"=BP	R30\n"
+		"=LR	R31\n"
 		"=SR	usr\n"
 		"=SN	r0\n"
 		"=A0	r0\n"

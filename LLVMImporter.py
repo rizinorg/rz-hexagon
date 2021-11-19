@@ -709,9 +709,9 @@ class LLVMImporter:
         indent = PluginInfo.LINE_INDENT
 
         p = "\n" + '"=PC{}pc\\n"'.format(indent) + "\n"
-        p += '"=SP{}r29\\n"'.format(indent) + "\n"
-        p += '"=BP{}r30\\n"'.format(indent) + "\n"
-        p += '"=LR{}r31\\n"'.format(indent) + "\n"
+        p += '"=SP{}R29\\n"'.format(indent) + "\n"
+        p += '"=BP{}R30\\n"'.format(indent) + "\n"
+        p += '"=LR{}R31\\n"'.format(indent) + "\n"
         p += '"=SR{}usr\\n"'.format(indent) + "\n"
         p += '"=SN{}r0\\n"'.format(indent) + "\n"
 
