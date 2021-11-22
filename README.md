@@ -8,14 +8,18 @@ SPDX-License-Identifier: LGPL-3.0-only
 
 This is a Hexagon disassembly and analysis plugin generator for `rizin`.
 It uses the [LLVM target description source code](https://github.com/llvm/llvm-project/tree/main/llvm/lib/Target/Hexagon)
-of the Hexagon architecture, and some additional handwritten code.
+of the Hexagon architecture and additional handwritten code.
+
+# Missing features and bugs
+
+This plugin is under continues work. So checkout the Github issues for missing features or not yet fixed bugs.
 
 # Prerequisites
 
 We take all the information about the Hexagon instructions and operands from the LLVM target description.
 There are a lot of source files, which describe the Hexagon architecture.
 
-Luckily there is a tool which will combine all the information of thos files into one `.json` file which we name `Hexagon.json`. 
+Luckily there is a tool which combines all the information of those files into one `.json` file which we name `Hexagon.json`. 
 So `Hexagon.json` will hold all information about the Hexagon instructions and operands.
 
 In order to generate the `Hexagon.json` file we need the `llvm-tblgen` binary.
@@ -75,7 +79,6 @@ So here are some good to know points for porting:
 - All `rizin` specific methods have the leading comment: `# RIZIN SPECIFIC`.
 - Please open an issue if you start working on this code for another reverse engineering framework.
   We could remove all `rizin` code from this repo and fork our framework specific plugins from it.
-- Specifics about the framework code (line indent, variable names etc.) can be set in `PluginInfo.py`
 
 # Development info
 
