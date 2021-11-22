@@ -469,8 +469,6 @@ class LLVMImporter:
                 + 'sprintf(hi->mnem_infix, "invalid");\n'
                 + 'sprintf(hi->mnem, "%s%s%s", hi->pkt_info.syntax_prefix, hi->mnem_infix, hi->pkt_info.syntax_postfix);\n'
                 + "}\n"
-                + "rz_strbuf_set(&hi->asm_op.buf_asm, hi->mnem);\n"
-                + ""
                 + "return 4;\n}"
             )
             dest.write(main_function)
