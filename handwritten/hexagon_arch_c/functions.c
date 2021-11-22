@@ -644,9 +644,11 @@ RZ_API void hexagon_reverse_opcode(const RzAsm *rz_asm, HexReversedOpcode *rz_re
 		default:
 			memcpy(rz_reverse->asm_op, &(hi->asm_op), sizeof(RzAsmOp));
 			memcpy(rz_reverse->ana_op, &(hi->ana_op), sizeof(RzAnalysisOp));
+			rz_strbuf_set(&rz_reverse->asm_op->buf_asm, hi->mnem);
 			return;
 		case HEXAGON_DISAS:
 			memcpy(rz_reverse->asm_op, &(hi->asm_op), sizeof(RzAsmOp));
+			rz_strbuf_set(&rz_reverse->asm_op->buf_asm, hi->mnem);
 			return;
 		case HEXAGON_ANALYSIS:
 			memcpy(rz_reverse->ana_op, &(hi->ana_op), sizeof(RzAnalysisOp));
@@ -672,9 +674,11 @@ RZ_API void hexagon_reverse_opcode(const RzAsm *rz_asm, HexReversedOpcode *rz_re
 	default:
 		memcpy(rz_reverse->asm_op, &hi->asm_op, sizeof(RzAsmOp));
 		memcpy(rz_reverse->ana_op, &hi->ana_op, sizeof(RzAnalysisOp));
+		rz_strbuf_set(&rz_reverse->asm_op->buf_asm, hi->mnem);
 		break;
 	case HEXAGON_DISAS:
 		memcpy(rz_reverse->asm_op, &hi->asm_op, sizeof(RzAsmOp));
+		rz_strbuf_set(&rz_reverse->asm_op->buf_asm, hi->mnem);
 		break;
 	case HEXAGON_ANALYSIS:
 		memcpy(rz_reverse->ana_op, &hi->ana_op, sizeof(RzAnalysisOp));
