@@ -11,3 +11,9 @@
 #include "hexagon.h"
 #include "hexagon_insn.h"
 #include "hexagon_arch.h"
+
+#if ASAN && !defined(__clang__)
+#define NO_OPT_IF_ASAN __attribute__((optimize(0)))
+#else
+#define NO_OPT_IF_ASAN
+#endif
