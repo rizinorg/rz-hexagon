@@ -246,23 +246,23 @@ static void hex_set_pkt_info(const RzAsm *rz_asm, RZ_INOUT HexInsn *hi, const He
 		hi_pi->last_insn = true;
 		// TODO No indent in visual mode for "[" without spaces.
 		if (p->is_valid) {
-			strncpy(hi_pi->syntax_prefix, "[     ", 8);
+			strncpy(hi_pi->syntax_prefix, "[   ", 8);
 		} else {
-			strncpy(hi_pi->syntax_prefix, "? ", 8);
+			strncpy(hi_pi->syntax_prefix, "?   ", 8);
 		}
 	} else if (is_first) {
 		hi_pi->first_insn = true;
 		hi_pi->last_insn = false;
 		if (p->is_valid) {
-			strncpy(hi_pi->syntax_prefix, rz_asm->utf8 ? "┌   " : "/ ", 8);
+			strncpy(hi_pi->syntax_prefix, rz_asm->utf8 ? "┌   " : "/   ", 8);
 		} else {
-			strncpy(hi_pi->syntax_prefix, "? ", 8);
+			strncpy(hi_pi->syntax_prefix, "?   ", 8);
 		}
 	} else if (is_last_instr(hi->parse_bits)) {
 		hi_pi->first_insn = false;
 		hi_pi->last_insn = true;
 		if (p->is_valid) {
-			strncpy(hi_pi->syntax_prefix, rz_asm->utf8 ? "└   " : "\\ ", 8);
+			strncpy(hi_pi->syntax_prefix, rz_asm->utf8 ? "└   " : "\\   ", 8);
 
 			switch(hex_get_loop_flag(p)) {
 			default:
@@ -278,15 +278,15 @@ static void hex_set_pkt_info(const RzAsm *rz_asm, RZ_INOUT HexInsn *hi, const He
 				break;
 			}
 		} else {
-			strncpy(hi_pi->syntax_prefix, "? ", 8);
+			strncpy(hi_pi->syntax_prefix, "?   ", 8);
 		}
 	} else {
 		hi_pi->first_insn = false;
 		hi_pi->last_insn = false;
 		if (p->is_valid) {
-			strncpy(hi_pi->syntax_prefix, rz_asm->utf8 ? "│   " : "| ", 8);
+			strncpy(hi_pi->syntax_prefix, rz_asm->utf8 ? "│   " : "|   ", 8);
 		} else {
-			strncpy(hi_pi->syntax_prefix, "? ", 8);
+			strncpy(hi_pi->syntax_prefix, "?   ", 8);
 		}
 	}
 	if (update_mnemonic) {
