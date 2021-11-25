@@ -849,7 +849,8 @@ class LLVMImporter:
         log("Apply clang-format.")
         for subdir, dirs, files in os.walk("rizin/librz/"):
             for file in files:
-                os.system("./clang-format.py -f " + os.path.join(subdir, file))
+                if os.path.splitext(file) in [".c", ".cpp", ".h", ".hpp", ".inc"]:
+                    os.system("clang-format-13 -i " + os.path.join(subdir, file))
 
 
 if __name__ == "__main__":
