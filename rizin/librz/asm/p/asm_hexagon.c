@@ -16,9 +16,9 @@
 
 /**
  * \brief Disassembles a hexagon opcode, write info to op and returns its size.
- * 
+ *
  * \param a The current RzAsm struct.
- * \param op The RzAsmOp which is be filled with the reversed opcode information. 
+ * \param op The RzAsmOp which is be filled with the reversed opcode information.
  * \param buf The buffer with the opcode.
  * \param l The size to read from the buffer.
  * \return int Size of the reversed opcode.

@@ -843,8 +843,8 @@ char *hex_get_sys_regs64(int opcode_reg) {
 }
 
 /**
- * \brief Resolves the 3 bit value of an Nt.new reg to the general register of the producer. 
- * 
+ * \brief Resolves the 3 bit value of an Nt.new reg to the general register of the producer.
+ *
  * \param addr The address of the current instruction.
  * \param reg_num Bits of Nt.new reg.
  * \param p The current packet.
