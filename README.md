@@ -16,8 +16,13 @@ This plugin is under continues work. So checkout the Github issues for missing f
 
 # Prerequisites
 
-We take all the information about the Hexagon instructions and operands from the LLVM target description.
-There are a lot of source files, which describe the Hexagon architecture.
+### Requirements
+
+- For formatting we need `clang-format-13`. If it is not available on your distribution, you can install it from https://apt.llvm.org/.
+- Python requirements are in `requirements.txt`
+### Hexagon Target Description
+
+We take all the information about the Hexagon instructions and operands from the many LLVM target description files.
 
 Luckily there is a tool which combines all the information of those files into one `.json` file which we name `Hexagon.json`. 
 So `Hexagon.json` will hold all information about the Hexagon instructions and operands.
