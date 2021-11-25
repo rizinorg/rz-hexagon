@@ -117,7 +117,7 @@ typedef struct {
 
 /**
  * \brief Buffer packets for reversed instructions.
- * 
+ *
  */
 typedef struct {
 	HexPkt pkts[HEXAGON_STATE_PKTS]; // buffered instructions

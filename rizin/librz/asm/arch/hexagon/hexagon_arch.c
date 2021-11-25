@@ -20,7 +20,7 @@ static inline bool is_last_instr(const ut8 parse_bits) {
 
 /**
  * \brief Checks if packet ends hardware loop 0.
- * 
+ *
  * \param pb_hi_0 Parse bits instruction 0.
  * \param pb_hi_1 Parse bits instruction 1.
  * \return true Packet ends hardware loop 0.
@@ -33,7 +33,7 @@ static inline bool is_endloop0_pkt(const ut8 pb_hi_0, const ut8 pb_hi_1) {
 /**
  * \brief Checks if packet ends hardware loop 0. But for an undocumented variant
  * 	where the packet has only two instructions and the last one is a Duplex.
- * 
+ *
  * \param pb_hi_0 Parse bits instruction 0.
  * \param pb_hi_1 Parse bits instruction 1 (duplex and end of packet).
  * \return true Packet ends hardware loop 0.
@@ -45,7 +45,7 @@ static inline bool is_undoc_endloop0_pkt(const ut8 pb_hi_0, const ut8 pb_hi_1) {
 
 /**
  * \brief Checks if packet ends hardware loop 1.
- * 
+ *
  * \param pb_hi_0 Parse bits instruction 0.
  * \param pb_hi_1 Parse bits instruction 1.
  * \return true Packet ends hardware loop 1.
@@ -57,7 +57,7 @@ static inline bool is_endloop1_pkt(const ut8 pb_hi_0, const ut8 pb_hi_1) {
 
 /**
  * \brief Checks if packet ends hardware loop 0 and hw-loop 1.
- * 
+ *
  * \param pb_hi_0 Parse bits instruction 0.
  * \param pb_hi_1 Parse bits instruction 1.
  * \return true Packet ends hardware loop 0 and hw-loop 1.
@@ -69,7 +69,7 @@ static inline bool is_endloop01_pkt(const ut8 pb_hi_0, const ut8 pb_hi_1) {
 
 /**
  * \brief Gives the instruction at a given address from the state.
- * 
+ *
  * \param state The state to operade on.
  * \param addr The address of the instruction.
  * \return Pointer to instruction or NULL if none was found.
@@ -92,7 +92,7 @@ static HexInsn *hex_get_instr_at_addr(HexState *state, const ut32 addr) {
 
 /**
  * \brief Returns the index of an addr in a given packet.
- * 
+ *
  * \param addr Address of an instruction.
  * \param p The packet. to search in.
  * \return ut8 The index of the addr if it is in the packet. UT8_MAX otherwise.
@@ -114,7 +114,7 @@ RZ_API ut8 hexagon_get_pkt_index_of_addr(const ut32 addr, const HexPkt *p) {
 
 /**
  * \brief Clears a packet and sets its attributes to invalid values.
- * 
+ *
  * \param p The packet to clear.
  */
 static void hex_clear_pkt(RZ_NONNULL HexPkt *p) {
@@ -126,7 +126,7 @@ static void hex_clear_pkt(RZ_NONNULL HexPkt *p) {
 
 /**
  * \brief Gives the least used packet.
- * 
+ *
  * \param state The state to operade on.
  * \return HexPkt* Pointer to the least used packet.
  */
@@ -144,7 +144,7 @@ static HexPkt *hex_get_stale_pkt(HexState *state) {
 
 /**
  * \brief Returns the packet which covers the given address.
- * 
+ *
  * \param state The state to operade on.
  * \param addr The address of an instruction.
  * \return HexPkt* The packet to which this address belongs to or NULL if no packet was found.
@@ -166,7 +166,7 @@ static HexPkt *hex_get_pkt(HexState *state, const ut32 addr) {
 
 /**
  * \brief Frees an instruction.
- * 
+ *
  * \param i The instruction to be freed.
  */
 RZ_API void hex_insn_free(HexInsn *i) {
@@ -177,7 +177,7 @@ RZ_API void hex_insn_free(HexInsn *i) {
 
 /**
  * \brief Frees an constant extender.
- * 
+ *
  * \param ce The constant extender to be freed.
  */
 RZ_API void hex_const_ext_free(HexConstExt *ce) {
@@ -206,7 +206,7 @@ static ut8 get_state_pkt_index(HexState *state, const HexPkt *p) {
 
 /**
  * \brief Initializes each packet of the state once.
- * 
+ *
  * \return The initialized state of the plugins.
  */
 RZ_API HexState *hexagon_get_state() {
@@ -230,7 +230,7 @@ RZ_API HexState *hexagon_get_state() {
 
 /**
  * \brief Checks if the packet has 4 instructions set.
- * 
+ *
  * \param p The packet to check.
  * \return true The packet stores already 4 instructions.
  * \return false The packet stores less than 4 instructions.
@@ -241,7 +241,7 @@ static inline bool is_pkt_full(const HexPkt *p) {
 
 /**
  * \brief Sets the packet related information in an instruction.
- * 
+ *
  * \param hi The instruction.
  * \param p The packet the instruction belongs to.
  * \param k The index of the instruction wihin the packet.
@@ -310,7 +310,7 @@ static void hex_set_pkt_info(const RzAsm *rz_asm, RZ_INOUT HexInsn *hi, const He
  * \brief Returns the loop type of a packet. Though only if this packet is
  * 	the last packet in last packet in a harwadr loop. Otherwise it returns
  * 	HEX_NO_LOOP.
- * 
+ *
  * \param p The instruction packet.
  * \return HexLoopAttr The loop type this packet belongs to.
  */
@@ -338,7 +338,7 @@ RZ_API HexLoopAttr hex_get_loop_flag(const HexPkt *p) {
 
 /**
  * \brief Sets the packet after pkt to valid and updates its mnemonic.
- * 
+ *
  * \param state The state to operade on.
  * \param pkt The packet whichs predecessor will be updated.
  */
@@ -372,7 +372,7 @@ static void make_next_packet_valid(HexState *state, const HexPkt *pkt) {
 
 /**
  * @brief Allocates a new instruction on the heap.
- * 
+ *
  * @return HexInsn* The new instruction.
  */
 RZ_API HexInsn *alloc_instr() {
@@ -386,7 +386,7 @@ RZ_API HexInsn *alloc_instr() {
 
 /**
  * \brief Copies an instruction to the packet p at position k.
- * 
+ *
  * \param state The state to operade on.
  * \param new_ins The instruction to copy.
  * \param p The packet in which the instruction will hold the instruction.
@@ -420,7 +420,7 @@ static HexInsn *hex_add_to_pkt(HexState *state, const HexInsn *new_ins, RZ_INOUT
 
 /**
  * \brief Cleans the packet \p new_p, copies the instruction \p new_ins and the attributes of \p p to it.
- * 
+ *
  * \param state The state to operade on.
  * \param new_ins The instruction to copy.
  * \param p The old packet whichs attributes are copied to the new one.
@@ -449,7 +449,7 @@ static HexInsn *hex_to_new_pkt(HexState *state, const HexInsn *new_ins, const He
 
 /**
  * \brief Cleans the least accessed packet and copies the given instruction into it.
- * 
+ *
  * \param state The state to operade on.
  * \param new_ins The instruction to copy.
  * \return HexInsn* Pointer to the copied instruction on the heap.
@@ -476,9 +476,9 @@ static HexInsn *hex_add_to_stale_pkt(HexState *state, const HexInsn *new_ins) {
 /**
  * \brief Copies the given instruction to a state packet it belongs to.
  * If the instruction does not fit to any packet, it will be written to a stale one.
- * 
+ *
  * The instruction __must__ have its address and parse bits set!
- * 
+ *
  * \param state The state to operade on.
  * \param new_ins The instruction to be copied.
  * \return The pointer to the added instruction. Null if the instruction could not be copied.
@@ -547,7 +547,7 @@ static HexInsn *hex_add_instr_to_state(HexState *state, const HexInsn *new_ins) 
 
 /**
  * \brief Set the up new instr.
- * 
+ *
  * \param hi The instruction to set up.
  * \param rz_reverse RzAsmOp and RzAnalysisOp which could have some data, which needs to be copied.
  * \param addr The address of the instruction.
@@ -582,7 +582,7 @@ static inline bool imm_is_scaled(const HexOpAttr attr) {
 
 /**
  * \brief Searched the constant extender in the ce_list, where addr is the key.
- * 
+ *
  * \param ce_list The list with constant extender values.
  * \param addr The address of the instruction which gets the constant extender applied.
  * \return HexConstExt* A const. ext., if there is one which should be applied on the instruction at addr. Otherwise NULL.
@@ -635,7 +635,7 @@ RZ_API void hex_extend_op(HexState *state, RZ_INOUT HexOp *op, const bool set_ne
 
 /**
  * \brief Reverses a given opcode and copies the result into one of the rizin structs in rz_reverse.
- * 
+ *
  * \param rz_reverse Rizin core structs which store asm and analysis information.
  * \param buf The buffer which stores the current opcode.
  * \param addr The address of the current opcode.

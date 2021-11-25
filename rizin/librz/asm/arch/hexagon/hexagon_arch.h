@@ -18,7 +18,7 @@ typedef enum {
 
 /**
  * \brief Pointer to the rizin structs for disassembled and analysed instructions.
- * 
+ *
  */
 typedef struct {
 	HexReverseAction action; // Whether ana_op, asm_op or both should be filled.
