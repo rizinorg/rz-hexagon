@@ -730,10 +730,8 @@ class LLVMImporter:
                         cc_dict["cc.hexagon.ret".format(n)] = "r{}".format(n)
                     else:
                         continue
-                        # cc_dict["cc.hexagon.ret".format(n)] += ",R{}".format(n)
                 elif reg[0] == "D":
                     continue
-                    # cc_dict["cc.hexagon.ret".format(n)] += ",R{}:{}".format((n*2)+1, n*2)  # D0 = R1:0, D1 = R3:2 etc.
                 else:
                     raise ImplementationException(
                         "Could not assign register {} to a specific return" " value.".format(reg)
@@ -751,7 +749,6 @@ class LLVMImporter:
                     cc_dict["cc.hvx.arg{}".format(n)] = "v{}".format(n)
                 elif reg[0] == "W":
                     continue
-                    # cc_dict["cc.hvx.arg{}".format(n)] += ",V{}:{}".format((n*2)+1, n*2)
                 else:
                     raise ImplementationException(
                         "Could not assign register {} to a specific argument" " value.".format(reg)
@@ -763,10 +760,8 @@ class LLVMImporter:
                         cc_dict["cc.hvx.ret".format(n)] = "v{}".format(n)
                     else:
                         continue
-                        # cc_dict["cc.hvx.ret".format(n)] += ",V{}".format(n)
                 elif reg[0] == "W":
                     continue
-                    # cc_dict["cc.hvx.ret".format(n)] += ",V{}:{}".format((n*2)+1, n*2)
                 else:
                     raise ImplementationException(
                         "Could not assign register {} to a specific return" " value.".format(reg)
