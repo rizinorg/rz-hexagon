@@ -5,9 +5,7 @@
 ALL_REG_NAMES = list()  # R0, ..., R30, R31, ..., C3, C1_0, ..., UPCYCLELO, VFR0, ...
 LLVM_FAKE_REGS = list()
 CALLEE_SAVED_REGS = list()
-CC_REGS = (
-    dict()
-)  # The register used in the calling convention. Argument and return regs.
+CC_REGS = dict()  # The register used in the calling convention. Argument and return regs.
 
 INSTRUCTION_LENGTH = 32
 

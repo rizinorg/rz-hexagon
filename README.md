@@ -118,6 +118,9 @@ So here are some good to know points for porting:
   - `syntax` holds: `Rdd = combine(#0,#Ii) ; Rx = add(Rxin,Rs)`
   - `Instruction.operands` is a dictionary which contains `Register` and `Immediate` Python objects.
 
+- Format your Python files with `black` and verify the formatting with `flake8`.
+  - `black -l 120 *.py && flake8 --max-line-length=120`
+
 - Please take a brief look at the [Rizin development](https://github.com/rizinorg/rizin/blob/dev/DEVELOPERS.md) guide if you plan to change C code.
 
 # Contributors

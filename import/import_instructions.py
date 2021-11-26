@@ -27,11 +27,15 @@ def parse_ops(ops: list):
         elif re.search(r"P[a-z]", op["op"]):
             op_type = "PredRegs"
         elif re.search(r"I[Ii]", op["op"]):
-            op_type = op["sign"].lower() + op["bits"] + "_" + op["shift"] + "Imm"
+            op_type = (
+                op["sign"].lower() + op["bits"] + "_" + op["shift"] + "Imm"
+            )
         else:
             print("Operand " + op + " not yet implemented.")
 
-        ret.append([{"def": op_type, "kind": "def", "printable": op_type}, op["op"]])
+        ret.append(
+            [{"def": op_type, "kind": "def", "printable": op_type}, op["op"]]
+        )
         op.update({"type": op_type})
     return ret, ops
 
@@ -50,12 +54,18 @@ def manual_syntax_to_llvm_syntax(syntax: str) -> dict:
             llvm_reg = "$" + reg + "32"
         llvm_syntax = re.sub(reg, llvm_reg, llvm_syntax)
         if reg[1] == "d":
-            out_ops.append({"op": llvm_reg.strip("$"), "char": reg[1], "enc_i": 0})
+            out_ops.append(
+                {"op": llvm_reg.strip("$"), "char": reg[1], "enc_i": 0}
+            )
         elif reg[1] == "x":
-            out_ops.append({"op": llvm_reg.strip("$"), "char": reg[1], "enc_i": 0})
+            out_ops.append(
+                {"op": llvm_reg.strip("$"), "char": reg[1], "enc_i": 0}
+            )
             in_ops.append({"op": llvm_reg.strip("$") + "in", "char": reg[1]})
         else:
-            in_ops.append({"op": llvm_reg.strip("$"), "char": reg[1], "enc_i": 0})
+            in_ops.append(
+                {"op": llvm_reg.strip("$"), "char": reg[1], "enc_i": 0}
+            )
 
     # Replace immediate. E.g: #u11:3 with #$Ii.
     for tup in re.findall(r"(#[uUsS]\d{1,2})(:\d)?", llvm_syntax):
@@ -97,7 +107,7 @@ def main():
     with open("Hexagon-Prog-Manual-v67-Ch-SYSTEM.txt") as f:
         for line in f:
             # Search for encoding pattern of bits. E.g.:
-            #  1  0  1  0 0  0   0  0  1   0  1   s  s  s  s  s  P   P -  t   t  t t  t  - - -  - - - d   d memw_locked(Rs,Pd)=Rt
+            # 1  0 1 0 0  0   00  1   0  1   s s  s s  s  P   P -  t   t tt  t  - - -  - - - d   d memw_locked(Rs,Pd)=Rt
             res = re.search(r"^\s*(([10sPd\-xti]\s+){32})(.+$)", line)
             if res:
                 enc = res.group(1).replace(" ", "")
@@ -108,12 +118,20 @@ def main():
                 instr[name] = instr_temp
                 instr[name]["!name"] = name
                 instr[name]["AsmString"] = llvm_bundle["llvm_syntax"]
-                instr[name]["InOperandList"]["args"] = llvm_bundle["llvm_in_ops"]
-                instr[name]["OutOperandList"]["args"] = llvm_bundle["llvm_out_ops"]
+                instr[name]["InOperandList"]["args"] = llvm_bundle[
+                    "llvm_in_ops"
+                ]
+                instr[name]["OutOperandList"]["args"] = llvm_bundle[
+                    "llvm_out_ops"
+                ]
                 instr[name]["Constraints"] = ""
-                if "$Rx32in" in [r[1] for r in instr[name]["InOperandList"]["args"]]:
+                if "$Rx32in" in [
+                    r[1] for r in instr[name]["InOperandList"]["args"]
+                ]:
                     instr[name]["Constraints"] = "$Rx32 = $Rx32in"
-                elif "$Rxx32in" in [r[1] for r in instr[name]["InOperandList"]["args"]]:
+                elif "$Rxx32in" in [
+                    r[1] for r in instr[name]["InOperandList"]["args"]
+                ]:
                     instr[name]["Constraints"] = "$Rxx32 = $Rxx32in"
                 instr[name]["Inst"] = list()
                 for bit in enc:
@@ -124,7 +142,9 @@ def main():
                     elif bit == "P":
                         instr[name]["Inst"].insert(0, None)
                     else:
-                        for op in llvm_bundle["in_ops"] + llvm_bundle["out_ops"]:
+                        for op in (
+                            llvm_bundle["in_ops"] + llvm_bundle["out_ops"]
+                        ):
                             if bit == op["char"] and op["op"][-2:] != "in":
                                 bit_index = (
                                     enc.count(op["char"]) - int(op["enc_i"])

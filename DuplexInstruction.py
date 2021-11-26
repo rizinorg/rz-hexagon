@@ -15,7 +15,7 @@ from Operand import Operand, OperandType
 from Register import Register
 from SubInstruction import SubInstruction, SubInstrNamespace
 from UnexpectedException import UnexpectedException
-from helperFunctions import log, LogLevel, list_to_int, normalize_llvm_syntax
+from helperFunctions import log, LogLevel, normalize_llvm_syntax
 from copy import deepcopy
 
 
@@ -43,7 +43,10 @@ class DuplexInstruction(InstructionTemplate):
     """Class represents a Duplex instruction. It is constructed out of two Sub instructions."""
 
     def __init__(
-        self, llvm_duplex_instr: dict, low: SubInstruction, high: SubInstruction
+        self,
+        llvm_duplex_instr: dict,
+        low: SubInstruction,
+        high: SubInstruction,
     ):
         if llvm_duplex_instr["!name"] == "DuplexIClassF":
             raise ImplementationException("DuplexIClassF was reserved in the past.")
@@ -63,13 +66,9 @@ class DuplexInstruction(InstructionTemplate):
         self.update_syntax()
 
         # Order matters!
-        self.llvm_in_operands = (
-            self.high_instr.llvm_in_operands + self.low_instr.llvm_in_operands
-        )
+        self.llvm_in_operands = self.high_instr.llvm_in_operands + self.low_instr.llvm_in_operands
         # Order matters!
-        self.llvm_out_operands = (
-            self.high_instr.llvm_out_operands + self.low_instr.llvm_out_operands
-        )
+        self.llvm_out_operands = self.high_instr.llvm_out_operands + self.low_instr.llvm_out_operands
         # Order matters!
         self.llvm_in_out_operands = (
             self.high_instr.llvm_out_operands
@@ -105,15 +104,9 @@ class DuplexInstruction(InstructionTemplate):
         # Operand names seen during parsing the encoding. Twin operands (Operands which appear in high and low instr.)
         # were renamed.
 
-        all_ops = deepcopy(
-            self.high_instr.llvm_in_out_operands + self.low_instr.llvm_in_out_operands
-        )
-        self.llvm_filtered_operands = self.remove_invisible_in_out_regs(
-            self.llvm_syntax, all_ops
-        )
-        self.operand_indices = self.get_syntax_operand_indices(
-            self.llvm_syntax, self.llvm_filtered_operands
-        )
+        all_ops = deepcopy(self.high_instr.llvm_in_out_operands + self.low_instr.llvm_in_out_operands)
+        self.llvm_filtered_operands = self.remove_invisible_in_out_regs(self.llvm_syntax, all_ops)
+        self.operand_indices = self.get_syntax_operand_indices(self.llvm_syntax, self.llvm_filtered_operands)
 
         # Update syntax indices
         if self.has_new_non_predicate:
@@ -126,7 +119,7 @@ class DuplexInstruction(InstructionTemplate):
             # log("{}\n ext: {}".format(self.llvm_syntax, self.ext_operand_index), LogLevel.DEBUG)
 
         if len(self.llvm_filtered_operands) > PluginInfo.MAX_OPERANDS:
-            warning = "{} instruction struct can only hold {} operands. This instruction has {} operands.".format(
+            warning = "{} instruction struct can only hold {} operands. This" " instruction has {} operands.".format(
                 PluginInfo.FRAMEWORK_NAME,
                 PluginInfo.MAX_OPERANDS,
                 len(self.llvm_filtered_operands),
@@ -141,9 +134,7 @@ class DuplexInstruction(InstructionTemplate):
             # Parse register operand
             if Operand.get_operand_type(op_type) is OperandType.REGISTER:
                 # Indices of new values (stored in "opNewValue") are only for non predicates.
-                is_new_value = (
-                    self.new_operand_index == index and self.has_new_non_predicate
-                )
+                is_new_value = self.new_operand_index == index and self.has_new_non_predicate
                 operand = Register(op_name, op_type, is_new_value, index)
                 # Whether the predicate registers holds a new value is denoted in "isPredicatedNew".
                 if self.is_pred_new and operand.is_predicate:
@@ -155,13 +146,15 @@ class DuplexInstruction(InstructionTemplate):
                 if self.extendable_alignment > 0:
                     log(str(self.extendable_alignment), op_type)
                 operand = Immediate(
-                    op_name, op_type, extendable, self.extendable_alignment, index
+                    op_name,
+                    op_type,
+                    extendable,
+                    self.extendable_alignment,
+                    index,
                 )
 
             else:
-                raise ImplementationException(
-                    "Unknown operand type: {}, op_name: {}".format(op_type, op_name)
-                )
+                raise ImplementationException("Unknown operand type: {}, op_name: {}".format(op_type, op_name))
 
             # Use lower() because we can get RX16in and Rx16in but constraints are always Rx16in.
             if op_name.lower() in self.constraints.lower():
@@ -174,14 +167,10 @@ class DuplexInstruction(InstructionTemplate):
                 operand.is_out_operand = True
 
             # Add opcode extraction code
-            if (
-                operand.type == OperandType.IMMEDIATE and operand.is_constant
-            ):  # Constants have no parsing code.
+            if operand.type == OperandType.IMMEDIATE and operand.is_constant:  # Constants have no parsing code.
                 pass
             else:
-                if (
-                    operand.is_in_out_operand and op_name[-2:] == "in"
-                ):  # In/Out Register
+                if operand.is_in_out_operand and op_name[-2:] == "in":  # In/Out Register
                     mask = self.encoding.operand_masks[op_name[:-2]]  # Ends with "in"
                 else:
                     mask = self.encoding.operand_masks[op_name]
@@ -193,8 +182,8 @@ class DuplexInstruction(InstructionTemplate):
                 if not operand.is_new_value:
                     raise ImplementationException(
                         "Register has new value in syntax but not as object."
-                        + "It has been parsed incorrectly! Are the indices correctly set?"
-                        + "Affected instruction: {}".format(self.llvm_syntax)
+                        + "It has been parsed incorrectly! Are the indices"
+                        " correctly set?" + "Affected instruction: {}".format(self.llvm_syntax)
                     )
 
             # log("Add operand: {}".format(op_name), LogLevel.DEBUG)
@@ -202,9 +191,7 @@ class DuplexInstruction(InstructionTemplate):
             self.operands[op_name] = operand
 
     @staticmethod
-    def get_duplex_i_class_of_instr_pair(
-        low: SubInstruction, high: SubInstruction
-    ) -> DuplexIClass:
+    def get_duplex_i_class_of_instr_pair(low: SubInstruction, high: SubInstruction) -> DuplexIClass:
         """Mapping of sub instruction pairs to its Duplex class.
         Src: llvm-project/llvm/lib/Target/Hexagon/MCTargetDesc/HexagonDisassembler.cpp::getSingleInstruction()
 
@@ -215,80 +202,35 @@ class DuplexInstruction(InstructionTemplate):
         Returns: The Duplex class or the invalid duplex class if the instruction combination is not allowed.
 
         """
-        if (
-            low.namespace == SubInstrNamespace.SUBINSN_L1
-            and high.namespace == SubInstrNamespace.SUBINSN_L1
-        ):
+        if low.namespace == SubInstrNamespace.SUBINSN_L1 and high.namespace == SubInstrNamespace.SUBINSN_L1:
             return DuplexIClass.DuplexIClass0
-        elif (
-            low.namespace == SubInstrNamespace.SUBINSN_L2
-            and high.namespace == SubInstrNamespace.SUBINSN_L1
-        ):
+        elif low.namespace == SubInstrNamespace.SUBINSN_L2 and high.namespace == SubInstrNamespace.SUBINSN_L1:
             return DuplexIClass.DuplexIClass1
-        elif (
-            low.namespace == SubInstrNamespace.SUBINSN_L2
-            and high.namespace == SubInstrNamespace.SUBINSN_L2
-        ):
+        elif low.namespace == SubInstrNamespace.SUBINSN_L2 and high.namespace == SubInstrNamespace.SUBINSN_L2:
             return DuplexIClass.DuplexIClass2
-        elif (
-            low.namespace == SubInstrNamespace.SUBINSN_A
-            and high.namespace == SubInstrNamespace.SUBINSN_A
-        ):
+        elif low.namespace == SubInstrNamespace.SUBINSN_A and high.namespace == SubInstrNamespace.SUBINSN_A:
             return DuplexIClass.DuplexIClass3
-        elif (
-            low.namespace == SubInstrNamespace.SUBINSN_L1
-            and high.namespace == SubInstrNamespace.SUBINSN_A
-        ):
+        elif low.namespace == SubInstrNamespace.SUBINSN_L1 and high.namespace == SubInstrNamespace.SUBINSN_A:
             return DuplexIClass.DuplexIClass4
-        elif (
-            low.namespace == SubInstrNamespace.SUBINSN_L2
-            and high.namespace == SubInstrNamespace.SUBINSN_A
-        ):
+        elif low.namespace == SubInstrNamespace.SUBINSN_L2 and high.namespace == SubInstrNamespace.SUBINSN_A:
             return DuplexIClass.DuplexIClass5
-        elif (
-            low.namespace == SubInstrNamespace.SUBINSN_S1
-            and high.namespace == SubInstrNamespace.SUBINSN_A
-        ):
+        elif low.namespace == SubInstrNamespace.SUBINSN_S1 and high.namespace == SubInstrNamespace.SUBINSN_A:
             return DuplexIClass.DuplexIClass6
-        elif (
-            low.namespace == SubInstrNamespace.SUBINSN_S2
-            and high.namespace == SubInstrNamespace.SUBINSN_A
-        ):
+        elif low.namespace == SubInstrNamespace.SUBINSN_S2 and high.namespace == SubInstrNamespace.SUBINSN_A:
             return DuplexIClass.DuplexIClass7
-        elif (
-            low.namespace == SubInstrNamespace.SUBINSN_S1
-            and high.namespace == SubInstrNamespace.SUBINSN_L1
-        ):
+        elif low.namespace == SubInstrNamespace.SUBINSN_S1 and high.namespace == SubInstrNamespace.SUBINSN_L1:
             return DuplexIClass.DuplexIClass8
-        elif (
-            low.namespace == SubInstrNamespace.SUBINSN_S1
-            and high.namespace == SubInstrNamespace.SUBINSN_L2
-        ):
+        elif low.namespace == SubInstrNamespace.SUBINSN_S1 and high.namespace == SubInstrNamespace.SUBINSN_L2:
             return DuplexIClass.DuplexIClass9
-        elif (
-            low.namespace == SubInstrNamespace.SUBINSN_S1
-            and high.namespace == SubInstrNamespace.SUBINSN_S1
-        ):
+        elif low.namespace == SubInstrNamespace.SUBINSN_S1 and high.namespace == SubInstrNamespace.SUBINSN_S1:
             return DuplexIClass.DuplexIClassA
-        elif (
-            low.namespace == SubInstrNamespace.SUBINSN_S2
-            and high.namespace == SubInstrNamespace.SUBINSN_S1
-        ):
+        elif low.namespace == SubInstrNamespace.SUBINSN_S2 and high.namespace == SubInstrNamespace.SUBINSN_S1:
             return DuplexIClass.DuplexIClassB
-        elif (
-            low.namespace == SubInstrNamespace.SUBINSN_S2
-            and high.namespace == SubInstrNamespace.SUBINSN_L1
-        ):
+        elif low.namespace == SubInstrNamespace.SUBINSN_S2 and high.namespace == SubInstrNamespace.SUBINSN_L1:
             return DuplexIClass.DuplexIClassC
-        elif (
-            low.namespace == SubInstrNamespace.SUBINSN_S2
-            and high.namespace == SubInstrNamespace.SUBINSN_L2
-        ):
+        elif low.namespace == SubInstrNamespace.SUBINSN_S2 and high.namespace == SubInstrNamespace.SUBINSN_L2:
             return DuplexIClass.DuplexIClassD
-        elif (
-            low.namespace == SubInstrNamespace.SUBINSN_S2
-            and high.namespace == SubInstrNamespace.SUBINSN_S2
-        ):
+        elif low.namespace == SubInstrNamespace.SUBINSN_S2 and high.namespace == SubInstrNamespace.SUBINSN_S2:
             return DuplexIClass.DuplexIClassE
         # DuplexIClassF is reserved
         else:
@@ -387,9 +329,7 @@ class DuplexInstruction(InstructionTemplate):
                     low_op_chars.append(char)
                 elif char in low_op_chars and i < 14:  # Still in lower instr.
                     continue
-                elif (
-                    char in low_op_chars and i > 14
-                ):  # Operand with same name as in the lower instr.
+                elif char in low_op_chars and i > 14:  # Operand with same name as in the lower instr.
                     encoding_bits[i]["var_old"] = bit["var"]  # Backup name
 
                     if re.search(r"R([dstx]{1,2})\d+", name):  # Register duplicate
@@ -404,21 +344,17 @@ class DuplexInstruction(InstructionTemplate):
                     else:
                         raise ImplementationException(
                             "Unhandled double occurrence of operand"
-                            + " in Duplex instruction. Operand name: {} in {}".format(
-                                name, self.high_instr.llvm_syntax
-                            )
+                            + " in Duplex instruction. Operand name: {} in {}".format(name, self.high_instr.llvm_syntax)
                         )
                     if new_name in low_op_chars:
                         raise ImplementationException(
-                            "New operand is already present in the low instruction: {}"
-                            + "Please fix this method by inventing a new operand name"
-                            + "(Ii -> Il or Rs -> Re maybe?)".format(new_name)
+                            "New operand is already present in the low"
+                            " instruction: {}" + "Please fix this method by inventing a new"
+                            " operand name" + "(Ii -> Il or Rs -> Re maybe?)".format(new_name)
                         )
 
                     encoding_bits[i]["var"] = new_name
-                    encoding_bits[i]["printable"] = re.sub(
-                        name, new_name, encoding_bits[i]["printable"]
-                    )
+                    encoding_bits[i]["printable"] = re.sub(name, new_name, encoding_bits[i]["printable"])
         return encoding_bits
 
     def update_syntax(self) -> None:
@@ -427,10 +363,7 @@ class DuplexInstruction(InstructionTemplate):
         Here we update the operand name in the syntax.
         """
 
-        ops = (
-            self.high_instr.llvm_instr["OutOperandList"]["args"]
-            + self.high_instr.llvm_instr["InOperandList"]["args"]
-        )
+        ops = self.high_instr.llvm_instr["OutOperandList"]["args"] + self.high_instr.llvm_instr["InOperandList"]["args"]
         operands = self.correct_not_encoded_operands(ops)
 
         new_high_llvm_syntax = self.high_instr.llvm_syntax
@@ -440,9 +373,7 @@ class DuplexInstruction(InstructionTemplate):
             if isinstance(bit, dict) and "var_old" in bit:
                 if re.search(bit["var_old"], new_high_llvm_syntax):
                     # Update the syntax
-                    new_high_llvm_syntax = re.sub(
-                        bit["var_old"], bit["var"], new_high_llvm_syntax
-                    )
+                    new_high_llvm_syntax = re.sub(bit["var_old"], bit["var"], new_high_llvm_syntax)
 
                     # Update operand name in the In/OutOperands object
                     for op in operands:
@@ -451,11 +382,7 @@ class DuplexInstruction(InstructionTemplate):
                 elif re.search(bit["var"], new_high_llvm_syntax):  # Already replaced
                     continue
                 else:
-                    raise UnexpectedException(
-                        "{} not in syntax {}".format(
-                            bit["var_old"], new_high_llvm_syntax
-                        )
-                    )
+                    raise UnexpectedException("{} not in syntax {}".format(bit["var_old"], new_high_llvm_syntax))
 
         if new_high_llvm_syntax != self.high_instr.llvm_syntax:
             # log("Changed syntax: {} -> {}\n\t{}".format(self.high_instr.llvm_syntax,
@@ -463,9 +390,7 @@ class DuplexInstruction(InstructionTemplate):
             #     LogLevel.DEBUG)
             self.high_instr.llvm_syntax = new_high_llvm_syntax
             self.high_instr.syntax = normalize_llvm_syntax(self.high_instr.llvm_syntax)
-        self.llvm_syntax = (
-            self.high_instr.llvm_syntax + " ; " + self.low_instr.llvm_syntax
-        )
+        self.llvm_syntax = self.high_instr.llvm_syntax + " ; " + self.low_instr.llvm_syntax
         self.syntax = normalize_llvm_syntax(self.llvm_syntax)
 
     def correct_not_encoded_operands(self, llvm_high_operands: list) -> list:
@@ -480,31 +405,18 @@ class DuplexInstruction(InstructionTemplate):
             printable = op[0]["printable"]
             if op[0]["def"][-5:] != "Const" and name[-2:] != "in":
                 continue
-            if (
-                name in self.high_instr.llvm_syntax
-                and name in self.low_instr.llvm_syntax
-            ):
+            if name in self.high_instr.llvm_syntax and name in self.low_instr.llvm_syntax:
                 if name[-2:] == "in":
                     # The "in" should stay lower case. Therefore [:-2]
-                    op[0]["printable"] = re.sub(
-                        name[:-2], name[:-2].upper(), op[0]["printable"]
-                    )
+                    op[0]["printable"] = re.sub(name[:-2], name[:-2].upper(), op[0]["printable"])
                     op[1] = name[:-2].upper() + "in"
-                    self.high_instr.llvm_syntax = re.sub(
-                        name, op[1], self.high_instr.llvm_syntax
-                    )
+                    self.high_instr.llvm_syntax = re.sub(name, op[1], self.high_instr.llvm_syntax)
                 elif op[0]["def"][-5:] == "Const":
-                    op[0]["printable"] = re.sub(
-                        printable[:-5], printable[:-5].upper(), printable
-                    )
+                    op[0]["printable"] = re.sub(printable[:-5], printable[:-5].upper(), printable)
                     op[1] = name.upper()
-                    self.high_instr.llvm_syntax = re.sub(
-                        name, op[1].upper(), self.high_instr.llvm_syntax
-                    )
+                    self.high_instr.llvm_syntax = re.sub(name, op[1].upper(), self.high_instr.llvm_syntax)
                 else:
-                    raise ImplementationException(
-                        "Could not parse not encoded operand."
-                    )
+                    raise ImplementationException("Could not parse not encoded operand.")
                 # log("Update syntax with double constants: {}".format(self.high_instr.llvm_syntax), LogLevel.DEBUG)
         return llvm_high_operands
 
@@ -536,15 +448,9 @@ class DuplexInstruction(InstructionTemplate):
             self.is_pred_new = low.llvm_instr["isPredicatedNew"][0] == 1
         if high.llvm_instr["isPredicated"][0] == 1:
             self.is_predicated = True
-            self.is_pred_false = self.is_pred_false or (
-                high.llvm_instr["isPredicatedFalse"][0] == 1
-            )
-            self.is_pred_true = self.is_pred_true or (
-                high.llvm_instr["isPredicatedFalse"][0] == 0
-            )
-            self.is_pred_new = self.is_pred_new or (
-                high.llvm_instr["isPredicatedNew"][0] == 1
-            )
+            self.is_pred_false = self.is_pred_false or (high.llvm_instr["isPredicatedFalse"][0] == 1)
+            self.is_pred_true = self.is_pred_true or (high.llvm_instr["isPredicatedFalse"][0] == 0)
+            self.is_pred_new = self.is_pred_new or (high.llvm_instr["isPredicatedNew"][0] == 1)
 
     def set_register_new_values(self):
         """Sets the duplex instruction register flags according to its sub instructions."""
@@ -554,9 +460,7 @@ class DuplexInstruction(InstructionTemplate):
 
         if low.has_new_non_predicate and high.has_new_non_predicate:
             raise UnexpectedException(
-                "Both sub instructions have new values: {} ; {}".format(
-                    low.llvm_syntax, high.llvm_syntax
-                )
+                "Both sub instructions have new values: {} ; {}".format(low.llvm_syntax, high.llvm_syntax)
             )
 
         if low.has_new_non_predicate:
@@ -577,15 +481,12 @@ class DuplexInstruction(InstructionTemplate):
 
         if low.has_extendable_imm and high.has_extendable_imm:
             raise UnexpectedException(
-                "Both sub instructions have extendable immediate values: {} ; {}".format(
-                    low.llvm_syntax, high.llvm_syntax
-                )
+                "Both sub instructions have extendable immediate values: {}"
+                " ; {}".format(low.llvm_syntax, high.llvm_syntax)
             )
 
         if low.has_extendable_imm:  # Should never occur
-            raise UnexpectedException(
-                "Low sub-instructions should not contain extendable values."
-            )
+            raise UnexpectedException("Low sub-instructions should not contain extendable values.")
             # self.has_extendable_imm = True
             # self.must_be_extended = low.must_be_extended
             # self.ext_operand_index = low.ext_operand_index + high.num_operands
@@ -612,9 +513,7 @@ class DuplexInstruction(InstructionTemplate):
             self.high_instr.loop_member != LoopMembership.HEX_NO_LOOP
             and self.low_instr.loop_member != LoopMembership.HEX_NO_LOOP
         ):
-            raise ImplementationException(
-                "Loop instructions in high and low sub instructions are not implemented."
-            )
+            raise ImplementationException("Loop instructions in high and low sub instructions are not" " implemented.")
 
         if self.high_instr.loop_member != LoopMembership.HEX_NO_LOOP:
             self.is_loop = self.high_instr.is_loop

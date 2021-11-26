@@ -2,14 +2,10 @@
 #
 # SPDX-License-Identifier: LGPL-3.0-only
 
-import re
-
 from bitarray import bitarray
 
-from ImplementationException import ImplementationException
-from helperFunctions import log, LogLevel, bitarray_to_uint
+from helperFunctions import bitarray_to_uint
 import HexagonArchInfo
-import PluginInfo
 
 
 class InstructionEncoding:
@@ -75,9 +71,7 @@ class InstructionEncoding:
             bit = self.llvm_encoding[i]
             # Instruction bits
             if bit == 0 or bit == 1:
-                if (
-                    i < 13
-                ):  # Number representation for SubInstruction comparison (Duplex generation).
+                if i < 13:  # Number representation for SubInstruction comparison (Duplex generation).
                     self.num_representation |= bit << i
 
                 # Parsing bits in Duplex instructions are indicated by E.
@@ -106,9 +100,7 @@ class InstructionEncoding:
                 if op_name not in self.llvm_operand_names:
                     self.num_encoded_operands += 1
                     self.llvm_operand_names.append(op_name)
-                    self.operand_masks[op_name] = bitarray(
-                        HexagonArchInfo.INSTRUCTION_LENGTH, endian="little"
-                    )
+                    self.operand_masks[op_name] = bitarray(HexagonArchInfo.INSTRUCTION_LENGTH, endian="little")
                     self.operand_masks[op_name].setall(0)
                 self.operand_masks[op_name][i] = 1
 

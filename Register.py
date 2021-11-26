@@ -4,8 +4,6 @@
 
 import re
 
-from bitarray import bitarray
-
 from ImplementationException import ImplementationException
 from Operand import Operand
 
@@ -52,7 +50,11 @@ class Register(Operand):
     ]
 
     def __init__(
-        self, llvm_syntax: str, llvm_reg_class: str, is_new_value: bool, index: int
+        self,
+        llvm_syntax: str,
+        llvm_reg_class: str,
+        is_new_value: bool,
+        index: int,
     ):
         super(Register, self).__init__(llvm_syntax, llvm_reg_class, index)
         self.llvm_syntax = llvm_syntax
@@ -106,9 +108,7 @@ class Register(Operand):
         elif self.llvm_reg_class == "DoubleRegs":  # D0 = R1_0,
             self.is_general = True
             self.is_double = True
-        elif (
-            self.llvm_reg_class == "GeneralDoubleLow8Regs"
-        ):  # D0,D1,D2,D3,D8,D9,D10,D11
+        elif self.llvm_reg_class == "GeneralDoubleLow8Regs":  # D0,D1,D2,D3,D8,D9,D10,D11
             self.is_general = True
             self.sub_instr_encoding = True
             self.is_double = True
@@ -127,9 +127,7 @@ class Register(Operand):
                 self.is_vector = True
                 self.is_quadruple = True
             else:
-                raise ImplementationException(
-                    "Unhandled HVX register type: {}".format(self.llvm_reg_class)
-                )
+                raise ImplementationException("Unhandled HVX register type: {}".format(self.llvm_reg_class))
         elif self.llvm_reg_class == "CtrRegs":
             self.is_control = True
         elif self.llvm_reg_class == "CtrRegs64":
@@ -152,9 +150,7 @@ class Register(Operand):
             self.is_system = True
             self.is_double = True
         else:
-            raise ImplementationException(
-                "Unhandled register type: {}".format(self.llvm_reg_class)
-            )
+            raise ImplementationException("Unhandled register type: {}".format(self.llvm_reg_class))
 
     # RIZIN SPECIFIC
     def add_code_for_opcode_parsing(self, parsing_code: str) -> None:

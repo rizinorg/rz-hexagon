@@ -49,13 +49,7 @@ def log(msg: str, verbosity: LogLevel = LogLevel.INFO) -> None:
 
     if colorama_imported:
         if verbosity == LogLevel.ERROR:
-            print(
-                "["
-                + Fore.RED
-                + "X"
-                + Style.RESET_ALL
-                + "] {}".format(Fore.RED + msg + Style.RESET_ALL)
-            )
+            print("[" + Fore.RED + "X" + Style.RESET_ALL + "] {}".format(Fore.RED + msg + Style.RESET_ALL))
         elif verbosity == LogLevel.WARNING:
             print(
                 "["
@@ -67,9 +61,7 @@ def log(msg: str, verbosity: LogLevel = LogLevel.INFO) -> None:
         elif verbosity == LogLevel.INFO:
             print("[" + Fore.BLUE + "*" + Style.RESET_ALL + "] {}".format(msg))
         elif verbosity == LogLevel.DEBUG:
-            print(
-                "[" + Fore.LIGHTMAGENTA_EX + "#" + Style.RESET_ALL + "] {}".format(msg)
-            )
+            print("[" + Fore.LIGHTMAGENTA_EX + "#" + Style.RESET_ALL + "] {}".format(msg))
         elif verbosity == LogLevel.VERBOSE:
             print("[" + Fore.LIGHTWHITE_EX + "-" + Style.RESET_ALL + "] {}".format(msg))
         elif verbosity == LogLevel.TODO:
@@ -169,9 +161,7 @@ def bitarray_to_uint(array: bitarray, endian: str = "little") -> int:
     elif endian == "big":
         return int(array.to01(), 2)
     else:
-        raise UnexpectedException(
-            "Endian can only be 'little' or 'big'. Was: {}".format(endian)
-        )
+        raise UnexpectedException("Endian can only be 'little' or 'big'. Was: {}".format(endian))
 
 
 def list_to_bitarray(bit_list: list, endian="little") -> bitarray:
@@ -206,7 +196,11 @@ def list_to_int(bit_list: list, endian="little") -> int:
 
 # TODO: support more syntax constructs
 def make_c_block(
-    lines: list, begin: str = "", end: str = "", ret: str = "", indent_depth: int = 1
+    lines: list,
+    begin: str = "",
+    end: str = "",
+    ret: str = "",
+    indent_depth: int = 1,
 ) -> list:
     """
     Args: Creates a C code block with curly braces (useful for if/else or switch cases).
