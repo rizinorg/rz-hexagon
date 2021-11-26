@@ -80,7 +80,6 @@ def manual_syntax_to_llvm_syntax(syntax: str) -> dict:
         )
     llvm_syntax = re.sub(r"=", " = ", llvm_syntax)
 
-    # print(syntax + " => " + llvm_syntax)
     ret["llvm_syntax"] = llvm_syntax
     ret["llvm_in_ops"], ret["in_ops"] = parse_ops(in_ops)
     ret["llvm_out_ops"], ret["out_ops"] = parse_ops(out_ops)
@@ -97,7 +96,7 @@ def main():
 
     with open("Hexagon-Prog-Manual-v67-Ch-SYSTEM.txt") as f:
         for line in f:
-            # Seachr for encoding pattern of bits. E.g.:
+            # Search for encoding pattern of bits. E.g.:
             #  1  0  1  0 0  0   0  0  1   0  1   s  s  s  s  s  P   P -  t   t  t t  t  - - -  - - - d   d memw_locked(Rs,Pd)=Rt
             res = re.search(r"^\s*(([10sPd\-xti]\s+){32})(.+$)", line)
             if res:
