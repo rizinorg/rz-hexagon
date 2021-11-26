@@ -6,7 +6,6 @@ import re
 
 import HexagonArchInfo
 import PluginInfo
-from ImplementationException import ImplementationException
 from Register import Register
 from helperFunctions import list_to_int
 
@@ -35,9 +34,7 @@ class HardwareRegister(Register):
         self.hw_encoding = index
         self.size: int = size if not self.is_vector else size * 2
         self.sub_register_names: list = [
-            r["def"]
-            for r in llvm_object["SubRegs"]
-            if r["def"] not in HexagonArchInfo.LLVM_FAKE_REGS
+            r["def"] for r in llvm_object["SubRegs"] if r["def"] not in HexagonArchInfo.LLVM_FAKE_REGS
         ]
 
     # RIZIN SPECIFIC
@@ -65,12 +62,7 @@ class HardwareRegister(Register):
         """
         indent = PluginInfo.LINE_INDENT
         code = ""
-        if (
-            reg_class == "CtrRegs64"
-            or reg_class == "DoubleRegs"
-            or reg_class == "GuestRegs64"
-            or reg_class == "HvxVQR"
-        ):
+        if reg_class == "CtrRegs64" or reg_class == "DoubleRegs" or reg_class == "GuestRegs64" or reg_class == "HvxVQR":
             # TODO Assumption: test with actual disassembly
             #  GuestRegs64  -> OK
             #  DoubleRegs   -> OK

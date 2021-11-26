@@ -5,9 +5,5 @@
 
 class ImplementationException(NotImplementedError):
     def __init__(self, message):
-        message = (
-            "\n\n"
-            + message
-            + "\nPlease update the implementation to cover this yet unknown case."
-        )
+        message = "\n\n" + message + "\nPlease update the implementation to cover this yet unknown" " case."
         super().__init__(message)

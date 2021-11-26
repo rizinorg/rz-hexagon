@@ -6,7 +6,6 @@ import unittest
 
 from Instruction import Instruction
 from LLVMImporter import LLVMImporter
-from helperFunctions import log
 
 
 class TestRegister(unittest.TestCase):

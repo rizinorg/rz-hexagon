@@ -4,10 +4,7 @@
 
 import unittest
 
-from Instruction import Instruction
-from InstructionTemplate import InstructionTemplate
 from LLVMImporter import LLVMImporter
-from UnexpectedException import UnexpectedException
 
 
 class TestInstruction(unittest.TestCase):

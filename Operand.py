@@ -120,9 +120,7 @@ class Operand:
         outstrings = []
         for i in range(masks_count, 0, -1):
             outstrings += [
-                "((({0:s}) & 0x{1:x}) >> {2:d})".format(
-                    PluginInfo.HEX_INSTR_VAR_SYNTAX, masks[i], bshift[i]
-                )
+                "((({0:s}) & 0x{1:x}) >> {2:d})".format(PluginInfo.HEX_INSTR_VAR_SYNTAX, masks[i], bshift[i])
             ]
         outstring = " | ".join(outstrings)
         if "|" in outstring:
@@ -138,6 +136,4 @@ class Operand:
         elif operand_type in HexagonArchInfo.IMMEDIATE_TYPES:
             return OperandType.IMMEDIATE
         else:
-            raise ImplementationException(
-                "Unknown operand type: {}".format(operand_type)
-            )
+            raise ImplementationException("Unknown operand type: {}".format(operand_type))

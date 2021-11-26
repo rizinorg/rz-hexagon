@@ -2,15 +2,17 @@
 #
 # SPDX-License-Identifier: LGPL-3.0-only
 
+import re
 from copy import deepcopy
 
+import PluginInfo
 from Immediate import Immediate
 from ImplementationException import ImplementationException
 from InstructionTemplate import InstructionTemplate, LoopMembership
 from Operand import Operand, OperandType
 from InstructionEncoding import InstructionEncoding
 from Register import Register
-from helperFunctions import *
+from helperFunctions import normalize_llvm_syntax, list_to_int
 
 
 class Instruction(InstructionTemplate):
@@ -61,17 +63,13 @@ class Instruction(InstructionTemplate):
 
         # Packet and Duplex
         # Has to be only instruction in packet.
-        self.is_solo = (
-            self.llvm_instr["isSolo"][0] if "isSolo" in self.llvm_instr else None
-        )
+        self.is_solo = self.llvm_instr["isSolo"][0] if "isSolo" in self.llvm_instr else None
 
         self.is_sub_instruction = False
         self.is_duplex = False
 
         # Operands
-        self.num_operands = self.get_num_operands(
-            self.llvm_syntax, self.llvm_in_out_operands
-        )
+        self.num_operands = self.get_num_operands(self.llvm_syntax, self.llvm_in_out_operands)
 
         # Immediate operands
         self.has_extendable_imm = self.llvm_instr["isExtendable"][0] == 1
@@ -101,9 +99,7 @@ class Instruction(InstructionTemplate):
         self.llvm_filtered_operands = self.remove_invisible_in_out_regs(
             self.llvm_syntax, deepcopy(self.llvm_in_out_operands)
         )
-        self.operand_indices = self.get_syntax_operand_indices(
-            self.llvm_syntax, self.llvm_filtered_operands
-        )
+        self.operand_indices = self.get_syntax_operand_indices(self.llvm_syntax, self.llvm_filtered_operands)
 
         # Update syntax indices
         if self.has_new_non_predicate:
@@ -116,7 +112,7 @@ class Instruction(InstructionTemplate):
             # log("{}\next: {}".format(self.llvm_syntax, self.ext_operand_index), LogLevel.DEBUG)
 
         if len(self.llvm_filtered_operands) > PluginInfo.MAX_OPERANDS:
-            warning = "{} instruction struct can only hold {} operands. This instruction has {} operands.".format(
+            warning = "{} instruction struct can only hold {} operands. This" " instruction has {} operands.".format(
                 PluginInfo.FRAMEWORK_NAME,
                 PluginInfo.MAX_OPERANDS,
                 len(self.llvm_filtered_operands),
@@ -137,19 +133,14 @@ class Instruction(InstructionTemplate):
             # Parse register operand
             if Operand.get_operand_type(op_type) is OperandType.REGISTER:
                 # Indices of new values (stored in "opNewValue") are only for non predicates.
-                is_new_value = (
-                    self.new_operand_index == syntax_index
-                    and self.has_new_non_predicate
-                )
+                is_new_value = self.new_operand_index == syntax_index and self.has_new_non_predicate
                 operand = Register(op_name, op_type, is_new_value, syntax_index)
                 # Whether the predicate registers holds a new value is denoted in "isPredicatedNew".
                 if self.is_pred_new and operand.is_predicate:
                     operand.is_new_value = True
             # Parse immediate operands
             elif Operand.get_operand_type(op_type) is OperandType.IMMEDIATE:
-                extendable = (
-                    self.has_extendable_imm and self.ext_operand_index == syntax_index
-                )
+                extendable = self.has_extendable_imm and self.ext_operand_index == syntax_index
                 operand = Immediate(
                     op_name,
                     op_type,
@@ -159,9 +150,7 @@ class Instruction(InstructionTemplate):
                 )
 
             else:
-                raise ImplementationException(
-                    "Unknown operand type: {}, op_name: {}".format(op_type, op_name)
-                )
+                raise ImplementationException("Unknown operand type: {}, op_name: {}".format(op_type, op_name))
 
             if op_name in self.constraints:
                 operand.is_in_out_operand = True
@@ -173,14 +162,10 @@ class Instruction(InstructionTemplate):
                 operand.is_out_operand = True
 
             # Add opcode extraction code
-            if (
-                operand.type == OperandType.IMMEDIATE and operand.is_constant
-            ):  # Constants have no parsing code.
+            if operand.type == OperandType.IMMEDIATE and operand.is_constant:  # Constants have no parsing code.
                 pass
             else:
-                if (
-                    operand.is_in_out_operand and op_name[-2:] == "in"
-                ):  # In/Out Register
+                if operand.is_in_out_operand and op_name[-2:] == "in":  # In/Out Register
                     mask = self.encoding.operand_masks[op_name[:-2]]  # Ends with "in"
                 else:
                     mask = self.encoding.operand_masks[op_name]
@@ -192,8 +177,8 @@ class Instruction(InstructionTemplate):
                 if not operand.is_new_value:
                     raise ImplementationException(
                         "Register has new value in syntax but not as object."
-                        + "It has been parsed incorrectly! Are the indices correctly set?"
-                        + "Affected instruction: {}".format(self.llvm_syntax)
+                        + "It has been parsed incorrectly! Are the indices"
+                        " correctly set?" + "Affected instruction: {}".format(self.llvm_syntax)
                     )
 
             self.operands[op_name] = operand

@@ -4,8 +4,6 @@
 
 import re
 
-from bitarray import bitarray
-
 import HexagonArchInfo
 import PluginInfo
 from Operand import Operand
@@ -69,9 +67,7 @@ class Immediate(Operand):
         """Parse immediate types like: u4_2Imm. This method sets all kinds of flags, the scale and total width."""
         type_letter = re.search(r"^([a-z]+)\d{1,2}", llvm_imm_type)
         if not type_letter:
-            raise ImplementationException(
-                "Unhandled immediate type: {}".format(llvm_imm_type)
-            )
+            raise ImplementationException("Unhandled immediate type: {}".format(llvm_imm_type))
         else:
             type_letter = type_letter.group(1)
 
@@ -90,63 +86,46 @@ class Immediate(Operand):
             self.encoding_width = None  # Is not encoded in the llvm instruction
             width = re.search(r"[a-z](\d+)", llvm_imm_type)
             if not width:
-                raise ImplementationException(
-                    "Unhandled immediate type: {}".format(llvm_imm_type)
-                )
+                raise ImplementationException("Unhandled immediate type: {}".format(llvm_imm_type))
             else:
                 self.total_width = width.group(1)
             self.is_extendable = False
             # log("Parsed imm type: {}, width: {}".format(imm_type, self.total_width), LogLevel.DEBUG)
             return
         else:
-            raise ImplementationException(
-                "Unhandled immediate type: {}".format(llvm_imm_type)
-            )
+            raise ImplementationException("Unhandled immediate type: {}".format(llvm_imm_type))
 
         # Value before _ represents number of encoded bits.
         result = re.search(r"[a-z](\d+)\_", llvm_imm_type)
         if result:
             self.encoding_width = int(result.group(1))
         else:
-            raise ImplementationException(
-                "Could not parse encoding width of immediate type: {}".format(
-                    llvm_imm_type
-                )
-            )
+            raise ImplementationException("Could not parse encoding width of immediate type: {}".format(llvm_imm_type))
 
         # Value after the _ represents tells how often the immediate has to be shifted.
         result = re.search(r"\_(\d+)Imm", llvm_imm_type)
         if result:
             self.scale = int(result.group(1))
         else:
-            raise ImplementationException(
-                "Could not find parse scale of immediate type: {}".format(llvm_imm_type)
-            )
+            raise ImplementationException("Could not find parse scale of immediate type: {}".format(llvm_imm_type))
 
         self.total_width = self.encoding_width + self.scale
         mx = HexagonArchInfo.MAX_IMM_LEN
         nw = int((self.total_width - mx) / 4)
         if self.total_width > mx:
             log(
-                "Rizins hexagon_disas.c assumes that immediate values are not larger than {}bit.\n".format(
-                    mx
-                )
-                + "\tImmediate type: {} is {}bits long.\n".format(
-                    self.llvm_type, self.total_width
-                )
-                + "\tPlease increase the buffer hexagon_disas.c::signed_imm by at least {} bits.".format(
-                    nw
-                ),
+                "Rizins hexagon_disas.c assumes that immediate values are not"
+                " larger than {}bit.\n".format(mx)
+                + "\tImmediate type: {} is {}bits long.\n".format(self.llvm_type, self.total_width)
+                + "\tPlease increase the buffer hexagon_disas.c::signed_imm by"
+                " at least {} bits.".format(nw),
                 LogLevel.WARNING,
             )
 
         # The extended immediate should have always the op_type of a 32/64bit wide immediate.
-        if self.is_extendable and not (
-            self.total_width == 32 or self.total_width == 64
-        ):
+        if self.is_extendable and not (self.total_width == 32 or self.total_width == 64):
             raise UnexpectedException(
-                "Extendable immediate is not 32 or 64bits long!\n"
-                + "imm: {}".format(self.llvm_syntax)
+                "Extendable immediate is not 32 or 64bits long!\n" + "imm: {}".format(self.llvm_syntax)
             )
 
     # RIZIN SPECIFIC
@@ -161,17 +140,9 @@ class Immediate(Operand):
         indent = PluginInfo.LINE_INDENT
         self.code_opcode_parsing = parsing_code
         if self.scale > 0:
-            self.code_opcode_parsing += " << {}; // scaled {}\n".format(
-                self.scale, self.llvm_syntax
-            )
-            self.code_opcode_parsing += (
-                "{}hi->ops[{}].attr = HEX_OP_IMM_SCALED;\n".format(
-                    indent, self.syntax_index
-                )
-            )
-            self.code_opcode_parsing += "{}hi->ops[{}].shift = {};\n".format(
-                indent, self.syntax_index, self.scale
-            )
+            self.code_opcode_parsing += " << {}; // scaled {}\n".format(self.scale, self.llvm_syntax)
+            self.code_opcode_parsing += "{}hi->ops[{}].attr = HEX_OP_IMM_SCALED;\n".format(indent, self.syntax_index)
+            self.code_opcode_parsing += "{}hi->ops[{}].shift = {};\n".format(indent, self.syntax_index, self.scale)
         else:
             self.code_opcode_parsing += "; // {}\n".format(self.llvm_syntax)
 
@@ -179,23 +150,18 @@ class Immediate(Operand):
             op_bits = self.opcode_mask.count(1)
             if op_bits <= 0:
                 raise ImplementationException(
-                    "The bits encoding the immediate value should never be <= 0!\n"
-                    "Operand type: {}, Mask: {}".format(
-                        self.llvm_type, str(self.opcode_mask)
-                    )
+                    "The bits encoding the immediate value should never be <="
+                    " 0!\nOperand type: {}, Mask: {}".format(self.llvm_type, str(self.opcode_mask))
                 )
             shift = (op_bits if self.scale <= 0 else op_bits + self.scale) - 1
-            self.code_opcode_parsing += (
-                "{}if (hi->ops[{}].op.imm & (1 << {})) {{ // signed\n".format(
-                    indent, self.syntax_index, shift
-                )
+            self.code_opcode_parsing += "{}if (hi->ops[{}].op.imm & (1 << {})) {{ // signed\n".format(
+                indent, self.syntax_index, shift
             )
-            self.code_opcode_parsing += (
-                "{}{}hi->ops[{}].op.imm |= (0xffffffffffffffff << {});\n{}}}\n".format(
-                    indent, indent, self.syntax_index, shift, indent
-                )
+            self.code_opcode_parsing += "{}{}hi->ops[{}].op.imm |= (0xffffffffffffffff << {});\n{}}}\n".format(
+                indent, indent, self.syntax_index, shift, indent
             )
         if self.is_extendable:
-            self.code_opcode_parsing += "{}hex_extend_op(state, &(hi->ops[{}]), false, addr); // Extension possible\n".format(
-                indent, self.syntax_index
+            self.code_opcode_parsing += (
+                "{}hex_extend_op(state, &(hi->ops[{}]), false, addr); //"
+                " Extension possible\n".format(indent, self.syntax_index)
             )

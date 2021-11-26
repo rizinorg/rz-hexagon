@@ -4,7 +4,6 @@
 
 import unittest
 
-from Instruction import Instruction
 from InstructionTemplate import InstructionTemplate
 from UnexpectedException import UnexpectedException
 from helperFunctions import normalize_llvm_syntax
@@ -24,10 +23,12 @@ class TestInstruction(unittest.TestCase):
 
     def test_normalize_llvm_syntax(self) -> None:
         self.assertEqual(
-            "Rdd = add(Rs,Rtt)", normalize_llvm_syntax("$Rdd32 = add($Rs32,$Rtt32)")
+            "Rdd = add(Rs,Rtt)",
+            normalize_llvm_syntax("$Rdd32 = add($Rs32,$Rtt32)"),
         )
         self.assertEqual(
-            "RDD = add(RS,RTT)", normalize_llvm_syntax("$RDD32 = add($RS32,$RTT32)")
+            "RDD = add(RS,RTT)",
+            normalize_llvm_syntax("$RDD32 = add($RS32,$RTT32)"),
         )
         self.assertEqual(
             "Vxx.w += vmpy(Vu.h,Vv.h)",
@@ -60,7 +61,13 @@ class TestInstruction(unittest.TestCase):
 
     def test_get_syntax_operand_indices(self) -> None:
         syntax = "$RDD8 = combine($RS16,#0) ; $Rd16 = add($Rs16,#$n1)"
-        operands = [["", "Rd16"], ["", "Rs16"], ["", "RDD8"], ["", "RS16"], ["", "n1"]]
+        operands = [
+            ["", "Rd16"],
+            ["", "Rs16"],
+            ["", "RDD8"],
+            ["", "RS16"],
+            ["", "n1"],
+        ]
         correct_order = {"RDD8": 0, "RS16": 1, "Rd16": 2, "Rs16": 3, "n1": 4}
         self.assertEqual(
             correct_order,
@@ -84,7 +91,14 @@ class TestInstruction(unittest.TestCase):
             ["", "Rs16"],
             ["", "Ii"],
         ]
-        correct_order = {"Rx16": 0, "Rx16in": 1, "II": 2, "Rd16": 3, "Rs16": 4, "Ii": 5}
+        correct_order = {
+            "Rx16": 0,
+            "Rx16in": 1,
+            "II": 2,
+            "Rd16": 3,
+            "Rs16": 4,
+            "Ii": 5,
+        }
         self.assertEqual(
             correct_order,
             InstructionTemplate.get_syntax_operand_indices(syntax, operands),
