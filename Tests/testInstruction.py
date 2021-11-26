@@ -53,7 +53,7 @@ class TestInstruction(unittest.TestCase):
         )
         # Duplex
         self.assertEqual(
-            "Rx = add(Rxin,#II) ; Rd = memw(Rs+#Ii)",
+            "Rx = add(Rxin,II) ; Rd = memw(Rs+Ii)",
             normalize_llvm_syntax(
                 "$Rx16 = add($Rx16in,#$II) ; $Rd16 = memw($Rs16+#$Ii)"
             ),

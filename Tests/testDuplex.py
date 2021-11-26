@@ -29,7 +29,7 @@ class TestDuplex(unittest.TestCase):
             "1101111101000110EE110001ssssiiii", duplex.encoding.docs_mask
         )
         self.assertEqual(
-            "if (p0.new) dealloc_return:nt ; memw(Rs+#Ii) = #1", duplex.syntax
+            "if (p0.new) dealloc_return:nt ; memw(Rs+Ii) = #1", duplex.syntax
         )
         self.assertTrue(duplex.encoding.duplex_encoding)
 
@@ -44,7 +44,7 @@ class TestDuplex(unittest.TestCase):
         self.assertEqual(
             "010010IIIIIIDDDDEE01iiiissssdddd", duplex.encoding.docs_mask
         )
-        self.assertEqual("RD = #II ; Rd = memub(Rs+#Ii)", duplex.syntax)
+        self.assertEqual("RD = II ; Rd = memub(Rs+Ii)", duplex.syntax)
         self.assertTrue(duplex.encoding.duplex_encoding)
 
         # DUPLEX_HIGH_SA1_COMBINERZ_LOW_SA1_DEC
@@ -57,7 +57,7 @@ class TestDuplex(unittest.TestCase):
 
         duplex = DuplexInstruction(self.json[d.name], low=low, high=high)
         self.assertEqual(
-            "RDD = combine(#0,RS) ; Rd = add(Rs,#n1)", duplex.syntax
+            "RDD = combine(#0,RS) ; Rd = add(Rs,n1)", duplex.syntax
         )
         self.assertEqual(
             "00111101SSSS0DDDEE110011ssssdddd", duplex.encoding.docs_mask
