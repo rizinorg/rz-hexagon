@@ -8,17 +8,18 @@ SPDX-License-Identifier: LGPL-3.0-only
 
 This is a Hexagon disassembly and analysis plugin generator for `rizin`.
 It uses the [LLVM target description source code](https://github.com/llvm/llvm-project/tree/main/llvm/lib/Target/Hexagon)
-of the Hexagon architecture and additional handwritten code.
+of the Hexagon architecture and additional hand-written code.
 
 # Missing features and bugs
 
-This plugin is under continues work. So checkout the Github issues for missing features or not yet fixed bugs.
+This plugin is under continuous work. So checkout the Github issues for missing features or not yet fixed bugs.
 
 # Prerequisites
 
 ### Requirements
 
 - For formatting we need `clang-format-13`. If it is not available on your distribution, you can install it from https://apt.llvm.org/.
+
 - Python requirements are in `requirements.txt`
 ### Hexagon Target Description
 
@@ -117,6 +118,7 @@ So here are some good to know points for porting:
   - `syntax` holds: `Rdd = combine(#0,#Ii) ; Rx = add(Rxin,Rs)`
   - `Instruction.operands` is a dictionary which contains `Register` and `Immediate` Python objects.
 
+- Please take a brief look at the [Rizin development](https://github.com/rizinorg/rizin/blob/dev/DEVELOPERS.md) guide if you plan to change C code.
 
 # Contributors
 

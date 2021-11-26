@@ -157,10 +157,11 @@ static HexPkt *hex_get_pkt(HexState *state, const ut32 addr) {
  * 
  * \param i The instruction to be freed.
  */
-RZ_API void hex_insn_free(HexInsn *i) {
-	if (i) {
-		free(i);
+RZ_API void hex_insn_free(RZ_NULLABLE HexInsn *i) {
+	if (!i) {
+		return;
 	}
+	free(i);
 }
 
 /**
@@ -168,10 +169,11 @@ RZ_API void hex_insn_free(HexInsn *i) {
  * 
  * \param ce The constant extender to be freed.
  */
-RZ_API void hex_const_ext_free(HexConstExt *ce) {
-	if (ce) {
-		free(ce);
+RZ_API void hex_const_ext_free(RZ_NULLABLE HexConstExt *ce) {
+	if (!ce) {
+		return;
 	}
+	free(ce);
 }
 
 /**
@@ -199,20 +201,22 @@ static ut8 get_state_pkt_index(HexState *state, const HexPkt *p) {
  */
 RZ_API HexState *hexagon_get_state() {
 	static HexState *state = NULL;
-	if (!state) {
-		state = calloc(1, sizeof(HexState));
-		if (!state) {
-			RZ_LOG_FATAL("Could not allocate memory for HexState!");
-		}
-		for (int i = 0; i < HEXAGON_STATE_PKTS; ++i) {
-			state->pkts[i].insn = rz_list_newf((RzListFree)hex_insn_free);
-			if (!state->pkts[i].insn) {
-				RZ_LOG_FATAL("Could not initilize instruction list!");
-			}
-			hex_clear_pkt(&(state->pkts[i]));
-		}
-		state->const_ext_l = rz_list_newf((RzListFree)hex_const_ext_free);
+	if (state) {
+		return state;
 	}
+
+	state = calloc(1, sizeof(HexState));
+	if (!state) {
+		RZ_LOG_FATAL("Could not allocate memory for HexState!");
+	}
+	for (int i = 0; i < HEXAGON_STATE_PKTS; ++i) {
+		state->pkts[i].insn = rz_list_newf((RzListFree)hex_insn_free);
+		if (!state->pkts[i].insn) {
+			RZ_LOG_FATAL("Could not initialize instruction list!");
+		}
+		hex_clear_pkt(&(state->pkts[i]));
+	}
+	state->const_ext_l = rz_list_newf((RzListFree)hex_const_ext_free);
 	return state;
 }
 
@@ -232,7 +236,7 @@ static inline bool is_pkt_full(const HexPkt *p) {
  * 
  * \param hi The instruction.
  * \param p The packet the instruction belongs to.
- * \param k The index of the instruction wihin the packet.
+ * \param k The index of the instruction within the packet.
  */
 static void hex_set_pkt_info(const RzAsm *rz_asm, RZ_INOUT HexInsn *hi, const HexPkt *p, const ut8 k, const bool update_mnemonic) {
 	rz_return_if_fail(hi && p);
@@ -246,47 +250,47 @@ static void hex_set_pkt_info(const RzAsm *rz_asm, RZ_INOUT HexInsn *hi, const He
 		hi_pi->last_insn = true;
 		// TODO No indent in visual mode for "[" without spaces.
 		if (p->is_valid) {
-			strncpy(hi_pi->syntax_prefix, "[   ", 8);
+			strncpy(hi_pi->syntax_prefix, HEX_PKT_SINGLE, 8);
 		} else {
-			strncpy(hi_pi->syntax_prefix, "?   ", 8);
+			strncpy(hi_pi->syntax_prefix, HEX_PKT_UNK, 8);
 		}
 	} else if (is_first) {
 		hi_pi->first_insn = true;
 		hi_pi->last_insn = false;
 		if (p->is_valid) {
-			strncpy(hi_pi->syntax_prefix, rz_asm->utf8 ? "┌   " : "/   ", 8);
+			strncpy(hi_pi->syntax_prefix, rz_asm->utf8 ? HEX_PKT_FIRST_UTF8 : HEX_PKT_FIRST, 8);
 		} else {
-			strncpy(hi_pi->syntax_prefix, "?   ", 8);
+			strncpy(hi_pi->syntax_prefix, HEX_PKT_UNK, 8);
 		}
 	} else if (is_last_instr(hi->parse_bits)) {
 		hi_pi->first_insn = false;
 		hi_pi->last_insn = true;
 		if (p->is_valid) {
-			strncpy(hi_pi->syntax_prefix, rz_asm->utf8 ? "└   " : "\\   ", 8);
+			strncpy(hi_pi->syntax_prefix, rz_asm->utf8 ? HEX_PKT_LAST_UTF8 : HEX_PKT_LAST, 8);
 
 			switch(hex_get_loop_flag(p)) {
 			default:
 				break;
 			case HEX_LOOP_01:
-				strncpy(hi_pi->syntax_postfix, rz_asm->utf8 ? "     ∎ endloop01" : "     < endloop01", 24);
+				strncpy(hi_pi->syntax_postfix, rz_asm->utf8 ? HEX_PKT_ELOOP_01_UTF8 : HEX_PKT_ELOOP_01, 24);
 				break;
 			case HEX_LOOP_0:
-				strncpy(hi_pi->syntax_postfix, rz_asm->utf8 ? "     ∎ endloop0" : "     < endloop0", 24);
+				strncpy(hi_pi->syntax_postfix, rz_asm->utf8 ? HEX_PKT_ELOOP_0_UTF8 : HEX_PKT_ELOOP_0, 24);
 				break;
 			case HEX_LOOP_1:
-				strncpy(hi_pi->syntax_postfix, rz_asm->utf8 ? "     ∎ endloop1" : "     < endloop1", 24);
+				strncpy(hi_pi->syntax_postfix, rz_asm->utf8 ? HEX_PKT_ELOOP_1_UTF8 : HEX_PKT_ELOOP_1, 24);
 				break;
 			}
 		} else {
-			strncpy(hi_pi->syntax_prefix, "?   ", 8);
+			strncpy(hi_pi->syntax_prefix, HEX_PKT_UNK, 8);
 		}
 	} else {
 		hi_pi->first_insn = false;
 		hi_pi->last_insn = false;
 		if (p->is_valid) {
-			strncpy(hi_pi->syntax_prefix, rz_asm->utf8 ? "│   " : "|   ", 8);
+			strncpy(hi_pi->syntax_prefix, rz_asm->utf8 ? HEX_PKT_MID_UTF8 : HEX_PKT_MID, 8);
 		} else {
-			strncpy(hi_pi->syntax_prefix, "?   ", 8);
+			strncpy(hi_pi->syntax_prefix, HEX_PKT_UNK, 8);
 		}
 	}
 	if (update_mnemonic) {
@@ -297,7 +301,7 @@ static void hex_set_pkt_info(const RzAsm *rz_asm, RZ_INOUT HexInsn *hi, const He
 
 /**
  * \brief Returns the loop type of a packet. Though only if this packet is
- * 	the last packet in last packet in a harwadr loop. Otherwise it returns
+ * 	the last packet in last packet in a hardware loop. Otherwise it returns
  * 	HEX_NO_LOOP.
  * 
  * \param p The instruction packet.
@@ -329,7 +333,7 @@ RZ_API HexLoopAttr hex_get_loop_flag(const HexPkt *p) {
  * \brief Sets the packet after pkt to valid and updates its mnemonic.
  * 
  * \param state The state to operade on.
- * \param pkt The packet whichs predecessor will be updated.
+ * \param pkt The packet which predecessor will be updated.
  */
 static void make_next_packet_valid(HexState *state, const HexPkt *pkt) {
 	HexInsn *tmp = rz_list_get_top(pkt->insn);
@@ -360,9 +364,9 @@ static void make_next_packet_valid(HexState *state, const HexPkt *pkt) {
 }
 
 /**
- * @brief Allocates a new instruction on the heap.
+ * \brief Allocates a new instruction on the heap.
  * 
- * @return HexInsn* The new instruction.
+ * \return HexInsn* The new instruction.
  */
 RZ_API HexInsn *alloc_instr() {
 	HexInsn *hi = calloc(1, sizeof(HexInsn));
@@ -412,7 +416,7 @@ static HexInsn *hex_add_to_pkt(HexState *state, const HexInsn *new_ins, RZ_INOUT
  * 
  * \param state The state to operade on.
  * \param new_ins The instruction to copy.
- * \param p The old packet whichs attributes are copied to the new one.
+ * \param p The old packet which attributes are copied to the new one.
  * \param new_p The new packet will hold the instruction.
  * \return HexInsn* Pointer to the copied instruction on the heap.
  */
