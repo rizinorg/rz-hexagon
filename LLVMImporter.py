@@ -336,6 +336,7 @@ class LLVMImporter:
             main_function += "switch (hex_get_loop_flag(pkt)) {" + "default: break;"
             main_function += (
                 "case HEX_LOOP_01:"
+                + "hi->ana_op.prefix = RZ_ANALYSIS_OP_PREFIX_HWLOOP_END;"
                 + "hi->ana_op.type = RZ_ANALYSIS_OP_TYPE_CJMP;"
                 + "hi->ana_op.fail = pkt->hw_loop0_addr;"
                 + "hi->ana_op.jump = pkt->hw_loop1_addr;"
@@ -347,6 +348,7 @@ class LLVMImporter:
             )
             main_function += (
                 "case HEX_LOOP_0:\n"
+                + "hi->ana_op.prefix = RZ_ANALYSIS_OP_PREFIX_HWLOOP_END;"
                 + "hi->ana_op.type = RZ_ANALYSIS_OP_TYPE_CJMP;"
                 + "hi->ana_op.jump = pkt->hw_loop0_addr;"
                 + "hi->ana_op.val = hi->ana_op.jump;"
@@ -355,6 +357,7 @@ class LLVMImporter:
             )
             main_function += (
                 "case HEX_LOOP_1:\n"
+                + "hi->ana_op.prefix = RZ_ANALYSIS_OP_PREFIX_HWLOOP_END;"
                 + "hi->ana_op.type = RZ_ANALYSIS_OP_TYPE_CJMP;"
                 + "hi->ana_op.jump = pkt->hw_loop1_addr;"
                 + "hi->ana_op.val = hi->ana_op.jump;"
