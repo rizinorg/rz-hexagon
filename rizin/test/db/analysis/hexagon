@@ -375,7 +375,89 @@ EXPECT=<<EOF
 0x0000001c 1 str.There_is_Wally
 EOF
 RUN
-NAME=hexagon regs
+
+NAME=hexagon analysis.jmp.after endloop
+FILE==
+CMDS=<<EOF
+e asm.arch=hexagon
+e analysis.arch=hexagon
+wx 0ec4057608c00f60464a0cc2034175f208c6c0ab0c8a0bf52ae6c19b464e86c3
+af
+pd 8
+EOF
+EXPECT=<<EOF
+/ fcn.00000000 ();
+|           0x00000000      ?       R14 = and(R5,##0x20)
+|       ,=< 0x00000004      [   loop0(0x8,R15)
+|       |   ; CODE XREFS from fcn.00000000 @ 0x4, 0x18
+|      .`-> 0x00000008      /       R7:6 = valignb(R11:10,R13:12,P2)
+|      :    0x0000000c      |       P3 = cmp.gtu(R21,R1)
+|      :    0x00000010      \       memd(R0++#0x8) = R7:6
+|      :    0x00000014      /       R13:12 = combine(R11,R10)
+|      `==< 0x00000018      \       if (P3) R11:10 = memd(R1++#0x8)     < endloop0
+|           0x0000001c      /       R7:6 = lsr(R7:6,R14)
+EOF
+RUN
+
+NAME=hexagon analysis.jmp.after conditional jumpr
+FILE==
+CMDS=<<EOF
+e asm.arch=hexagon
+e analysis.arch=hexagon
+wx 11400275114001f20e4021f1e0c282752943028c00417f53e34b82750ec22ef102478e8500c001940242636b027f427446ea005c3260
+af
+pd 0xd
+EOF
+EXPECT=<<EOF
+/ fcn.00000000 ();
+|           0x00000000      ?       P1 = !cmp.eq(R2,##0x0)
+|           0x00000004      ?       P1 = !cmp.eq(R1,R0)
+|           0x00000008      ?       R14 = or(R1,R0)
+|           0x0000000c      ?       P0 = cmp.gtu(R2,##0x17)
+|           0x00000010      /       R9 = lsr(R2,#0x3)
+|           0x00000014      |       if (!P1) jumpr:nt R31
+|           0x00000018      |       P3 = cmp.gtu(R2,##0x5f)
+|           0x0000001c      \       R14 = or(R14,R2)
+|           0x00000020      /       P2 = bitsclr(R14,#0x7)
+|           0x00000024      \       dcfetch(R1+#0x0)
+|           0x00000028      /       P2 = and(P2,!P3)
+|           0x0000002c      |       if (P2.new) R2 = add(R2,##0xfffffff8)
+|       ,=< 0x00000030      \       if (P2.new) jump:nt 0x2b4
+EOF
+RUN
+
+NAME=hexagon analysis.trap.after
+FILE==
+CMDS=<<EOF
+e asm.arch=hexagon
+e analysis.arch=hexagon
+e analysis.trap.after=true
+wx 104300000244804920c00224201cf4eb2846005a110800e82446005a01410078082c002ca0c2007801c0707000c0005402c0607000406270001f0c3e00c09f5202c00078
+af
+pd 0x12
+EOF
+EXPECT=<<EOF
+/ fcn.00000000 ();
+|           0x00000000      ?       immext(##0xc400)
+|           0x00000004      ?       R2 = memw(GP+##0xc420)
+|       ,=< 0x00000008      ?       if (cmp.eq(R2.new,#0x0)) jump:nt 0x40
+|       |   0x0000000c      [   memd(R29+#-0x10) = R17:16 ; allocframe(#0x10)
+|       |   0x00000010      /       call 0xc60
+|       |   0x00000014      \       memw(R29+#0x0) = R0 ; memw(R29+#0x4) = R1
+|       |   0x00000018      /       call 0xc60
+|       |   0x0000001c      |       R1 = ##0x8
+|       |   0x00000020      \       R0 = add(R29,#0x0) ; R16 = add(R29,#0x0)
+|       |   0x00000024      [   R0 = ##0x15
+|       |   0x00000028      [   R1 = R16
+|       |   0x0000002c      [   trap0(#0x0)
+|       |   0x00000030      [   R2 = R0
+|       |   0x00000034      /       R0 = R2
+|       |   0x00000038      \       R17:16 = memd(R29+#0x8) ; deallocframe
+|       |   0x0000003c      [   jumpr R31
+|       `-> 0x00000040      [   R2 = ##0x0
+|           0x00000044      [   invalid
+EOF
+RUNNAME=hexagon regs
 FILE=
 CMDS=<<EOF
 e asm.arch=hexagon
