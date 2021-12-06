@@ -32,6 +32,7 @@ class InstructionTemplate:
         # Meta info
         self.llvm_instr: dict = llvm_instruction
         self.name: str = self.llvm_instr["!name"]
+        self.is_vector = self.name[0] == "V"
         self.plugin_name: str = PluginInfo.INSTR_ENUM_PREFIX + self.name.upper()
         self.type: str = self.llvm_instr["Type"]["def"]
         self.constraints = self.llvm_instr["Constraints"]
@@ -298,6 +299,7 @@ class InstructionTemplate:
         code += "hi->ana_op.addr = hi->addr;\n"
         code += "hi->ana_op.id = hi->instruction;\n"
         code += "hi->ana_op.size = 4;\n"
+        code += "hi->ana_op.cond = {};\n".format(self.get_rz_cond_type())
         code += self.get_rizin_op_type()
         if self.has_imm_jmp_target():
             if not self.is_call and not self.is_predicated:
@@ -350,6 +352,24 @@ class InstructionTemplate:
             code = re.sub(r"= \|", "= ", code)
         code += ";\n"
         return code
+
+    # RIZIN SPECIFIC
+    def get_rz_cond_type(self):
+        """Returns the rizin conditional type."""
+
+        if not self.is_predicated:
+            return "RZ_TYPE_COND_AL"
+
+        if self.is_vector:
+            if self.is_pred_true:
+                return "RZ_TYPE_COND_HEX_VEC_TRUE"
+            else:
+                return "RZ_TYPE_COND_HEX_VEC_FALSE"
+        else:
+            if self.is_pred_true:
+                return "RZ_TYPE_COND_HEX_SCL_TRUE"
+            else:
+                return "RZ_TYPE_COND_HEX_SCL_FALSE"
 
     # RIZIN SPECIFIC
     def get_rizin_op_type(self) -> str:

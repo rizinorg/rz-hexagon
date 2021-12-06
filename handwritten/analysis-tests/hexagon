@@ -457,7 +457,9 @@ EXPECT=<<EOF
 |       `-> 0x00000040      [   R2 = ##0x0
 |           0x00000044      [   invalid
 EOF
-RUNNAME=hexagon regs
+RUN
+
+NAME=hexagon regs
 FILE=
 CMDS=<<EOF
 e asm.arch=hexagon
@@ -780,3 +782,76 @@ s77:76
 s79:78
 EOF
 RUN
+
+NAME=hexagon basic block graph
+FILE=bins/elf/analysis/hexagon-hello-loop
+CMDS=<<EOF
+aaa
+s main
+agf
+EOF
+EXPECT=<<EOF
+           .---------------------------------------------------.
+           |  0x5110                                           |
+           |   ; CALL XREF from sym.__libc_start_main @ 0x5e98 |
+           | int main (int argc, char **argv, char **envp);    |
+           | ; arg int argc @ r0                               |
+           | ?   allocframe(R29,0x8):raw                       |
+           | [   R2 = add(R30,0xfffffffc)                      |
+           | [   memw(R2+0x0) = 0x0                            |
+           | [   R2 = add(R30,0xfffffff8)                      |
+           | [   memw(R2+0x0) = 0x0                            |
+           | [   jump 0x5128                                   |
+           `---------------------------------------------------'
+               v
+               |
+               '------.
+.-----------------------.
+|                     | |
+|               .-----------------------------------------.
+|               |  0x5128                                 |
+|               | ; CODE XREFS from main @ 0x5124, 0x5150 |
+|               | [   R2 = memw(R30+0xfffffff8)           |
+|               | [   P0 = cmp.gt(R2,0x2)                 |
+|               | [   if (P0) jump:nt 0x5154              |
+|               `-----------------------------------------'
+|                       f t
+|                       | |
+|                       | '-----------.
+|           .-----------'             |
+|           |                         |
+|       .--------------------.    .-----------------------------------------.
+|       |  0x5134            |    |  0x5154                                 |
+|       | [   jump 0x5138    |    | ; CODE XREF from main @ 0x5130          |
+|       `--------------------'    | [   R0 = 0x0                            |
+|           v                     | [   R31:30 = dealloc_return(R30):raw    |
+|           |                     `-----------------------------------------'
+|           |
+|           |
+|     .-----'
+|     |
+| .--------------------------------.
+| |  0x5138                        |
+| | ; CODE XREF from main @ 0x5134 |
+| | [   call sym.pHello;[oa]       |
+| | [   call sym.pWorld;[ob]       |
+| | [   jump 0x5144                |
+| `--------------------------------'
+|     v
+|     |
+|    .'
+|    |
+|.----------------------------------.
+||  0x5144                          |
+|| ; CODE XREF from main @ 0x5140   |
+|| [   R2 = memw(R30+0xfffffff8)    |
+|| [   R2 = add(R2,0x1)             |
+|| [   memw(R30+0xfffffff8) = R2    |
+|| [   jump 0x5128                  |
+|`----------------------------------'
+|    v
+|    |
+`----'
+EOF
+RUN
+
