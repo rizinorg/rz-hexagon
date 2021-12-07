@@ -375,7 +375,9 @@ class InstructionTemplate:
     def get_rizin_op_type(self) -> str:
         """Returns the c code to assign the instruction type to the RzAnalysisOp.type member."""
 
-        op_type = "hi->ana_op.type |= "
+        op_type = (
+            "hi->ana_op.type = hi->ana_op.prefix == RZ_ANALYSIS_OP_PREFIX_HWLOOP_END ? RZ_ANALYSIS_OP_TYPE_CJMP : "
+        )
 
         if self.is_trap:
             return op_type + "RZ_ANALYSIS_OP_TYPE_TRAP;"
@@ -405,7 +407,10 @@ class InstructionTemplate:
                 # Immediate and register jump
                 op_type += "RZ_ANALYSIS_OP_TYPE_JMP;" if self.has_imm_jmp_target() else "RZ_ANALYSIS_OP_TYPE_RJMP;"
 
-        if op_type == "hi->ana_op.type |= ":
+        if (
+            op_type
+            == "hi->ana_op.type = hi->ana_op.prefix == RZ_ANALYSIS_OP_PREFIX_HWLOOP_END ? RZ_ANALYSIS_OP_TYPE_CJMP : "
+        ):
             log(
                 "Instruction: {} has no instr. type assigned to it yet.".format(self.name),
                 LogLevel.VERBOSE,
