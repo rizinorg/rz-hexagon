@@ -284,9 +284,7 @@ class InstructionTemplate:
         mnemonic = self.register_names_to_upper(mnemonic)
 
         code += mnemonic + sprint_src + ");\n"
-        code += (
-            'sprintf(hi->mnem, "%s%s%s", hi->pkt_info.syntax_prefix,' " hi->mnem_infix, hi->pkt_info.syntax_postfix);\n"
-        )
+        code += 'sprintf(hi->mnem, "%s%s%s", hi->pkt_info.mnem_prefix,' " hi->mnem_infix, hi->pkt_info.mnem_postfix);\n"
         if self.name == "A4_ext":
             code += "{}hex_extend_op(state, &(hi->ops[0]), true, addr);\n".format(indent)
         code += "{}return;\n}}\n".format(indent)
