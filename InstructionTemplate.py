@@ -327,6 +327,11 @@ class InstructionTemplate:
                 if self.has_imm_jmp_target() and o.type == OperandType.IMMEDIATE:
                     code += "hi->ana_op.val = hi->ana_op.jump;\n"
                     code += "hi->ana_op.analysis_vals[{}].imm = hi->ana_op.jump;\n".format(o.syntax_index)
+                elif self.plugin_name == "HEX_INS_J2_JUMPR":
+                    # jumpr Rs is sometimes used instead of jumpr r31
+                    code += "hi->ana_op.analysis_vals[0].plugin_specific = hi->ops[0].op.reg;"
+                    code += "// jumpr Rs is sometimes used as jumpr R31. "
+                    code += "Block analysis needs to check it to recognize if this jump is a return.\n"
                 else:
                     if o.type == OperandType.IMMEDIATE:
                         code += "hi->ana_op.analysis_vals[{si}].imm =" " hi->ops[{si}].op.imm;\n".format(
