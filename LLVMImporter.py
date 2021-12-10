@@ -412,6 +412,7 @@ class LLVMImporter:
             main_function += (
                 "if (hi->instruction == HEX_INS_INVALID_DECODE) {\n"
                 + "hi->parse_bits = ((hi_u32) & 0xc000) >> 14;\n"
+                + "hi->ana_op.type = RZ_ANALYSIS_OP_TYPE_ILL;\n"
                 + 'sprintf(hi->mnem_infix, "invalid");\n'
                 + 'sprintf(hi->mnem, "%s%s%s", hi->pkt_info.mnem_prefix,'
                 " hi->mnem_infix, hi->pkt_info.mnem_postfix);\n" + "}\n" + "return 4;\n}"
