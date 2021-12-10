@@ -872,12 +872,12 @@ EXPECT=<<EOF
 |           0x0000520c      [   R1 = sub(##-0x1,R1)
 |           0x00005210      [   R0 = and(R0,R1)
 |           0x00005214      [   R0 = combine(R0.l,R0.l)
-|           ; CODE XREF from sym.thread_stop @ 0x5228
+|           ; CODE XREF from sym.thread_join @ 0x5228
 |       .-> 0x00005218      [   R2 = MODECTL
 |       :   0x0000521c      [   R2 = and(R0,R2)
 |       :   0x00005220      [   P0 = cmp.eq(R2,#0x0) ; if (P0.new) jumpr:nt R31
 |       :   0x00005224      [   pause(#0x1)
-|       `=< 0x00005228      [   jump 0x5218                            ; sym.thread_join+0x18
+\       `=< 0x00005228      [   jump 0x5218
 \           0x0000522c      [   nop
 EOF
 RUN
