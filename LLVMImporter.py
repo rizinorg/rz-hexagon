@@ -333,6 +333,7 @@ class LLVMImporter:
                 " *pkt) {\n" + "ut32 addr = hi->addr;\n"
             )
 
+            main_function += "if (hi->pkt_info.last_insn) {"
             main_function += "switch (hex_get_loop_flag(pkt)) {" + "default: break;"
             main_function += (
                 "case HEX_LOOP_01:"
@@ -356,7 +357,7 @@ class LLVMImporter:
                 + "hi->ana_op.val = hi->ana_op.jump;"
                 + "break;"
             )
-            main_function += "}"
+            main_function += "}}"
 
             main_function += (
                 "if (hi_u32 != 0x00000000) {\n"
