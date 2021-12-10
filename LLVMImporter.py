@@ -634,8 +634,8 @@ class LLVMImporter:
             tmp += profile
             tmp = make_c_block(
                 lines=tmp,
-                begin="RZ_API bool set_reg_profile(RzAnalysis *analysis)",
-                ret="return rz_reg_set_profile_string(analysis->reg, p);\n",
+                begin="RZ_API char *get_reg_profile(RzAnalysis *analysis)",
+                ret="return strdup(p);\n",
             )
             f.writelines(tmp)
             f.write("\n")
