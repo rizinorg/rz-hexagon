@@ -30,6 +30,7 @@ import HexagonArchInfo
 
 
 class LLVMImporter:
+    config = dict()
     hexArch = dict()
     hexagon_target_json_path = ""
     llvm_instructions = dict()
@@ -42,6 +43,7 @@ class LLVMImporter:
     hardware_regs = dict()
 
     def __init__(self, hexagon_target_json_path: str, test_mode=False):
+        self.get_import_config()
         self.test_mode = test_mode
         self.hexagon_target_json_path = hexagon_target_json_path
 
@@ -72,6 +74,46 @@ class LLVMImporter:
             self.add_license_header()
             self.apply_clang_format()
         log("Done")
+
+    def get_import_config(self):
+        """Loads the importer configuration from a file and writes it to self.config"""
+        cwd = os.getcwd()
+        log("Load LLVMImporter configuration from {}/.config".format(cwd))
+        if cwd.split("/")[-1] == "rz-hexagon":
+            if not os.path.exists(".config"):
+                with open(cwd + "/.config", "w") as f:
+                    config = "# Configuration for th LLVMImporter.\n"
+                    config += "LLVM_PROJECT_REPO_DIR = /path/to/llvm_project"
+                    f.write(config)
+                log(
+                    "This is your first time running the generator."
+                    + " Please set the path to the llvm_project repo in {}/.config.".format(cwd)
+                )
+                exit()
+            with open(cwd + "/.config") as f:
+                for line in f.readlines():
+                    ln = line.strip()
+                    if ln[0] == "#":
+                        continue
+                    ln = ln.split("=")
+                    if ln[0].strip() == "LLVM_PROJECT_REPO_DIR":
+                        dr = ln[1].strip()
+                        if not os.path.exists(dr):
+                            log(
+                                "The LLVM_PROJECT_REPO_DIR is set to an invalid directory: '{}'".format(dr),
+                                LogLevel.ERROR,
+                            )
+                            exit()
+                        self.config["LLVM_PROJECT_REPO_DIR"] = dr
+                    else:
+                        log("Unknown configuration in config file: '{}'".format(ln[0]), LogLevel.WARNING)
+        else:
+            log("Please execute this script in the rz-hexagon directory.", LogLevel.ERROR)
+            exit()
+
+    def generate_hexagon_json(self):
+        """Generates the Hexagon.json file with LLVMs tablegen."""
+        pass
 
     def update_hex_arch(self):
         """Imports system instructions and registers described in the manual but not implemented by LLVM."""
