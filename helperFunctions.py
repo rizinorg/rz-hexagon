@@ -256,6 +256,22 @@ def get_license() -> str:
     return lcs
 
 
+def get_generation_timestamp(conf: dict) -> str:
+    """Returns a C comment stating the last LLVM commit hash, the date of the commit and
+    the date of generation.
+
+    :param conf: The LLVMImporter.config
+    """
+    import datetime
+
+    date = datetime.datetime.now().astimezone().replace(microsecond=0).isoformat()
+
+    commit = "// LLVM commit: {}\n".format(conf["LLVM_COMMIT_HASH"])
+    commit += "// LLVM commit date: {}\n".format(conf["LLVM_COMMIT_DATE"])
+    commit += "// Date of code generation: {}".format(date)
+    return commit
+
+
 def indent_code_block(code: str, indent_depth: int) -> str:
     ret = ""
     indent: str = PluginInfo.LINE_INDENT

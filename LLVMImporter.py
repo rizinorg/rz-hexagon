@@ -8,6 +8,7 @@ import itertools
 import json
 import os
 import re
+import subprocess
 
 from HardwareRegister import HardwareRegister
 from DuplexInstruction import DuplexInstruction, DuplexIClass
@@ -24,6 +25,7 @@ from helperFunctions import (
     make_c_block,
     set_pos_after_license,
     get_license,
+    get_generation_timestamp,
 )
 import PluginInfo
 import HexagonArchInfo
@@ -44,6 +46,10 @@ class LLVMImporter:
 
     def __init__(self, hexagon_target_json_path: str, test_mode=False):
         self.get_import_config()
+        if True:  # Generate new Hexagon.json
+            self.generate_hexagon_json()
+        else:
+            self.set_llvm_commit_info(use_prev=True)
         self.test_mode = test_mode
         self.hexagon_target_json_path = hexagon_target_json_path
 
@@ -71,7 +77,7 @@ class LLVMImporter:
         if not test_mode:
             self.generate_rizin_code()
             self.generate_decompiler_code()
-            self.add_license_header()
+            self.add_license_info_header()
             self.apply_clang_format()
         log("Done")
 
@@ -80,6 +86,7 @@ class LLVMImporter:
         cwd = os.getcwd()
         log("Load LLVMImporter configuration from {}/.config".format(cwd))
         if cwd.split("/")[-1] == "rz-hexagon":
+            self.config["GENERATOR_ROOT_DIR"] = cwd
             if not os.path.exists(".config"):
                 with open(cwd + "/.config", "w") as f:
                     config = "# Configuration for th LLVMImporter.\n"
@@ -105,15 +112,54 @@ class LLVMImporter:
                             )
                             exit()
                         self.config["LLVM_PROJECT_REPO_DIR"] = dr
+                        self.config["LLVM_PROJECT_HEXAGON_DIR"] = dr + "/llvm/lib/Target/Hexagon"
                     else:
                         log("Unknown configuration in config file: '{}'".format(ln[0]), LogLevel.WARNING)
         else:
             log("Please execute this script in the rz-hexagon directory.", LogLevel.ERROR)
             exit()
 
+    def set_llvm_commit_info(self, use_prev: bool):
+        """Writes the LLVM commit hash and commit date to self.config.
+        If use_prev = True it uses the information when Hexagon.json was generated previously.
+        """
+        if not use_prev:
+            self.config["LLVM_COMMIT_DATE"] = (
+                subprocess.check_output(
+                    ["git", "show", "-s", "--format=%ci", "HEAD"], cwd=self.config["LLVM_PROJECT_REPO_DIR"]
+                )
+                .decode("ascii")
+                .strip("\n")
+            )
+            self.config["LLVM_COMMIT_DATE"] += " (ISO 8601 format)"
+            self.config["LLVM_COMMIT_HASH"] = subprocess.check_output(
+                ["git", "show", "-s", "--format=%H", "HEAD"], cwd=self.config["LLVM_PROJECT_REPO_DIR"]
+            ).decode("ascii")
+            with open(".last_llvm_commit_info", "w") as f:
+                f.write(self.config["LLVM_COMMIT_DATE"])
+                f.write("\n")
+                f.write(self.config["LLVM_COMMIT_HASH"])
+        else:
+            with open(".last_llvm_commit_info", "r") as f:
+                self.config["LLVM_COMMIT_DATE"] = str(f.readline())
+                self.config["LLVM_COMMIT_HASH"] = str(f.readline())
+
     def generate_hexagon_json(self):
         """Generates the Hexagon.json file with LLVMs tablegen."""
-        pass
+        log("Generate Hexagon.json from LLVM target descriptions.")
+        self.set_llvm_commit_info(use_prev=False)
+        subprocess.call(
+            [
+                "llvm-tblgen",
+                "-I",
+                "../../../include/",
+                "--dump-json",
+                "-o",
+                "{}/Hexagon.json".format(self.config["GENERATOR_ROOT_DIR"]),
+                "Hexagon.td",
+            ],
+            cwd=self.config["LLVM_PROJECT_HEXAGON_DIR"],
+        )
 
     def update_hex_arch(self):
         """Imports system instructions and registers described in the manual but not implemented by LLVM."""
@@ -317,8 +363,7 @@ class LLVMImporter:
         pass
 
     # RIZIN SPECIFIC
-    @staticmethod
-    def add_license_header() -> None:
+    def add_license_info_header(self) -> None:
         log("Add license headers")
         for subdir, dirs, files in os.walk("rizin/"):
             for file in files:
@@ -328,7 +373,7 @@ class LLVMImporter:
                 with open(p, "r+") as f:
                     content = f.read()
                     f.seek(0, 0)
-                    f.write(get_license() + "\n" + content)
+                    f.write(get_license() + "//\n" + get_generation_timestamp(self.config) + "\n" + content)
 
     # RIZIN SPECIFIC
     def build_hexagon_insn_enum_h(self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon_insn.h") -> None:

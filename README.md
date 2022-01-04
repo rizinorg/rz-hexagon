@@ -37,15 +37,8 @@ Unfortunately `llvm-tblgen` is usually not provided via the package manager. You
 Please follow the [LLVM docs](https://llvm.org/docs/GettingStarted.html#getting-the-source-code-and-building-llvm)
 (Build the release version to save **a lot** of RAM).
 
-`llvm-tblgen` should be in `<somewhere>/llvm-project/bin/` after the build.
-
-### Build and move Hexagon.json
-
-```bash
-cd llvm-project/llvm/lib/Target/Hexagon
-llvm-tblgen -I ../../../include/ --dump-json -o Hexagon.json Hexagon.td
-mv Hexagon.json <path to>/rz-hexagon/
-```
+`llvm-tblgen` should be in `<somewhere>/llvm-project/build/bin/` after the build.
+Please add the directory to your `PATH` afterwards.
 
 # Install
 
