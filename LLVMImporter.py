@@ -9,6 +9,7 @@ import json
 import os
 import re
 import subprocess
+import argparse
 
 from HardwareRegister import HardwareRegister
 from DuplexInstruction import DuplexInstruction, DuplexIClass
@@ -44,14 +45,20 @@ class LLVMImporter:
     duplex_instructions = dict()
     hardware_regs = dict()
 
-    def __init__(self, hexagon_target_json_path: str, test_mode=False):
+    def __init__(self, build_json: bool, test_mode=False):
+        self.test_mode = test_mode
+        if self.test_mode:
+            self.hexagon_target_json_path = "../Hexagon.json"
+        else:
+            self.hexagon_target_json_path = "Hexagon.json"
         self.get_import_config()
-        if True:  # Generate new Hexagon.json
+        if build_json:
             self.generate_hexagon_json()
         else:
+            if not os.path.exists(self.hexagon_target_json_path):
+                log("No Hexagon.json found. Please check out the help message to generate it.", LogLevel.ERROR)
+                exit()
             self.set_llvm_commit_info(use_prev=True)
-        self.test_mode = test_mode
-        self.hexagon_target_json_path = hexagon_target_json_path
 
         with open(self.hexagon_target_json_path) as file:
             self.hexArch = json.load(file)
@@ -85,15 +92,15 @@ class LLVMImporter:
         """Loads the importer configuration from a file and writes it to self.config"""
         cwd = os.getcwd()
         log("Load LLVMImporter configuration from {}/.config".format(cwd))
-        if cwd.split("/")[-1] == "rz-hexagon":
-            self.config["GENERATOR_ROOT_DIR"] = cwd
+        if cwd.split("/")[-1] == "rz-hexagon" or self.test_mode:
+            self.config["GENERATOR_ROOT_DIR"] = cwd if not self.test_mode else "/".join(cwd.split("/")[:-1])
             if not os.path.exists(".config"):
                 with open(cwd + "/.config", "w") as f:
                     config = "# Configuration for th LLVMImporter.\n"
                     config += "LLVM_PROJECT_REPO_DIR = /path/to/llvm_project"
                     f.write(config)
                 log(
-                    "This is your first time running the generator."
+                    "This is your first time running the generator{}.".format(" TESTS" if self.test_mode else "")
                     + " Please set the path to the llvm_project repo in {}/.config.".format(cwd)
                 )
                 exit()
@@ -147,9 +154,14 @@ class LLVMImporter:
                 f.write("\n")
                 f.write(self.config["LLVM_COMMIT_HASH"])
         else:
-            with open(".last_llvm_commit_info", "r") as f:
-                self.config["LLVM_COMMIT_DATE"] = str(f.readline()).strip()
-                self.config["LLVM_COMMIT_HASH"] = str(f.readline()).strip()
+            if os.path.exists(".last_llvm_commit_info"):
+                with open(".last_llvm_commit_info", "r") as f:
+                    self.config["LLVM_COMMIT_DATE"] = str(f.readline()).strip()
+                    self.config["LLVM_COMMIT_HASH"] = str(f.readline()).strip()
+            else:
+                log("No previous LLVM commit info found.", LogLevel.VERBOSE if self.test_mode else LogLevel.WARNING)
+                self.config["LLVM_COMMIT_DATE"] = "Test" if self.test_mode else "None"
+                self.config["LLVM_COMMIT_HASH"] = "Test" if self.test_mode else "None"
 
     def generate_hexagon_json(self):
         """Generates the Hexagon.json file with LLVMs tablegen."""
@@ -880,4 +892,13 @@ class LLVMImporter:
 
 
 if __name__ == "__main__":
-    interface = LLVMImporter("Hexagon.json")
+    parser = argparse.ArgumentParser("Import settings")
+    parser.add_argument(
+        "-j",
+        action="store_true",
+        default=False,
+        help="Run llvm-tblgen to build a new Hexagon.json file from the LLVM definitons.",
+        dest="bjs",
+    )
+    args = parser.parse_args()
+    interface = LLVMImporter(args.bjs)

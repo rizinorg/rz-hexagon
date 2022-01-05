@@ -38,7 +38,8 @@ Please follow the [LLVM docs](https://llvm.org/docs/GettingStarted.html#getting-
 (Build the release version to save **a lot** of RAM).
 
 `llvm-tblgen` should be in `<somewhere>/llvm-project/build/bin/` after the build.
-Please add the directory to your `PATH` afterwards.
+
+Please add this directory to your `PATH`.
 
 # Install
 
@@ -47,9 +48,6 @@ cd rz-hexagon/
 pip install -r requirements.txt
 # If you enjoy some colors
 pip install -r optional_requirements.txt
-# Run tests
-cd Tests
-python3 -m unittest discover -s . -t .
 # Install as develop package
 cd ..
 pip install -e .
@@ -57,17 +55,26 @@ pip install -e .
 
 # Generate PlugIn
 
-Simply run:
+The first time you run the generator you need to add the `-j` option.
+This will generate the `Hexagon.json` from the current `LLVM` source.
 ```
-./LLVMImporter.py
+./LLVMImporter.py -j
 ```
 
-It processes the files and generates C code in `./rizin` and its subdirectories.
+It processes the LLVM definition files and generates C code in `./rizin` and its subdirectories.
 
 Copy the generated files to the `rizin` directory with
   ```commandline
   rsync -a rizin/ <rz-src-path>/
   ```
+
+## Test
+
+You can run the tests with:
+```bash
+cd Tests
+python3 -m unittest discover -s . -t .
+```
 
 # Porting
 
