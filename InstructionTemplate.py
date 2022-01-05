@@ -32,6 +32,7 @@ class InstructionTemplate:
         # Meta info
         self.llvm_instr: dict = llvm_instruction
         self.name: str = self.llvm_instr["!name"]
+        self.is_vector = self.name[0] == "V"
         self.plugin_name: str = PluginInfo.INSTR_ENUM_PREFIX + self.name.upper()
         self.type: str = self.llvm_instr["Type"]["def"]
         self.constraints = self.llvm_instr["Constraints"]
@@ -298,6 +299,7 @@ class InstructionTemplate:
         code += "hi->ana_op.addr = hi->addr;\n"
         code += "hi->ana_op.id = hi->instruction;\n"
         code += "hi->ana_op.size = 4;\n"
+        code += "hi->ana_op.cond = {};\n".format(self.get_rz_cond_type())
         code += self.get_rizin_op_type()
         if self.has_imm_jmp_target():
             if not self.is_call and not self.is_predicated:
@@ -325,6 +327,11 @@ class InstructionTemplate:
                 if self.has_imm_jmp_target() and o.type == OperandType.IMMEDIATE:
                     code += "hi->ana_op.val = hi->ana_op.jump;\n"
                     code += "hi->ana_op.analysis_vals[{}].imm = hi->ana_op.jump;\n".format(o.syntax_index)
+                elif self.plugin_name == "HEX_INS_J2_JUMPR":
+                    # jumpr Rs is sometimes used instead of jumpr r31
+                    code += "hi->ana_op.analysis_vals[0].plugin_specific = hi->ops[0].op.reg;"
+                    code += "// jumpr Rs is sometimes used as jumpr R31. "
+                    code += "Block analysis needs to check it to recognize if this jump is a return.\n"
                 else:
                     if o.type == OperandType.IMMEDIATE:
                         code += "hi->ana_op.analysis_vals[{si}].imm =" " hi->ops[{si}].op.imm;\n".format(
@@ -352,10 +359,30 @@ class InstructionTemplate:
         return code
 
     # RIZIN SPECIFIC
+    def get_rz_cond_type(self):
+        """Returns the rizin conditional type."""
+
+        if not self.is_predicated:
+            return "RZ_TYPE_COND_AL"
+
+        if self.is_vector:
+            if self.is_pred_true:
+                return "RZ_TYPE_COND_HEX_VEC_TRUE"
+            else:
+                return "RZ_TYPE_COND_HEX_VEC_FALSE"
+        else:
+            if self.is_pred_true:
+                return "RZ_TYPE_COND_HEX_SCL_TRUE"
+            else:
+                return "RZ_TYPE_COND_HEX_SCL_FALSE"
+
+    # RIZIN SPECIFIC
     def get_rizin_op_type(self) -> str:
         """Returns the c code to assign the instruction type to the RzAnalysisOp.type member."""
 
-        op_type = "hi->ana_op.type |= "
+        op_type = (
+            "hi->ana_op.type = hi->ana_op.prefix == RZ_ANALYSIS_OP_PREFIX_HWLOOP_END ? RZ_ANALYSIS_OP_TYPE_CJMP : "
+        )
 
         if self.is_trap:
             return op_type + "RZ_ANALYSIS_OP_TYPE_TRAP;"
@@ -385,7 +412,10 @@ class InstructionTemplate:
                 # Immediate and register jump
                 op_type += "RZ_ANALYSIS_OP_TYPE_JMP;" if self.has_imm_jmp_target() else "RZ_ANALYSIS_OP_TYPE_RJMP;"
 
-        if op_type == "hi->ana_op.type |= ":
+        if (
+            op_type
+            == "hi->ana_op.type = hi->ana_op.prefix == RZ_ANALYSIS_OP_PREFIX_HWLOOP_END ? RZ_ANALYSIS_OP_TYPE_CJMP : "
+        ):
             log(
                 "Instruction: {} has no instr. type assigned to it yet.".format(self.name),
                 LogLevel.VERBOSE,

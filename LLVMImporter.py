@@ -333,35 +333,31 @@ class LLVMImporter:
                 " *pkt) {\n" + "ut32 addr = hi->addr;\n"
             )
 
+            main_function += "if (hi->pkt_info.last_insn) {"
             main_function += "switch (hex_get_loop_flag(pkt)) {" + "default: break;"
             main_function += (
                 "case HEX_LOOP_01:"
-                + "hi->ana_op.type = RZ_ANALYSIS_OP_TYPE_CJMP;"
+                + "hi->ana_op.prefix = RZ_ANALYSIS_OP_PREFIX_HWLOOP_END;"
                 + "hi->ana_op.fail = pkt->hw_loop0_addr;"
                 + "hi->ana_op.jump = pkt->hw_loop1_addr;"
                 + "hi->ana_op.val = hi->ana_op.jump;"
-                + "hi->ana_op.analysis_vals[0].imm = (st64) hi->ana_op.fail;"
-                + "pkt->hw_loop1_addr = 0;"
-                + "pkt->hw_loop0_addr = 0;"
                 + "break;\n"
             )
             main_function += (
                 "case HEX_LOOP_0:\n"
-                + "hi->ana_op.type = RZ_ANALYSIS_OP_TYPE_CJMP;"
+                + "hi->ana_op.prefix = RZ_ANALYSIS_OP_PREFIX_HWLOOP_END;"
                 + "hi->ana_op.jump = pkt->hw_loop0_addr;"
                 + "hi->ana_op.val = hi->ana_op.jump;"
-                + "pkt->hw_loop0_addr = 0;"
                 + "break;\n"
             )
             main_function += (
                 "case HEX_LOOP_1:\n"
-                + "hi->ana_op.type = RZ_ANALYSIS_OP_TYPE_CJMP;"
+                + "hi->ana_op.prefix = RZ_ANALYSIS_OP_PREFIX_HWLOOP_END;"
                 + "hi->ana_op.jump = pkt->hw_loop1_addr;"
                 + "hi->ana_op.val = hi->ana_op.jump;"
-                + "pkt->hw_loop1_addr = 0;"
                 + "break;"
             )
-            main_function += "}"
+            main_function += "}}"
 
             main_function += (
                 "if (hi_u32 != 0x00000000) {\n"
@@ -416,6 +412,7 @@ class LLVMImporter:
             main_function += (
                 "if (hi->instruction == HEX_INS_INVALID_DECODE) {\n"
                 + "hi->parse_bits = ((hi_u32) & 0xc000) >> 14;\n"
+                + "hi->ana_op.type = RZ_ANALYSIS_OP_TYPE_ILL;\n"
                 + 'sprintf(hi->mnem_infix, "invalid");\n'
                 + 'sprintf(hi->mnem, "%s%s%s", hi->pkt_info.mnem_prefix,'
                 " hi->mnem_infix, hi->pkt_info.mnem_postfix);\n" + "}\n" + "return 4;\n}"
