@@ -121,8 +121,11 @@ class LLVMImporter:
 
     def set_llvm_commit_info(self, use_prev: bool):
         """Writes the LLVM commit hash and commit date to self.config.
-        If use_prev = True it uses the information when Hexagon.json was generated previously.
+
+        :param use_prev: If True it uses the information when Hexagon.json was generated previously.
+            False: it gets the date of the current checked out LLVM commit.
         """
+
         if not use_prev:
             self.config["LLVM_COMMIT_DATE"] = (
                 subprocess.check_output(
@@ -146,6 +149,7 @@ class LLVMImporter:
 
     def generate_hexagon_json(self):
         """Generates the Hexagon.json file with LLVMs tablegen."""
+
         log("Generate Hexagon.json from LLVM target descriptions.")
         self.set_llvm_commit_info(use_prev=False)
         subprocess.call(
