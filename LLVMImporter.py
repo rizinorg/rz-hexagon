@@ -206,8 +206,8 @@ class LLVMImporter:
             self.hexArch.update(insn)
             self.hexArch["!instanceof"]["HInst"] += list(insn.keys())
             instr_count += 1
-        log("Imported {} system registers.".format(reg_count))
-        log("Imported {} system instructions.".format(instr_count))
+        log("Imported {} registers.".format(reg_count))
+        log("Imported {} instructions.".format(instr_count))
 
     def parse_instructions(self) -> None:
         for i, i_name in enumerate(self.hexArch["!instanceof"]["HInst"]):
