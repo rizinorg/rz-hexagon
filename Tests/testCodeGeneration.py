@@ -9,7 +9,7 @@ from LLVMImporter import LLVMImporter
 
 class TestInstruction(unittest.TestCase):
     def setUp(self):
-        self.interface = LLVMImporter("../Hexagon.json", test_mode=True)
+        self.interface = LLVMImporter(False, test_mode=True)
         self.json = self.interface.hexArch
 
     def test_code_generation(self) -> None:

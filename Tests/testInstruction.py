@@ -54,9 +54,7 @@ class TestInstruction(unittest.TestCase):
         # Duplex
         self.assertEqual(
             "Rx = add(Rxin,II) ; Rd = memw(Rs+Ii)",
-            normalize_llvm_syntax(
-                "$Rx16 = add($Rx16in,#$II) ; $Rd16 = memw($Rs16+#$Ii)"
-            ),
+            normalize_llvm_syntax("$Rx16 = add($Rx16in,#$II) ; $Rd16 = memw($Rs16+#$Ii)"),
         )
 
     def test_get_syntax_operand_indices(self) -> None:
@@ -109,7 +107,6 @@ class TestInstruction(unittest.TestCase):
         with self.assertRaises(UnexpectedException) as context:
             InstructionTemplate.get_syntax_operand_indices(syntax, operands)
         self.assertTrue(
-            "Two operands with the same name given.\n"
-            + "Syntax $Rd32 = add($Rs32,#$Ii), op: Ii"
+            "Two operands with the same name given.\n" + "Syntax $Rd32 = add($Rs32,#$Ii), op: Ii"
             in str(context.exception)
         )
