@@ -135,17 +135,21 @@ class LLVMImporter:
                 .strip("\n")
             )
             self.config["LLVM_COMMIT_DATE"] += " (ISO 8601 format)"
-            self.config["LLVM_COMMIT_HASH"] = subprocess.check_output(
-                ["git", "show", "-s", "--format=%H", "HEAD"], cwd=self.config["LLVM_PROJECT_REPO_DIR"]
-            ).decode("ascii")
+            self.config["LLVM_COMMIT_HASH"] = (
+                subprocess.check_output(
+                    ["git", "show", "-s", "--format=%H", "HEAD"], cwd=self.config["LLVM_PROJECT_REPO_DIR"]
+                )
+                .decode("ascii")
+                .strip("\n")
+            )
             with open(".last_llvm_commit_info", "w") as f:
                 f.write(self.config["LLVM_COMMIT_DATE"])
                 f.write("\n")
                 f.write(self.config["LLVM_COMMIT_HASH"])
         else:
             with open(".last_llvm_commit_info", "r") as f:
-                self.config["LLVM_COMMIT_DATE"] = str(f.readline())
-                self.config["LLVM_COMMIT_HASH"] = str(f.readline())
+                self.config["LLVM_COMMIT_DATE"] = str(f.readline()).strip()
+                self.config["LLVM_COMMIT_HASH"] = str(f.readline()).strip()
 
     def generate_hexagon_json(self):
         """Generates the Hexagon.json file with LLVMs tablegen."""
@@ -377,7 +381,7 @@ class LLVMImporter:
                 with open(p, "r+") as f:
                     content = f.read()
                     f.seek(0, 0)
-                    f.write(get_license() + "//\n" + get_generation_timestamp(self.config) + "\n" + content)
+                    f.write(get_license() + "\n" + get_generation_timestamp(self.config) + "\n" + content)
 
     # RIZIN SPECIFIC
     def build_hexagon_insn_enum_h(self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon_insn.h") -> None:

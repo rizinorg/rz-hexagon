@@ -264,7 +264,7 @@ def get_generation_timestamp(conf: dict) -> str:
     """
     import datetime
 
-    date = datetime.datetime.now().astimezone().replace(microsecond=0).isoformat()
+    date = datetime.datetime.now().astimezone().replace(microsecond=0).isoformat(" ")
 
     commit = "// LLVM commit: {}\n".format(conf["LLVM_COMMIT_HASH"])
     commit += "// LLVM commit date: {}\n".format(conf["LLVM_COMMIT_DATE"])
