@@ -1,6 +1,17 @@
 // SPDX-FileCopyrightText: 2021 Rot127 <unisono@quyllur.org>
 // SPDX-License-Identifier: LGPL-3.0-only
 
+// The packet position indicators added to the instruction mnemonic.
+typedef enum {
+	SINGLE_IN_PKT,
+	FIRST_IN_PKT,
+	MID_IN_PKT,
+	LAST_IN_PKT,
+	ELOOP_0_PKT,
+	ELOOP_1_PKT,
+	ELOOP_01_PKT,
+} HexPktSyntaxIndicator;
+
 // The type of opcode reversing which is be done on the opcode.
 typedef enum {
 	HEXAGON_ANALYSIS,
