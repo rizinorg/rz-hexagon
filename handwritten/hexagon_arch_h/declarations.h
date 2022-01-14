@@ -3,6 +3,7 @@
 
 #define HEX_PKT_UNK  "?   "
 #define HEX_PKT_SINGLE "[   "
+#define HEX_PKT_SINGLE_UTF8 "[     "
 #define HEX_PKT_FIRST_UTF8 "┌   "
 #define HEX_PKT_MID_UTF8   "│   "
 #define HEX_PKT_LAST_UTF8  "└   "

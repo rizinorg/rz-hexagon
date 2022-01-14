@@ -253,7 +253,7 @@ static char *get_pkt_indicator(const bool utf8, const bool sdk, const bool prefi
 			if (sdk) {
 				return HEX_PKT_FIRST_SDK;
 			} else {
-				return HEX_PKT_SINGLE;
+				return utf8 ? HEX_PKT_SINGLE_UTF8 : HEX_PKT_SINGLE;
 			}
 		} else {
 			if (sdk) {
