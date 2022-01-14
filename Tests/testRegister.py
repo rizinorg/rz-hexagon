@@ -10,7 +10,7 @@ from LLVMImporter import LLVMImporter
 
 class TestRegister(unittest.TestCase):
     def setUp(self) -> None:
-        self.interface = LLVMImporter("../Hexagon.json", test_mode=True)
+        self.interface = LLVMImporter(False, test_mode=True)
         self.json = self.interface.hexArch
 
     def test_parse_reg_type(self):
@@ -18,9 +18,7 @@ class TestRegister(unittest.TestCase):
         instr = Instruction(self.json["V6_vS32b_nt_new_pred_ppu"])
         operand = instr.operands["Os8"]
         self.assertEqual(0, instr.operands["Pv4"].syntax_index)
-        self.assertEqual(
-            1, instr.operands["Rx32"].syntax_index
-        )  # Rx32 is also an out operand because of the ++
+        self.assertEqual(1, instr.operands["Rx32"].syntax_index)  # Rx32 is also an out operand because of the ++
         # self.assertEqual(2, instr.operands["Rx32in"].index)
         self.assertEqual(2, instr.operands["Mu2"].syntax_index)
         self.assertEqual(3, instr.operands["Os8"].syntax_index)

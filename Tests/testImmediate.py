@@ -13,7 +13,7 @@ from helperFunctions import log, LogLevel
 
 class TestImmediate(unittest.TestCase):
     def setUp(self) -> None:
-        self.interface = LLVMImporter("../Hexagon.json", test_mode=True)
+        self.interface = LLVMImporter(False, test_mode=True)
         self.json = self.interface.hexArch
 
     def test_immediate_initialization(self):
@@ -56,8 +56,7 @@ class TestImmediate(unittest.TestCase):
         for llvm_instr_name in [
             name
             for name, i in self.interface.llvm_instructions.items()
-            if i["isExtendable"][0]
-            and "OpcodeDuplex" not in i["!superclasses"]
+            if i["isExtendable"][0] and "OpcodeDuplex" not in i["!superclasses"]
         ]:
             c = 0
             instructions = self.interface.normal_instructions
@@ -67,18 +66,14 @@ class TestImmediate(unittest.TestCase):
                     c += 1
             if c != 1:
                 log(
-                    "Extendable immediate not set in instruction: {}".format(
-                        llvm_instr_name
-                    ),
+                    "Extendable immediate not set in instruction: {}".format(llvm_instr_name),
                     LogLevel.ERROR,
                 )
             self.assertEqual(1, c)
 
         # Duplex instructions
         for duplex_name in self.interface.duplex_instructions_names:
-            d_instr: DuplexInstruction = self.interface.duplex_instructions[
-                duplex_name
-            ]
+            d_instr: DuplexInstruction = self.interface.duplex_instructions[duplex_name]
             if d_instr.has_extendable_imm:
                 c = 0
                 for op_name, op in d_instr.operands.items():
@@ -86,8 +81,7 @@ class TestImmediate(unittest.TestCase):
                         c += 1
                 if c != 1:
                     log(
-                        "Extendable immediate not set in instruction: {}"
-                        .format(d_instr.llvm_syntax),
+                        "Extendable immediate not set in instruction: {}".format(d_instr.llvm_syntax),
                         LogLevel.ERROR,
                     )
                 self.assertEqual(1, c)

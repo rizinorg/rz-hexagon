@@ -8,6 +8,8 @@ import itertools
 import json
 import os
 import re
+import subprocess
+import argparse
 
 from HardwareRegister import HardwareRegister
 from DuplexInstruction import DuplexInstruction, DuplexIClass
@@ -24,12 +26,14 @@ from helperFunctions import (
     make_c_block,
     set_pos_after_license,
     get_license,
+    get_generation_timestamp,
 )
 import PluginInfo
 import HexagonArchInfo
 
 
 class LLVMImporter:
+    config = dict()
     hexArch = dict()
     hexagon_target_json_path = ""
     llvm_instructions = dict()
@@ -41,9 +45,20 @@ class LLVMImporter:
     duplex_instructions = dict()
     hardware_regs = dict()
 
-    def __init__(self, hexagon_target_json_path: str, test_mode=False):
+    def __init__(self, build_json: bool, test_mode=False):
         self.test_mode = test_mode
-        self.hexagon_target_json_path = hexagon_target_json_path
+        if self.test_mode:
+            self.hexagon_target_json_path = "../Hexagon.json"
+        else:
+            self.hexagon_target_json_path = "Hexagon.json"
+        self.get_import_config()
+        if build_json:
+            self.generate_hexagon_json()
+        else:
+            if not os.path.exists(self.hexagon_target_json_path):
+                log("No Hexagon.json found. Please check out the help message to generate it.", LogLevel.ERROR)
+                exit()
+            self.set_llvm_commit_info(use_prev=True)
 
         with open(self.hexagon_target_json_path) as file:
             self.hexArch = json.load(file)
@@ -69,9 +84,102 @@ class LLVMImporter:
         if not test_mode:
             self.generate_rizin_code()
             self.generate_decompiler_code()
-            self.add_license_header()
+            self.add_license_info_header()
             self.apply_clang_format()
         log("Done")
+
+    def get_import_config(self):
+        """Loads the importer configuration from a file and writes it to self.config"""
+        cwd = os.getcwd()
+        log("Load LLVMImporter configuration from {}/.config".format(cwd))
+        if cwd.split("/")[-1] == "rz-hexagon" or self.test_mode:
+            self.config["GENERATOR_ROOT_DIR"] = cwd if not self.test_mode else "/".join(cwd.split("/")[:-1])
+            if not os.path.exists(".config"):
+                with open(cwd + "/.config", "w") as f:
+                    config = "# Configuration for th LLVMImporter.\n"
+                    config += "LLVM_PROJECT_REPO_DIR = /path/to/llvm_project"
+                    f.write(config)
+                log(
+                    "This is your first time running the generator{}.".format(" TESTS" if self.test_mode else "")
+                    + " Please set the path to the llvm_project repo in {}/.config.".format(cwd)
+                )
+                exit()
+            with open(cwd + "/.config") as f:
+                for line in f.readlines():
+                    ln = line.strip()
+                    if ln[0] == "#":
+                        continue
+                    ln = ln.split("=")
+                    if ln[0].strip() == "LLVM_PROJECT_REPO_DIR":
+                        dr = ln[1].strip()
+                        if not os.path.exists(dr):
+                            log(
+                                "The LLVM_PROJECT_REPO_DIR is set to an invalid directory: '{}'".format(dr),
+                                LogLevel.ERROR,
+                            )
+                            exit()
+                        self.config["LLVM_PROJECT_REPO_DIR"] = dr
+                        self.config["LLVM_PROJECT_HEXAGON_DIR"] = dr + "/llvm/lib/Target/Hexagon"
+                    else:
+                        log("Unknown configuration in config file: '{}'".format(ln[0]), LogLevel.WARNING)
+        else:
+            log("Please execute this script in the rz-hexagon directory.", LogLevel.ERROR)
+            exit()
+
+    def set_llvm_commit_info(self, use_prev: bool):
+        """Writes the LLVM commit hash and commit date to self.config.
+
+        :param use_prev: If True it uses the information when Hexagon.json was generated previously.
+            False: it gets the date of the current checked out LLVM commit.
+        """
+
+        if not use_prev:
+            self.config["LLVM_COMMIT_DATE"] = (
+                subprocess.check_output(
+                    ["git", "show", "-s", "--format=%ci", "HEAD"], cwd=self.config["LLVM_PROJECT_REPO_DIR"]
+                )
+                .decode("ascii")
+                .strip("\n")
+            )
+            self.config["LLVM_COMMIT_DATE"] += " (ISO 8601 format)"
+            self.config["LLVM_COMMIT_HASH"] = (
+                subprocess.check_output(
+                    ["git", "show", "-s", "--format=%H", "HEAD"], cwd=self.config["LLVM_PROJECT_REPO_DIR"]
+                )
+                .decode("ascii")
+                .strip("\n")
+            )
+            with open(".last_llvm_commit_info", "w") as f:
+                f.write(self.config["LLVM_COMMIT_DATE"])
+                f.write("\n")
+                f.write(self.config["LLVM_COMMIT_HASH"])
+        else:
+            if os.path.exists(".last_llvm_commit_info"):
+                with open(".last_llvm_commit_info", "r") as f:
+                    self.config["LLVM_COMMIT_DATE"] = str(f.readline()).strip()
+                    self.config["LLVM_COMMIT_HASH"] = str(f.readline()).strip()
+            else:
+                log("No previous LLVM commit info found.", LogLevel.VERBOSE if self.test_mode else LogLevel.WARNING)
+                self.config["LLVM_COMMIT_DATE"] = "Test" if self.test_mode else "None"
+                self.config["LLVM_COMMIT_HASH"] = "Test" if self.test_mode else "None"
+
+    def generate_hexagon_json(self):
+        """Generates the Hexagon.json file with LLVMs tablegen."""
+
+        log("Generate Hexagon.json from LLVM target descriptions.")
+        self.set_llvm_commit_info(use_prev=False)
+        subprocess.call(
+            [
+                "llvm-tblgen",
+                "-I",
+                "../../../include/",
+                "--dump-json",
+                "-o",
+                "{}/Hexagon.json".format(self.config["GENERATOR_ROOT_DIR"]),
+                "Hexagon.td",
+            ],
+            cwd=self.config["LLVM_PROJECT_HEXAGON_DIR"],
+        )
 
     def update_hex_arch(self):
         """Imports system instructions and registers described in the manual but not implemented by LLVM."""
@@ -110,8 +218,8 @@ class LLVMImporter:
             self.hexArch.update(insn)
             self.hexArch["!instanceof"]["HInst"] += list(insn.keys())
             instr_count += 1
-        log("Imported {} system registers.".format(reg_count))
-        log("Imported {} system instructions.".format(instr_count))
+        log("Imported {} registers.".format(reg_count))
+        log("Imported {} instructions.".format(instr_count))
 
     def parse_instructions(self) -> None:
         for i, i_name in enumerate(self.hexArch["!instanceof"]["HInst"]):
@@ -275,8 +383,7 @@ class LLVMImporter:
         pass
 
     # RIZIN SPECIFIC
-    @staticmethod
-    def add_license_header() -> None:
+    def add_license_info_header(self) -> None:
         log("Add license headers")
         for subdir, dirs, files in os.walk("rizin/"):
             for file in files:
@@ -286,7 +393,7 @@ class LLVMImporter:
                 with open(p, "r+") as f:
                     content = f.read()
                     f.seek(0, 0)
-                    f.write(get_license() + "\n" + content)
+                    f.write(get_license() + "\n" + get_generation_timestamp(self.config) + "\n" + content)
 
     # RIZIN SPECIFIC
     def build_hexagon_insn_enum_h(self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon_insn.h") -> None:
@@ -785,4 +892,13 @@ class LLVMImporter:
 
 
 if __name__ == "__main__":
-    interface = LLVMImporter("Hexagon.json")
+    parser = argparse.ArgumentParser("Import settings")
+    parser.add_argument(
+        "-j",
+        action="store_true",
+        default=False,
+        help="Run llvm-tblgen to build a new Hexagon.json file from the LLVM definitons.",
+        dest="bjs",
+    )
+    args = parser.parse_args()
+    interface = LLVMImporter(args.bjs)

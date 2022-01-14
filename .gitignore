@@ -2,3 +2,5 @@ __pycache__
 .idea
 rz_hexagon.egg-info/
 Hexagon.json
+.config
+.last_llvm_commit_info

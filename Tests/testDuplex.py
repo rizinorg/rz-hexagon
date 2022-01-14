@@ -13,37 +13,27 @@ from SubInstruction import SubInstruction
 
 class TestDuplex(unittest.TestCase):
     def setUp(self) -> None:
-        self.interface = LLVMImporter("../Hexagon.json", test_mode=True)
+        self.interface = LLVMImporter(False, test_mode=True)
         self.json = self.interface.hexArch
 
     def test_encoding(self) -> None:
         # Name: DUPLEX_HIGH_SL2_RETURN_TNEW_LOW_SS2_STOREWI1
         high = SubInstruction(self.json["SL2_return_tnew"])
         low = SubInstruction(self.json["SS2_storewi1"])
-        d = DuplexInstruction.get_duplex_i_class_of_instr_pair(
-            low=low, high=high
-        )
+        d = DuplexInstruction.get_duplex_i_class_of_instr_pair(low=low, high=high)
 
         duplex = DuplexInstruction(self.json[d.name], low=low, high=high)
-        self.assertEqual(
-            "1101111101000110EE110001ssssiiii", duplex.encoding.docs_mask
-        )
-        self.assertEqual(
-            "if (p0.new) dealloc_return:nt ; memw(Rs+Ii) = #1", duplex.syntax
-        )
+        self.assertEqual("1101111101000110EE110001ssssiiii", duplex.encoding.docs_mask)
+        self.assertEqual("if (p0.new) dealloc_return:nt ; memw(Rs+Ii) = #1", duplex.syntax)
         self.assertTrue(duplex.encoding.duplex_encoding)
 
         # DUPLEX_HIGH_SA1_SETI_LOW_SL1_LOADRUB_IO
         high = SubInstruction(self.json["SA1_seti"])
         low = SubInstruction(self.json["SL1_loadrub_io"])
-        d = DuplexInstruction.get_duplex_i_class_of_instr_pair(
-            low=low, high=high
-        )
+        d = DuplexInstruction.get_duplex_i_class_of_instr_pair(low=low, high=high)
 
         duplex = DuplexInstruction(self.json[d.name], low=low, high=high)
-        self.assertEqual(
-            "010010IIIIIIDDDDEE01iiiissssdddd", duplex.encoding.docs_mask
-        )
+        self.assertEqual("010010IIIIIIDDDDEE01iiiissssdddd", duplex.encoding.docs_mask)
         self.assertEqual("RD = II ; Rd = memub(Rs+Ii)", duplex.syntax)
         self.assertTrue(duplex.encoding.duplex_encoding)
 
@@ -51,17 +41,11 @@ class TestDuplex(unittest.TestCase):
         # $Rdd8 = combine($Rs16,#0) ; $Rd16 = add($Rs16,#$n1)
         high = SubInstruction(self.json["SA1_combinezr"])
         low = SubInstruction(self.json["SA1_dec"])
-        d = DuplexInstruction.get_duplex_i_class_of_instr_pair(
-            low=low, high=high
-        )
+        d = DuplexInstruction.get_duplex_i_class_of_instr_pair(low=low, high=high)
 
         duplex = DuplexInstruction(self.json[d.name], low=low, high=high)
-        self.assertEqual(
-            "RDD = combine(#0,RS) ; Rd = add(Rs,n1)", duplex.syntax
-        )
-        self.assertEqual(
-            "00111101SSSS0DDDEE110011ssssdddd", duplex.encoding.docs_mask
-        )
+        self.assertEqual("RDD = combine(#0,RS) ; Rd = add(Rs,n1)", duplex.syntax)
+        self.assertEqual("00111101SSSS0DDDEE110011ssssdddd", duplex.encoding.docs_mask)
         self.assertTrue(duplex.encoding.duplex_encoding)
 
     def test_parse_instruction(self) -> None:
@@ -81,9 +65,7 @@ class TestDuplex(unittest.TestCase):
         # p0 = cmp.eq($RS16,#$II) ; memb($Rs16+#$Ii) = $Rt16
         high = SubInstruction(self.json["SA1_cmpeqi"])
         low = SubInstruction(self.json["SS1_storeb_io"])
-        d = DuplexInstruction.get_duplex_i_class_of_instr_pair(
-            low=low, high=high
-        )
+        d = DuplexInstruction.get_duplex_i_class_of_instr_pair(low=low, high=high)
         duplex = DuplexInstruction(self.json[d.name], low=low, high=high)
         # Assert high instr. operands
         op: Register = duplex.operands["RS16"]
@@ -133,9 +115,7 @@ class TestDuplex(unittest.TestCase):
         # $Rd16 = #$n1 ; $Rx16 = add($Rx16in,$Rs16)
         high = SubInstruction(self.json["SA1_setin1"])
         low = SubInstruction(self.json["SA1_addrx"])
-        d = DuplexInstruction.get_duplex_i_class_of_instr_pair(
-            low=low, high=high
-        )
+        d = DuplexInstruction.get_duplex_i_class_of_instr_pair(low=low, high=high)
         duplex = DuplexInstruction(self.json[d.name], low=low, high=high)
         # Assert high instr. operands
         op: Register = duplex.operands["Rd16"]
@@ -179,9 +159,7 @@ class TestDuplex(unittest.TestCase):
         # $Rx16 = add($Rx16in,#$II) ; $Rd16 = memw($Rs16+#$Ii)
         high = SubInstruction(self.json["SA1_addi"])
         low = SubInstruction(self.json["SL1_loadri_io"])
-        d = DuplexInstruction.get_duplex_i_class_of_instr_pair(
-            low=low, high=high
-        )
+        d = DuplexInstruction.get_duplex_i_class_of_instr_pair(low=low, high=high)
         duplex = DuplexInstruction(self.json[d.name], low=low, high=high)
 
         # High instruction

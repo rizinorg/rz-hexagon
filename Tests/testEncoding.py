@@ -15,7 +15,7 @@ from SubInstruction import SubInstruction
 
 class TestInstructionEncoding(unittest.TestCase):
     def setUp(self) -> None:
-        self.interface = LLVMImporter("../Hexagon.json", test_mode=True)
+        self.interface = LLVMImporter(False, test_mode=True)
         self.json = self.interface.hexArch
 
     def test_manual_mask(self) -> None:
@@ -41,68 +41,40 @@ class TestInstructionEncoding(unittest.TestCase):
         # In the manual the MSB is the left most.
         # Therefore we reverse the string here.
         self.assertEqual(
-            bitarray(
-                "00000000000000000000000000011111"[::-1], endian="little"
-            ),
-            InstructionEncoding(
-                self.json["A2_combineii"]["Inst"]
-            ).operand_masks["Rdd32"],
+            bitarray("00000000000000000000000000011111"[::-1], endian="little"),
+            InstructionEncoding(self.json["A2_combineii"]["Inst"]).operand_masks["Rdd32"],
         )
         self.assertEqual(
-            bitarray(
-                "00000000000000000001111111100000"[::-1], endian="little"
-            ),
-            InstructionEncoding(
-                self.json["A2_combineii"]["Inst"]
-            ).operand_masks["Ii"],
+            bitarray("00000000000000000001111111100000"[::-1], endian="little"),
+            InstructionEncoding(self.json["A2_combineii"]["Inst"]).operand_masks["Ii"],
         )
         self.assertEqual(
-            bitarray(
-                "00000000011111110010000000000000"[::-1], endian="little"
-            ),
-            InstructionEncoding(
-                self.json["A2_combineii"]["Inst"]
-            ).operand_masks["II"],
+            bitarray("00000000011111110010000000000000"[::-1], endian="little"),
+            InstructionEncoding(self.json["A2_combineii"]["Inst"]).operand_masks["II"],
         )
 
         self.assertEqual(
-            bitarray(
-                "00000000000000000001111100000000"[::-1], endian="little"
-            ),
-            InstructionEncoding(
-                self.json["A2_combinew"]["Inst"]
-            ).operand_masks["Rt32"],
+            bitarray("00000000000000000001111100000000"[::-1], endian="little"),
+            InstructionEncoding(self.json["A2_combinew"]["Inst"]).operand_masks["Rt32"],
         )
         self.assertEqual(
-            bitarray(
-                "00000000000111110000000000000000"[::-1], endian="little"
-            ),
-            InstructionEncoding(
-                self.json["A2_combinew"]["Inst"]
-            ).operand_masks["Rs32"],
+            bitarray("00000000000111110000000000000000"[::-1], endian="little"),
+            InstructionEncoding(self.json["A2_combinew"]["Inst"]).operand_masks["Rs32"],
         )
         self.assertEqual(
-            bitarray(
-                "00001111111111110011111111111111"[::-1], endian="little"
-            ),
-            InstructionEncoding(self.json["A4_ext"]["Inst"]).operand_masks[
-                "Ii"
-            ],
+            bitarray("00001111111111110011111111111111"[::-1], endian="little"),
+            InstructionEncoding(self.json["A4_ext"]["Inst"]).operand_masks["Ii"],
         )
 
     def test_get_i_class(self) -> None:
         self.assertEqual(
             0xD,
-            InstructionEncoding(
-                self.json["A2_addh_h16_hh"]["Inst"]
-            ).get_i_class(),
+            InstructionEncoding(self.json["A2_addh_h16_hh"]["Inst"]).get_i_class(),
         )
 
         high = SubInstruction(self.json["SL2_return_tnew"])
         low = SubInstruction(self.json["SS2_storewi1"])
-        d = DuplexInstruction.get_duplex_i_class_of_instr_pair(
-            low=low, high=high
-        )
+        d = DuplexInstruction.get_duplex_i_class_of_instr_pair(low=low, high=high)
 
         duplex = DuplexInstruction(self.json[d.name], low=low, high=high)
 
@@ -111,9 +83,7 @@ class TestInstructionEncoding(unittest.TestCase):
     def test_num_representation(self) -> None:
         self.assertEqual(
             0b1111101000110,
-            InstructionEncoding(
-                self.json["SL2_return_tnew"]["Inst"]
-            ).num_representation,
+            InstructionEncoding(self.json["SL2_return_tnew"]["Inst"]).num_representation,
         )
 
     def test_correct_operand_names(self) -> None:
@@ -126,30 +96,14 @@ class TestInstructionEncoding(unittest.TestCase):
 
         self.assertEqual(
             "((({}) & 0x1fe0) >> 5)".format(hex_insn),
-            Operand.make_sparse_mask(
-                InstructionEncoding(
-                    self.json["A2_combineii"]["Inst"]
-                ).operand_masks["Ii"]
-            ),
+            Operand.make_sparse_mask(InstructionEncoding(self.json["A2_combineii"]["Inst"]).operand_masks["Ii"]),
         )
         self.assertEqual(
-            "(((({}) & 0x7f0000) >> 15) | ((({}) & 0x2000) >> 13))".format(
-                hex_insn, hex_insn
-            ),
-            Operand.make_sparse_mask(
-                InstructionEncoding(
-                    self.json["A2_combineii"]["Inst"]
-                ).operand_masks["II"]
-            ),
+            "(((({}) & 0x7f0000) >> 15) | ((({}) & 0x2000) >> 13))".format(hex_insn, hex_insn),
+            Operand.make_sparse_mask(InstructionEncoding(self.json["A2_combineii"]["Inst"]).operand_masks["II"]),
         )
 
         self.assertEqual(
-            "(((({}) & 0xfff0000) >> 2) | ((({}) & 0x3fff) >> 0))".format(
-                hex_insn, hex_insn
-            ),
-            Operand.make_sparse_mask(
-                InstructionEncoding(self.json["A4_ext"]["Inst"]).operand_masks[
-                    "Ii"
-                ]
-            ),
+            "(((({}) & 0xfff0000) >> 2) | ((({}) & 0x3fff) >> 0))".format(hex_insn, hex_insn),
+            Operand.make_sparse_mask(InstructionEncoding(self.json["A4_ext"]["Inst"]).operand_masks["Ii"]),
         )
