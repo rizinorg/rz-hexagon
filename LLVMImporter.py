@@ -190,6 +190,8 @@ class LLVMImporter:
         ]
         reg_dir = "./import/registers/" if not self.test_mode else "../import/registers/"
         for filename in os.listdir(reg_dir):
+            if filename.split(".")[-1] != "json":
+                continue
             with open(reg_dir + filename) as f:
                 reg = json.load(f)
             reg_name = list(reg.keys())[0]
@@ -207,6 +209,8 @@ class LLVMImporter:
         instr_count = 0
         insn_dir = "./import/instructions/" if not self.test_mode else "../import/instructions/"
         for filename in os.listdir(insn_dir):
+            if filename.split(".")[-1] != "json":
+                continue
             instn_name = filename.replace(".json", "")
             with open(insn_dir + filename) as f:
                 insn = json.load(f)
