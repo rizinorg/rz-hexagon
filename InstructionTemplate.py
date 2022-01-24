@@ -399,7 +399,13 @@ class InstructionTemplate:
                 op_type += "RZ_ANALYSIS_OP_TYPE_CRET;"
             elif self.is_branch or self.is_loop:
                 # Immediate and register jump
-                op_type += "RZ_ANALYSIS_OP_TYPE_CJMP;" if self.has_imm_jmp_target() else "RZ_ANALYSIS_OP_TYPE_RCJMP;"
+                if self.has_imm_jmp_target():
+                    # Remove the teneray expression since the instruction type is always CJMP,
+                    # even if it is an endloop instruction.
+                    op_type = "hi->ana_op.type = RZ_ANALYSIS_OP_TYPE_CJMP;"
+                    return op_type
+                else:
+                    op_type += "RZ_ANALYSIS_OP_TYPE_RCJMP;"
             else:
                 op_type += "RZ_ANALYSIS_OP_TYPE_COND;"
         else:
