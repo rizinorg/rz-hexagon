@@ -56,7 +56,10 @@ class LLVMImporter:
             self.generate_hexagon_json()
         else:
             if not os.path.exists(self.hexagon_target_json_path):
-                log("No Hexagon.json found. Please check out the help message to generate it.", LogLevel.ERROR)
+                log(
+                    "No Hexagon.json found. Please check out the help message to generate it.",
+                    LogLevel.ERROR,
+                )
                 exit()
             self.set_llvm_commit_info(use_prev=True)
 
@@ -70,7 +73,9 @@ class LLVMImporter:
         HexagonArchInfo.REG_CLASS_NAMES = self.hexArch["!instanceof"]["RegisterClass"]
         HexagonArchInfo.LLVM_FAKE_REGS = self.hexArch["!instanceof"]["HexagonFakeReg"]
         HexagonArchInfo.ALL_REG_NAMES = self.hexArch["!instanceof"]["DwarfRegNum"]
-        HexagonArchInfo.CALLEE_SAVED_REGS = [name[0]["def"] for name in self.hexArch["HexagonCSR"]["SaveList"]["args"]]
+        HexagonArchInfo.CALLEE_SAVED_REGS = [
+            name[0]["def"] for name in self.hexArch["HexagonCSR"]["SaveList"]["args"]
+        ]
         HexagonArchInfo.CC_REGS = self.get_cc_regs()
 
         # RIZIN SPECIFIC
@@ -93,15 +98,21 @@ class LLVMImporter:
         cwd = os.getcwd()
         log("Load LLVMImporter configuration from {}/.config".format(cwd))
         if cwd.split("/")[-1] == "rz-hexagon" or self.test_mode:
-            self.config["GENERATOR_ROOT_DIR"] = cwd if not self.test_mode else "/".join(cwd.split("/")[:-1])
+            self.config["GENERATOR_ROOT_DIR"] = (
+                cwd if not self.test_mode else "/".join(cwd.split("/")[:-1])
+            )
             if not os.path.exists(".config"):
                 with open(cwd + "/.config", "w") as f:
                     config = "# Configuration for th LLVMImporter.\n"
                     config += "LLVM_PROJECT_REPO_DIR = /path/to/llvm_project"
                     f.write(config)
                 log(
-                    "This is your first time running the generator{}.".format(" TESTS" if self.test_mode else "")
-                    + " Please set the path to the llvm_project repo in {}/.config.".format(cwd)
+                    "This is your first time running the generator{}.".format(
+                        " TESTS" if self.test_mode else ""
+                    )
+                    + " Please set the path to the llvm_project repo in {}/.config.".format(
+                        cwd
+                    )
                 )
                 exit()
             with open(cwd + "/.config") as f:
@@ -114,16 +125,26 @@ class LLVMImporter:
                         dr = ln[1].strip()
                         if not os.path.exists(dr):
                             log(
-                                "The LLVM_PROJECT_REPO_DIR is set to an invalid directory: '{}'".format(dr),
+                                "The LLVM_PROJECT_REPO_DIR is set to an invalid directory: '{}'".format(
+                                    dr
+                                ),
                                 LogLevel.ERROR,
                             )
                             exit()
                         self.config["LLVM_PROJECT_REPO_DIR"] = dr
-                        self.config["LLVM_PROJECT_HEXAGON_DIR"] = dr + "/llvm/lib/Target/Hexagon"
+                        self.config["LLVM_PROJECT_HEXAGON_DIR"] = (
+                            dr + "/llvm/lib/Target/Hexagon"
+                        )
                     else:
-                        log("Unknown configuration in config file: '{}'".format(ln[0]), LogLevel.WARNING)
+                        log(
+                            "Unknown configuration in config file: '{}'".format(ln[0]),
+                            LogLevel.WARNING,
+                        )
         else:
-            log("Please execute this script in the rz-hexagon directory.", LogLevel.ERROR)
+            log(
+                "Please execute this script in the rz-hexagon directory.",
+                LogLevel.ERROR,
+            )
             exit()
 
     def set_llvm_commit_info(self, use_prev: bool):
@@ -136,7 +157,8 @@ class LLVMImporter:
         if not use_prev:
             self.config["LLVM_COMMIT_DATE"] = (
                 subprocess.check_output(
-                    ["git", "show", "-s", "--format=%ci", "HEAD"], cwd=self.config["LLVM_PROJECT_REPO_DIR"]
+                    ["git", "show", "-s", "--format=%ci", "HEAD"],
+                    cwd=self.config["LLVM_PROJECT_REPO_DIR"],
                 )
                 .decode("ascii")
                 .strip("\n")
@@ -144,7 +166,8 @@ class LLVMImporter:
             self.config["LLVM_COMMIT_DATE"] += " (ISO 8601 format)"
             self.config["LLVM_COMMIT_HASH"] = (
                 subprocess.check_output(
-                    ["git", "show", "-s", "--format=%H", "HEAD"], cwd=self.config["LLVM_PROJECT_REPO_DIR"]
+                    ["git", "show", "-s", "--format=%H", "HEAD"],
+                    cwd=self.config["LLVM_PROJECT_REPO_DIR"],
                 )
                 .decode("ascii")
                 .strip("\n")
@@ -159,7 +182,10 @@ class LLVMImporter:
                     self.config["LLVM_COMMIT_DATE"] = str(f.readline()).strip()
                     self.config["LLVM_COMMIT_HASH"] = str(f.readline()).strip()
             else:
-                log("No previous LLVM commit info found.", LogLevel.VERBOSE if self.test_mode else LogLevel.WARNING)
+                log(
+                    "No previous LLVM commit info found.",
+                    LogLevel.VERBOSE if self.test_mode else LogLevel.WARNING,
+                )
                 self.config["LLVM_COMMIT_DATE"] = "Test" if self.test_mode else "None"
                 self.config["LLVM_COMMIT_HASH"] = "Test" if self.test_mode else "None"
 
@@ -188,7 +214,9 @@ class LLVMImporter:
             "SysRegs",
             "SysRegs64",
         ]
-        reg_dir = "./import/registers/" if not self.test_mode else "../import/registers/"
+        reg_dir = (
+            "./import/registers/" if not self.test_mode else "../import/registers/"
+        )
         for filename in os.listdir(reg_dir):
             if filename.split(".")[-1] != "json":
                 continue
@@ -207,7 +235,11 @@ class LLVMImporter:
             self.hexArch.update(reg)
 
         instr_count = 0
-        insn_dir = "./import/instructions/" if not self.test_mode else "../import/instructions/"
+        insn_dir = (
+            "./import/instructions/"
+            if not self.test_mode
+            else "../import/instructions/"
+        )
         for filename in os.listdir(insn_dir):
             if filename.split(".")[-1] != "json":
                 continue
@@ -217,7 +249,10 @@ class LLVMImporter:
             syntax_list = list()
             for llvm_instr in self.hexArch["!instanceof"]["HInst"]:
                 syntax_list.append(self.hexArch[llvm_instr]["AsmString"])
-            if "UNDOCUMENTED" not in instn_name and insn[instn_name]["AsmString"] in syntax_list:
+            if (
+                "UNDOCUMENTED" not in instn_name
+                and insn[instn_name]["AsmString"] in syntax_list
+            ):
                 continue
             self.hexArch.update(insn)
             self.hexArch["!instanceof"]["HInst"] += list(insn.keys())
@@ -230,7 +265,9 @@ class LLVMImporter:
             llvm_instruction = self.hexArch[i_name]
             if llvm_instruction is None:
                 log(
-                    "Could not find instruction with name: {} in json file.".format(i_name),
+                    "Could not find instruction with name: {} in json file.".format(
+                        i_name
+                    ),
                     LogLevel.ERROR,
                 )
                 continue
@@ -255,12 +292,19 @@ class LLVMImporter:
         log("Parsed {} sub-instructions.".format(len(self.sub_instructions)))
 
     def generate_duplex_instructions(self) -> None:
-        sub_instr_pairs = itertools.product(self.sub_instructions.values(), self.sub_instructions.values())
+        sub_instr_pairs = itertools.product(
+            self.sub_instructions.values(), self.sub_instructions.values()
+        )
         for pair in sub_instr_pairs:
             low_instr = pair[0]
             high_instr = pair[1]
-            i_class = DuplexInstruction.get_duplex_i_class_of_instr_pair(low=low_instr, high=high_instr)
-            if i_class != DuplexIClass.INVALID and DuplexInstruction.fulfill_constraints(low_instr, high_instr):
+            i_class = DuplexInstruction.get_duplex_i_class_of_instr_pair(
+                low=low_instr, high=high_instr
+            )
+            if (
+                i_class != DuplexIClass.INVALID
+                and DuplexInstruction.fulfill_constraints(low_instr, high_instr)
+            ):
                 llvm_dup_instr = self.hexArch[i_class.name]
                 dup_instr = DuplexInstruction(
                     llvm_duplex_instr=llvm_dup_instr,
@@ -286,7 +330,9 @@ class LLVMImporter:
             self.hardware_regs[reg_class_name] = dict()
             reg_class: dict = self.hexArch[reg_class_name]
             # Use "Alignment" although a "Size" attribute exists. But Double Regs set that to 0.
-            size: int = reg_class["Alignment"] if reg_class["Size"] == 0 else reg_class["Size"]
+            size: int = (
+                reg_class["Alignment"] if reg_class["Size"] == 0 else reg_class["Size"]
+            )
 
             reg_names = list()
             for a in reg_class["MemberList"]["args"]:
@@ -304,7 +350,9 @@ class LLVMImporter:
                     reg_names = reg_names + unfold_llvm_sequence(arg["printable"])
                 # Remove registers whichs tart with WR; WR register are reverse double vector regs: V0:1 instead of V1:0
                 # TODO This is not nice. Isn't there a simpler way?
-                reg_names = [name for name in reg_names if not re.search(r"WR\d{1,2}", name)]
+                reg_names = [
+                    name for name in reg_names if not re.search(r"WR\d{1,2}", name)
+                ]
 
             for name in reg_names:
                 llvm_reg = self.hexArch[name]
@@ -320,7 +368,11 @@ class LLVMImporter:
                 #                                                     reg.hw_encoding), LogLevel.DEBUG)
 
             cc += 1
-        log("Parsed {} hardware registers of {} different register classes.".format(cr, cc))
+        log(
+            "Parsed {} hardware registers of {} different register classes.".format(
+                cr, cc
+            )
+        )
 
     def check_insn_syntax_length(self):
         for instr_set in [
@@ -346,20 +398,36 @@ class LLVMImporter:
         """
         cc_regs = dict()
         anon_obj_names = self.hexArch["!instanceof"]["CCAssignToReg"]
-        arg_regs = [reg["def"] for reg in self.hexArch[anon_obj_names[0]]["RegList"]]  # Single
-        arg_regs += [reg["def"] for reg in self.hexArch[anon_obj_names[1]]["RegList"]]  # Double
+        arg_regs = [
+            reg["def"] for reg in self.hexArch[anon_obj_names[0]]["RegList"]
+        ]  # Single
+        arg_regs += [
+            reg["def"] for reg in self.hexArch[anon_obj_names[1]]["RegList"]
+        ]  # Double
         cc_regs["GPR_args"] = arg_regs
 
-        ret_regs = [reg["def"] for reg in self.hexArch[anon_obj_names[2]]["RegList"]]  # Single
-        ret_regs += [reg["def"] for reg in self.hexArch[anon_obj_names[3]]["RegList"]]  # Double
+        ret_regs = [
+            reg["def"] for reg in self.hexArch[anon_obj_names[2]]["RegList"]
+        ]  # Single
+        ret_regs += [
+            reg["def"] for reg in self.hexArch[anon_obj_names[3]]["RegList"]
+        ]  # Double
         cc_regs["GPR_ret"] = ret_regs
 
-        hvx_arg_regs = [reg["def"] for reg in self.hexArch[anon_obj_names[4]]["RegList"]]  # Single
-        hvx_arg_regs += [reg["def"] for reg in self.hexArch[anon_obj_names[5]]["RegList"]]  # Double
+        hvx_arg_regs = [
+            reg["def"] for reg in self.hexArch[anon_obj_names[4]]["RegList"]
+        ]  # Single
+        hvx_arg_regs += [
+            reg["def"] for reg in self.hexArch[anon_obj_names[5]]["RegList"]
+        ]  # Double
         cc_regs["HVX_args"] = hvx_arg_regs
 
-        hvx_ret_regs = [reg["def"] for reg in self.hexArch[anon_obj_names[6]]["RegList"]]  # Single
-        hvx_ret_regs += [reg["def"] for reg in self.hexArch[anon_obj_names[7]]["RegList"]]  # Double
+        hvx_ret_regs = [
+            reg["def"] for reg in self.hexArch[anon_obj_names[6]]["RegList"]
+        ]  # Single
+        hvx_ret_regs += [
+            reg["def"] for reg in self.hexArch[anon_obj_names[7]]["RegList"]
+        ]  # Double
         cc_regs["HVX_ret"] = hvx_ret_regs
 
         return cc_regs
@@ -397,10 +465,18 @@ class LLVMImporter:
                 with open(p, "r+") as f:
                     content = f.read()
                     f.seek(0, 0)
-                    f.write(get_license() + "\n" + get_generation_timestamp(self.config) + "\n" + content)
+                    f.write(
+                        get_license()
+                        + "\n"
+                        + get_generation_timestamp(self.config)
+                        + "\n"
+                        + content
+                    )
 
     # RIZIN SPECIFIC
-    def build_hexagon_insn_enum_h(self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon_insn.h") -> None:
+    def build_hexagon_insn_enum_h(
+        self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon_insn.h"
+    ) -> None:
         with open(path, "w+") as dest:
             dest.write(get_generation_warning_c_code())
             dest.write("\n")
@@ -410,7 +486,9 @@ class LLVMImporter:
             enum = ""
             for name in self.normal_instruction_names + self.duplex_instructions_names:
                 if "invalid_decode" in name:
-                    enum = (PluginInfo.INSTR_ENUM_PREFIX + name.upper() + " = 0,\n") + enum
+                    enum = (
+                        PluginInfo.INSTR_ENUM_PREFIX + name.upper() + " = 0,\n"
+                    ) + enum
                 else:
                     enum += PluginInfo.INSTR_ENUM_PREFIX + name.upper() + ",\n"
             dest.write(enum)
@@ -422,7 +500,9 @@ class LLVMImporter:
             )
 
     # RIZIN SPECIFIC
-    def build_hexagon_disas_c(self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon_disas.c") -> None:
+    def build_hexagon_disas_c(
+        self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon_disas.c"
+    ) -> None:
         # TODO Clean up this method
         indent = PluginInfo.LINE_INDENT
         var = PluginInfo.HEX_INSTR_VAR_SYNTAX
@@ -474,13 +554,18 @@ class LLVMImporter:
                 "if (hi_u32 != 0x00000000) {\n"
                 + "// DUPLEXES\n"
                 + "if ((({} >> 14) & 0x3) == 0) {{\n".format(var)
-                + "switch (((({} >> 29) & 0xF) << 1) | (({} >> 13) & 1)) {{\n".format(var, var)
+                + "switch (((({} >> 29) & 0xF) << 1) | (({} >> 13) & 1)) {{\n".format(
+                    var, var
+                )
             )
 
             # Duplexes
             for c in range(0xF):  # Class 0xf is reserved yet.
                 main_function += "{}case 0x{:x}:\n".format(indent * 3, c)
-                main_function += "hexagon_disasm_duplex_0x{:x}(rz_asm, state, hi_u32, hi," " addr, pkt);\n".format(c)
+                main_function += (
+                    "hexagon_disasm_duplex_0x{:x}(rz_asm, state, hi_u32, hi,"
+                    " addr, pkt);\n".format(c)
+                )
                 func_body = ""
                 func_header = (
                     "void hexagon_disasm_duplex_0x{:x}(const RzAsm *rz_asm,"
@@ -489,8 +574,13 @@ class LLVMImporter:
                 )
                 for d_instr in self.duplex_instructions.values():
                     if d_instr.encoding.get_i_class() == c:
-                        func_body += indent_code_block(d_instr.get_instruction_init_in_c(), 1)
-                        if "sprintf(signed_imm" in func_body and signed_imm_array not in func_header:
+                        func_body += indent_code_block(
+                            d_instr.get_instruction_init_in_c(), 1
+                        )
+                        if (
+                            "sprintf(signed_imm" in func_body
+                            and signed_imm_array not in func_header
+                        ):
                             func_header += "char " + signed_imm_array + " = {0};\n"
                 dest.write(func_header + func_body + "}\n\n")
                 main_function += "{}break;\n".format(indent * 4)
@@ -501,7 +591,10 @@ class LLVMImporter:
             main_function += "switch (({} >> 28) & 0xF) {{\n".format(var)
             for c in range(0x10):
                 main_function += "case 0x{:x}:\n".format(c)
-                main_function += "hexagon_disasm_0x{:x}(rz_asm, state, hi_u32, hi, addr," " pkt);\n".format(c)
+                main_function += (
+                    "hexagon_disasm_0x{:x}(rz_asm, state, hi_u32, hi, addr,"
+                    " pkt);\n".format(c)
+                )
 
                 func_body = ""
                 func_header = (
@@ -511,22 +604,32 @@ class LLVMImporter:
                 )
                 for instr in self.normal_instructions.values():
                     if instr.encoding.get_i_class() == c:
-                        func_body += indent_code_block(instr.get_instruction_init_in_c(), 1)
-                        if "sprintf(signed_imm" in func_body and signed_imm_array not in func_header:
+                        func_body += indent_code_block(
+                            instr.get_instruction_init_in_c(), 1
+                        )
+                        if (
+                            "sprintf(signed_imm" in func_body
+                            and signed_imm_array not in func_header
+                        ):
                             func_header += "char " + signed_imm_array + " = {0};\n"
                 dest.write(func_header + func_body + "}\n\n")
                 main_function += "{}break;\n".format(indent * 4)
 
             # Closing brackets for switch, else, function
             main_function += "}\n}\n}"
-            main_function += "if (pkt->is_eob && is_last_instr(hi->parse_bits)) {" + "hi->ana_op.eob = true;}"
+            main_function += (
+                "if (pkt->is_eob && is_last_instr(hi->parse_bits)) {"
+                + "hi->ana_op.eob = true;}"
+            )
             main_function += (
                 "if (hi->instruction == HEX_INS_INVALID_DECODE) {\n"
                 + "hi->parse_bits = ((hi_u32) & 0xc000) >> 14;\n"
                 + "hi->ana_op.type = RZ_ANALYSIS_OP_TYPE_ILL;\n"
                 + 'sprintf(hi->mnem_infix, "invalid");\n'
                 + 'sprintf(hi->mnem, "%s%s%s", hi->pkt_info.mnem_prefix,'
-                " hi->mnem_infix, hi->pkt_info.mnem_postfix);\n" + "}\n" + "return 4;\n}"
+                " hi->mnem_infix, hi->pkt_info.mnem_postfix);\n"
+                + "}\n"
+                + "return 4;\n}"
             )
             dest.write(main_function)
         log(
@@ -535,7 +638,9 @@ class LLVMImporter:
         )
 
     # RIZIN SPECIFIC
-    def build_hexagon_h(self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon.h") -> None:
+    def build_hexagon_h(
+        self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon.h"
+    ) -> None:
         indent = PluginInfo.LINE_INDENT
         general_prefix = PluginInfo.GENERAL_ENUM_PREFIX
 
@@ -595,7 +700,9 @@ class LLVMImporter:
         log("hexagon.h written to: {}".format(path), LogLevel.DEBUG)
 
     # RIZIN SPECIFIC
-    def build_hexagon_c(self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon.c") -> None:
+    def build_hexagon_c(
+        self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon.c"
+    ) -> None:
         indent = PluginInfo.LINE_INDENT
 
         with open(path, "w+") as dest:
@@ -612,13 +719,17 @@ class LLVMImporter:
                 self.reg_resolve_decl.append(function + ";")
                 dest.write("\n{} {{\n".format(function))
 
-                parsing_code = HardwareRegister.get_parse_code_reg_bits(reg_class, "opcode_reg")
+                parsing_code = HardwareRegister.get_parse_code_reg_bits(
+                    reg_class, "opcode_reg"
+                )
                 parsing_code = indent_code_block(parsing_code, 1)
                 if parsing_code != "":
                     dest.write("{}\n".format(parsing_code))
 
                 dest.write("{}switch (opcode_reg) {{\n".format(indent))
-                dest.write('{}default:\n{}return "<err>";\n'.format(indent * 2, indent * 3))
+                dest.write(
+                    '{}default:\n{}return "<err>";\n'.format(indent * 2, indent * 3)
+                )
 
                 hw_reg: HardwareRegister
                 for hw_reg in self.hardware_regs[reg_class].values():
@@ -706,22 +817,61 @@ class LLVMImporter:
         log("Copied test files to ./rizin/test/db/", LogLevel.DEBUG)
 
     # RIZIN SPECIFIC
-    def build_hexagon_regs(self, path: str = "rizin/librz/analysis/p/analysis_hexagon.c") -> None:
+    def build_hexagon_regs(
+        self, path: str = "rizin/librz/analysis/p/analysis_hexagon.c"
+    ) -> None:
         profile = self.get_alias_profile().splitlines(keepends=True)
-        offset = 0
+        reg_offset = 0
+        offsets = {
+            "IntRegs": 0,
+            "CtrRegs": 1024,
+            "PredRegs": 1152,
+            "GuestRegs": 2048,
+            "HvxVR": 3072,
+            "HvxQR": 4096,
+            "SysRegs": 4608,
+        }
 
-        for hw_reg_classes in self.hardware_regs:
-            if hw_reg_classes in [
+        for hw_reg_class in self.hardware_regs:
+            if hw_reg_class in [
                 "IntRegsLow8",
                 "GeneralSubRegs",
                 "GeneralDoubleLow8Regs",
                 "ModRegs",
             ]:
                 continue  # Those registers would only be duplicates.
+            if hw_reg_class in ["IntRegs", "DoubleRegs"]:
+                reg_offset = offsets["IntRegs"]
+            elif hw_reg_class in ["CtrRegs", "CtrRegs64"]:
+                reg_offset = offsets["CtrRegs"]
+            elif hw_reg_class == "PredRegs":
+                reg_offset = offsets["PredRegs"]
+            elif hw_reg_class in ["GuestRegs", "GuestRegs64"]:
+                reg_offset = offsets["GuestRegs"]
+            elif hw_reg_class in ["HvxVR", "HvxWR", "HvxVQR"]:
+                reg_offset = offsets["HvxVR"]
+            elif hw_reg_class == "HvxQR":
+                reg_offset = offsets["HvxQR"]
+            elif hw_reg_class in ["SysRegs", "SysRegs64"]:
+                reg_offset = offsets["SysRegs"]
+            else:
+                raise ImplementationException(
+                    "Register profile can't be completed. Base for type {} missing.".format(
+                        hw_reg_class
+                    )
+                )
+
             hw_reg: HardwareRegister
-            for hw_reg in self.hardware_regs[hw_reg_classes].values():
-                profile.append(hw_reg.get_reg_profile(offset) + "\n")
-                offset += int((hw_reg.size / 8))
+            for hw_reg in {
+                k: v
+                for k, v in sorted(
+                    self.hardware_regs[hw_reg_class].items(), key=lambda item: item[1]
+                )
+            }.values():
+                profile.append(hw_reg.get_reg_profile(reg_offset, False) + "\n")
+                reg_offset += (
+                    hw_reg.size if not (hw_reg.llvm_reg_class == "PredRegs") else 8
+                )
             profile.append("\n")
         profile = profile[:-1]  # Remove line breaks
         profile[-1] = profile[-1][:-1] + ";\n"  # [:-1] to remove line break.
@@ -748,7 +898,9 @@ class LLVMImporter:
             f.writelines(tmp)
             f.write("\n")
 
-            with open("handwritten/analysis_hexagon_c/initialization.c") as initialization:
+            with open(
+                "handwritten/analysis_hexagon_c/initialization.c"
+            ) as initialization:
                 set_pos_after_license(initialization)
                 f.writelines(initialization.readlines())
             f.write("\n")
@@ -759,10 +911,10 @@ class LLVMImporter:
         indent = PluginInfo.LINE_INDENT
 
         p = "\n" + '"=PC{}pc\\n"'.format(indent) + "\n"
-        p += '"=SP{}R29\\n"'.format(indent) + "\n"
-        p += '"=BP{}R30\\n"'.format(indent) + "\n"
-        p += '"=LR{}R31\\n"'.format(indent) + "\n"
-        p += '"=SR{}usr\\n"'.format(indent) + "\n"
+        p += '"=SP{}r29\\n"'.format(indent) + "\n"
+        p += '"=BP{}r30\\n"'.format(indent) + "\n"
+        p += '"=LR{}r31\\n"'.format(indent) + "\n"
+        p += '"=SR{}c8\\n"'.format(indent) + "\n"
         p += '"=SN{}r0\\n"'.format(indent) + "\n"
 
         arg_regs = ""
@@ -771,7 +923,9 @@ class LLVMImporter:
         arguments = HexagonArchInfo.CC_REGS["GPR_args"]
         returns = HexagonArchInfo.CC_REGS["GPR_ret"]
 
-        general_ps = list(self.hardware_regs["IntRegs"].values()) + list(self.hardware_regs["DoubleRegs"].values())
+        general_ps = list(self.hardware_regs["IntRegs"].values()) + list(
+            self.hardware_regs["DoubleRegs"].values()
+        )
         gpr: HardwareRegister
         for gpr in general_ps:
             try:
@@ -781,7 +935,8 @@ class LLVMImporter:
             if i > 9 and gpr.name in HexagonArchInfo.CC_REGS["GPR_args"]:
                 log(
                     "Can not add register {} as argument reg to the register"
-                    " profile. ".format(gpr.name) + "Rizin only supports 10 argument registers. Check"
+                    " profile. ".format(gpr.name)
+                    + "Rizin only supports 10 argument registers. Check"
                     " rz_reg.h if this changed.",
                     LogLevel.WARNING,
                 )
@@ -796,7 +951,8 @@ class LLVMImporter:
             if i > 3 and gpr.name in HexagonArchInfo.CC_REGS["GPR_ret"]:
                 log(
                     "Can not add register {} as return reg to the register"
-                    " profile. ".format(gpr.name) + "Rizin only supports 4 return registers. Check rz_reg.h"
+                    " profile. ".format(gpr.name)
+                    + "Rizin only supports 4 return registers. Check rz_reg.h"
                     " if this changed.",
                     LogLevel.WARNING,
                 )
@@ -828,7 +984,8 @@ class LLVMImporter:
                     continue
                 else:
                     raise ImplementationException(
-                        "Could not assign register {} to a specific argument" " value.".format(reg)
+                        "Could not assign register {} to a specific argument"
+                        " value.".format(reg)
                     )
             cc_dict["cc.hexagon.argn"] = "stack_rev"
             for reg in HexagonArchInfo.CC_REGS["GPR_ret"]:
@@ -842,7 +999,8 @@ class LLVMImporter:
                     continue
                 else:
                     raise ImplementationException(
-                        "Could not assign register {} to a specific return" " value.".format(reg)
+                        "Could not assign register {} to a specific return"
+                        " value.".format(reg)
                     )
 
             f.write("default.cc=hexagon\n\nhexagon=cc\n")
@@ -859,7 +1017,8 @@ class LLVMImporter:
                     continue
                 else:
                     raise ImplementationException(
-                        "Could not assign register {} to a specific argument" " value.".format(reg)
+                        "Could not assign register {} to a specific argument"
+                        " value.".format(reg)
                     )
             for reg in HexagonArchInfo.CC_REGS["HVX_ret"]:
                 n = int(re.search(r"\d{1,2}", reg).group(0))
@@ -872,7 +1031,8 @@ class LLVMImporter:
                     continue
                 else:
                     raise ImplementationException(
-                        "Could not assign register {} to a specific return" " value.".format(reg)
+                        "Could not assign register {} to a specific return"
+                        " value.".format(reg)
                     )
             for k, v in cc_dict.items():
                 f.write(k + "=" + v + "\n")
