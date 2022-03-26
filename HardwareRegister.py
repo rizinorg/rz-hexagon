@@ -33,16 +33,12 @@ class HardwareRegister(Register):
             + "_"
             + re.sub(r":", "_", self.asm_name).upper()
         )
-        self.sorting_val = int(
-            re.sub(r"[a-zA-Z:]", "", self.asm_name)
-        )  # Remove letter and ':' from name.
+        self.sorting_val = int(re.sub(r"[a-zA-Z:]", "", self.asm_name))  # Remove letter and ':' from name.
 
         self.hw_encoding = index
         self.size: int = size if not self.is_vector else size * 2
         self.sub_register_names: list = [
-            r["def"]
-            for r in llvm_object["SubRegs"]
-            if r["def"] not in HexagonArchInfo.LLVM_FAKE_REGS
+            r["def"] for r in llvm_object["SubRegs"] if r["def"] not in HexagonArchInfo.LLVM_FAKE_REGS
         ]
 
     def __lt__(self, other):
@@ -60,9 +56,7 @@ class HardwareRegister(Register):
             match_asm = None
         if match_asm and match_alias:
             raise ImplementationException(
-                "HW reg alias and asm names match same pattern: alias: {} asm: {}".format(
-                    ",".join(llvm_alt), llvm_asm
-                )
+                "HW reg alias and asm names match same pattern: alias: {} asm: {}".format(",".join(llvm_alt), llvm_asm)
             )
         elif match_asm:
             self.asm_name = llvm_asm
@@ -102,12 +96,7 @@ class HardwareRegister(Register):
         """
         indent = PluginInfo.LINE_INDENT
         code = ""
-        if (
-            reg_class == "CtrRegs64"
-            or reg_class == "DoubleRegs"
-            or reg_class == "GuestRegs64"
-            or reg_class == "HvxVQR"
-        ):
+        if reg_class == "CtrRegs64" or reg_class == "DoubleRegs" or reg_class == "GuestRegs64" or reg_class == "HvxVQR":
             # TODO Assumption: test with actual disassembly
             #  GuestRegs64  -> OK
             #  DoubleRegs   -> OK
@@ -165,9 +154,7 @@ class HardwareRegister(Register):
         elif self.is_system:
             return "sys"
         else:
-            raise ImplementationException(
-                "Rizin has no register type for the register {}".format(self.llvm_type)
-            )
+            raise ImplementationException("Rizin has no register type for the register {}".format(self.llvm_type))
 
     @staticmethod
     def register_class_name_to_upper(s: str) -> str:
