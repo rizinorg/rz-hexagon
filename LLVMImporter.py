@@ -378,7 +378,7 @@ class LLVMImporter:
         self.build_hexagon_arch_c()
         self.build_hexagon_arch_h()
         self.copy_tests()
-        self.build_hexagon_regs()
+        self.build_analysis_hexagon_c()
         self.build_cc_hexagon_32_sdb_txt()
 
         # TODO hexagon.h: Gen - HexOpType, IClasses, Regs and its aliases (system = guest),
@@ -720,7 +720,7 @@ class LLVMImporter:
         log("Copied test files to ./rizin/test/db/", LogLevel.DEBUG)
 
     # RIZIN SPECIFIC
-    def build_hexagon_regs(self, path: str = "rizin/librz/analysis/p/analysis_hexagon.c") -> None:
+    def build_analysis_hexagon_c(self, path: str = "./rizin/librz/analysis/p/analysis_hexagon.c") -> None:
         profile = self.get_alias_profile().splitlines(keepends=True)
         offset = 0
 
@@ -740,32 +740,38 @@ class LLVMImporter:
         profile = profile[:-1]  # Remove line breaks
         profile[-1] = profile[-1][:-1] + ";\n"  # [:-1] to remove line break.
 
-        with open(path, "w+") as f:
-            f.write(get_generation_warning_c_code())
+        code = get_generation_warning_c_code()
 
-            with open("handwritten/analysis_hexagon_c/include.c") as include:
-                set_pos_after_license(include)
-                f.writelines(include.readlines())
-            with open("handwritten/analysis_hexagon_c/functions.c") as functions:
-                set_pos_after_license(functions)
-                f.writelines(functions.readlines())
-            f.write("\n")
+        with open("handwritten/analysis_hexagon_c/include.c") as include:
+            set_pos_after_license(include)
+            code += "".join(include.readlines())
+        with open("handwritten/analysis_hexagon_c/functions.c") as functions:
+            set_pos_after_license(functions)
+            code += "".join(functions.readlines())
+        code += "\n"
 
-            tmp = list()
-            tmp.append("const char *p =\n")
-            tmp += profile
-            tmp = make_c_block(
-                lines=tmp,
-                begin="RZ_API char *get_reg_profile(RzAnalysis *analysis)",
-                ret="return strdup(p);\n",
-            )
-            f.writelines(tmp)
-            f.write("\n")
+        tmp = list()
+        tmp.append("const char *p =\n")
+        tmp += profile
+        tmp = make_c_block(
+            lines=tmp,
+            begin="RZ_API char *get_reg_profile(RzAnalysis *analysis)",
+            ret="return strdup(p);\n",
+        )
+        code += "".join(tmp)
+        code += "\n"
 
-            with open("handwritten/analysis_hexagon_c/initialization.c") as initialization:
-                set_pos_after_license(initialization)
-                f.writelines(initialization.readlines())
-            f.write("\n")
+        with open("handwritten/analysis_hexagon_c/initialization.c") as initialization:
+            set_pos_after_license(initialization)
+            code += "".join(initialization.readlines())
+        code += "\n"
+
+        if compare_src_to_old_src(code, path):
+            self.unchanged_files.append(path)
+            return
+        with open(path, "w+") as dest:
+            dest.writelines(code)
+            log("analysis_hexagon.c written to {}".format(path), LogLevel.INFO)
 
     # RIZIN SPECIFC
     def get_alias_profile(self) -> str:
