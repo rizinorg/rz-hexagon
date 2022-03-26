@@ -549,60 +549,60 @@ class LLVMImporter:
         indent = PluginInfo.LINE_INDENT
         general_prefix = PluginInfo.GENERAL_ENUM_PREFIX
 
+        code = get_generation_warning_c_code()
+        code += "\n"
+        code += get_include_guard("hexagon.h")
+
+        with open("handwritten/hexagon_h/typedefs.h") as typedefs:
+            set_pos_after_license(typedefs)
+            code += "".join(typedefs.readlines())
+
+        reg_class: str
+        for reg_class in self.hardware_regs:
+            code += "\ntypedef enum {\n"
+
+            hw_reg: HardwareRegister
+            for hw_reg in sorted(
+                self.hardware_regs[reg_class].values(),
+                key=lambda x: x.hw_encoding,
+            ):
+                alias = ",".join(hw_reg.alias)
+                code += "{}{} = {},{}\n".format(
+                        indent,
+                        hw_reg.enum_name,
+                        hw_reg.hw_encoding,
+                        " // " + alias if alias != "" else "",
+                    )
+            code += "}} {}{}; // {}\n".format(
+                    general_prefix,
+                    HardwareRegister.register_class_name_to_upper(reg_class),
+                    reg_class,
+                )
+
+        with open("handwritten/hexagon_h/macros.h") as macros:
+            set_pos_after_license(macros)
+            code += "".join(macros.readlines())
+        code += "\n"
+        if len(self.reg_resolve_decl) == 0:
+            raise ImplementationException(
+                "Register resolve declarations missing"
+                "(They get generated together with hexagon.c)."
+                "Please generate hexagon.c before hexagon.h"
+            )
+        for decl in self.reg_resolve_decl:
+            code += decl + "\n"
+        with open("handwritten/hexagon_h/declarations.h") as decl:
+            set_pos_after_license(decl)
+            code += "".join(decl.readlines())
+        code += "#endif"
+
+        if compare_src_to_old_src(code, path):
+            self.unchanged_files.append(path)
+            return
+
         with open(path, "w+") as dest:
-            dest.write(get_generation_warning_c_code())
-            dest.write("\n")
-            dest.write(get_include_guard("hexagon.h"))
-
-            with open("handwritten/hexagon_h/typedefs.h") as typedefs:
-                set_pos_after_license(typedefs)
-                dest.writelines(typedefs.readlines())
-
-            reg_class: str
-            for reg_class in self.hardware_regs:
-                dest.write("\ntypedef enum {\n")
-
-                hw_reg: HardwareRegister
-                for hw_reg in sorted(
-                    self.hardware_regs[reg_class].values(),
-                    key=lambda x: x.hw_encoding,
-                ):
-                    alias = ",".join(hw_reg.alias)
-                    dest.write(
-                        "{}{} = {},{}\n".format(
-                            indent,
-                            hw_reg.enum_name,
-                            hw_reg.hw_encoding,
-                            " // " + alias if alias != "" else "",
-                        )
-                    )
-                dest.write(
-                    "}} {}{}; // {}\n".format(
-                        general_prefix,
-                        HardwareRegister.register_class_name_to_upper(reg_class),
-                        reg_class,
-                    )
-                )
-
-            with open("handwritten/hexagon_h/macros.h") as macros:
-                set_pos_after_license(macros)
-                dest.writelines(macros.readlines())
-            dest.write("\n")
-            if len(self.reg_resolve_decl) == 0:
-                raise ImplementationException(
-                    "Register resolve declarations missing"
-                    "(They get generated together with hexagon.c)."
-                    "Please generate hexagon.c before hexagon.h"
-                )
-            for decl in self.reg_resolve_decl:
-                dest.write(decl + "\n")
-            with open("handwritten/hexagon_h/declarations.h") as decl:
-                set_pos_after_license(decl)
-                dest.writelines(decl.readlines())
-
-            dest.write("#endif")
-
-        log("hexagon.h written to: {}".format(path), LogLevel.DEBUG)
+            dest.writelines(code)
+            log("hexagon.h written to: {}".format(path), LogLevel.INFO)
 
     # RIZIN SPECIFIC
     def build_hexagon_c(self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon.c") -> None:
