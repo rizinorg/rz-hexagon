@@ -74,6 +74,8 @@ class LLVMImporter:
         HexagonArchInfo.CALLEE_SAVED_REGS = [name[0]["def"] for name in self.hexArch["HexagonCSR"]["SaveList"]["args"]]
         HexagonArchInfo.CC_REGS = self.get_cc_regs()
 
+        self.unchanged_files = []  # Src files which had no changes after generation.
+
         # RIZIN SPECIFIC
         # Name of the function which parses the encoded register index bits.
         self.reg_resolve_decl = list()
@@ -390,11 +392,13 @@ class LLVMImporter:
     # RIZIN SPECIFIC
     def add_license_info_header(self) -> None:
         log("Add license headers")
-        for subdir, dirs, files in os.walk("rizin/"):
+        for subdir, dirs, files in os.walk("./rizin/"):
             for file in files:
                 if file == "hexagon" or file[-3:] == "txt":  # Tests
                     continue
                 p = os.path.join(subdir, file)
+                if p in self.unchanged_files:
+                    continue
                 with open(p, "r+") as f:
                     content = f.read()
                     f.seek(0, 0)
@@ -417,6 +421,7 @@ class LLVMImporter:
         data += "};\n\n"
         data += "#endif"
         if compare_src_to_old_src(data, path):
+            self.unchanged_files.append(path)
             return
 
         with open(path, "w+") as dest:
