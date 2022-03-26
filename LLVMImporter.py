@@ -27,6 +27,7 @@ from helperFunctions import (
     set_pos_after_license,
     get_license,
     get_generation_timestamp,
+    compare_src_to_old_src,
 )
 import PluginInfo
 import HexagonArchInfo
@@ -401,24 +402,28 @@ class LLVMImporter:
 
     # RIZIN SPECIFIC
     def build_hexagon_insn_enum_h(self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon_insn.h") -> None:
+        data = get_generation_warning_c_code()
+        data += "\n"
+        data += get_include_guard("hexagon_insn.h")
+        data += "\n"
+        data += "enum HEX_INS {\n"
+        enum = ""
+        for name in self.normal_instruction_names + self.duplex_instructions_names:
+            if "invalid_decode" in name:
+                enum = (PluginInfo.INSTR_ENUM_PREFIX + name.upper() + " = 0,\n") + enum
+            else:
+                enum += PluginInfo.INSTR_ENUM_PREFIX + name.upper() + ",\n"
+        data += enum
+        data += "};\n\n"
+        data += "#endif"
+        if compare_src_to_old_src(data, path):
+            return
+
         with open(path, "w+") as dest:
-            dest.write(get_generation_warning_c_code())
-            dest.write("\n")
-            dest.write(get_include_guard("hexagon_insn.h"))
-            dest.write("\n")
-            dest.write("enum HEX_INS {\n")
-            enum = ""
-            for name in self.normal_instruction_names + self.duplex_instructions_names:
-                if "invalid_decode" in name:
-                    enum = (PluginInfo.INSTR_ENUM_PREFIX + name.upper() + " = 0,\n") + enum
-                else:
-                    enum += PluginInfo.INSTR_ENUM_PREFIX + name.upper() + ",\n"
-            dest.write(enum)
-            dest.write("};\n\n")
-            dest.write("#endif")
+            dest.writelines(data)
             log(
                 "Hexagon instruction enum written to: {}".format(path),
-                LogLevel.DEBUG,
+                LogLevel.INFO,
             )
 
     # RIZIN SPECIFIC
