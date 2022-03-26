@@ -279,10 +279,11 @@ def compare_src_to_old_src(new_src: str, comp_src_file: str) -> bool:
             if "Date of code generation" in line:
                 break
         old_src = f.readlines()
-    for l_new, l_old in zip(new_src.split("\n"), old_src):
-        # Remove clang-format introduced blanks.
-        if re.sub(r"\s", "", l_new) != re.sub(r"\s", "", l_old):
-            return False
+    l_new = "".join(new_src)
+    l_old = "".join(old_src)
+    # Remove clang-format introduced blanks.
+    if re.sub(r"\s", "", l_new) != re.sub(r"\s", "", l_old):
+        return False
     return True
 
 

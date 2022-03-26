@@ -433,116 +433,120 @@ class LLVMImporter:
 
     # RIZIN SPECIFIC
     def build_hexagon_disas_c(self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon_disas.c") -> None:
-        # TODO Clean up this method
-        indent = PluginInfo.LINE_INDENT
         var = PluginInfo.HEX_INSTR_VAR_SYNTAX
         signed_imm_array = "signed_imm[{}][32]".format(PluginInfo.MAX_OPERANDS)
-        with open(path, "w+") as dest:
-            dest.write(get_generation_warning_c_code())
 
-            with open("handwritten/hexagon_disas_c/include.c") as include:
-                set_pos_after_license(include)
-                dest.writelines(include.readlines())
+        code = get_generation_warning_c_code()
 
-            with open("handwritten/hexagon_disas_c/functions.c") as functions:
-                set_pos_after_license(functions)
-                dest.writelines(functions.readlines())
+        with open("handwritten/hexagon_disas_c/include.c") as include:
+            set_pos_after_license(include)
+            code += "".join(include.readlines())
 
-            main_function = (
-                "int hexagon_disasm_instruction(const RzAsm *rz_asm, HexState"
-                " *state, const ut32 hi_u32, RZ_INOUT HexInsn *hi, HexPkt"
-                " *pkt) {\n" + "ut32 addr = hi->addr;\n"
-            )
+        with open("handwritten/hexagon_disas_c/functions.c") as functions:
+            set_pos_after_license(functions)
+            code += "".join(functions.readlines())
 
-            main_function += "if (hi->pkt_info.last_insn) {"
-            main_function += "switch (hex_get_loop_flag(pkt)) {" + "default: break;"
-            main_function += (
-                "case HEX_LOOP_01:"
-                + "hi->ana_op.prefix = RZ_ANALYSIS_OP_PREFIX_HWLOOP_END;"
-                + "hi->ana_op.fail = pkt->hw_loop0_addr;"
-                + "hi->ana_op.jump = pkt->hw_loop1_addr;"
-                + "hi->ana_op.val = hi->ana_op.jump;"
-                + "break;\n"
-            )
-            main_function += (
-                "case HEX_LOOP_0:\n"
-                + "hi->ana_op.prefix = RZ_ANALYSIS_OP_PREFIX_HWLOOP_END;"
-                + "hi->ana_op.jump = pkt->hw_loop0_addr;"
-                + "hi->ana_op.val = hi->ana_op.jump;"
-                + "break;\n"
-            )
-            main_function += (
-                "case HEX_LOOP_1:\n"
-                + "hi->ana_op.prefix = RZ_ANALYSIS_OP_PREFIX_HWLOOP_END;"
-                + "hi->ana_op.jump = pkt->hw_loop1_addr;"
-                + "hi->ana_op.val = hi->ana_op.jump;"
-                + "break;"
-            )
-            main_function += "}}"
-
-            main_function += (
-                "if (hi_u32 != 0x00000000) {\n"
-                + "// DUPLEXES\n"
-                + "if ((({} >> 14) & 0x3) == 0) {{\n".format(var)
-                + "switch (((({} >> 29) & 0xF) << 1) | (({} >> 13) & 1)) {{\n".format(var, var)
-            )
-
-            # Duplexes
-            for c in range(0xF):  # Class 0xf is reserved yet.
-                main_function += "{}case 0x{:x}:\n".format(indent * 3, c)
-                main_function += "hexagon_disasm_duplex_0x{:x}(rz_asm, state, hi_u32, hi," " addr, pkt);\n".format(c)
-                func_body = ""
-                func_header = (
-                    "void hexagon_disasm_duplex_0x{:x}(const RzAsm *rz_asm,"
-                    " HexState *state, const ut32 hi_u32, HexInsn *hi, const"
-                    " ut32 addr, HexPkt *pkt) {{\n".format(c)
-                )
-                for d_instr in self.duplex_instructions.values():
-                    if d_instr.encoding.get_i_class() == c:
-                        func_body += indent_code_block(d_instr.get_instruction_init_in_c(), 1)
-                        if "sprintf(signed_imm" in func_body and signed_imm_array not in func_header:
-                            func_header += "char " + signed_imm_array + " = {0};\n"
-                dest.write(func_header + func_body + "}\n\n")
-                main_function += "{}break;\n".format(indent * 4)
-
-            # Normal instructions
-            # Brackets for switch, if
-            main_function += "}\n}\nelse {\n"
-            main_function += "switch (({} >> 28) & 0xF) {{\n".format(var)
-            for c in range(0x10):
-                main_function += "case 0x{:x}:\n".format(c)
-                main_function += "hexagon_disasm_0x{:x}(rz_asm, state, hi_u32, hi, addr," " pkt);\n".format(c)
-
-                func_body = ""
-                func_header = (
-                    "void hexagon_disasm_0x{:x}(const RzAsm *rz_asm, HexState"
-                    " *state, const ut32 hi_u32, HexInsn *hi, const ut32 addr,"
-                    " HexPkt *pkt) {{\n".format(c)
-                )
-                for instr in self.normal_instructions.values():
-                    if instr.encoding.get_i_class() == c:
-                        func_body += indent_code_block(instr.get_instruction_init_in_c(), 1)
-                        if "sprintf(signed_imm" in func_body and signed_imm_array not in func_header:
-                            func_header += "char " + signed_imm_array + " = {0};\n"
-                dest.write(func_header + func_body + "}\n\n")
-                main_function += "{}break;\n".format(indent * 4)
-
-            # Closing brackets for switch, else, function
-            main_function += "}\n}\n}"
-            main_function += "if (pkt->is_eob && is_last_instr(hi->parse_bits)) {" + "hi->ana_op.eob = true;}"
-            main_function += (
-                "if (hi->instruction == HEX_INS_INVALID_DECODE) {\n"
-                + "hi->parse_bits = ((hi_u32) & 0xc000) >> 14;\n"
-                + "hi->ana_op.type = RZ_ANALYSIS_OP_TYPE_ILL;\n"
-                + 'sprintf(hi->mnem_infix, "invalid");\n'
-                + 'sprintf(hi->mnem, "%s%s%s", hi->pkt_info.mnem_prefix,'
-                " hi->mnem_infix, hi->pkt_info.mnem_postfix);\n" + "}\n" + "return 4;\n}"
-            )
-            dest.write(main_function)
-        log(
-            "Hexagon instruction disassembler code written to: {}".format(path),
-            LogLevel.DEBUG,
+        main_function = (
+            "int hexagon_disasm_instruction(const RzAsm *rz_asm, HexState"
+            " *state, const ut32 hi_u32, RZ_INOUT HexInsn *hi, HexPkt"
+            " *pkt) {" + "ut32 addr = hi->addr;"
         )
+
+        main_function += "if (hi->pkt_info.last_insn) {"
+        main_function += "switch (hex_get_loop_flag(pkt)) {" + "default: break;"
+        main_function += (
+            "case HEX_LOOP_01:"
+            + "hi->ana_op.prefix = RZ_ANALYSIS_OP_PREFIX_HWLOOP_END;"
+            + "hi->ana_op.fail = pkt->hw_loop0_addr;"
+            + "hi->ana_op.jump = pkt->hw_loop1_addr;"
+            + "hi->ana_op.val = hi->ana_op.jump;"
+            + "break;"
+        )
+        main_function += (
+            "case HEX_LOOP_0:"
+            + "hi->ana_op.prefix = RZ_ANALYSIS_OP_PREFIX_HWLOOP_END;"
+            + "hi->ana_op.jump = pkt->hw_loop0_addr;"
+            + "hi->ana_op.val = hi->ana_op.jump;"
+            + "break;"
+        )
+        main_function += (
+            "case HEX_LOOP_1:"
+            + "hi->ana_op.prefix = RZ_ANALYSIS_OP_PREFIX_HWLOOP_END;"
+            + "hi->ana_op.jump = pkt->hw_loop1_addr;"
+            + "hi->ana_op.val = hi->ana_op.jump;"
+            + "break;"
+        )
+        main_function += "}}"
+
+        main_function += (
+            "if (hi_u32 != 0x00000000) {"
+            + "// DUPLEXES"
+            + "if ((({} >> 14) & 0x3) == 0) {{".format(var)
+            + "switch (((({} >> 29) & 0xF) << 1) | (({} >> 13) & 1)) {{".format(var, var)
+        )
+
+        # Duplexes
+        for c in range(0xF):  # Class 0xf is reserved yet.
+            main_function += "case 0x{:x}:".format(c)
+            main_function += "hexagon_disasm_duplex_0x{:x}(rz_asm, state, hi_u32, hi," " addr, pkt);".format(c)
+            func_body = ""
+            func_header = (
+                "void hexagon_disasm_duplex_0x{:x}(const RzAsm *rz_asm,"
+                " HexState *state, const ut32 hi_u32, HexInsn *hi, const"
+                " ut32 addr, HexPkt *pkt) {{".format(c)
+            )
+            for d_instr in self.duplex_instructions.values():
+                if d_instr.encoding.get_i_class() == c:
+                    func_body += indent_code_block(d_instr.get_instruction_init_in_c(), 1)
+                    if "sprintf(signed_imm" in func_body and signed_imm_array not in func_header:
+                        func_header += "char " + signed_imm_array + " = {0};"
+            code += func_header + func_body + "}"
+            main_function += "break;"
+
+        # Normal instructions
+        # Brackets for switch, if
+        main_function += "}}else {"
+        main_function += "switch (({} >> 28) & 0xF) {{".format(var)
+        for c in range(0x10):
+            main_function += "case 0x{:x}:".format(c)
+            main_function += "hexagon_disasm_0x{:x}(rz_asm, state, hi_u32, hi, addr," " pkt);".format(c)
+
+            func_body = ""
+            func_header = (
+                "void hexagon_disasm_0x{:x}(const RzAsm *rz_asm, HexState"
+                " *state, const ut32 hi_u32, HexInsn *hi, const ut32 addr,"
+                " HexPkt *pkt) {{".format(c)
+            )
+            for instr in self.normal_instructions.values():
+                if instr.encoding.get_i_class() == c:
+                    func_body += indent_code_block(instr.get_instruction_init_in_c(), 1)
+                    if "sprintf(signed_imm" in func_body and signed_imm_array not in func_header:
+                        func_header += "char " + signed_imm_array + " = {0};"
+            code += func_header + func_body + "}"
+            main_function += "break;"
+
+        # Closing brackets for switch, else, function
+        main_function += "}}}"
+        main_function += "if (pkt->is_eob && is_last_instr(hi->parse_bits)) {" + "hi->ana_op.eob = true;}"
+        main_function += (
+            "if (hi->instruction == HEX_INS_INVALID_DECODE) {"
+            + "hi->parse_bits = ((hi_u32) & 0xc000) >> 14;"
+            + "hi->ana_op.type = RZ_ANALYSIS_OP_TYPE_ILL;"
+            + 'sprintf(hi->mnem_infix, "invalid");'
+            + 'sprintf(hi->mnem, "%s%s%s", hi->pkt_info.mnem_prefix,'
+            " hi->mnem_infix, hi->pkt_info.mnem_postfix);" + "}" + "return 4;}"
+        )
+        code += main_function
+
+        if compare_src_to_old_src(code, path):
+            self.unchanged_files.append(path)
+            return
+        with open(path, "w+") as dest:
+            dest.writelines(code)
+            log(
+                "hexagon_disas.c written to: {}".format(path),
+                LogLevel.INFO,
+            )
 
     # RIZIN SPECIFIC
     def build_hexagon_h(self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon.h") -> None:
