@@ -280,7 +280,8 @@ def compare_src_to_old_src(new_src: str, comp_src_file: str) -> bool:
                 break
         old_src = f.readlines()
     for l_new, l_old in zip(new_src.split("\n"), old_src):
-        if l_new != l_old:
+        # Remove clang-format introduced blanks.
+        if re.sub(r"\s", "", l_new) != re.sub(r"\s", "", l_old):
             return False
     return True
 
