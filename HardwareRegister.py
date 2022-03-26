@@ -143,7 +143,7 @@ class HardwareRegister(Register):
 
     # RIZIN SPECIFIC
     def get_rz_reg_type(self) -> str:
-        if self.is_control and self.is_vector:
+        if self.is_control and self.is_hvx:
             return "vcc"
         elif self.is_vector:
             return "vc"
