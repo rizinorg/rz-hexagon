@@ -27,6 +27,7 @@ from helperFunctions import (
     set_pos_after_license,
     get_license,
     get_generation_timestamp,
+    compare_src_to_old_src,
 )
 import PluginInfo
 import HexagonArchInfo
@@ -77,6 +78,8 @@ class LLVMImporter:
             name[0]["def"] for name in self.hexArch["HexagonCSR"]["SaveList"]["args"]
         ]
         HexagonArchInfo.CC_REGS = self.get_cc_regs()
+
+        self.unchanged_files = []  # Src files which had no changes after generation.
 
         # RIZIN SPECIFIC
         # Name of the function which parses the encoded register index bits.
@@ -443,7 +446,7 @@ class LLVMImporter:
         self.build_hexagon_arch_c()
         self.build_hexagon_arch_h()
         self.copy_tests()
-        self.build_hexagon_regs()
+        self.build_analysis_hexagon_c()
         self.build_cc_hexagon_32_sdb_txt()
 
         # TODO hexagon.h: Gen - HexOpType, IClasses, Regs and its aliases (system = guest),
@@ -457,11 +460,13 @@ class LLVMImporter:
     # RIZIN SPECIFIC
     def add_license_info_header(self) -> None:
         log("Add license headers")
-        for subdir, dirs, files in os.walk("rizin/"):
+        for subdir, dirs, files in os.walk("./rizin/"):
             for file in files:
                 if file == "hexagon" or file[-3:] == "txt":  # Tests
                     continue
                 p = os.path.join(subdir, file)
+                if p in self.unchanged_files:
+                    continue
                 with open(p, "r+") as f:
                     content = f.read()
                     f.seek(0, 0)
@@ -474,168 +479,146 @@ class LLVMImporter:
                     )
 
     # RIZIN SPECIFIC
-    def build_hexagon_insn_enum_h(
-        self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon_insn.h"
-    ) -> None:
+    def build_hexagon_insn_enum_h(self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon_insn.h") -> None:
+        data = get_generation_warning_c_code()
+        data += get_include_guard("hexagon_insn.h")
+        data += "enum HEX_INS {"
+        enum = ""
+        for name in self.normal_instruction_names + self.duplex_instructions_names:
+            if "invalid_decode" in name:
+                enum = (PluginInfo.INSTR_ENUM_PREFIX + name.upper() + " = 0,") + enum
+            else:
+                enum += PluginInfo.INSTR_ENUM_PREFIX + name.upper() + ","
+        data += enum
+        data += "};"
+        data += "#endif"
+        if compare_src_to_old_src(data, path):
+            self.unchanged_files.append(path)
+            return
+
         with open(path, "w+") as dest:
-            dest.write(get_generation_warning_c_code())
-            dest.write("\n")
-            dest.write(get_include_guard("hexagon_insn.h"))
-            dest.write("\n")
-            dest.write("enum HEX_INS {\n")
-            enum = ""
-            for name in self.normal_instruction_names + self.duplex_instructions_names:
-                if "invalid_decode" in name:
-                    enum = (
-                        PluginInfo.INSTR_ENUM_PREFIX + name.upper() + " = 0,\n"
-                    ) + enum
-                else:
-                    enum += PluginInfo.INSTR_ENUM_PREFIX + name.upper() + ",\n"
-            dest.write(enum)
-            dest.write("};\n\n")
-            dest.write("#endif")
+            dest.writelines(data)
             log(
                 "Hexagon instruction enum written to: {}".format(path),
-                LogLevel.DEBUG,
+                LogLevel.INFO,
             )
 
     # RIZIN SPECIFIC
-    def build_hexagon_disas_c(
-        self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon_disas.c"
-    ) -> None:
-        # TODO Clean up this method
-        indent = PluginInfo.LINE_INDENT
+    def build_hexagon_disas_c(self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon_disas.c") -> None:
         var = PluginInfo.HEX_INSTR_VAR_SYNTAX
         signed_imm_array = "signed_imm[{}][32]".format(PluginInfo.MAX_OPERANDS)
-        with open(path, "w+") as dest:
-            dest.write(get_generation_warning_c_code())
 
-            with open("handwritten/hexagon_disas_c/include.c") as include:
-                set_pos_after_license(include)
-                dest.writelines(include.readlines())
+        code = get_generation_warning_c_code()
 
-            with open("handwritten/hexagon_disas_c/functions.c") as functions:
-                set_pos_after_license(functions)
-                dest.writelines(functions.readlines())
+        with open("handwritten/hexagon_disas_c/include.c") as include:
+            set_pos_after_license(include)
+            code += "".join(include.readlines())
 
-            main_function = (
-                "int hexagon_disasm_instruction(const RzAsm *rz_asm, HexState"
-                " *state, const ut32 hi_u32, RZ_INOUT HexInsn *hi, HexPkt"
-                " *pkt) {\n" + "ut32 addr = hi->addr;\n"
-            )
+        with open("handwritten/hexagon_disas_c/functions.c") as functions:
+            set_pos_after_license(functions)
+            code += "".join(functions.readlines())
 
-            main_function += "if (hi->pkt_info.last_insn) {"
-            main_function += "switch (hex_get_loop_flag(pkt)) {" + "default: break;"
-            main_function += (
-                "case HEX_LOOP_01:"
-                + "hi->ana_op.prefix = RZ_ANALYSIS_OP_PREFIX_HWLOOP_END;"
-                + "hi->ana_op.fail = pkt->hw_loop0_addr;"
-                + "hi->ana_op.jump = pkt->hw_loop1_addr;"
-                + "hi->ana_op.val = hi->ana_op.jump;"
-                + "break;\n"
-            )
-            main_function += (
-                "case HEX_LOOP_0:\n"
-                + "hi->ana_op.prefix = RZ_ANALYSIS_OP_PREFIX_HWLOOP_END;"
-                + "hi->ana_op.jump = pkt->hw_loop0_addr;"
-                + "hi->ana_op.val = hi->ana_op.jump;"
-                + "break;\n"
-            )
-            main_function += (
-                "case HEX_LOOP_1:\n"
-                + "hi->ana_op.prefix = RZ_ANALYSIS_OP_PREFIX_HWLOOP_END;"
-                + "hi->ana_op.jump = pkt->hw_loop1_addr;"
-                + "hi->ana_op.val = hi->ana_op.jump;"
-                + "break;"
-            )
-            main_function += "}}"
-
-            main_function += (
-                "if (hi_u32 != 0x00000000) {\n"
-                + "// DUPLEXES\n"
-                + "if ((({} >> 14) & 0x3) == 0) {{\n".format(var)
-                + "switch (((({} >> 29) & 0xF) << 1) | (({} >> 13) & 1)) {{\n".format(
-                    var, var
-                )
-            )
-
-            # Duplexes
-            for c in range(0xF):  # Class 0xf is reserved yet.
-                main_function += "{}case 0x{:x}:\n".format(indent * 3, c)
-                main_function += (
-                    "hexagon_disasm_duplex_0x{:x}(rz_asm, state, hi_u32, hi,"
-                    " addr, pkt);\n".format(c)
-                )
-                func_body = ""
-                func_header = (
-                    "void hexagon_disasm_duplex_0x{:x}(const RzAsm *rz_asm,"
-                    " HexState *state, const ut32 hi_u32, HexInsn *hi, const"
-                    " ut32 addr, HexPkt *pkt) {{\n".format(c)
-                )
-                for d_instr in self.duplex_instructions.values():
-                    if d_instr.encoding.get_i_class() == c:
-                        func_body += indent_code_block(
-                            d_instr.get_instruction_init_in_c(), 1
-                        )
-                        if (
-                            "sprintf(signed_imm" in func_body
-                            and signed_imm_array not in func_header
-                        ):
-                            func_header += "char " + signed_imm_array + " = {0};\n"
-                dest.write(func_header + func_body + "}\n\n")
-                main_function += "{}break;\n".format(indent * 4)
-
-            # Normal instructions
-            # Brackets for switch, if
-            main_function += "}\n}\nelse {\n"
-            main_function += "switch (({} >> 28) & 0xF) {{\n".format(var)
-            for c in range(0x10):
-                main_function += "case 0x{:x}:\n".format(c)
-                main_function += (
-                    "hexagon_disasm_0x{:x}(rz_asm, state, hi_u32, hi, addr,"
-                    " pkt);\n".format(c)
-                )
-
-                func_body = ""
-                func_header = (
-                    "void hexagon_disasm_0x{:x}(const RzAsm *rz_asm, HexState"
-                    " *state, const ut32 hi_u32, HexInsn *hi, const ut32 addr,"
-                    " HexPkt *pkt) {{\n".format(c)
-                )
-                for instr in self.normal_instructions.values():
-                    if instr.encoding.get_i_class() == c:
-                        func_body += indent_code_block(
-                            instr.get_instruction_init_in_c(), 1
-                        )
-                        if (
-                            "sprintf(signed_imm" in func_body
-                            and signed_imm_array not in func_header
-                        ):
-                            func_header += "char " + signed_imm_array + " = {0};\n"
-                dest.write(func_header + func_body + "}\n\n")
-                main_function += "{}break;\n".format(indent * 4)
-
-            # Closing brackets for switch, else, function
-            main_function += "}\n}\n}"
-            main_function += (
-                "if (pkt->is_eob && is_last_instr(hi->parse_bits)) {"
-                + "hi->ana_op.eob = true;}"
-            )
-            main_function += (
-                "if (hi->instruction == HEX_INS_INVALID_DECODE) {\n"
-                + "hi->parse_bits = ((hi_u32) & 0xc000) >> 14;\n"
-                + "hi->ana_op.type = RZ_ANALYSIS_OP_TYPE_ILL;\n"
-                + 'sprintf(hi->mnem_infix, "invalid");\n'
-                + 'sprintf(hi->mnem, "%s%s%s", hi->pkt_info.mnem_prefix,'
-                " hi->mnem_infix, hi->pkt_info.mnem_postfix);\n"
-                + "}\n"
-                + "return 4;\n}"
-            )
-            dest.write(main_function)
-        log(
-            "Hexagon instruction disassembler code written to: {}".format(path),
-            LogLevel.DEBUG,
+        main_function = (
+            "int hexagon_disasm_instruction(const RzAsm *rz_asm, HexState"
+            " *state, const ut32 hi_u32, RZ_INOUT HexInsn *hi, HexPkt"
+            " *pkt) {" + "ut32 addr = hi->addr;"
         )
+
+        main_function += "if (hi->pkt_info.last_insn) {"
+        main_function += "switch (hex_get_loop_flag(pkt)) {" + "default: break;"
+        main_function += (
+            "case HEX_LOOP_01:"
+            + "hi->ana_op.prefix = RZ_ANALYSIS_OP_PREFIX_HWLOOP_END;"
+            + "hi->ana_op.fail = pkt->hw_loop0_addr;"
+            + "hi->ana_op.jump = pkt->hw_loop1_addr;"
+            + "hi->ana_op.val = hi->ana_op.jump;"
+            + "break;"
+        )
+        main_function += (
+            "case HEX_LOOP_0:"
+            + "hi->ana_op.prefix = RZ_ANALYSIS_OP_PREFIX_HWLOOP_END;"
+            + "hi->ana_op.jump = pkt->hw_loop0_addr;"
+            + "hi->ana_op.val = hi->ana_op.jump;"
+            + "break;"
+        )
+        main_function += (
+            "case HEX_LOOP_1:"
+            + "hi->ana_op.prefix = RZ_ANALYSIS_OP_PREFIX_HWLOOP_END;"
+            + "hi->ana_op.jump = pkt->hw_loop1_addr;"
+            + "hi->ana_op.val = hi->ana_op.jump;"
+            + "break;"
+        )
+        main_function += "}}"
+
+        main_function += (
+            "if (hi_u32 != 0x00000000) {"
+            + "// DUPLEXES"
+            + "if ((({} >> 14) & 0x3) == 0) {{".format(var)
+            + "switch (((({} >> 29) & 0xF) << 1) | (({} >> 13) & 1)) {{".format(var, var)
+        )
+
+        # Duplexes
+        for c in range(0xF):  # Class 0xf is reserved yet.
+            main_function += "case 0x{:x}:".format(c)
+            main_function += "hexagon_disasm_duplex_0x{:x}(rz_asm, state, hi_u32, hi," " addr, pkt);".format(c)
+            func_body = ""
+            func_header = (
+                "void hexagon_disasm_duplex_0x{:x}(const RzAsm *rz_asm,"
+                " HexState *state, const ut32 hi_u32, HexInsn *hi, const"
+                " ut32 addr, HexPkt *pkt) {{".format(c)
+            )
+            for d_instr in self.duplex_instructions.values():
+                if d_instr.encoding.get_i_class() == c:
+                    func_body += indent_code_block(d_instr.get_instruction_init_in_c(), 1)
+                    if "sprintf(signed_imm" in func_body and signed_imm_array not in func_header:
+                        func_header += "char " + signed_imm_array + " = {0};"
+            code += func_header + func_body + "}"
+            main_function += "break;"
+
+        # Normal instructions
+        # Brackets for switch, if
+        main_function += "}}else {"
+        main_function += "switch (({} >> 28) & 0xF) {{".format(var)
+        for c in range(0x10):
+            main_function += "case 0x{:x}:".format(c)
+            main_function += "hexagon_disasm_0x{:x}(rz_asm, state, hi_u32, hi, addr," " pkt);".format(c)
+
+            func_body = ""
+            func_header = (
+                "void hexagon_disasm_0x{:x}(const RzAsm *rz_asm, HexState"
+                " *state, const ut32 hi_u32, HexInsn *hi, const ut32 addr,"
+                " HexPkt *pkt) {{".format(c)
+            )
+            for instr in self.normal_instructions.values():
+                if instr.encoding.get_i_class() == c:
+                    func_body += indent_code_block(instr.get_instruction_init_in_c(), 1)
+                    if "sprintf(signed_imm" in func_body and signed_imm_array not in func_header:
+                        func_header += "char " + signed_imm_array + " = {0};"
+            code += func_header + func_body + "}"
+            main_function += "break;"
+
+        # Closing brackets for switch, else, function
+        main_function += "}}}"
+        main_function += "if (pkt->is_eob && is_last_instr(hi->parse_bits)) {" + "hi->ana_op.eob = true;}"
+        main_function += (
+            "if (hi->instruction == HEX_INS_INVALID_DECODE) {"
+            + "hi->parse_bits = ((hi_u32) & 0xc000) >> 14;"
+            + "hi->ana_op.type = RZ_ANALYSIS_OP_TYPE_ILL;"
+            + 'sprintf(hi->mnem_infix, "invalid");'
+            + 'sprintf(hi->mnem, "%s%s%s", hi->pkt_info.mnem_prefix,'
+            " hi->mnem_infix, hi->pkt_info.mnem_postfix);" + "}" + "return 4;}"
+        )
+        code += main_function
+
+        if compare_src_to_old_src(code, path):
+            self.unchanged_files.append(path)
+            return
+        with open(path, "w+") as dest:
+            dest.writelines(code)
+            log(
+                "hexagon_disas.c written to: {}".format(path),
+                LogLevel.INFO,
+            )
 
     # RIZIN SPECIFIC
     def build_hexagon_h(
@@ -644,167 +627,158 @@ class LLVMImporter:
         indent = PluginInfo.LINE_INDENT
         general_prefix = PluginInfo.GENERAL_ENUM_PREFIX
 
-        with open(path, "w+") as dest:
-            dest.write(get_generation_warning_c_code())
-            dest.write("\n")
-            dest.write(get_include_guard("hexagon.h"))
+        code = get_generation_warning_c_code()
+        code += get_include_guard("hexagon.h")
 
-            with open("handwritten/hexagon_h/includes.h") as includes:
-                set_pos_after_license(includes)
-                dest.writelines(includes.readlines())
+        with open("handwritten/hexagon_h/typedefs.h") as typedefs:
+            set_pos_after_license(typedefs)
+            code += "".join(typedefs.readlines())
 
-            with open("handwritten/hexagon_h/typedefs.h") as typedefs:
-                set_pos_after_license(typedefs)
-                dest.writelines(typedefs.readlines())
+        reg_class: str
+        for reg_class in self.hardware_regs:
+            code += "typedef enum {"
 
-            reg_class: str
-            for reg_class in self.hardware_regs:
-                dest.write("\ntypedef enum {\n")
-
-                hw_reg: HardwareRegister
-                for hw_reg in sorted(
-                    self.hardware_regs[reg_class].values(),
-                    key=lambda x: x.hw_encoding,
-                ):
-                    alias = ",".join(hw_reg.alias)
-                    dest.write(
-                        "{}{} = {},{}\n".format(
-                            indent,
-                            hw_reg.enum_name,
-                            hw_reg.hw_encoding,
-                            " // " + alias if alias != "" else "",
-                        )
+            hw_reg: HardwareRegister
+            for hw_reg in sorted(
+                self.hardware_regs[reg_class].values(),
+                key=lambda x: x.hw_encoding,
+            ):
+                alias = ",".join(hw_reg.alias)
+                code += "{}{} = {},{}".format(
+                        indent,
+                        hw_reg.enum_name,
+                        hw_reg.hw_encoding,
+                        " // " + alias if alias != "" else "",
                     )
-                dest.write(
-                    "}} {}{}; // {}\n".format(
-                        general_prefix,
-                        HardwareRegister.register_class_name_to_upper(reg_class),
-                        reg_class,
-                    )
+            code += "}} {}{}; // {}".format(
+                    general_prefix,
+                    HardwareRegister.register_class_name_to_upper(reg_class),
+                    reg_class,
                 )
 
-            with open("handwritten/hexagon_h/macros.h") as macros:
-                set_pos_after_license(macros)
-                dest.writelines(macros.readlines())
-            dest.write("\n")
-            if len(self.reg_resolve_decl) == 0:
-                raise ImplementationException(
-                    "Register resolve declarations missing"
-                    "(They get generated together with hexagon.c)."
-                    "Please generate hexagon.c before hexagon.h"
-                )
-            for decl in self.reg_resolve_decl:
-                dest.write(decl + "\n")
-            with open("handwritten/hexagon_h/declarations.h") as decl:
-                set_pos_after_license(decl)
-                dest.writelines(decl.readlines())
+        with open("handwritten/hexagon_h/macros.h") as macros:
+            set_pos_after_license(macros)
+            code += "".join(macros.readlines())
+        if len(self.reg_resolve_decl) == 0:
+            raise ImplementationException(
+                "Register resolve declarations missing"
+                "(They get generated together with hexagon.c)."
+                "Please generate hexagon.c before hexagon.h"
+            )
+        for decl in self.reg_resolve_decl:
+            code += decl
+        with open("handwritten/hexagon_h/declarations.h") as decl:
+            set_pos_after_license(decl)
+            code += "".join(decl.readlines())
+        code += "#endif"
 
-            dest.write("#endif")
-
-        log("hexagon.h written to: {}".format(path), LogLevel.DEBUG)
-
-    # RIZIN SPECIFIC
-    def build_hexagon_c(
-        self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon.c"
-    ) -> None:
-        indent = PluginInfo.LINE_INDENT
+        if compare_src_to_old_src(code, path):
+            self.unchanged_files.append(path)
+            return
 
         with open(path, "w+") as dest:
-            dest.write(get_generation_warning_c_code())
-            with open("handwritten/hexagon_c/include.c") as include:
-                set_pos_after_license(include)
-                dest.writelines(include.readlines())
-            dest.write("\n")
+            dest.writelines(code)
+            log("hexagon.h written to: {}".format(path), LogLevel.INFO)
 
-            reg_class: str
-            for reg_class in self.hardware_regs:
-                func_name = HardwareRegister.get_func_name_of_class(reg_class, False)
-                function = "char* {}(int opcode_reg)".format(func_name)
-                self.reg_resolve_decl.append(function + ";")
-                dest.write("\n{} {{\n".format(function))
+    # RIZIN SPECIFIC
+    def build_hexagon_c(self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon.c") -> None:
+        code = get_generation_warning_c_code()
+        with open("handwritten/hexagon_c/include.c") as include:
+            set_pos_after_license(include)
+            code += "".join(include.readlines())
 
-                parsing_code = HardwareRegister.get_parse_code_reg_bits(
-                    reg_class, "opcode_reg"
-                )
-                parsing_code = indent_code_block(parsing_code, 1)
-                if parsing_code != "":
-                    dest.write("{}\n".format(parsing_code))
+        reg_class: str
+        for reg_class in self.hardware_regs:
+            func_name = HardwareRegister.get_func_name_of_class(reg_class, False)
+            function = "char* {}(int opcode_reg)".format(func_name)
+            self.reg_resolve_decl.append(function + ";")
+            code += "{} {{".format(function)
 
-                dest.write("{}switch (opcode_reg) {{\n".format(indent))
-                dest.write(
-                    '{}default:\n{}return "<err>";\n'.format(indent * 2, indent * 3)
-                )
+            parsing_code = HardwareRegister.get_parse_code_reg_bits(reg_class, "opcode_reg")
+            if parsing_code != "":
+                code += "{}".format(parsing_code)
 
-                hw_reg: HardwareRegister
-                for hw_reg in self.hardware_regs[reg_class].values():
-                    dest.write(
-                        '{}case {}:\n{}return "{}";\n'.format(
-                            indent * 2,
-                            hw_reg.enum_name,
-                            indent * 3,
-                            hw_reg.asm_name.upper(),
-                        )
+            code += "switch (opcode_reg) {"
+            code += 'default:return "<err>";'
+
+            hw_reg: HardwareRegister
+            for hw_reg in self.hardware_regs[reg_class].values():
+                code += 'case {}:return "{}";'.format(
+                        hw_reg.enum_name,
+                        hw_reg.asm_name.upper(),
                     )
-                dest.write("{}}}\n}}\n".format(indent))
+            code += "}}"
 
-            with open("handwritten/hexagon_c/functions.c") as func:
-                set_pos_after_license(func)
-                dest.writelines(func.readlines())
-            dest.write("\n")
+        with open("handwritten/hexagon_c/functions.c") as func:
+            set_pos_after_license(func)
+            code += "".join(func.readlines())
 
-        log("hexagon.c written to: {}".format(path), LogLevel.DEBUG)
+        if compare_src_to_old_src(code, path):
+            self.unchanged_files.append(path)
+            return
 
-    # RIZIN SPECIFIC
-    @staticmethod
-    def build_asm_hexagon_c(
-        path: str = "rizin/librz/asm/p/asm_hexagon.c",
-    ) -> None:
-        with open(path, "w+") as f:
-            f.write(get_generation_warning_c_code())
-
-            with open("handwritten/asm_hexagon_c/include.c") as include:
-                set_pos_after_license(include)
-                f.writelines(include.readlines())
-            with open("handwritten/asm_hexagon_c/initialization.c") as init:
-                set_pos_after_license(init)
-                f.writelines(init.readlines())
-        log("asm_hexagon.c written to {}".format(path), LogLevel.DEBUG)
+        with open(path, "w+") as dest:
+            dest.writelines(code)
+            log("hexagon.c written to: {}".format(path), LogLevel.INFO)
 
     # RIZIN SPECIFIC
-    @staticmethod
-    def build_hexagon_arch_c(
-        path: str = "rizin/librz/asm/arch/hexagon/hexagon_arch.c",
-    ):
-        with open(path, "w+") as f:
-            f.write(get_generation_warning_c_code())
+    def build_asm_hexagon_c(self, path: str = "./rizin/librz/asm/p/asm_hexagon.c") -> None:
+        code = get_generation_warning_c_code()
 
-            with open("handwritten/hexagon_arch_c/include.c") as include:
-                set_pos_after_license(include)
-                f.writelines(include.readlines())
-            with open("handwritten/hexagon_arch_c/functions.c") as functions:
-                set_pos_after_license(functions)
-                f.writelines(functions.readlines())
+        with open("handwritten/asm_hexagon_c/include.c") as include:
+            set_pos_after_license(include)
+            code += "".join(include.readlines())
+        with open("handwritten/asm_hexagon_c/initialization.c") as init:
+            set_pos_after_license(init)
+            code += "".join(init.readlines())
+
+        if compare_src_to_old_src(code, path):
+            self.unchanged_files.append(path)
+            return
+        with open(path, "w+") as dest:
+            dest.writelines(code)
+            log("asm_hexagon.c written to {}".format(path), LogLevel.INFO)
 
     # RIZIN SPECIFIC
-    @staticmethod
-    def build_hexagon_arch_h(
-        path: str = "rizin/librz/asm/arch/hexagon/hexagon_arch.h",
-    ):
-        with open(path, "w+") as f:
-            f.write(get_generation_warning_c_code())
+    def build_hexagon_arch_c(self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon_arch.c"):
+        code = get_generation_warning_c_code()
 
-            f.write(get_include_guard("hexagon_arch.h"))
+        with open("handwritten/hexagon_arch_c/include.c") as include:
+            set_pos_after_license(include)
+            code += "".join(include.readlines())
+        with open("handwritten/hexagon_arch_c/functions.c") as functions:
+            set_pos_after_license(functions)
+            code += "".join(functions.readlines())
 
-            with open("handwritten/hexagon_arch_h/includes.h") as includes:
-                set_pos_after_license(includes)
-                f.writelines(includes.readlines())
-            with open("handwritten/hexagon_arch_h/typedefs.h") as typedefs:
-                set_pos_after_license(typedefs)
-                f.writelines(typedefs.readlines())
-            with open("handwritten/hexagon_arch_h/declarations.h") as declarations:
-                set_pos_after_license(declarations)
-                f.writelines(declarations.readlines())
-            f.write("#endif\n")
+        if compare_src_to_old_src(code, path):
+            self.unchanged_files.append(path)
+            return
+        with open(path, "w+") as dest:
+            dest.writelines(code)
+            log("asm_hexagon.c written to {}".format(path), LogLevel.INFO)
+
+    # RIZIN SPECIFIC
+    def build_hexagon_arch_h(self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon_arch.h"):
+        code = get_generation_warning_c_code()
+        code += get_include_guard("hexagon_arch.h")
+
+        with open("handwritten/hexagon_arch_h/includes.h") as includes:
+            set_pos_after_license(includes)
+            code += "".join(includes.readlines())
+        with open("handwritten/hexagon_arch_h/typedefs.h") as typedefs:
+            set_pos_after_license(typedefs)
+            code += "".join(typedefs.readlines())
+        with open("handwritten/hexagon_arch_h/declarations.h") as declarations:
+            set_pos_after_license(declarations)
+            code += "".join(declarations.readlines())
+        code += "#endif"
+
+        if compare_src_to_old_src(code, path):
+            self.unchanged_files.append(path)
+            return
+        with open(path, "w+") as dest:
+            dest.writelines(code)
+            log("hexagon_arch.h written to {}".format(path), LogLevel.INFO)
 
     # RIZIN SPECIFIC
     @staticmethod
@@ -821,10 +795,8 @@ class LLVMImporter:
         log("Copied test files to ./rizin/test/db/", LogLevel.DEBUG)
 
     # RIZIN SPECIFIC
-    def build_hexagon_regs(
-        self, path: str = "rizin/librz/analysis/p/analysis_hexagon.c"
-    ) -> None:
-        """Generates and writes the register profile.
+    def build_analysis_hexagon_c(self, path: str = "./rizin/librz/analysis/p/analysis_hexagon.c") -> None:
+        """ Generates and writes the register profile.
         Note that some registers share the same offsets. R0 and R1:0 are both based at offset 0.
         """
         profile = self.get_alias_profile().splitlines(keepends=True)
@@ -894,34 +866,35 @@ class LLVMImporter:
         profile = profile[:-1]  # Remove line breaks
         profile[-1] = profile[-1][:-1] + ";\n"  # [:-1] to remove line break.
 
-        with open(path, "w+") as f:
-            f.write(get_generation_warning_c_code())
+        code = get_generation_warning_c_code()
 
-            with open("handwritten/analysis_hexagon_c/include.c") as include:
-                set_pos_after_license(include)
-                f.writelines(include.readlines())
-            with open("handwritten/analysis_hexagon_c/functions.c") as functions:
-                set_pos_after_license(functions)
-                f.writelines(functions.readlines())
-            f.write("\n")
+        with open("handwritten/analysis_hexagon_c/include.c") as include:
+            set_pos_after_license(include)
+            code += "".join(include.readlines())
+        with open("handwritten/analysis_hexagon_c/functions.c") as functions:
+            set_pos_after_license(functions)
+            code += "".join(functions.readlines())
 
-            tmp = list()
-            tmp.append("const char *p =\n")
-            tmp += profile
-            tmp = make_c_block(
-                lines=tmp,
-                begin="RZ_API char *get_reg_profile(RzAnalysis *analysis)",
-                ret="return strdup(p);\n",
-            )
-            f.writelines(tmp)
-            f.write("\n")
+        tmp = list()
+        tmp.append("const char *p =")
+        tmp += profile
+        tmp = make_c_block(
+            lines=tmp,
+            begin="RZ_API char *get_reg_profile(RzAnalysis *analysis)",
+            ret="return strdup(p);",
+        )
+        code += "".join(tmp)
 
-            with open(
-                "handwritten/analysis_hexagon_c/initialization.c"
-            ) as initialization:
-                set_pos_after_license(initialization)
-                f.writelines(initialization.readlines())
-            f.write("\n")
+        with open("handwritten/analysis_hexagon_c/initialization.c") as initialization:
+            set_pos_after_license(initialization)
+            code += "".join(initialization.readlines())
+
+        if compare_src_to_old_src(code, path):
+            self.unchanged_files.append(path)
+            return
+        with open(path, "w+") as dest:
+            dest.writelines(code)
+            log("analysis_hexagon.c written to {}".format(path), LogLevel.INFO)
 
     # RIZIN SPECIFC
     def get_alias_profile(self) -> str:

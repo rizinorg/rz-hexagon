@@ -418,7 +418,6 @@ static void hex_set_pkt_info(const RzAsm *rz_asm, RZ_INOUT HexInsn *hi, const He
 	}
 }
 
-
 /**
  * \brief Returns the loop type of a packet. Though only if this packet is
  * 	the last packet in last packet in a hardware loop. Otherwise it returns
