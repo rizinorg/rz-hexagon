@@ -407,18 +407,16 @@ class LLVMImporter:
     # RIZIN SPECIFIC
     def build_hexagon_insn_enum_h(self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon_insn.h") -> None:
         data = get_generation_warning_c_code()
-        data += "\n"
         data += get_include_guard("hexagon_insn.h")
-        data += "\n"
-        data += "enum HEX_INS {\n"
+        data += "enum HEX_INS {"
         enum = ""
         for name in self.normal_instruction_names + self.duplex_instructions_names:
             if "invalid_decode" in name:
-                enum = (PluginInfo.INSTR_ENUM_PREFIX + name.upper() + " = 0,\n") + enum
+                enum = (PluginInfo.INSTR_ENUM_PREFIX + name.upper() + " = 0,") + enum
             else:
-                enum += PluginInfo.INSTR_ENUM_PREFIX + name.upper() + ",\n"
+                enum += PluginInfo.INSTR_ENUM_PREFIX + name.upper() + ","
         data += enum
-        data += "};\n\n"
+        data += "};"
         data += "#endif"
         if compare_src_to_old_src(data, path):
             self.unchanged_files.append(path)
@@ -554,7 +552,6 @@ class LLVMImporter:
         general_prefix = PluginInfo.GENERAL_ENUM_PREFIX
 
         code = get_generation_warning_c_code()
-        code += "\n"
         code += get_include_guard("hexagon.h")
 
         with open("handwritten/hexagon_h/typedefs.h") as typedefs:
@@ -563,7 +560,7 @@ class LLVMImporter:
 
         reg_class: str
         for reg_class in self.hardware_regs:
-            code += "\ntypedef enum {\n"
+            code += "typedef enum {"
 
             hw_reg: HardwareRegister
             for hw_reg in sorted(
@@ -571,13 +568,13 @@ class LLVMImporter:
                 key=lambda x: x.hw_encoding,
             ):
                 alias = ",".join(hw_reg.alias)
-                code += "{}{} = {},{}\n".format(
+                code += "{}{} = {},{}".format(
                         indent,
                         hw_reg.enum_name,
                         hw_reg.hw_encoding,
                         " // " + alias if alias != "" else "",
                     )
-            code += "}} {}{}; // {}\n".format(
+            code += "}} {}{}; // {}".format(
                     general_prefix,
                     HardwareRegister.register_class_name_to_upper(reg_class),
                     reg_class,
@@ -586,7 +583,6 @@ class LLVMImporter:
         with open("handwritten/hexagon_h/macros.h") as macros:
             set_pos_after_license(macros)
             code += "".join(macros.readlines())
-        code += "\n"
         if len(self.reg_resolve_decl) == 0:
             raise ImplementationException(
                 "Register resolve declarations missing"
@@ -594,7 +590,7 @@ class LLVMImporter:
                 "Please generate hexagon.c before hexagon.h"
             )
         for decl in self.reg_resolve_decl:
-            code += decl + "\n"
+            code += decl
         with open("handwritten/hexagon_h/declarations.h") as decl:
             set_pos_after_license(decl)
             code += "".join(decl.readlines())
@@ -620,27 +616,26 @@ class LLVMImporter:
             func_name = HardwareRegister.get_func_name_of_class(reg_class, False)
             function = "char* {}(int opcode_reg)".format(func_name)
             self.reg_resolve_decl.append(function + ";")
-            code += "\n{} {{\n".format(function)
+            code += "{} {{".format(function)
 
             parsing_code = HardwareRegister.get_parse_code_reg_bits(reg_class, "opcode_reg")
             if parsing_code != "":
-                code += "{}\n".format(parsing_code)
+                code += "{}".format(parsing_code)
 
-            code += "switch (opcode_reg) {\n"
-            code += 'default:\nreturn "<err>";\n'
+            code += "switch (opcode_reg) {"
+            code += 'default:return "<err>";'
 
             hw_reg: HardwareRegister
             for hw_reg in self.hardware_regs[reg_class].values():
-                code += 'case {}:\nreturn "{}";\n'.format(
+                code += 'case {}:return "{}";'.format(
                         hw_reg.enum_name,
                         hw_reg.asm_name.upper(),
                     )
-            code += "}\n}\n"
+            code += "}}"
 
         with open("handwritten/hexagon_c/functions.c") as func:
             set_pos_after_license(func)
             code += "".join(func.readlines())
-        code += "\n"
 
         if compare_src_to_old_src(code, path):
             self.unchanged_files.append(path)
@@ -700,7 +695,7 @@ class LLVMImporter:
         with open("handwritten/hexagon_arch_h/declarations.h") as declarations:
             set_pos_after_license(declarations)
             code += "".join(declarations.readlines())
-        code += "\n#endif\n"
+        code += "#endif"
 
         if compare_src_to_old_src(code, path):
             self.unchanged_files.append(path)
@@ -752,23 +747,20 @@ class LLVMImporter:
         with open("handwritten/analysis_hexagon_c/functions.c") as functions:
             set_pos_after_license(functions)
             code += "".join(functions.readlines())
-        code += "\n"
 
         tmp = list()
-        tmp.append("const char *p =\n")
+        tmp.append("const char *p =")
         tmp += profile
         tmp = make_c_block(
             lines=tmp,
             begin="RZ_API char *get_reg_profile(RzAnalysis *analysis)",
-            ret="return strdup(p);\n",
+            ret="return strdup(p);",
         )
         code += "".join(tmp)
-        code += "\n"
 
         with open("handwritten/analysis_hexagon_c/initialization.c") as initialization:
             set_pos_after_license(initialization)
             code += "".join(initialization.readlines())
-        code += "\n"
 
         if compare_src_to_old_src(code, path):
             self.unchanged_files.append(path)
