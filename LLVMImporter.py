@@ -683,25 +683,27 @@ class LLVMImporter:
             log("asm_hexagon.c written to {}".format(path), LogLevel.INFO)
 
     # RIZIN SPECIFIC
-    @staticmethod
-    def build_hexagon_arch_h(
-        path: str = "rizin/librz/asm/arch/hexagon/hexagon_arch.h",
-    ):
-        with open(path, "w+") as f:
-            f.write(get_generation_warning_c_code())
+    def build_hexagon_arch_h(self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon_arch.h"):
+        code = get_generation_warning_c_code()
+        code += get_include_guard("hexagon_arch.h")
 
-            f.write(get_include_guard("hexagon_arch.h"))
+        with open("handwritten/hexagon_arch_h/includes.h") as includes:
+            set_pos_after_license(includes)
+            code += "".join(includes.readlines())
+        with open("handwritten/hexagon_arch_h/typedefs.h") as typedefs:
+            set_pos_after_license(typedefs)
+            code += "".join(typedefs.readlines())
+        with open("handwritten/hexagon_arch_h/declarations.h") as declarations:
+            set_pos_after_license(declarations)
+            code += "".join(declarations.readlines())
+        code += "\n#endif\n"
 
-            with open("handwritten/hexagon_arch_h/includes.h") as includes:
-                set_pos_after_license(includes)
-                f.writelines(includes.readlines())
-            with open("handwritten/hexagon_arch_h/typedefs.h") as typedefs:
-                set_pos_after_license(typedefs)
-                f.writelines(typedefs.readlines())
-            with open("handwritten/hexagon_arch_h/declarations.h") as declarations:
-                set_pos_after_license(declarations)
-                f.writelines(declarations.readlines())
-            f.write("#endif\n")
+        if compare_src_to_old_src(code, path):
+            self.unchanged_files.append(path)
+            return
+        with open(path, "w+") as dest:
+            dest.writelines(code)
+            log("hexagon_arch.h written to {}".format(path), LogLevel.INFO)
 
     # RIZIN SPECIFIC
     @staticmethod
