@@ -632,7 +632,7 @@ class LLVMImporter:
         reg_class: str
         for reg_class in self.hardware_regs:
             func_name = HardwareRegister.get_func_name_of_class(reg_class, False)
-            function = "char* {}(int opcode_reg)".format(func_name)
+            function = "\nchar* {}(int opcode_reg, bool get_alias)".format(func_name)
             self.reg_resolve_decl.append(function + ";")
             code += "{} {{".format(function)
 
@@ -645,9 +645,11 @@ class LLVMImporter:
 
             hw_reg: HardwareRegister
             for hw_reg in self.hardware_regs[reg_class].values():
-                code += 'case {}:return "{}";'.format(
+                alias = "".join(hw_reg.alias).upper()
+                alias_choice = 'get_alias ? "' + alias + '" : "' + hw_reg.asm_name.upper() + '"'
+                code += "case {}:return {};".format(
                     hw_reg.enum_name,
-                    hw_reg.asm_name.upper(),
+                    alias_choice if alias != "" else '"' + hw_reg.asm_name.upper() + '"',
                 )
             code += "}}"
 

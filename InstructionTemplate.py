@@ -224,15 +224,17 @@ class InstructionTemplate:
                 mnemonic = re.sub(op.explicit_syntax, "%s", mnemonic)
                 src = "hi->ops[{}].op.reg".format(op.syntax_index)
                 if op.is_n_reg:
-                    sprint_src += ", {}({}({}, hi->addr, pkt))".format(
+                    sprint_src += ", {}({}({}, hi->addr, pkt), {})".format(
                         HardwareRegister.get_func_name_of_class(op.llvm_type, False),
                         HardwareRegister.get_func_name_of_class(op.llvm_type, True),
                         src,
+                        "rz_asm->settings.hex_reg_alias",
                     )
                 else:
-                    sprint_src += ", {}({})".format(
+                    sprint_src += ", {}({}, {})".format(
                         HardwareRegister.get_func_name_of_class(op.llvm_type, False),
                         src,
+                        "rz_asm->settings.hex_reg_alias",
                     )
 
             elif op.type == OperandType.IMMEDIATE and not op.is_constant:
@@ -250,7 +252,9 @@ class InstructionTemplate:
                     src = ", pkt->pkt_addr + (st32) hi->ops[{}].op.imm".format(op.syntax_index)
                     mnemonic = re.sub(op.explicit_syntax, "0x%x", mnemonic)
                 elif op.is_signed:
-                    code += "if (rz_asm->settings.immsign && ((st32) hi->ops[{}].op.imm) <" " 0) {{\n".format(op.syntax_index)
+                    code += "if (rz_asm->settings.immsign && ((st32) hi->ops[{}].op.imm) <" " 0) {{\n".format(
+                        op.syntax_index
+                    )
                     code += (
                         "char tmp[28] = {0};"
                         + "rz_hex_ut2st_str(hi->ops[{}].op.imm, tmp, 28);".format(op.syntax_index)
@@ -275,7 +279,11 @@ class InstructionTemplate:
                     mnemonic = re.sub(r"#{0,2}" + op.explicit_syntax, "%s", mnemonic)
                 else:
                     mnemonic = re.sub(op.explicit_syntax, "%s0x%x", mnemonic)
-                    src = ', !rz_asm->settings.immdisp ? "' + h + '" : "" ,(ut32) hi->ops[{}].op.imm'.format(op.syntax_index)
+                    src = (
+                        ', !rz_asm->settings.immdisp ? "'
+                        + h
+                        + '" : "" ,(ut32) hi->ops[{}].op.imm'.format(op.syntax_index)
+                    )
 
                 sprint_src += src
             else:
