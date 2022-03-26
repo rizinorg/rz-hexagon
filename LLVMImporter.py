@@ -606,48 +606,45 @@ class LLVMImporter:
 
     # RIZIN SPECIFIC
     def build_hexagon_c(self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon.c") -> None:
-        indent = PluginInfo.LINE_INDENT
+        code = get_generation_warning_c_code()
+        with open("handwritten/hexagon_c/include.c") as include:
+            set_pos_after_license(include)
+            code += "".join(include.readlines())
+
+        reg_class: str
+        for reg_class in self.hardware_regs:
+            func_name = HardwareRegister.get_func_name_of_class(reg_class, False)
+            function = "char* {}(int opcode_reg)".format(func_name)
+            self.reg_resolve_decl.append(function + ";")
+            code += "\n{} {{\n".format(function)
+
+            parsing_code = HardwareRegister.get_parse_code_reg_bits(reg_class, "opcode_reg")
+            if parsing_code != "":
+                code += "{}\n".format(parsing_code)
+
+            code += "switch (opcode_reg) {\n"
+            code += 'default:\nreturn "<err>";\n'
+
+            hw_reg: HardwareRegister
+            for hw_reg in self.hardware_regs[reg_class].values():
+                code += 'case {}:\nreturn "{}";\n'.format(
+                        hw_reg.enum_name,
+                        hw_reg.asm_name.upper(),
+                    )
+            code += "}\n}\n"
+
+        with open("handwritten/hexagon_c/functions.c") as func:
+            set_pos_after_license(func)
+            code += "".join(func.readlines())
+        code += "\n"
+
+        if compare_src_to_old_src(code, path):
+            self.unchanged_files.append(path)
+            return
 
         with open(path, "w+") as dest:
-            dest.write(get_generation_warning_c_code())
-            with open("handwritten/hexagon_c/include.c") as include:
-                set_pos_after_license(include)
-                dest.writelines(include.readlines())
-            dest.write("\n")
-
-            reg_class: str
-            for reg_class in self.hardware_regs:
-                func_name = HardwareRegister.get_func_name_of_class(reg_class, False)
-                function = "char* {}(int opcode_reg)".format(func_name)
-                self.reg_resolve_decl.append(function + ";")
-                dest.write("\n{} {{\n".format(function))
-
-                parsing_code = HardwareRegister.get_parse_code_reg_bits(reg_class, "opcode_reg")
-                parsing_code = indent_code_block(parsing_code, 1)
-                if parsing_code != "":
-                    dest.write("{}\n".format(parsing_code))
-
-                dest.write("{}switch (opcode_reg) {{\n".format(indent))
-                dest.write('{}default:\n{}return "<err>";\n'.format(indent * 2, indent * 3))
-
-                hw_reg: HardwareRegister
-                for hw_reg in self.hardware_regs[reg_class].values():
-                    dest.write(
-                        '{}case {}:\n{}return "{}";\n'.format(
-                            indent * 2,
-                            hw_reg.enum_name,
-                            indent * 3,
-                            hw_reg.asm_name.upper(),
-                        )
-                    )
-                dest.write("{}}}\n}}\n".format(indent))
-
-            with open("handwritten/hexagon_c/functions.c") as func:
-                set_pos_after_license(func)
-                dest.writelines(func.readlines())
-            dest.write("\n")
-
-        log("hexagon.c written to: {}".format(path), LogLevel.DEBUG)
+            dest.writelines(code)
+            log("hexagon.c written to: {}".format(path), LogLevel.DEBUG)
 
     # RIZIN SPECIFIC
     @staticmethod
