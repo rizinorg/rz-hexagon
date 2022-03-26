@@ -272,6 +272,21 @@ def get_generation_timestamp(conf: dict) -> str:
     return commit
 
 
+def compare_src_to_old_src(new_src: str, comp_src_file: str) -> bool:
+    """ Compares each line of the new_src string and the src code in the file comp_src_file. """
+    with open(comp_src_file) as f:
+        for line in f:
+            if "Date of code generation" in line:
+                break
+        old_src = f.readlines()
+    l_new = "".join(new_src)
+    l_old = "".join(old_src)
+    # Remove clang-format introduced blanks.
+    if re.sub(r"\s", "", l_new) != re.sub(r"\s", "", l_old):
+        return False
+    return True
+
+
 def indent_code_block(code: str, indent_depth: int) -> str:
     ret = ""
     indent: str = PluginInfo.LINE_INDENT
