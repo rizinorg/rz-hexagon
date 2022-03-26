@@ -364,9 +364,9 @@ static void hex_set_pkt_info(const RzAsm *rz_asm, RZ_INOUT HexInsn *hi, const He
 		hi_pi->first_insn = true;
 		hi_pi->last_insn = true;
 		if (p->is_valid) {
-			strncpy(hi_pi->mnem_prefix, get_pkt_indicator(rz_asm->utf8, rz_asm->hex_sdk, true, SINGLE_IN_PKT), 8);
-			if (rz_asm->hex_sdk) {
-				strncpy(hi_pi->mnem_postfix, get_pkt_indicator(rz_asm->utf8, rz_asm->hex_sdk, false, SINGLE_IN_PKT), 8);
+			strncpy(hi_pi->mnem_prefix, get_pkt_indicator(rz_asm->settings.utf8, rz_asm->settings.hex_sdk, true, SINGLE_IN_PKT), 8);
+			if (rz_asm->settings.hex_sdk) {
+				strncpy(hi_pi->mnem_postfix, get_pkt_indicator(rz_asm->settings.utf8, rz_asm->settings.hex_sdk, false, SINGLE_IN_PKT), 8);
 			}
 		} else {
 			strncpy(hi_pi->mnem_prefix, HEX_PKT_UNK, 8);
@@ -375,7 +375,7 @@ static void hex_set_pkt_info(const RzAsm *rz_asm, RZ_INOUT HexInsn *hi, const He
 		hi_pi->first_insn = true;
 		hi_pi->last_insn = false;
 		if (p->is_valid) {
-			strncpy(hi_pi->mnem_prefix, get_pkt_indicator(rz_asm->utf8, rz_asm->hex_sdk, true, FIRST_IN_PKT), 8);
+			strncpy(hi_pi->mnem_prefix, get_pkt_indicator(rz_asm->settings.utf8, rz_asm->settings.hex_sdk, true, FIRST_IN_PKT), 8);
 		} else {
 			strncpy(hi_pi->mnem_prefix, HEX_PKT_UNK, 8);
 		}
@@ -383,22 +383,22 @@ static void hex_set_pkt_info(const RzAsm *rz_asm, RZ_INOUT HexInsn *hi, const He
 		hi_pi->first_insn = false;
 		hi_pi->last_insn = true;
 		if (p->is_valid) {
-			strncpy(hi_pi->mnem_prefix, get_pkt_indicator(rz_asm->utf8, rz_asm->hex_sdk, true, LAST_IN_PKT), 8);
-			if (rz_asm->hex_sdk) {
-				strncpy(hi_pi->mnem_postfix, get_pkt_indicator(rz_asm->utf8, rz_asm->hex_sdk, false, LAST_IN_PKT), 8);
+			strncpy(hi_pi->mnem_prefix, get_pkt_indicator(rz_asm->settings.utf8, rz_asm->settings.hex_sdk, true, LAST_IN_PKT), 8);
+			if (rz_asm->settings.hex_sdk) {
+				strncpy(hi_pi->mnem_postfix, get_pkt_indicator(rz_asm->settings.utf8, rz_asm->settings.hex_sdk, false, LAST_IN_PKT), 8);
 			}
 
 			switch(hex_get_loop_flag(p)) {
 			default:
 				break;
 			case HEX_LOOP_01:
-				strncat(hi_pi->mnem_postfix, get_pkt_indicator(rz_asm->utf8, rz_asm->hex_sdk, false, ELOOP_01_PKT), 23 - strlen(hi_pi->mnem_postfix));
+				strncat(hi_pi->mnem_postfix, get_pkt_indicator(rz_asm->settings.utf8, rz_asm->settings.hex_sdk, false, ELOOP_01_PKT), 23 - strlen(hi_pi->mnem_postfix));
 				break;
 			case HEX_LOOP_0:
-				strncat(hi_pi->mnem_postfix, get_pkt_indicator(rz_asm->utf8, rz_asm->hex_sdk, false, ELOOP_0_PKT), 23 - strlen(hi_pi->mnem_postfix));
+				strncat(hi_pi->mnem_postfix, get_pkt_indicator(rz_asm->settings.utf8, rz_asm->settings.hex_sdk, false, ELOOP_0_PKT), 23 - strlen(hi_pi->mnem_postfix));
 				break;
 			case HEX_LOOP_1:
-				strncat(hi_pi->mnem_postfix, get_pkt_indicator(rz_asm->utf8, rz_asm->hex_sdk, false, ELOOP_1_PKT), 23 - strlen(hi_pi->mnem_postfix));
+				strncat(hi_pi->mnem_postfix, get_pkt_indicator(rz_asm->settings.utf8, rz_asm->settings.hex_sdk, false, ELOOP_1_PKT), 23 - strlen(hi_pi->mnem_postfix));
 				break;
 			}
 		} else {
@@ -408,7 +408,7 @@ static void hex_set_pkt_info(const RzAsm *rz_asm, RZ_INOUT HexInsn *hi, const He
 		hi_pi->first_insn = false;
 		hi_pi->last_insn = false;
 		if (p->is_valid) {
-			strncpy(hi_pi->mnem_prefix, get_pkt_indicator(rz_asm->utf8, rz_asm->hex_sdk, true, MID_IN_PKT), 8);
+			strncpy(hi_pi->mnem_prefix, get_pkt_indicator(rz_asm->settings.utf8, rz_asm->settings.hex_sdk, true, MID_IN_PKT), 8);
 		} else {
 			strncpy(hi_pi->mnem_prefix, HEX_PKT_UNK, 8);
 		}

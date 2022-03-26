@@ -491,8 +491,8 @@ class LLVMImporter:
         main_function += "}}"
 
         main_function += (
-            "if (hi_u32 != 0x00000000) {"
-            + "// DUPLEXES"
+            "if (hi_u32 != 0x00000000) {\n"
+            + "// DUPLEXES\n"
             + "if ((({} >> 14) & 0x3) == 0) {{".format(var)
             + "switch (((({} >> 29) & 0xF) << 1) | (({} >> 13) & 1)) {{".format(var, var)
         )
