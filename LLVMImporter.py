@@ -824,17 +824,27 @@ class LLVMImporter:
     def build_hexagon_regs(
         self, path: str = "rizin/librz/analysis/p/analysis_hexagon.c"
     ) -> None:
+        """Generates and writes the register profile.
+        Note that some registers share the same offsets. R0 and R1:0 are both based at offset 0.
+        """
         profile = self.get_alias_profile().splitlines(keepends=True)
+        tmp_regs = []  # Tmp register for RZIL
         reg_offset = 0
-        offsets = {
-            "IntRegs": 0,
-            "CtrRegs": 1024,
-            "PredRegs": 1152,
-            "GuestRegs": 2048,
-            "HvxVR": 3072,
-            "HvxQR": 4096,
-            "SysRegs": 4608,
-        }
+        offsets = {"IntRegs": 0}
+        offsets["CtrRegs"] = (
+            offsets["IntRegs"] + len(self.hardware_regs["IntRegs"]) * 32
+        )
+        offsets["GuestRegs"] = (
+            offsets["CtrRegs"] + len(self.hardware_regs["CtrRegs"]) * 32
+        )
+        offsets["HvxQR"] = (
+            offsets["GuestRegs"] + len(self.hardware_regs["GuestRegs"]) * 32
+        )
+        offsets["HvxVR"] = offsets["HvxQR"] + len(self.hardware_regs["HvxQR"]) * 128
+        offsets["SysRegs"] = offsets["HvxVR"] + len(self.hardware_regs["HvxVR"]) * 1024
+        offsets["TmpRegs"] = (
+            offsets["SysRegs"] + len(self.hardware_regs["SysRegs"]) * 32
+        )
 
         for hw_reg_class in self.hardware_regs:
             if hw_reg_class in [
@@ -849,7 +859,7 @@ class LLVMImporter:
             elif hw_reg_class in ["CtrRegs", "CtrRegs64"]:
                 reg_offset = offsets["CtrRegs"]
             elif hw_reg_class == "PredRegs":
-                reg_offset = offsets["PredRegs"]
+                reg_offset = offsets["CtrRegs"] + (32 * 4)  # PredRegs = C4
             elif hw_reg_class in ["GuestRegs", "GuestRegs64"]:
                 reg_offset = offsets["GuestRegs"]
             elif hw_reg_class in ["HvxVR", "HvxWR", "HvxVQR"]:
@@ -873,10 +883,14 @@ class LLVMImporter:
                 )
             }.values():
                 profile.append(hw_reg.get_reg_profile(reg_offset, False) + "\n")
+                tmp_regs.append(
+                    hw_reg.get_reg_profile(reg_offset + offsets["TmpRegs"], True) + "\n"
+                )
                 reg_offset += (
                     hw_reg.size if not (hw_reg.llvm_reg_class == "PredRegs") else 8
                 )
             profile.append("\n")
+        profile = profile + tmp_regs
         profile = profile[:-1]  # Remove line breaks
         profile[-1] = profile[-1][:-1] + ";\n"  # [:-1] to remove line break.
 
