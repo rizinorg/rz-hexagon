@@ -649,6 +649,10 @@ class LLVMImporter:
             dest.write("\n")
             dest.write(get_include_guard("hexagon.h"))
 
+            with open("handwritten/hexagon_h/includes.h") as includes:
+                set_pos_after_license(includes)
+                dest.writelines(includes.readlines())
+
             with open("handwritten/hexagon_h/typedefs.h") as typedefs:
                 set_pos_after_license(typedefs)
                 dest.writelines(typedefs.readlines())

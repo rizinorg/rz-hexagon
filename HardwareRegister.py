@@ -24,15 +24,15 @@ class HardwareRegister(Register):
             is_new_value=False,
         )
         self.name: str = name
+        self.asm_name = ""
+        self.alias = ""
+        self.set_well_defined_asm_names(llvm_object["AsmName"], llvm_object["AltNames"])
         self.enum_name = (
             PluginInfo.REGISTER_ENUM_PREFIX
             + HardwareRegister.register_class_name_to_upper(llvm_reg_class)
             + "_"
-            + self.name
+            + re.sub(r":", "_", self.asm_name).upper()
         )
-        self.asm_name = ""
-        self.alias = ""
-        self.set_well_defined_asm_names(llvm_object["AsmName"], llvm_object["AltNames"])
         self.sorting_val = int(
             re.sub(r"[a-zA-Z:]", "", self.asm_name)
         )  # Remove letter and ':' from name.
