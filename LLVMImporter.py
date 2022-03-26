@@ -644,38 +644,43 @@ class LLVMImporter:
 
         with open(path, "w+") as dest:
             dest.writelines(code)
-            log("hexagon.c written to: {}".format(path), LogLevel.DEBUG)
+            log("hexagon.c written to: {}".format(path), LogLevel.INFO)
 
     # RIZIN SPECIFIC
-    @staticmethod
-    def build_asm_hexagon_c(
-        path: str = "rizin/librz/asm/p/asm_hexagon.c",
-    ) -> None:
-        with open(path, "w+") as f:
-            f.write(get_generation_warning_c_code())
+    def build_asm_hexagon_c(self, path: str = "./rizin/librz/asm/p/asm_hexagon.c") -> None:
+        code = get_generation_warning_c_code()
 
-            with open("handwritten/asm_hexagon_c/include.c") as include:
-                set_pos_after_license(include)
-                f.writelines(include.readlines())
-            with open("handwritten/asm_hexagon_c/initialization.c") as init:
-                set_pos_after_license(init)
-                f.writelines(init.readlines())
-        log("asm_hexagon.c written to {}".format(path), LogLevel.DEBUG)
+        with open("handwritten/asm_hexagon_c/include.c") as include:
+            set_pos_after_license(include)
+            code += "".join(include.readlines())
+        with open("handwritten/asm_hexagon_c/initialization.c") as init:
+            set_pos_after_license(init)
+            code += "".join(init.readlines())
+
+        if compare_src_to_old_src(code, path):
+            self.unchanged_files.append(path)
+            return
+        with open(path, "w+") as dest:
+            dest.writelines(code)
+            log("asm_hexagon.c written to {}".format(path), LogLevel.INFO)
 
     # RIZIN SPECIFIC
-    @staticmethod
-    def build_hexagon_arch_c(
-        path: str = "rizin/librz/asm/arch/hexagon/hexagon_arch.c",
-    ):
-        with open(path, "w+") as f:
-            f.write(get_generation_warning_c_code())
+    def build_hexagon_arch_c(self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon_arch.c"):
+        code = get_generation_warning_c_code()
 
-            with open("handwritten/hexagon_arch_c/include.c") as include:
-                set_pos_after_license(include)
-                f.writelines(include.readlines())
-            with open("handwritten/hexagon_arch_c/functions.c") as functions:
-                set_pos_after_license(functions)
-                f.writelines(functions.readlines())
+        with open("handwritten/hexagon_arch_c/include.c") as include:
+            set_pos_after_license(include)
+            code += "".join(include.readlines())
+        with open("handwritten/hexagon_arch_c/functions.c") as functions:
+            set_pos_after_license(functions)
+            code += "".join(functions.readlines())
+
+        if compare_src_to_old_src(code, path):
+            self.unchanged_files.append(path)
+            return
+        with open(path, "w+") as dest:
+            dest.writelines(code)
+            log("asm_hexagon.c written to {}".format(path), LogLevel.INFO)
 
     # RIZIN SPECIFIC
     @staticmethod
