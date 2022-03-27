@@ -810,7 +810,7 @@ class LLVMImporter:
             begin="RZ_API char *get_reg_profile(RzAnalysis *analysis)",
             ret="return strdup(p);",
         )
-        code += "".join(tmp)
+        code += "\n" + "".join(tmp)
 
         with open("handwritten/analysis_hexagon_c/initialization.c") as initialization:
             set_pos_after_license(initialization)
