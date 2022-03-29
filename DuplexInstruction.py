@@ -3,20 +3,17 @@
 # SPDX-License-Identifier: LGPL-3.0-only
 
 import re
+from copy import deepcopy
 from enum import IntEnum
 
 import HexagonArchInfo
 import PluginInfo
-from Immediate import Immediate
 from ImplementationException import ImplementationException
 from InstructionEncoding import InstructionEncoding
 from InstructionTemplate import InstructionTemplate, LoopMembership
-from Operand import Operand, OperandType
-from Register import Register
 from SubInstruction import SubInstruction, SubInstrNamespace
 from UnexpectedException import UnexpectedException
 from helperFunctions import log, LogLevel, normalize_llvm_syntax
-from copy import deepcopy
 
 
 class DuplexIClass(IntEnum):
@@ -95,100 +92,7 @@ class DuplexInstruction(InstructionTemplate):
         self.parse_instruction()
 
         self.check_for_operand_duplicates()
-        # log(self.syntax + "\n" + self.encoding.docs_mask, LogLevel.DEBUG)
-
-    def parse_instruction(self) -> None:
-        """Parses all operands of the instruction which are encoded."""
-
-        # TODO A lot of duplicate code with Instruction::parse:instruction()
-        # Operand names seen during parsing the encoding. Twin operands (Operands which appear in high and low instr.)
-        # were renamed.
-
-        all_ops = deepcopy(self.high_instr.llvm_in_out_operands + self.low_instr.llvm_in_out_operands)
-        self.llvm_filtered_operands = self.remove_invisible_in_out_regs(self.llvm_syntax, all_ops)
-        self.operand_indices = self.get_syntax_operand_indices(self.llvm_syntax, self.llvm_filtered_operands)
-
-        # Update syntax indices
-        if self.has_new_non_predicate:
-            op_name = self.llvm_in_out_operands[self.new_operand_index][1]
-            self.new_operand_index = self.operand_indices[op_name]
-            # log("{}\n new: {}".format(self.llvm_syntax, self.new_operand_index), LogLevel.DEBUG)
-        if self.has_extendable_imm:
-            op_name = self.llvm_in_out_operands[self.ext_operand_index][1]
-            self.ext_operand_index = self.operand_indices[op_name]
-            # log("{}\n ext: {}".format(self.llvm_syntax, self.ext_operand_index), LogLevel.DEBUG)
-
-        if len(self.llvm_filtered_operands) > PluginInfo.MAX_OPERANDS:
-            warning = "{} instruction struct can only hold {} operands. This" " instruction has {} operands.".format(
-                PluginInfo.FRAMEWORK_NAME,
-                PluginInfo.MAX_OPERANDS,
-                len(self.llvm_filtered_operands),
-            )
-            raise ImplementationException(warning)
-
-        for in_out_operand in self.llvm_filtered_operands:
-            op_name = in_out_operand[1]
-            op_type = in_out_operand[0]["def"]
-            index = self.operand_indices[op_name]
-
-            # Parse register operand
-            if Operand.get_operand_type(op_type) is OperandType.REGISTER:
-                # Indices of new values (stored in "opNewValue") are only for non predicates.
-                is_new_value = self.new_operand_index == index and self.has_new_non_predicate
-                operand = Register(op_name, op_type, is_new_value, index)
-                # Whether the predicate registers holds a new value is denoted in "isPredicatedNew".
-                if self.is_pred_new and operand.is_predicate:
-                    operand.is_new_value = True
-
-            # Parse immediate operands
-            elif Operand.get_operand_type(op_type) is OperandType.IMMEDIATE:
-                extendable = self.has_extendable_imm and self.ext_operand_index == index
-                if self.extendable_alignment > 0:
-                    log(str(self.extendable_alignment), op_type)
-                operand = Immediate(
-                    op_name,
-                    op_type,
-                    extendable,
-                    self.extendable_alignment,
-                    index,
-                )
-
-            else:
-                raise ImplementationException("Unknown operand type: {}, op_name: {}".format(op_type, op_name))
-
-            # Use lower() because we can get RX16in and Rx16in but constraints are always Rx16in.
-            if op_name.lower() in self.constraints.lower():
-                operand.is_in_out_operand = True
-                operand.is_out_operand = True
-                operand.is_in_operand = True
-            elif in_out_operand in self.llvm_in_operands:
-                operand.is_in_operand = True
-            elif in_out_operand in self.llvm_out_operands:
-                operand.is_out_operand = True
-
-            # Add opcode extraction code
-            if operand.type == OperandType.IMMEDIATE and operand.is_constant:  # Constants have no parsing code.
-                pass
-            else:
-                if operand.is_in_out_operand and op_name[-2:] == "in":  # In/Out Register
-                    mask = self.encoding.operand_masks[op_name[:-2]]  # Ends with "in"
-                else:
-                    mask = self.encoding.operand_masks[op_name]
-                operand.opcode_mask = mask
-                operand.add_code_for_opcode_parsing(Operand.make_sparse_mask(mask))
-
-            # On the fly check whether the new values have been assigned correctly.
-            if op_name + ".new" in self.llvm_syntax:
-                if not operand.is_new_value:
-                    raise ImplementationException(
-                        "Register has new value in syntax but not as object."
-                        + "It has been parsed incorrectly! Are the indices"
-                        " correctly set?" + "Affected instruction: {}".format(self.llvm_syntax)
-                    )
-
-            # log("Add operand: {}".format(op_name), LogLevel.DEBUG)
-            # TODO This uses the llvm name as key. Maybe use normalized name? Rs16 -> Rs?
-            self.operands[op_name] = operand
+        log(self.syntax + "\n" + self.encoding.docs_mask, LogLevel.VERBOSE)
 
     @staticmethod
     def get_duplex_i_class_of_instr_pair(low: SubInstruction, high: SubInstruction) -> DuplexIClass:

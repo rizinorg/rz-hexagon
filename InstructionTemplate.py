@@ -2,17 +2,18 @@
 #
 # SPDX-License-Identifier: LGPL-3.0-only
 
+from copy import deepcopy
 from enum import IntFlag
 import re
 
 import HexagonArchInfo
 import PluginInfo
-import Register
 from HardwareRegister import HardwareRegister
 from Immediate import Immediate
 from ImplementationException import ImplementationException
 from InstructionEncoding import InstructionEncoding
 from Operand import Operand, OperandType
+from Register import Register
 from UnexpectedException import UnexpectedException
 from helperFunctions import log, LogLevel
 
@@ -72,8 +73,8 @@ class InstructionTemplate:
         self.operand_indices = dict()
         self.num_operands = 999
         self.llvm_operands = list()
-        self.new_operand_index = 999
-        self.ext_operand_index = 999
+        self.new_operand_index = 999  # Operand index of Nt.new register.
+        self.ext_operand_index = 999  # Operand index of extendable immediate.
 
         # Immediate operands
         self.has_extendable_imm: bool = None
@@ -117,7 +118,7 @@ class InstructionTemplate:
             See the test case for: V6_vS32b_nt_new_pred_ppu
 
         Args:
-            llvm_syntax: The syntax for which we need the
+            llvm_syntax: The llvm syntax string.
             llvm_operands: List of operands from the llvm In/OutOperand list.
 
         Returns: Dictionary of {Reg_name : index} entries.
@@ -177,6 +178,95 @@ class InstructionTemplate:
                 return op.syntax_index  # If it is the only operand it is the address.
 
         return -1
+
+    def parse_instruction(self) -> None:
+        """Parses all operands of the instruction which are encoded."""
+
+        if self.is_duplex:
+            all_ops = deepcopy(self.high_instr.llvm_in_out_operands + self.low_instr.llvm_in_out_operands)
+        else:
+            all_ops = deepcopy(self.llvm_in_out_operands)
+
+        self.llvm_filtered_operands = self.remove_invisible_in_out_regs(self.llvm_syntax, all_ops)
+        self.operand_indices = self.get_syntax_operand_indices(self.llvm_syntax, self.llvm_filtered_operands)
+
+        # Update syntax indices.
+        if self.has_new_non_predicate:
+            op_name = self.llvm_in_out_operands[self.new_operand_index][1]
+            self.new_operand_index = self.operand_indices[op_name]
+            log("{}\n new: {}".format(self.llvm_syntax, self.new_operand_index), LogLevel.VERBOSE)
+        if self.has_extendable_imm:
+            op_name = self.llvm_in_out_operands[self.ext_operand_index][1]
+            self.ext_operand_index = self.operand_indices[op_name]
+            log("{}\n ext: {}".format(self.llvm_syntax, self.ext_operand_index), LogLevel.VERBOSE)
+
+        if len(self.llvm_filtered_operands) > PluginInfo.MAX_OPERANDS:
+            warning = "{} instruction struct can only hold {} operands. This" " instruction has {} operands.".format(
+                PluginInfo.FRAMEWORK_NAME,
+                PluginInfo.MAX_OPERANDS,
+                len(self.llvm_filtered_operands),
+            )
+            raise ImplementationException(warning)
+
+        for in_out_operand in self.llvm_filtered_operands:
+            op_name = in_out_operand[1]
+            op_type = in_out_operand[0]["def"]
+            index = self.operand_indices[op_name]
+
+            # Parse register operand
+            if Operand.get_operand_type(op_type) is OperandType.REGISTER:
+                # Indices of new values (stored in "opNewValue") are only for non predicates.
+                is_new_value = self.new_operand_index == index and self.has_new_non_predicate
+                operand = Register(op_name, op_type, is_new_value, index)
+                # Whether the predicate registers holds a new value is denoted in "isPredicatedNew".
+                if self.is_pred_new and operand.is_predicate:
+                    operand.is_new_value = True
+
+            # Parse immediate operands
+            elif Operand.get_operand_type(op_type) is OperandType.IMMEDIATE:
+                extendable = self.has_extendable_imm and self.ext_operand_index == index
+                operand = Immediate(
+                    op_name,
+                    op_type,
+                    extendable,
+                    self.extendable_alignment,
+                    index,
+                )
+
+            else:
+                raise ImplementationException("Unknown operand type: {}, op_name: {}".format(op_type, op_name))
+
+            # Use lower() because we can get RX16in and Rx16in but constraints are always Rx16in.
+            if op_name.lower() in self.constraints.lower():
+                operand.is_in_out_operand = True
+                operand.is_out_operand = True
+                operand.is_in_operand = True
+            elif in_out_operand in self.llvm_in_operands:
+                operand.is_in_operand = True
+            elif in_out_operand in self.llvm_out_operands:
+                operand.is_out_operand = True
+
+            # Add opcode extraction code
+            if operand.type == OperandType.IMMEDIATE and operand.is_constant:  # Constants have no parsing code.
+                pass
+            else:
+                if operand.is_in_out_operand and op_name[-2:] == "in":  # In/Out Register
+                    mask = self.encoding.operand_masks[op_name[:-2]]  # Ends with "in"
+                else:
+                    mask = self.encoding.operand_masks[op_name]
+                operand.opcode_mask = mask
+                operand.add_code_for_opcode_parsing(Operand.make_sparse_mask(mask))
+
+            # On the fly check whether the new values have been assigned correctly.
+            if op_name + ".new" in self.llvm_syntax:
+                if not operand.is_new_value:
+                    raise ImplementationException(
+                        "Register has new value in syntax but not as object."
+                        + "It has been parsed incorrectly! Are the indices"
+                        " correctly set?" + "Affected instruction: {}".format(self.llvm_syntax)
+                    )
+
+            self.operands[op_name] = operand
 
     # RIZIN SPECIFIC
     def get_instruction_init_in_c(self) -> str:
