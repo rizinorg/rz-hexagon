@@ -406,28 +406,20 @@ class LLVMImporter:
 
     # RIZIN SPECIFIC
     def build_hexagon_insn_enum_h(self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon_insn.h") -> None:
-        data = get_generation_warning_c_code()
-        data += get_include_guard("hexagon_insn.h")
-        data += "enum HEX_INS {"
+        code = get_generation_warning_c_code()
+        code += get_include_guard("hexagon_insn.h")
+        code += "enum HEX_INS {"
         enum = ""
         for name in self.normal_instruction_names + self.duplex_instructions_names:
             if "invalid_decode" in name:
                 enum = (PluginInfo.INSTR_ENUM_PREFIX + name.upper() + " = 0,") + enum
             else:
                 enum += PluginInfo.INSTR_ENUM_PREFIX + name.upper() + ","
-        data += enum
-        data += "};"
-        data += "#endif"
-        if compare_src_to_old_src(data, path):
-            self.unchanged_files.append(path)
-            return
+        code += enum
+        code += "};"
+        code += "#endif"
 
-        with open(path, "w+") as dest:
-            dest.writelines(data)
-            log(
-                "Hexagon instruction enum written to: {}".format(path),
-                LogLevel.INFO,
-            )
+        self.write_src(code, path)
 
     # RIZIN SPECIFIC
     def build_hexagon_disas_c(self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon_disas.c") -> None:
@@ -531,15 +523,7 @@ class LLVMImporter:
         )
         code += main_function
 
-        if compare_src_to_old_src(code, path):
-            self.unchanged_files.append(path)
-            return
-        with open(path, "w+") as dest:
-            dest.writelines(code)
-            log(
-                "hexagon_disas.c written to: {}".format(path),
-                LogLevel.INFO,
-            )
+        self.write_src(code, path)
 
     # RIZIN SPECIFIC
     def build_hexagon_h(self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon.h") -> None:
@@ -587,13 +571,7 @@ class LLVMImporter:
         code += read_hand_written_src_file("handwritten/hexagon_h/declarations.h")
         code += "#endif"
 
-        if compare_src_to_old_src(code, path):
-            self.unchanged_files.append(path)
-            return
-
-        with open(path, "w+") as dest:
-            dest.writelines(code)
-            log("hexagon.h written to: {}".format(path), LogLevel.INFO)
+        self.write_src(code, path)
 
     # RIZIN SPECIFIC
     def build_hexagon_c(self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon.c") -> None:
@@ -624,13 +602,7 @@ class LLVMImporter:
 
         code += read_hand_written_src_file("handwritten/hexagon_c/functions.c")
 
-        if compare_src_to_old_src(code, path):
-            self.unchanged_files.append(path)
-            return
-
-        with open(path, "w+") as dest:
-            dest.writelines(code)
-            log("hexagon.c written to: {}".format(path), LogLevel.INFO)
+        self.write_src(code, path)
 
     # RIZIN SPECIFIC
     def build_asm_hexagon_c(self, path: str = "./rizin/librz/asm/p/asm_hexagon.c") -> None:
@@ -639,12 +611,7 @@ class LLVMImporter:
         code += read_hand_written_src_file("handwritten/asm_hexagon_c/include.c")
         code += read_hand_written_src_file("handwritten/asm_hexagon_c/initialization.c")
 
-        if compare_src_to_old_src(code, path):
-            self.unchanged_files.append(path)
-            return
-        with open(path, "w+") as dest:
-            dest.writelines(code)
-            log("asm_hexagon.c written to {}".format(path), LogLevel.INFO)
+        self.write_src(code, path)
 
     # RIZIN SPECIFIC
     def build_hexagon_arch_c(self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon_arch.c"):
@@ -653,12 +620,7 @@ class LLVMImporter:
         code += read_hand_written_src_file("handwritten/hexagon_arch_c/include.c")
         code += read_hand_written_src_file("handwritten/hexagon_arch_c/functions.c")
 
-        if compare_src_to_old_src(code, path):
-            self.unchanged_files.append(path)
-            return
-        with open(path, "w+") as dest:
-            dest.writelines(code)
-            log("asm_hexagon.c written to {}".format(path), LogLevel.INFO)
+        self.write_src(code, path)
 
     # RIZIN SPECIFIC
     def build_hexagon_arch_h(self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon_arch.h"):
@@ -670,12 +632,7 @@ class LLVMImporter:
         code += read_hand_written_src_file("handwritten/hexagon_arch_h/declarations.h")
         code += "#endif"
 
-        if compare_src_to_old_src(code, path):
-            self.unchanged_files.append(path)
-            return
-        with open(path, "w+") as dest:
-            dest.writelines(code)
-            log("hexagon_arch.h written to {}".format(path), LogLevel.INFO)
+        self.write_src(code, path)
 
     # RIZIN SPECIFIC
     @staticmethod
@@ -727,12 +684,7 @@ class LLVMImporter:
 
         code += read_hand_written_src_file("handwritten/analysis_hexagon_c/initialization.c")
 
-        if compare_src_to_old_src(code, path):
-            self.unchanged_files.append(path)
-            return
-        with open(path, "w+") as dest:
-            dest.writelines(code)
-            log("analysis_hexagon.c written to {}".format(path), LogLevel.INFO)
+        self.write_src(code, path)
 
     # RIZIN SPECIFC
     def get_alias_profile(self) -> str:
@@ -874,6 +826,19 @@ class LLVMImporter:
                 ]:
                     log("Format {}".format(p), LogLevel.VERBOSE)
                     os.system("clang-format-13 -style file -i " + p)
+
+    def write_src(self, code: str, path: str) -> None:
+        """Compares the given src code to the src code in the file at path and writes it if it differs.
+        It ignores the leading license header and timestamps in the existing src file.
+        Changes in formatting (anything which matches the regex '[[:blank:]]')
+        """
+
+        if compare_src_to_old_src(code, path):
+            self.unchanged_files.append(path)
+            return
+        with open(path, "w+") as dest:
+            dest.writelines(code)
+            log("Write {}".format(path), LogLevel.INFO)
 
 
 if __name__ == "__main__":
