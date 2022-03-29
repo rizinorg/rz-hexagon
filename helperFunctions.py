@@ -273,7 +273,7 @@ def get_generation_timestamp(conf: dict) -> str:
 
 
 def compare_src_to_old_src(new_src: str, comp_src_file: str) -> bool:
-    """ Compares each line of the new_src string and the src code in the file comp_src_file. """
+    """Compares each line of the new_src string and the src code in the file comp_src_file."""
     with open(comp_src_file) as f:
         for line in f:
             if "Date of code generation" in line:
@@ -319,6 +319,18 @@ def surround_with_include_guard(filename: str, lines: list) -> list:
     lines.insert(0, get_include_guard(filename))
     lines.append("\n\n#endif\n")
     return lines
+
+
+def read_hand_written_src_file(path: str) -> str:
+    """Reads and returns the content of a hand-written src file.
+    The does not return the license header and everything before that.
+    """
+
+    content = ""
+    with open(path) as f:
+        set_pos_after_license(f)
+        content += "".join(f.readlines())
+    return content
 
 
 def normalize_llvm_syntax(llvm_syntax: str) -> str:
