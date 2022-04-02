@@ -499,6 +499,7 @@ class LLVMImporter:
                     if "sprintf(signed_imm" in func_body and signed_imm_array not in func_header:
                         func_header += "char " + signed_imm_array + " = {0};"
                         func_header += 'bool sign_nums = rz_config_get_b(state->cfg, "plugins.hexagon.imm.sign");\n'
+            func_header += 'bool print_reg_alias = rz_config_get_b(state->cfg, "plugins.hexagon.reg.alias");\n'
             func_header += 'bool show_hash = rz_config_get_b(state->cfg, "plugins.hexagon.imm.hash");\n\n'
             code += func_header + func_body + "}\n\n"
             main_function += "break;\n"
@@ -523,6 +524,9 @@ class LLVMImporter:
                     if "sprintf(signed_imm" in func_body and signed_imm_array not in func_header:
                         func_header += "char " + signed_imm_array + " = {0};"
                         func_header += 'bool sign_nums = rz_config_get_b(state->cfg, "plugins.hexagon.imm.sign");\n'
+            if c != 0:
+                # immext() and invalid have no registers.
+                func_header += 'bool print_reg_alias = rz_config_get_b(state->cfg, "plugins.hexagon.reg.alias");\n'
             if c != 0xF:
                 # iclass 0xf instructions have no hash prefix.
                 func_header += 'bool show_hash = rz_config_get_b(state->cfg, "plugins.hexagon.imm.hash");\n\n'
@@ -631,7 +635,7 @@ class LLVMImporter:
         reg_class: str
         for reg_class in self.hardware_regs:
             func_name = HardwareRegister.get_func_name_of_class(reg_class, False)
-            function = "char* {}(int opcode_reg)".format(func_name)
+            function = "\nchar* {}(int opcode_reg, bool get_alias)".format(func_name)
             self.reg_resolve_decl.append(function + ";")
             code += "{} {{".format(function)
 
@@ -644,11 +648,13 @@ class LLVMImporter:
 
             hw_reg: HardwareRegister
             for hw_reg in self.hardware_regs[reg_class].values():
-                code += 'case {}:return "{}";'.format(
+                alias = "".join(hw_reg.alias).upper()
+                alias_choice = 'get_alias ? "' + alias + '" : "' + hw_reg.asm_name.upper() + '"'
+                code += "case {}:\nreturn {};".format(
                     hw_reg.enum_name,
-                    hw_reg.asm_name.upper(),
+                    alias_choice if alias != "" else '"' + hw_reg.asm_name.upper() + '"',
                 )
-            code += "}}"
+            code += "}}\n"
 
         with open("handwritten/hexagon_c/functions.c") as func:
             set_pos_after_license(func)
