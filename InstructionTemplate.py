@@ -255,7 +255,7 @@ class InstructionTemplate:
                         "char tmp[28] = {0};"
                         + "rz_hex_ut2st_str(hi->ops[{}].op.imm, tmp, 28);".format(op.syntax_index)
                         + 'sprintf(signed_imm[{}], "%s%s", '.format(op.syntax_index)
-                        + '!rz_asm->immdisp ? "'
+                        + 'show_hash ? "'
                         + h
                         + '" : "", '
                         + "tmp);"
@@ -264,7 +264,7 @@ class InstructionTemplate:
 
                     code += (
                         'sprintf(signed_imm[{}], "%s0x%x", '.format(op.syntax_index)
-                        + '!rz_asm->immdisp ? "'
+                        + 'show_hash ? "'
                         + h
                         + '" : "", '
                         + "(st32) hi->ops[{}].op.imm);\n".format(op.syntax_index)
@@ -275,7 +275,7 @@ class InstructionTemplate:
                     mnemonic = re.sub(r"#{0,2}" + op.explicit_syntax, "%s", mnemonic)
                 else:
                     mnemonic = re.sub(op.explicit_syntax, "%s0x%x", mnemonic)
-                    src = ', !rz_asm->immdisp ? "' + h + '" : "" ,(ut32) hi->ops[{}].op.imm'.format(op.syntax_index)
+                    src = ', show_hash ? "' + h + '" : "" ,(ut32) hi->ops[{}].op.imm'.format(op.syntax_index)
 
                 sprint_src += src
             else:
