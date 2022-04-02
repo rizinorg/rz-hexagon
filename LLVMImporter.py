@@ -552,15 +552,18 @@ class LLVMImporter:
         general_prefix = PluginInfo.GENERAL_ENUM_PREFIX
 
         code = get_generation_warning_c_code()
+        code += "\n"
         code += get_include_guard("hexagon.h")
+        code += "\n"
 
         with open("handwritten/hexagon_h/typedefs.h") as typedefs:
             set_pos_after_license(typedefs)
             code += "".join(typedefs.readlines())
+        code += "\n"
 
         reg_class: str
         for reg_class in self.hardware_regs:
-            code += "typedef enum {"
+            code += "typedef enum {\n"
 
             hw_reg: HardwareRegister
             for hw_reg in sorted(
@@ -569,20 +572,22 @@ class LLVMImporter:
             ):
                 alias = ",".join(hw_reg.alias)
                 code += "{}{} = {},{}".format(
-                        indent,
-                        hw_reg.enum_name,
-                        hw_reg.hw_encoding,
-                        " // " + alias if alias != "" else "",
-                    )
-            code += "}} {}{}; // {}".format(
-                    general_prefix,
-                    HardwareRegister.register_class_name_to_upper(reg_class),
-                    reg_class,
+                    indent,
+                    hw_reg.enum_name,
+                    hw_reg.hw_encoding,
+                    " // " + alias + "\n" if alias != "" else "\n",
                 )
+            code += "}} {}{}; // {}\n\n".format(
+                general_prefix,
+                HardwareRegister.register_class_name_to_upper(reg_class),
+                reg_class,
+            )
 
         with open("handwritten/hexagon_h/macros.h") as macros:
             set_pos_after_license(macros)
             code += "".join(macros.readlines())
+        code += "\n"
+
         if len(self.reg_resolve_decl) == 0:
             raise ImplementationException(
                 "Register resolve declarations missing"
@@ -591,10 +596,11 @@ class LLVMImporter:
             )
         for decl in self.reg_resolve_decl:
             code += decl
+        code += "\n"
         with open("handwritten/hexagon_h/declarations.h") as decl:
             set_pos_after_license(decl)
             code += "".join(decl.readlines())
-        code += "#endif"
+        code += "\n#endif"
 
         if compare_src_to_old_src(code, path):
             self.unchanged_files.append(path)
@@ -628,9 +634,9 @@ class LLVMImporter:
             hw_reg: HardwareRegister
             for hw_reg in self.hardware_regs[reg_class].values():
                 code += 'case {}:return "{}";'.format(
-                        hw_reg.enum_name,
-                        hw_reg.asm_name.upper(),
-                    )
+                    hw_reg.enum_name,
+                    hw_reg.asm_name.upper(),
+                )
             code += "}}"
 
         with open("handwritten/hexagon_c/functions.c") as func:
