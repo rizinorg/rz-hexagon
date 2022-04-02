@@ -445,7 +445,7 @@ class LLVMImporter:
             code += "".join(functions.readlines())
 
         main_function = (
-            "int hexagon_disasm_instruction(const RzAsm *rz_asm, HexState"
+            "int hexagon_disasm_instruction(HexState"
             " *state, const ut32 hi_u32, RZ_INOUT HexInsn *hi, HexPkt"
             " *pkt) {" + "ut32 addr = hi->addr;"
         )
@@ -486,10 +486,10 @@ class LLVMImporter:
         # Duplexes
         for c in range(0xF):  # Class 0xf is reserved yet.
             main_function += "case 0x{:x}:\n".format(c)
-            main_function += "hexagon_disasm_duplex_0x{:x}(rz_asm, state, hi_u32, hi," " addr, pkt);\n".format(c)
+            main_function += "hexagon_disasm_duplex_0x{:x}(state, hi_u32, hi," " addr, pkt);\n".format(c)
             func_body = ""
             func_header = (
-                "void hexagon_disasm_duplex_0x{:x}(const RzAsm *rz_asm,"
+                "void hexagon_disasm_duplex_0x{:x}("
                 " HexState *state, const ut32 hi_u32, HexInsn *hi, const"
                 " ut32 addr, HexPkt *pkt) {{".format(c)
             )
@@ -509,11 +509,11 @@ class LLVMImporter:
         main_function += "switch (({} >> 28) & 0xF) {{\n".format(var)
         for c in range(0x10):
             main_function += "case 0x{:x}:\n".format(c)
-            main_function += "hexagon_disasm_0x{:x}(rz_asm, state, hi_u32, hi, addr," " pkt);\n".format(c)
+            main_function += "hexagon_disasm_0x{:x}(state, hi_u32, hi, addr," " pkt);\n".format(c)
 
             func_body = ""
             func_header = (
-                "void hexagon_disasm_0x{:x}(const RzAsm *rz_asm, HexState"
+                "void hexagon_disasm_0x{:x}(HexState"
                 " *state, const ut32 hi_u32, HexInsn *hi, const ut32 addr,"
                 " HexPkt *pkt) {{".format(c)
             )
@@ -558,6 +558,11 @@ class LLVMImporter:
         code = get_generation_warning_c_code()
         code += "\n"
         code += get_include_guard("hexagon.h")
+        code += "\n"
+
+        with open("handwritten/hexagon_h/includes.h") as includes:
+            set_pos_after_license(includes)
+            code += "".join(includes.readlines())
         code += "\n"
 
         with open("handwritten/hexagon_h/typedefs.h") as typedefs:

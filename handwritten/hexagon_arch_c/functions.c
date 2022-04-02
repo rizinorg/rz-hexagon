@@ -793,7 +793,7 @@ RZ_API void hexagon_reverse_opcode(const RzAsm *rz_asm, HexReversedOpcode *rz_re
 	HexPkt *p = hex_get_pkt(state, hi->addr);
 
 	// Do disasassembly and analysis
-	hexagon_disasm_instruction(&state->rz_asm, state, data, hi, p);
+	hexagon_disasm_instruction(state, data, hi, p);
 
 	switch (rz_reverse->action) {
 	default:

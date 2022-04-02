@@ -5,7 +5,6 @@
 #include <stdbool.h>
 #include <rz_types.h>
 #include <rz_util.h>
-#include <rz_asm.h>
 #include <rz_util/rz_hex.h>
 #include <rz_analysis.h>
 #include "hexagon.h"
