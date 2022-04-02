@@ -477,16 +477,16 @@ class LLVMImporter:
         main_function += "}}"
 
         main_function += (
-            "if (hi_u32 != 0x00000000) {"
-            + "// DUPLEXES"
-            + "if ((({} >> 14) & 0x3) == 0) {{".format(var)
+            "if (hi_u32 != 0x00000000) {\n"
+            + "// DUPLEXES\n"
+            + "if ((({} >> 14) & 0x3) == 0) {{\n".format(var)
             + "switch (((({} >> 29) & 0xF) << 1) | (({} >> 13) & 1)) {{".format(var, var)
         )
 
         # Duplexes
         for c in range(0xF):  # Class 0xf is reserved yet.
-            main_function += "case 0x{:x}:".format(c)
-            main_function += "hexagon_disasm_duplex_0x{:x}(rz_asm, state, hi_u32, hi," " addr, pkt);".format(c)
+            main_function += "case 0x{:x}:\n".format(c)
+            main_function += "hexagon_disasm_duplex_0x{:x}(rz_asm, state, hi_u32, hi," " addr, pkt);\n".format(c)
             func_body = ""
             func_header = (
                 "void hexagon_disasm_duplex_0x{:x}(const RzAsm *rz_asm,"
@@ -498,16 +498,17 @@ class LLVMImporter:
                     func_body += indent_code_block(d_instr.get_instruction_init_in_c(), 1)
                     if "sprintf(signed_imm" in func_body and signed_imm_array not in func_header:
                         func_header += "char " + signed_imm_array + " = {0};"
-            code += func_header + func_body + "}"
-            main_function += "break;"
+                        func_header += 'bool sign_nums = rz_config_get_b(state->cfg, "plugins.hexagon.imm.sign");\n\n'
+            code += func_header + func_body + "}\n\n"
+            main_function += "break;\n"
 
         # Normal instructions
         # Brackets for switch, if
         main_function += "}}else {"
-        main_function += "switch (({} >> 28) & 0xF) {{".format(var)
+        main_function += "switch (({} >> 28) & 0xF) {{\n".format(var)
         for c in range(0x10):
-            main_function += "case 0x{:x}:".format(c)
-            main_function += "hexagon_disasm_0x{:x}(rz_asm, state, hi_u32, hi, addr," " pkt);".format(c)
+            main_function += "case 0x{:x}:\n".format(c)
+            main_function += "hexagon_disasm_0x{:x}(rz_asm, state, hi_u32, hi, addr," " pkt);\n".format(c)
 
             func_body = ""
             func_header = (
@@ -520,8 +521,9 @@ class LLVMImporter:
                     func_body += indent_code_block(instr.get_instruction_init_in_c(), 1)
                     if "sprintf(signed_imm" in func_body and signed_imm_array not in func_header:
                         func_header += "char " + signed_imm_array + " = {0};"
-            code += func_header + func_body + "}"
-            main_function += "break;"
+                        func_header += 'bool sign_nums = rz_config_get_b(state->cfg, "plugins.hexagon.imm.sign");\n\n'
+            code += func_header + func_body + "}\n\n"
+            main_function += "break;\n"
 
         # Closing brackets for switch, else, function
         main_function += "}}}"

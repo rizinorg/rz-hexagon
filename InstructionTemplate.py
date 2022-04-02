@@ -250,7 +250,7 @@ class InstructionTemplate:
                     src = ", pkt->pkt_addr + (st32) hi->ops[{}].op.imm".format(op.syntax_index)
                     mnemonic = re.sub(op.explicit_syntax, "0x%x", mnemonic)
                 elif op.is_signed:
-                    code += "if (rz_asm->immsign && ((st32) hi->ops[{}].op.imm) <" " 0) {{\n".format(op.syntax_index)
+                    code += "if (sign_nums && ((st32) hi->ops[{}].op.imm) <" " 0) {{\n".format(op.syntax_index)
                     code += (
                         "char tmp[28] = {0};"
                         + "rz_hex_ut2st_str(hi->ops[{}].op.imm, tmp, 28);".format(op.syntax_index)

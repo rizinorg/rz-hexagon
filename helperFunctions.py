@@ -273,7 +273,7 @@ def get_generation_timestamp(conf: dict) -> str:
 
 
 def compare_src_to_old_src(new_src: str, comp_src_file: str) -> bool:
-    """ Compares each line of the new_src string and the src code in the file comp_src_file. """
+    """Compares each line of the new_src string and the src code in the file comp_src_file."""
     with open(comp_src_file) as f:
         for line in f:
             if "Date of code generation" in line:
