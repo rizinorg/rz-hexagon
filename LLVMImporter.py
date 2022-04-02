@@ -844,7 +844,7 @@ class LLVMImporter:
         arguments = HexagonArchInfo.CC_REGS["GPR_args"]
         returns = HexagonArchInfo.CC_REGS["GPR_ret"]
 
-        general_ps = list(self.hardware_regs["IntRegs"].values()) + list(self.hardware_regs["DoubleRegs"].values())
+        general_ps = list(self.hardware_regs["IntRegs"].values())
         gpr: HardwareRegister
         for gpr in general_ps:
             try:
@@ -859,7 +859,7 @@ class LLVMImporter:
                     LogLevel.WARNING,
                 )
             if gpr.name in HexagonArchInfo.CC_REGS["GPR_args"]:
-                arg_regs += '"=A{}{}{}\\n"'.format(i, indent, gpr.asm_name) + "\n"
+                arg_regs += '"=A{}{}{}\\n"'.format(i, indent, gpr.asm_name.upper()) + "\n"
 
         for gpr in general_ps:
             try:
@@ -874,7 +874,7 @@ class LLVMImporter:
                     LogLevel.WARNING,
                 )
             if gpr.name in HexagonArchInfo.CC_REGS["GPR_ret"]:
-                ret_regs += '"=R{}{}{}\\n"'.format(i, indent, gpr.asm_name) + "\n"
+                ret_regs += '"=R{}{}{}\\n"'.format(i, indent, gpr.asm_name.upper()) + "\n"
 
         p += arg_regs + ret_regs + "\n"
 
