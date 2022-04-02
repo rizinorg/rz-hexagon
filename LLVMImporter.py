@@ -737,22 +737,56 @@ class LLVMImporter:
 
     # RIZIN SPECIFIC
     def build_analysis_hexagon_c(self, path: str = "./rizin/librz/analysis/p/analysis_hexagon.c") -> None:
+        """Generates and writes the register profile.
+        Note that some registers share the same offsets. R0 and R1:0 are both based at offset 0.
+        """
         profile = self.get_alias_profile().splitlines(keepends=True)
-        offset = 0
+        tmp_regs = []  # Tmp register for RZIL
+        reg_offset = 0
+        offsets = {"IntRegs": 0}
+        offsets["CtrRegs"] = offsets["IntRegs"] + len(self.hardware_regs["IntRegs"]) * 32
+        offsets["GuestRegs"] = offsets["CtrRegs"] + len(self.hardware_regs["CtrRegs"]) * 32
+        offsets["HvxQR"] = offsets["GuestRegs"] + len(self.hardware_regs["GuestRegs"]) * 32
+        offsets["HvxVR"] = offsets["HvxQR"] + len(self.hardware_regs["HvxQR"]) * 128
+        offsets["SysRegs"] = offsets["HvxVR"] + len(self.hardware_regs["HvxVR"]) * 1024
+        offsets["TmpRegs"] = offsets["SysRegs"] + len(self.hardware_regs["SysRegs"]) * 32
 
-        for hw_reg_classes in self.hardware_regs:
-            if hw_reg_classes in [
+        for hw_reg_class in self.hardware_regs:
+            if hw_reg_class in [
                 "IntRegsLow8",
                 "GeneralSubRegs",
                 "GeneralDoubleLow8Regs",
                 "ModRegs",
             ]:
                 continue  # Those registers would only be duplicates.
+            if hw_reg_class in ["IntRegs", "DoubleRegs"]:
+                reg_offset = offsets["IntRegs"]
+            elif hw_reg_class in ["CtrRegs", "CtrRegs64"]:
+                reg_offset = offsets["CtrRegs"]
+            elif hw_reg_class == "PredRegs":
+                reg_offset = offsets["CtrRegs"] + (32 * 4)  # PredRegs = C4
+            elif hw_reg_class in ["GuestRegs", "GuestRegs64"]:
+                reg_offset = offsets["GuestRegs"]
+            elif hw_reg_class in ["HvxVR", "HvxWR", "HvxVQR"]:
+                reg_offset = offsets["HvxVR"]
+            elif hw_reg_class == "HvxQR":
+                reg_offset = offsets["HvxQR"]
+            elif hw_reg_class in ["SysRegs", "SysRegs64"]:
+                reg_offset = offsets["SysRegs"]
+            else:
+                raise ImplementationException(
+                    "Register profile can't be completed. Base for type {} missing.".format(hw_reg_class)
+                )
+
             hw_reg: HardwareRegister
-            for hw_reg in self.hardware_regs[hw_reg_classes].values():
-                profile.append(hw_reg.get_reg_profile(offset) + "\n")
-                offset += int((hw_reg.size / 8))
+            for hw_reg in {
+                k: v for k, v in sorted(self.hardware_regs[hw_reg_class].items(), key=lambda item: item[1])
+            }.values():
+                profile.append(hw_reg.get_reg_profile(reg_offset, False) + "\n")
+                tmp_regs.append(hw_reg.get_reg_profile(reg_offset + offsets["TmpRegs"], True) + "\n")
+                reg_offset += hw_reg.size if not (hw_reg.llvm_reg_class == "PredRegs") else 8
             profile.append("\n")
+        profile = profile + tmp_regs
         profile = profile[:-1]  # Remove line breaks
         profile[-1] = profile[-1][:-1] + ";\n"  # [:-1] to remove line break.
 
@@ -773,7 +807,7 @@ class LLVMImporter:
             begin="RZ_API char *get_reg_profile(RzAnalysis *analysis)",
             ret="return strdup(p);",
         )
-        code += "".join(tmp)
+        code += "\n" + "".join(tmp)
 
         with open("handwritten/analysis_hexagon_c/initialization.c") as initialization:
             set_pos_after_license(initialization)
@@ -795,8 +829,8 @@ class LLVMImporter:
         p += '"=SP{}R29\\n"'.format(indent) + "\n"
         p += '"=BP{}R30\\n"'.format(indent) + "\n"
         p += '"=LR{}R31\\n"'.format(indent) + "\n"
-        p += '"=SR{}usr\\n"'.format(indent) + "\n"
-        p += '"=SN{}r0\\n"'.format(indent) + "\n"
+        p += '"=SR{}C8\\n"'.format(indent) + "\n"
+        p += '"=SN{}R0\\n"'.format(indent) + "\n"
 
         arg_regs = ""
         ret_regs = ""

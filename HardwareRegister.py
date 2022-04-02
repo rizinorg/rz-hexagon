@@ -124,35 +124,38 @@ class HardwareRegister(Register):
         return code
 
     # RIZIN SPECIFIC
-    def get_reg_profile(self, offset: int) -> str:
+    def get_reg_profile(self, offset: int, is_tmp: bool) -> str:
         """Returns a one line register profile description.
 
         Parameters:
             offset: The offset into the memory where the register bits are stored.
+            is_tmp: True if a tmp register profile line should be generated (tmp regs are for RZIL VM).
         returns: "type name size mem-offset packed-size"
         """
         indent = PluginInfo.LINE_INDENT
+        aname = self.asm_name.upper()
         return '"{t}{i}{n}{i}.{s}{i}{o}{i}0\\n"'.format(
             t=self.get_rz_reg_type(),
-            n=self.asm_name.lower(),
-            s=self.size,
+            n=aname if not is_tmp else aname + "_tmp",
+            s=self.size if not (self.llvm_reg_class == "PredRegs") else 8,
             o=str(offset),
             i=indent,
         )
 
     # RIZIN SPECIFIC
     def get_rz_reg_type(self) -> str:
-        return "gpr"
-        # if self.is_vector:
-        #     return "vcr"
-        # elif self.is_control:
-        #     return "ctr"
-        # elif self.is_general:
-        #     return "gpr"
-        # elif self.is_guest:
-        #     return "gst"
-        # else:
-        #     raise ImplementationException("Rizin has no register type for the register {}".format(self.llvm_type))
+        if self.is_control and self.is_hvx:
+            return "vcc"
+        elif self.is_vector:
+            return "vc"
+        elif self.is_control:
+            return "ctr"
+        elif self.is_general or self.is_guest:
+            return "gpr"
+        elif self.is_system:
+            return "sys"
+        else:
+            raise ImplementationException("Rizin has no register type for the register {}".format(self.llvm_type))
 
     @staticmethod
     def register_class_name_to_upper(s: str) -> str:
