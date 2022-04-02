@@ -523,7 +523,9 @@ class LLVMImporter:
                     if "sprintf(signed_imm" in func_body and signed_imm_array not in func_header:
                         func_header += "char " + signed_imm_array + " = {0};"
                         func_header += 'bool sign_nums = rz_config_get_b(state->cfg, "plugins.hexagon.imm.sign");\n'
-            func_header += 'bool show_hash = rz_config_get_b(state->cfg, "plugins.hexagon.imm.hash");\n\n'
+            if c != 0xF:
+                # iclass 0xf instructions have no hash prefix.
+                func_header += 'bool show_hash = rz_config_get_b(state->cfg, "plugins.hexagon.imm.hash");\n\n'
             code += func_header + func_body + "}\n\n"
             main_function += "break;\n"
 
