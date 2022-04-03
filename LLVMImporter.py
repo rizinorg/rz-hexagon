@@ -445,7 +445,7 @@ class LLVMImporter:
             code += "".join(functions.readlines())
 
         main_function = (
-            "int hexagon_disasm_instruction(const RzAsm *rz_asm, HexState"
+            "int hexagon_disasm_instruction(HexState"
             " *state, const ut32 hi_u32, RZ_INOUT HexInsn *hi, HexPkt"
             " *pkt) {" + "ut32 addr = hi->addr;"
         )
@@ -477,19 +477,19 @@ class LLVMImporter:
         main_function += "}}"
 
         main_function += (
-            "if (hi_u32 != 0x00000000) {"
-            + "// DUPLEXES"
-            + "if ((({} >> 14) & 0x3) == 0) {{".format(var)
+            "if (hi_u32 != 0x00000000) {\n"
+            + "// DUPLEXES\n"
+            + "if ((({} >> 14) & 0x3) == 0) {{\n".format(var)
             + "switch (((({} >> 29) & 0xF) << 1) | (({} >> 13) & 1)) {{".format(var, var)
         )
 
         # Duplexes
         for c in range(0xF):  # Class 0xf is reserved yet.
-            main_function += "case 0x{:x}:".format(c)
-            main_function += "hexagon_disasm_duplex_0x{:x}(rz_asm, state, hi_u32, hi," " addr, pkt);".format(c)
+            main_function += "case 0x{:x}:\n".format(c)
+            main_function += "hexagon_disasm_duplex_0x{:x}(state, hi_u32, hi," " addr, pkt);\n".format(c)
             func_body = ""
             func_header = (
-                "void hexagon_disasm_duplex_0x{:x}(const RzAsm *rz_asm,"
+                "void hexagon_disasm_duplex_0x{:x}("
                 " HexState *state, const ut32 hi_u32, HexInsn *hi, const"
                 " ut32 addr, HexPkt *pkt) {{".format(c)
             )
@@ -498,20 +498,22 @@ class LLVMImporter:
                     func_body += indent_code_block(d_instr.get_instruction_init_in_c(), 1)
                     if "sprintf(signed_imm" in func_body and signed_imm_array not in func_header:
                         func_header += "char " + signed_imm_array + " = {0};"
-            code += func_header + func_body + "}"
-            main_function += "break;"
+                        func_header += 'bool sign_nums = rz_config_get_b(state->cfg, "plugins.hexagon.imm.sign");\n'
+            func_header += 'bool show_hash = rz_config_get_b(state->cfg, "plugins.hexagon.imm.hash");\n\n'
+            code += func_header + func_body + "}\n\n"
+            main_function += "break;\n"
 
         # Normal instructions
         # Brackets for switch, if
         main_function += "}}else {"
-        main_function += "switch (({} >> 28) & 0xF) {{".format(var)
+        main_function += "switch (({} >> 28) & 0xF) {{\n".format(var)
         for c in range(0x10):
-            main_function += "case 0x{:x}:".format(c)
-            main_function += "hexagon_disasm_0x{:x}(rz_asm, state, hi_u32, hi, addr," " pkt);".format(c)
+            main_function += "case 0x{:x}:\n".format(c)
+            main_function += "hexagon_disasm_0x{:x}(state, hi_u32, hi, addr," " pkt);\n".format(c)
 
             func_body = ""
             func_header = (
-                "void hexagon_disasm_0x{:x}(const RzAsm *rz_asm, HexState"
+                "void hexagon_disasm_0x{:x}(HexState"
                 " *state, const ut32 hi_u32, HexInsn *hi, const ut32 addr,"
                 " HexPkt *pkt) {{".format(c)
             )
@@ -520,8 +522,12 @@ class LLVMImporter:
                     func_body += indent_code_block(instr.get_instruction_init_in_c(), 1)
                     if "sprintf(signed_imm" in func_body and signed_imm_array not in func_header:
                         func_header += "char " + signed_imm_array + " = {0};"
-            code += func_header + func_body + "}"
-            main_function += "break;"
+                        func_header += 'bool sign_nums = rz_config_get_b(state->cfg, "plugins.hexagon.imm.sign");\n'
+            if c != 0xF:
+                # iclass 0xf instructions have no hash prefix.
+                func_header += 'bool show_hash = rz_config_get_b(state->cfg, "plugins.hexagon.imm.hash");\n\n'
+            code += func_header + func_body + "}\n\n"
+            main_function += "break;\n"
 
         # Closing brackets for switch, else, function
         main_function += "}}}"
@@ -552,15 +558,23 @@ class LLVMImporter:
         general_prefix = PluginInfo.GENERAL_ENUM_PREFIX
 
         code = get_generation_warning_c_code()
+        code += "\n"
         code += get_include_guard("hexagon.h")
+        code += "\n"
+
+        with open("handwritten/hexagon_h/includes.h") as includes:
+            set_pos_after_license(includes)
+            code += "".join(includes.readlines())
+        code += "\n"
 
         with open("handwritten/hexagon_h/typedefs.h") as typedefs:
             set_pos_after_license(typedefs)
             code += "".join(typedefs.readlines())
+        code += "\n"
 
         reg_class: str
         for reg_class in self.hardware_regs:
-            code += "typedef enum {"
+            code += "typedef enum {\n"
 
             hw_reg: HardwareRegister
             for hw_reg in sorted(
@@ -569,20 +583,22 @@ class LLVMImporter:
             ):
                 alias = ",".join(hw_reg.alias)
                 code += "{}{} = {},{}".format(
-                        indent,
-                        hw_reg.enum_name,
-                        hw_reg.hw_encoding,
-                        " // " + alias if alias != "" else "",
-                    )
-            code += "}} {}{}; // {}".format(
-                    general_prefix,
-                    HardwareRegister.register_class_name_to_upper(reg_class),
-                    reg_class,
+                    indent,
+                    hw_reg.enum_name,
+                    hw_reg.hw_encoding,
+                    " // " + alias + "\n" if alias != "" else "\n",
                 )
+            code += "}} {}{}; // {}\n\n".format(
+                general_prefix,
+                HardwareRegister.register_class_name_to_upper(reg_class),
+                reg_class,
+            )
 
         with open("handwritten/hexagon_h/macros.h") as macros:
             set_pos_after_license(macros)
             code += "".join(macros.readlines())
+        code += "\n"
+
         if len(self.reg_resolve_decl) == 0:
             raise ImplementationException(
                 "Register resolve declarations missing"
@@ -591,10 +607,11 @@ class LLVMImporter:
             )
         for decl in self.reg_resolve_decl:
             code += decl
+        code += "\n"
         with open("handwritten/hexagon_h/declarations.h") as decl:
             set_pos_after_license(decl)
             code += "".join(decl.readlines())
-        code += "#endif"
+        code += "\n#endif"
 
         if compare_src_to_old_src(code, path):
             self.unchanged_files.append(path)
@@ -628,9 +645,9 @@ class LLVMImporter:
             hw_reg: HardwareRegister
             for hw_reg in self.hardware_regs[reg_class].values():
                 code += 'case {}:return "{}";'.format(
-                        hw_reg.enum_name,
-                        hw_reg.asm_name.upper(),
-                    )
+                    hw_reg.enum_name,
+                    hw_reg.asm_name.upper(),
+                )
             code += "}}"
 
         with open("handwritten/hexagon_c/functions.c") as func:
