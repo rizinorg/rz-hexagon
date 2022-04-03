@@ -37,7 +37,6 @@ class Register(Operand):
         "llvm_syntax",
         "syntax_index",
         "is_hvx",
-        "alias",
         "is_general",
         "is_lower8",
         "sub_instr_encoding",
