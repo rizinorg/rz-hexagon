@@ -9,14 +9,13 @@ from enum import Enum
 from bitarray import bitarray
 
 import HexagonArchInfo
-import PluginInfo
 from ImplementationException import ImplementationException
 from helperFunctions import normalize_llvm_syntax
 
 
 class SparseMask:
     """
-    Generates the C code which extracts the Z bits of each operand.
+    Generates the C template which extracts the Z bits of each operand.
 
     Bits of an operand are scattered over the encoded instruction.
     Here we assemble them by using the mask of the field.
@@ -73,20 +72,8 @@ class SparseMask:
         self.masks = [(masks[i], bshift[i]) for i in range(masks_count)]
 
     @property
-    def c_expr(self):
-        """Returns: C code which does the bit masking + shifting."""
-        outstrings = []
-        off = 0
-        for (bits, shift) in self.masks:
-            outstrings.insert(0, "((({0:s}) & 0x{1:x}) >> {2:d})".format(
-                PluginInfo.HEX_INSTR_VAR_SYNTAX,
-                ((1 << bits) - 1) << shift,
-                shift - off))
-            off += bits
-        outstring = " | ".join(outstrings)
-        if "|" in outstring:
-            outstring = "({0:s})".format(outstring)
-        return outstring
+    def c_template(self):
+        return ", ".join([f"{{ 0x{bits:x}, {shift} }}" for bits, shift in self.masks])
 
 
 class OperandType(Enum):
@@ -127,8 +114,13 @@ class Operand:
         self.is_out_operand = False
         self.is_in_out_operand = False
 
-    @property
-    def c_opcode_parsing(self) -> str | None:
+    def c_template(self, force_extendable=False) -> str:
+        """Build an initializer for a HexOpTemplate struct in C, representing this operand.
+
+        Keyword arguments:
+        force_extenable -- For immediate operands, whether is_extendable should be considered
+                           to be true regardless of its stored value.
+        """
         raise ImplementationException("You need to override this method.")
 
     @staticmethod

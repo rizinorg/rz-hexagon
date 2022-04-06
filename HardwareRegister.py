@@ -73,23 +73,6 @@ class HardwareRegister(Register):
 
     # RIZIN SPECIFIC
     @staticmethod
-    def get_func_name_of_class(reg_class: str, is_n_reg: bool) -> str:
-        """
-        Generates the name of the function, which will return the register name for the given register number.
-        Args:
-            reg_class: The LLVM register class.
-            is_n_reg: True if the register is a Nt.new register, false otherwise.
-
-        Returns: Name of the function which resolves the register name for a given number.
-        """
-        if is_n_reg:
-            return "resolve_n_register"
-        reg_func = HardwareRegister.register_class_name_to_upper(reg_class).lower()
-        code = PluginInfo.GENERAL_ENUM_PREFIX.lower() + "get_" + reg_func
-        return code
-
-    # RIZIN SPECIFIC
-    @staticmethod
     def get_parse_code_reg_bits(reg_class: str, var: str) -> str:
         """Sub register bits are encoded in a space saving way in the instruction encoding.
         So we need to shift the bits around before we get the register ID. Here we generate the code for that.
@@ -156,13 +139,3 @@ class HardwareRegister(Register):
             return "sys"
         else:
             raise ImplementationException("Rizin has no register type for the register {}".format(self.llvm_type))
-
-    @staticmethod
-    def register_class_name_to_upper(s: str) -> str:
-        """Separates words by an '_' and sets them upper case: IntRegsLow8 -> INT_REGS_LOW8"""
-        matches = re.findall(r"[A-Z][a-z0-9]+", s)
-        for match in matches:
-            s = re.sub(match, match.upper() + "_", s)
-        if s[-1] == "_":
-            s = s[:-1]
-        return s

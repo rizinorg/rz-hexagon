@@ -7,7 +7,6 @@ from __future__ import annotations
 import re
 
 import HexagonArchInfo
-import PluginInfo
 from Operand import Operand
 from ImplementationException import ImplementationException
 from UnexpectedException import UnexpectedException
@@ -131,40 +130,24 @@ class Immediate(Operand):
             )
 
     # RIZIN SPECIFIC
-    @property
-    def c_opcode_parsing(self) -> str | None:
-        """Code which does specific parsing of the operand value on disassembly.
-        If the immediate is scaled, has specific attributes or gets extended, the c code for this is added here.
-        """
+    def c_template(self, force_extendable=False) -> str:
         if self.is_constant:
-            return None
-
-        indent = PluginInfo.LINE_INDENT
-        code = self.opcode_mask.c_expr
-        if self.scale > 0:
-            code += " << {}; // scaled {}\n".format(self.scale, self.llvm_syntax)
-            code += "{}hi->ops[{}].attr = HEX_OP_IMM_SCALED;\n".format(indent, self.syntax_index)
-            code += "{}hi->ops[{}].shift = {};\n".format(indent, self.syntax_index, self.scale)
-        else:
-            code += "; // {}\n".format(self.llvm_syntax)
-
+            return ".info = HEX_OP_TEMPLATE_TYPE_IMM_CONST"
+        info = ["HEX_OP_TEMPLATE_TYPE_IMM"]
         if self.is_signed:
-            op_bits = self.opcode_mask.full_mask.count(1)
-            if op_bits <= 0:
+            if self.opcode_mask.full_mask.count(1) <= 0:
                 raise ImplementationException(
                     "The bits encoding the immediate value should never be <="
-                    " 0!\nOperand type: {}, Mask: {}".format(self.llvm_type, str(self.opcode_mask.full_mask))
-                )
-            shift = (op_bits if self.scale <= 0 else op_bits + self.scale) - 1
-            code += "{}if (hi->ops[{}].op.imm & (1 << {})) {{ // signed\n".format(
-                indent, self.syntax_index, shift
-            )
-            code += "{}{}hi->ops[{}].op.imm |= (0xffffffffffffffff << {});\n{}}}\n".format(
-                indent, indent, self.syntax_index, shift, indent
-            )
-        if self.is_extendable:
-            code += (
-                "{}hex_extend_op(state, &(hi->ops[{}]), false, addr); //"
-                " Extension possible\n".format(indent, self.syntax_index)
-            )
-        return code
+                    " 0!\nOperand type: {}, Mask: {}".format(self.llvm_type, str(self.opcode_mask.full_mask)))
+            info.append("HEX_OP_TEMPLATE_FLAG_IMM_SIGNED")
+        if self.is_extendable or force_extendable:
+            info.append("HEX_OP_TEMPLATE_FLAG_IMM_EXTENDABLE")
+        if self.is_pc_relative:
+            info.append("HEX_OP_TEMPLATE_FLAG_IMM_PC_RELATIVE")
+        if self.total_width == 32:
+            info.append("HEX_OP_TEMPLATE_FLAG_IMM_DOUBLE_HASH")
+        info = " | ".join(info)
+        r = f".info = {info}, .masks = {{ {self.opcode_mask.c_template} }}"
+        if self.scale > 0:
+            r += f", .imm_scale = {self.scale}"
+        return r

@@ -83,7 +83,7 @@ typedef struct {
 	int shift; // Optional shift left is it true?
 	HexPktInfo pkt_info; // Packet related information. First/last instr., prefix and postfix for mnemonic etc.
 	ut8 op_count;
-	HexOp ops[6];
+	HexOp ops[HEX_MAX_OPERANDS];
 	char mnem_infix[128]; // The mnemonic without the pre- and postfix.
 	char mnem[192]; // Instruction mnemonic
 	ut32 addr; // Memory address the instruction is located.
