@@ -9,7 +9,7 @@ import PluginInfo
 from DuplexInstruction import DuplexInstruction
 from LLVMImporter import LLVMImporter
 from InstructionEncoding import InstructionEncoding
-from Operand import Operand, SparseMask
+from Operand import SparseMask
 from SubInstruction import SubInstruction
 
 
@@ -92,18 +92,16 @@ class TestInstructionEncoding(unittest.TestCase):
 
     # RIZIN SPECIFIC
     def test_shifting_c_code(self) -> None:
-        hex_insn = PluginInfo.HEX_INSTR_VAR_SYNTAX
-
         self.assertEqual(
-            "((({}) & 0x1fe0) >> 5)".format(hex_insn),
-            SparseMask(InstructionEncoding(self.json["A2_combineii"]["Inst"]).operand_masks["Ii"]).c_expr,
+            "{ 0x8, 5 }",
+            SparseMask(InstructionEncoding(self.json["A2_combineii"]["Inst"]).operand_masks["Ii"]).c_template,
         )
         self.assertEqual(
-            "(((({}) & 0x7f0000) >> 15) | ((({}) & 0x2000) >> 13))".format(hex_insn, hex_insn),
-            SparseMask(InstructionEncoding(self.json["A2_combineii"]["Inst"]).operand_masks["II"]).c_expr,
+            "{ 0x1, 13 }, { 0x7, 16 }",
+            SparseMask(InstructionEncoding(self.json["A2_combineii"]["Inst"]).operand_masks["II"]).c_template,
         )
 
         self.assertEqual(
-            "(((({}) & 0xfff0000) >> 2) | ((({}) & 0x3fff) >> 0))".format(hex_insn, hex_insn),
-            SparseMask(InstructionEncoding(self.json["A4_ext"]["Inst"]).operand_masks["Ii"]).c_expr,
+            "{ 0xe, 0 }, { 0xc, 16 }",
+            SparseMask(InstructionEncoding(self.json["A4_ext"]["Inst"]).operand_masks["Ii"]).c_template,
         )

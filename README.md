@@ -126,6 +126,6 @@ So here are some good to know points for porting:
 # Contributors
 
 * Rot127
-
 * Anton Kochkov
+* Florian Märkl
 

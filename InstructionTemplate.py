@@ -7,14 +7,14 @@ import re
 
 import HexagonArchInfo
 import PluginInfo
-import Register
-from HardwareRegister import HardwareRegister
 from Immediate import Immediate
 from ImplementationException import ImplementationException
 from InstructionEncoding import InstructionEncoding
 from Operand import Operand, OperandType
 from UnexpectedException import UnexpectedException
 from helperFunctions import log, LogLevel
+
+PARSE_BITS_MASK_CONST = 0xc000  # currently, this is the same for all instructions, so no need to store it explicitly
 
 
 class LoopMembership(IntFlag):
@@ -178,170 +178,59 @@ class InstructionTemplate:
 
         return -1
 
-    # RIZIN SPECIFIC
-    def get_instruction_init_in_c(self) -> str:
-        """Returns one big c code block which parses one binary instruction. The blocks are used in hexagon_disas.c"""
-
+    def get_template_in_c(self) -> str:
+        """Returns an initializer for the HexInsnTemplate struct representing this instruction"""
+        code = "{\n"
+        code += f"// {self.encoding.docs_mask} | {self.syntax}\n"
+        code += f".encoding = {{ .mask = 0x{self.encoding.instruction_mask:x}, .op = 0x{self.encoding.op_code:x} }},\n"
+        code += f".id = {self.plugin_name},\n"
+        if self.encoding.parse_bits_mask != PARSE_BITS_MASK_CONST:
+            raise ImplementationException(
+                f"Unknown parse_bits_mask {self.encoding.parse_bits_mask} != {PARSE_BITS_MASK_CONST}")
+        op_templates = []
+        last_syntax_off = 0
+        syntax = self.syntax
         only_one_imm_op = 1 == len([op for op in self.operands.values() if op.type == OperandType.IMMEDIATE])
-
-        indent = PluginInfo.LINE_INDENT
-        var = PluginInfo.HEX_INSTR_VAR_SYNTAX
-        code = ""
-        code += "if (({} & 0x{:x}) == 0x{:x}) {{\n".format(
-            var,
-            self.encoding.instruction_mask,
-            self.encoding.op_code,
-        )
-        code += "// {} | {}\n".format(self.encoding.docs_mask, self.syntax)
-        code += "hi->instruction = {};\n".format(self.plugin_name)
-        code += "hi->opcode = hi_u32;\n"
-        code += "hi->parse_bits = (({}) & 0x{:x}) >> 14;\n".format(var, self.encoding.parse_bits_mask)
-        code += f"hi->pred = {self.get_predicate()};"
-
-        if self.is_duplex:
-            code += "{}hi->duplex = {};\n".format(indent, str(self.is_duplex).lower())
-
-        code += "hi->op_count = {}; // length of hi->ops\n".format(len(self.operands))
-        mnemonic = 'sprintf(hi->mnem_infix, "{}"'.format(self.syntax)
-        sprint_src = ""
         for op in sorted(self.operands.values(), key=lambda item: item.syntax_index):
             if op.type == OperandType.IMMEDIATE and op.is_constant:
-                mnemonic = re.sub(r"[nN]1", r"-1", mnemonic)
-                code += "hi->ops[{}].type = {}; // Constant -1\n".format(op.syntax_index, op.type.value)
-                code += "hi->ops[{}].op.imm = {};\n".format(op.syntax_index, -1)
-                continue
-
-            code += "{}hi->ops[{}].type = {};\n".format(indent, op.syntax_index, op.type.value)
-
-            if op.type == OperandType.REGISTER:
-                op: Register
-                code += "{}hi->ops[{}].op.reg = {}".format(indent, op.syntax_index, op.c_opcode_parsing)
-                if op.is_out_operand:
-                    code += "hi->ops[{}].attr |= HEX_OP_REG_OUT;\n".format(op.syntax_index)
-                if op.is_double:
-                    code += "hi->ops[{}].attr |= HEX_OP_REG_PAIR;\n".format(op.syntax_index)
-                if op.is_quadruple:
-                    code += "hi->ops[{}].attr |= HEX_OP_REG_QUADRUPLE;\n".format(op.syntax_index)
-
-                mnemonic = re.sub(op.explicit_syntax, "%s", mnemonic, count=1)
-                src = "hi->ops[{}].op.reg".format(op.syntax_index)
-                if op.is_n_reg:
-                    sprint_src += ", {}({}({}, hi->addr, pkt), {})".format(
-                        HardwareRegister.get_func_name_of_class(op.llvm_type, False),
-                        HardwareRegister.get_func_name_of_class(op.llvm_type, True),
-                        src,
-                        "print_reg_alias",
-                    )
-                else:
-                    sprint_src += ", {}({}, {})".format(
-                        HardwareRegister.get_func_name_of_class(op.llvm_type, False),
-                        src,
-                        "print_reg_alias",
-                    )
-
-            elif op.type == OperandType.IMMEDIATE and not op.is_constant:
-                code += "{}hi->ops[{}].op.imm = {}".format(indent, op.syntax_index, op.c_opcode_parsing)
-                h = "#" if op.total_width != 32 else "##"
-                # If there is only one immediate operand in the instruction extend it anyways.
-                # LLVM marks some operands as not extendable, although they are.
-                if only_one_imm_op and not op.is_extendable:
-                    code += (
-                        "hex_extend_op(state, &(hi->ops[{}]), false, addr); //"
-                        " Only immediate, extension possible\n".format(op.syntax_index)
-                    )
-
-                if op.is_pc_relative:
-                    src = ", pkt->pkt_addr + (st32) hi->ops[{}].op.imm".format(op.syntax_index)
-                    mnemonic = re.sub(op.explicit_syntax, "0x%x", mnemonic)
-                elif op.is_signed:
-                    code += "if (sign_nums && ((st32) hi->ops[{}].op.imm) <" " 0) {{\n".format(op.syntax_index)
-                    code += (
-                        "char tmp[28] = {0};"
-                        + "rz_hex_ut2st_str(hi->ops[{}].op.imm, tmp, 28);".format(op.syntax_index)
-                        + 'sprintf(signed_imm[{}], "%s%s", '.format(op.syntax_index)
-                        + 'show_hash ? "'
-                        + h
-                        + '" : "", '
-                        + "tmp);"
-                    )
-                    code += "} else {\n"
-
-                    code += (
-                        'sprintf(signed_imm[{}], "%s0x%x", '.format(op.syntax_index)
-                        + 'show_hash ? "'
-                        + h
-                        + '" : "", '
-                        + "(st32) hi->ops[{}].op.imm);\n".format(op.syntax_index)
-                    )
-                    code += "}\n"
-
-                    src = ", signed_imm[{}]".format(op.syntax_index)
-                    mnemonic = re.sub(r"#{0,2}" + op.explicit_syntax, "%s", mnemonic)
-                else:
-                    mnemonic = re.sub(op.explicit_syntax, "%s0x%x", mnemonic)
-                    src = ', show_hash ? "' + h + '" : "" ,(ut32) hi->ops[{}].op.imm'.format(op.syntax_index)
-
-                sprint_src += src
+                pattern = r"[nN]1"
             else:
-                raise ImplementationException("Unhandled operand: {}".format(op.syntax))
-
-        code += self.get_analysis_code()
-        mnemonic = self.register_names_to_upper(mnemonic)
-
-        code += mnemonic + sprint_src + ");\n"
-        code += 'sprintf(hi->mnem, "%s%s%s", hi->pkt_info.mnem_prefix,' " hi->mnem_infix, hi->pkt_info.mnem_postfix);\n"
-        if self.name == "A4_ext":
-            code += "{}hex_extend_op(state, &(hi->ops[0]), true, addr);\n".format(indent)
-        code += "{}return;\n}}\n".format(indent)
-        # log("\n" + code)
-
-        return code
-
-    # RIZIN SPECIFIC
-    def get_analysis_code(self):
-        code = "// Set RzAnalysisOp values\n"
-        code += "hi->ana_op.addr = hi->addr;\n"
-        code += "hi->ana_op.id = hi->instruction;\n"
-        code += "hi->ana_op.size = 4;\n"
-        code += "hi->ana_op.cond = {};\n".format(self.get_rz_cond_type())
-        code += self.get_rizin_op_type_assignment()
-        if self.has_imm_jmp_target():
-            if not self.is_call and not self.is_predicated:
-                code += "pkt->is_eob = true;\n"  # Marks potentially end of block
-
-            index = self.get_jmp_operand_syntax_index()
-            if index < 0:
-                raise ImplementationException(
-                    "No PC relative operand given. But the jump needs one." "{}".format(self.llvm_syntax)
-                )
-
-            code += "hi->ana_op.jump = pkt->pkt_addr + (st32)" " hi->ops[{}].op.imm;\n".format(index)
-            if self.is_predicated:
-                code += "hi->ana_op.fail = hi->ana_op.addr + 4;\n"
-            if self.is_loop_begin:
-                if self.loop_member == LoopMembership.HEX_LOOP_0:
-                    code += "pkt->hw_loop0_addr = hi->ana_op.jump;"
-                if self.loop_member == LoopMembership.HEX_LOOP_1:
-                    code += "pkt->hw_loop1_addr = hi->ana_op.jump;"
-
-        keys = list(self.operands)
-        for k in range(6):  # RzAnalysisOp.analysis_vals has a size of 8.
-            if k < len(self.operands.values()):
-                o = self.operands[keys[k]]
-                if self.has_imm_jmp_target() and o.type == OperandType.IMMEDIATE:
-                    code += "hi->ana_op.val = hi->ana_op.jump;\n"
-                    code += "hi->ana_op.analysis_vals[{}].imm = hi->ana_op.jump;\n".format(o.syntax_index)
-                elif self.plugin_name == "HEX_INS_J2_JUMPR":
-                    # jumpr Rs is sometimes used instead of jumpr r31
-                    code += "hi->ana_op.analysis_vals[0].plugin_specific = hi->ops[0].op.reg;"
-                    code += "// jumpr Rs is sometimes used as jumpr R31. "
-                    code += "Block analysis needs to check it to recognize if this jump is a return.\n"
-                else:
-                    if o.type == OperandType.IMMEDIATE:
-                        code += "hi->ana_op.analysis_vals[{si}].imm =" " hi->ops[{si}].op.imm;\n".format(
-                            si=o.syntax_index
-                        )
-
+                pattern = op.explicit_syntax
+            inject = re.search(pattern, syntax)
+            if inject is None:
+                raise ImplementationException(f"Operand pattern {pattern} not found in syntax {syntax}")
+            elif inject.start() < last_syntax_off:
+                raise ImplementationException(f"Operand pattern {pattern} in syntax {syntax} out of order")
+            syntax_off = inject.start()
+            syntax = syntax[:inject.start()] + syntax[inject.end():]
+            last_syntax_off = syntax_off
+            tpl = f"{{ {op.c_template(force_extendable=only_one_imm_op)}, .syntax = {syntax_off} }}"
+            op_templates.append(tpl)
+        syntax = self.register_names_to_upper(syntax)
+        if len(op_templates) != 0:
+            ops_code = ",\n".join(op_templates)
+            code += f".ops = {{\n{ops_code}, }},\n"
+        code += f".pred = {self.get_predicate()},"
+        code += f".cond = {self.get_rz_cond_type()},\n"
+        code += f".type = {self.c_rz_op_type},\n"
+        code += f".syntax = \"{syntax}\",\n"
+        flags = []
+        if self.is_call:
+            flags.append("HEX_INSN_TEMPLATE_FLAG_CALL")
+        if self.is_predicated:
+            flags.append("HEX_INSN_TEMPLATE_FLAG_PREDICATED")
+        if self.has_jump_target:
+            flags.append("HEX_INSN_TEMPLATE_FLAG_HAS_JMP_TGT")
+        if self.is_loop_begin:
+            flags.append("HEX_INSN_TEMPLATE_FLAG_LOOP_BEGIN")
+        if self.loop_member == LoopMembership.HEX_LOOP_0:
+            flags.append("HEX_INSN_TEMPLATE_FLAG_LOOP_0")
+        elif self.loop_member == LoopMembership.HEX_LOOP_1:
+            flags.append("HEX_INSN_TEMPLATE_FLAG_LOOP_1")
+        if flags != []:
+            flags = " | ".join(flags)
+            code += f".flags = {flags},\n"
+        code += "}"
         return code
 
     # RIZIN SPECIFIC
@@ -416,23 +305,13 @@ class InstructionTemplate:
         return "RZ_ANALYSIS_OP_TYPE_NULL"
 
     # RIZIN SPECIFIC
-    def get_rizin_op_type_assignment(self) -> str:
-        """Returns the c code to assign the instruction type to the RzAnalysisOp.type member."""
-        op_type = self.c_rz_op_type
-        if op_type == "RZ_ANALYSIS_OP_TYPE_CJMP":
-            # Remove the teneray expression since the instruction type is always CJMP.
-            return "hi->ana_op.type = RZ_ANALYSIS_OP_TYPE_CJMP;"
-        return f"hi->ana_op.type = hi->ana_op.prefix == RZ_ANALYSIS_OP_PREFIX_HWLOOP_END" \
-            f" ? RZ_ANALYSIS_OP_TYPE_CJMP : {op_type};"
-
-    # RIZIN SPECIFIC
     @staticmethod
     def register_names_to_upper(mnemonic: str) -> str:
         """The syntax can contain lower case register names. Here we convert them to upper case to enable syntax
         highlighting in rizin.
         """
         for reg_name in HexagonArchInfo.ALL_REG_NAMES:
-            if re.search(r"[^a-zA-Z]" + reg_name.lower(), mnemonic):
+            if re.search(r"[^a-zA-Z]" + reg_name.lower(), mnemonic) or mnemonic.startswith(reg_name.lower()):
                 mnemonic = re.sub(reg_name.lower(), reg_name.upper(), mnemonic)
         return mnemonic
 

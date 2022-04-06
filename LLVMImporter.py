@@ -20,7 +20,6 @@ from helperFunctions import (
     log,
     LogLevel,
     get_generation_warning_c_code,
-    indent_code_block,
     unfold_llvm_sequence,
     get_include_guard,
     make_c_block,
@@ -31,6 +30,7 @@ from helperFunctions import (
 )
 import PluginInfo
 import HexagonArchInfo
+from InstructionTemplate import PARSE_BITS_MASK_CONST
 
 
 class LLVMImporter:
@@ -431,120 +431,44 @@ class LLVMImporter:
 
     # RIZIN SPECIFIC
     def build_hexagon_disas_c(self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon_disas.c") -> None:
-        var = PluginInfo.HEX_INSTR_VAR_SYNTAX
-        signed_imm_array = "signed_imm[{}][32]".format(PluginInfo.MAX_OPERANDS)
-
         code = get_generation_warning_c_code()
 
-        with open("handwritten/hexagon_disas_c/include.c") as include:
-            set_pos_after_license(include)
-            code += "".join(include.readlines())
+        def include_file(filename):
+            with open(filename) as include:
+                set_pos_after_license(include)
+                return "".join(include.readlines())
 
-        with open("handwritten/hexagon_disas_c/functions.c") as functions:
-            set_pos_after_license(functions)
-            code += "".join(functions.readlines())
+        code += include_file("handwritten/hexagon_disas_c/include.c")
+        code += include_file("handwritten/hexagon_disas_c/types.c")
 
-        main_function = (
-            "int hexagon_disasm_instruction(HexState"
-            " *state, const ut32 hi_u32, RZ_INOUT HexInsn *hi, HexPkt"
-            " *pkt) {" + "ut32 addr = hi->addr;"
-        )
-
-        main_function += "if (hi->pkt_info.last_insn) {"
-        main_function += "switch (hex_get_loop_flag(pkt)) {" + "default: break;"
-        main_function += (
-            "case HEX_LOOP_01:"
-            + "hi->ana_op.prefix = RZ_ANALYSIS_OP_PREFIX_HWLOOP_END;"
-            + "hi->ana_op.fail = pkt->hw_loop0_addr;"
-            + "hi->ana_op.jump = pkt->hw_loop1_addr;"
-            + "hi->ana_op.val = hi->ana_op.jump;"
-            + "break;"
-        )
-        main_function += (
-            "case HEX_LOOP_0:"
-            + "hi->ana_op.prefix = RZ_ANALYSIS_OP_PREFIX_HWLOOP_END;"
-            + "hi->ana_op.jump = pkt->hw_loop0_addr;"
-            + "hi->ana_op.val = hi->ana_op.jump;"
-            + "break;"
-        )
-        main_function += (
-            "case HEX_LOOP_1:"
-            + "hi->ana_op.prefix = RZ_ANALYSIS_OP_PREFIX_HWLOOP_END;"
-            + "hi->ana_op.jump = pkt->hw_loop1_addr;"
-            + "hi->ana_op.val = hi->ana_op.jump;"
-            + "break;"
-        )
-        main_function += "}}"
-
-        main_function += (
-            "if (hi_u32 != 0x00000000) {\n"
-            + "// DUPLEXES\n"
-            + "if ((({} >> 14) & 0x3) == 0) {{\n".format(var)
-            + "switch (((({} >> 29) & 0xF) << 1) | (({} >> 13) & 1)) {{".format(var, var)
-        )
+        templates_code = "\n\n"
 
         # Duplexes
         for c in range(0xF):  # Class 0xf is reserved yet.
-            main_function += "case 0x{:x}:\n".format(c)
-            main_function += "hexagon_disasm_duplex_0x{:x}(state, hi_u32, hi," " addr, pkt);\n".format(c)
-            func_body = ""
-            func_header = (
-                "void hexagon_disasm_duplex_0x{:x}("
-                " HexState *state, const ut32 hi_u32, HexInsn *hi, const"
-                " ut32 addr, HexPkt *pkt) {{".format(c)
-            )
+            templates_code += f"static const HexInsnTemplate templates_duplex_0x{c:x}[] = {{\n"
             for d_instr in self.duplex_instructions.values():
                 if d_instr.encoding.get_i_class() == c:
-                    func_body += indent_code_block(d_instr.get_instruction_init_in_c(), 1)
-                    if "sprintf(signed_imm" in func_body and signed_imm_array not in func_header:
-                        func_header += "char " + signed_imm_array + " = {0};"
-                        func_header += 'bool sign_nums = rz_config_get_b(state->cfg, "plugins.hexagon.imm.sign");\n'
-            func_header += 'bool print_reg_alias = rz_config_get_b(state->cfg, "plugins.hexagon.reg.alias");\n'
-            func_header += 'bool show_hash = rz_config_get_b(state->cfg, "plugins.hexagon.imm.hash");\n\n'
-            code += func_header + func_body + "}\n\n"
-            main_function += "break;\n"
+                    templates_code += d_instr.get_template_in_c() + ","
+            templates_code += "{ { 0 } }, };\n\n"
+
+        templates_code += "static const HexInsnTemplate *templates_duplex[] = {\n"
+        templates_code += ",\n".join([f"templates_duplex_0x{c:x}" for c in range(0xf)])
+        templates_code += "};\n\n"
 
         # Normal instructions
-        # Brackets for switch, if
-        main_function += "}}else {"
-        main_function += "switch (({} >> 28) & 0xF) {{\n".format(var)
         for c in range(0x10):
-            main_function += "case 0x{:x}:\n".format(c)
-            main_function += "hexagon_disasm_0x{:x}(state, hi_u32, hi, addr," " pkt);\n".format(c)
-
-            func_body = ""
-            func_header = (
-                "void hexagon_disasm_0x{:x}(HexState"
-                " *state, const ut32 hi_u32, HexInsn *hi, const ut32 addr,"
-                " HexPkt *pkt) {{".format(c)
-            )
+            templates_code += f"static const HexInsnTemplate templates_normal_0x{c:x}[] = {{\n"
             for instr in self.normal_instructions.values():
                 if instr.encoding.get_i_class() == c:
-                    func_body += indent_code_block(instr.get_instruction_init_in_c(), 1)
-                    if "sprintf(signed_imm" in func_body and signed_imm_array not in func_header:
-                        func_header += "char " + signed_imm_array + " = {0};"
-                        func_header += 'bool sign_nums = rz_config_get_b(state->cfg, "plugins.hexagon.imm.sign");\n'
-            if c != 0:
-                # immext() and invalid have no registers.
-                func_header += 'bool print_reg_alias = rz_config_get_b(state->cfg, "plugins.hexagon.reg.alias");\n'
-            if c != 0xF:
-                # iclass 0xf instructions have no hash prefix.
-                func_header += 'bool show_hash = rz_config_get_b(state->cfg, "plugins.hexagon.imm.hash");\n\n'
-            code += func_header + func_body + "}\n\n"
-            main_function += "break;\n"
+                    templates_code += instr.get_template_in_c() + ","
+            templates_code += "{ { 0 } }, };\n\n"
 
-        # Closing brackets for switch, else, function
-        main_function += "}}}"
-        main_function += "if (pkt->is_eob && is_last_instr(hi->parse_bits)) {" + "hi->ana_op.eob = true;}"
-        main_function += (
-            "if (hi->instruction == HEX_INS_INVALID_DECODE) {"
-            + "hi->parse_bits = ((hi_u32) & 0xc000) >> 14;"
-            + "hi->ana_op.type = RZ_ANALYSIS_OP_TYPE_ILL;"
-            + 'sprintf(hi->mnem_infix, "invalid");'
-            + 'sprintf(hi->mnem, "%s%s%s", hi->pkt_info.mnem_prefix,'
-            " hi->mnem_infix, hi->pkt_info.mnem_postfix);" + "}" + "return 4;}"
-        )
-        code += main_function
+        templates_code += "static const HexInsnTemplate *templates_normal[] = {\n"
+        templates_code += ",\n".join([f"templates_normal_0x{c:x}" for c in range(0x10)])
+        templates_code += "};\n\n"
+
+        code += templates_code
+        code += include_file("handwritten/hexagon_disas_c/functions.c")
 
         if compare_src_to_old_src(code, path):
             self.unchanged_files.append(path)
@@ -571,10 +495,18 @@ class LLVMImporter:
             code += "".join(includes.readlines())
         code += "\n"
 
+        code += f"#define {PluginInfo.GENERAL_ENUM_PREFIX}MAX_OPERANDS {PluginInfo.MAX_OPERANDS}\n"
+        code += f"#define {PluginInfo.GENERAL_ENUM_PREFIX}PARSE_BITS_MASK 0x{PARSE_BITS_MASK_CONST:x}\n\n"
         with open("handwritten/hexagon_h/typedefs.h") as typedefs:
             set_pos_after_license(typedefs)
             code += "".join(typedefs.readlines())
         code += "\n"
+
+        code += "typedef enum {\n"
+        code += ",\n".join([
+            HardwareRegister.get_enum_item_of_class(reg_class)
+            for reg_class in self.hardware_regs])
+        code += "} HexRegClass;\n\n"
 
         reg_class: str
         for reg_class in self.hardware_regs:
@@ -627,6 +559,7 @@ class LLVMImporter:
 
     # RIZIN SPECIFIC
     def build_hexagon_c(self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon.c") -> None:
+        general_prefix = PluginInfo.GENERAL_ENUM_PREFIX
         code = get_generation_warning_c_code()
         with open("handwritten/hexagon_c/include.c") as include:
             set_pos_after_license(include)
@@ -655,6 +588,19 @@ class LLVMImporter:
                     alias_choice if alias != "" else '"' + hw_reg.asm_name.upper() + '"',
                 )
             code += "}}\n"
+
+        reg_in_cls_decl = f"char *{general_prefix.lower()}" \
+            "get_reg_in_class(HexRegClass cls, int opcode_reg, bool get_alias)"
+        self.reg_resolve_decl.append(f"{reg_in_cls_decl};")
+        code += f"{reg_in_cls_decl} {{\n"
+        code += "switch (cls) {\n"
+        for reg_class in self.hardware_regs:
+            code += f"case {HardwareRegister.get_enum_item_of_class(reg_class)}:\n"
+            code += f"return {HardwareRegister.get_func_name_of_class(reg_class, False)}(opcode_reg, get_alias);\n"
+        code += "default:\n"
+        code += "return NULL;\n"
+        code += "}\n"
+        code += "}\n\n"
 
         with open("handwritten/hexagon_c/functions.c") as func:
             set_pos_after_license(func)

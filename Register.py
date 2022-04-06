@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import re
 
+import PluginInfo
 from ImplementationException import ImplementationException
 from Operand import Operand
 
@@ -154,8 +155,56 @@ class Register(Operand):
             raise ImplementationException("Unhandled register type: {}".format(self.llvm_reg_class))
 
     # RIZIN SPECIFIC
-    @property
-    def c_opcode_parsing(self) -> str | None:
-        """Code which does specific parsing of the operand value on disassembly.
+    def c_template(self, force_extendable=False) -> str:
+        info = ["HEX_OP_TEMPLATE_TYPE_REG"]
+        if self.is_out_operand:
+            info.append("HEX_OP_TEMPLATE_FLAG_REG_OUT")
+        if self.is_double:
+            info.append("HEX_OP_TEMPLATE_FLAG_REG_PAIR")
+        if self.is_quadruple:
+            info.append("HEX_OP_TEMPLATE_FLAG_REG_QUADRUPLE")
+        if self.is_n_reg:
+            info.append("HEX_OP_TEMPLATE_FLAG_REG_N_REG")
+        info = " | ".join(info)
+        return f".info = {info}, .masks = {{ {self.opcode_mask.c_template} }}, " + \
+            f".reg_cls = {Register.get_enum_item_of_class(self.llvm_type)}"
+
+    @staticmethod
+    def register_class_name_to_upper(s: str) -> str:
+        """Separates words by an '_' and sets them upper case: IntRegsLow8 -> INT_REGS_LOW8"""
+        matches = re.findall(r"[A-Z][a-z0-9]+", s)
+        for match in matches:
+            s = re.sub(match, match.upper() + "_", s)
+        if s[-1] == "_":
+            s = s[:-1]
+        return s
+
+    # RIZIN SPECIFIC
+    @staticmethod
+    def get_func_name_of_class(reg_class: str, is_n_reg: bool) -> str:
         """
-        return "{}; // {}\n".format(self.opcode_mask.c_expr, self.llvm_syntax)
+        Generates the name of the function, which will return the register name for the given register number.
+        Args:
+            reg_class: The LLVM register class.
+            is_n_reg: True if the register is a Nt.new register, false otherwise.
+
+        Returns: Name of the function which resolves the register name for a given number.
+        """
+        if is_n_reg:
+            return "resolve_n_register"
+        reg_func = Register.register_class_name_to_upper(reg_class).lower()
+        code = PluginInfo.GENERAL_ENUM_PREFIX.lower() + "get_" + reg_func
+        return code
+
+    # RIZIN SPECIFIC
+    @staticmethod
+    def get_enum_item_of_class(reg_class: str) -> str:
+        """
+        Generates the name of the HexRegClass member corresponding to the given register class.
+        Args:
+            reg_class: The LLVM register class.
+
+        Returns: e.g. HEX_REG_CLASS_INT_REGS
+        """
+        reg_name = Register.register_class_name_to_upper(reg_class)
+        return f"{PluginInfo.GENERAL_ENUM_PREFIX}REG_CLASS_{reg_name}"
