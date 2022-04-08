@@ -9,7 +9,7 @@ import PluginInfo
 from Immediate import Immediate
 from ImplementationException import ImplementationException
 from InstructionTemplate import InstructionTemplate, LoopMembership
-from Operand import Operand, OperandType
+from Operand import Operand, OperandType, SparseMask
 from InstructionEncoding import InstructionEncoding
 from Register import Register
 from helperFunctions import normalize_llvm_syntax, list_to_int
@@ -169,8 +169,7 @@ class Instruction(InstructionTemplate):
                     mask = self.encoding.operand_masks[op_name[:-2]]  # Ends with "in"
                 else:
                     mask = self.encoding.operand_masks[op_name]
-                operand.opcode_mask = mask
-                operand.add_code_for_opcode_parsing(Operand.make_sparse_mask(mask))
+                operand.opcode_mask = SparseMask(mask)
 
             # On the fly check whether the new values have been assigned correctly.
             if op_name + ".new" in self.llvm_syntax:
