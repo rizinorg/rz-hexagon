@@ -196,7 +196,7 @@ class InstructionTemplate:
         code += "hi->instruction = {};\n".format(self.plugin_name)
         code += "hi->opcode = hi_u32;\n"
         code += "hi->parse_bits = (({}) & 0x{:x}) >> 14;\n".format(var, self.encoding.parse_bits_mask)
-        code += self.get_predicate_init()
+        code += f"hi->pred = {self.get_predicate()};"
 
         if self.is_duplex:
             code += "{}hi->duplex = {};\n".format(indent, str(self.is_duplex).lower())
@@ -345,22 +345,18 @@ class InstructionTemplate:
         return code
 
     # RIZIN SPECIFIC
-    def get_predicate_init(self) -> str:
-        code = "hi->pred = "
+    def get_predicate(self) -> str:
         if not self.is_predicated:
-            code += "HEX_NOPRED;\n"
-            return code
-
-        if self.is_pred_false:
-            code += "| HEX_PRED_FALSE"
-        if self.is_pred_true:
-            code += "| HEX_PRED_TRUE"
-        if self.is_pred_new:
-            code += "| HEX_PRED_NEW"
-        if "= |" in code:
-            code = re.sub(r"= \|", "= ", code)
-        code += ";\n"
-        return code
+            pred = ["HEX_NOPRED"]
+        else:
+            pred = []
+            if self.is_pred_false:
+                pred.append("HEX_PRED_FALSE")
+            if self.is_pred_true:
+                pred.append("HEX_PRED_TRUE")
+            if self.is_pred_new:
+                pred.append("HEX_PRED_NEW")
+        return " | ".join(pred)
 
     # RIZIN SPECIFIC
     def get_rz_cond_type(self):
