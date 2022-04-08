@@ -2,6 +2,8 @@
 #
 # SPDX-License-Identifier: LGPL-3.0-only
 
+from __future__ import annotations
+
 import re
 
 from ImplementationException import ImplementationException
@@ -152,8 +154,8 @@ class Register(Operand):
             raise ImplementationException("Unhandled register type: {}".format(self.llvm_reg_class))
 
     # RIZIN SPECIFIC
-    def add_code_for_opcode_parsing(self, parsing_code: str) -> None:
-        """Overrides method of parent class. Here we add code which does specific parsing of the operand value on
-        disassembly.
+    @property
+    def c_opcode_parsing(self) -> str | None:
+        """Code which does specific parsing of the operand value on disassembly.
         """
-        self.code_opcode_parsing = parsing_code + "; // {}\n".format(self.llvm_syntax)
+        return "{}; // {}\n".format(self.opcode_mask.c_expr, self.llvm_syntax)

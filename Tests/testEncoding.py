@@ -9,7 +9,7 @@ import PluginInfo
 from DuplexInstruction import DuplexInstruction
 from LLVMImporter import LLVMImporter
 from InstructionEncoding import InstructionEncoding
-from Operand import Operand
+from Operand import Operand, SparseMask
 from SubInstruction import SubInstruction
 
 
@@ -96,14 +96,14 @@ class TestInstructionEncoding(unittest.TestCase):
 
         self.assertEqual(
             "((({}) & 0x1fe0) >> 5)".format(hex_insn),
-            Operand.make_sparse_mask(InstructionEncoding(self.json["A2_combineii"]["Inst"]).operand_masks["Ii"]),
+            SparseMask(InstructionEncoding(self.json["A2_combineii"]["Inst"]).operand_masks["Ii"]).c_expr,
         )
         self.assertEqual(
             "(((({}) & 0x7f0000) >> 15) | ((({}) & 0x2000) >> 13))".format(hex_insn, hex_insn),
-            Operand.make_sparse_mask(InstructionEncoding(self.json["A2_combineii"]["Inst"]).operand_masks["II"]),
+            SparseMask(InstructionEncoding(self.json["A2_combineii"]["Inst"]).operand_masks["II"]).c_expr,
         )
 
         self.assertEqual(
             "(((({}) & 0xfff0000) >> 2) | ((({}) & 0x3fff) >> 0))".format(hex_insn, hex_insn),
-            Operand.make_sparse_mask(InstructionEncoding(self.json["A4_ext"]["Inst"]).operand_masks["Ii"]),
+            SparseMask(InstructionEncoding(self.json["A4_ext"]["Inst"]).operand_masks["Ii"]).c_expr,
         )

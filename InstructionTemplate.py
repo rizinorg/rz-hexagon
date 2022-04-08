@@ -215,7 +215,7 @@ class InstructionTemplate:
 
             if op.type == OperandType.REGISTER:
                 op: Register
-                code += "{}hi->ops[{}].op.reg = {}".format(indent, op.syntax_index, op.code_opcode_parsing)
+                code += "{}hi->ops[{}].op.reg = {}".format(indent, op.syntax_index, op.c_opcode_parsing)
                 if op.is_out_operand:
                     code += "hi->ops[{}].attr |= HEX_OP_REG_OUT;\n".format(op.syntax_index)
                 if op.is_double:
@@ -240,7 +240,7 @@ class InstructionTemplate:
                     )
 
             elif op.type == OperandType.IMMEDIATE and not op.is_constant:
-                code += "{}hi->ops[{}].op.imm = {}".format(indent, op.syntax_index, op.code_opcode_parsing)
+                code += "{}hi->ops[{}].op.imm = {}".format(indent, op.syntax_index, op.c_opcode_parsing)
                 h = "#" if op.total_width != 32 else "##"
                 # If there is only one immediate operand in the instruction extend it anyways.
                 # LLVM marks some operands as not extendable, although they are.

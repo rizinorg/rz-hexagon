@@ -2,6 +2,8 @@
 #
 # SPDX-License-Identifier: LGPL-3.0-only
 
+from __future__ import annotations
+
 import re
 
 import HexagonArchInfo
@@ -129,39 +131,40 @@ class Immediate(Operand):
             )
 
     # RIZIN SPECIFIC
-    def add_code_for_opcode_parsing(self, parsing_code: str) -> None:
-        """Overrides method of parent class. Here we add code which does specific parsing of the operand value on
-        disassembly.
+    @property
+    def c_opcode_parsing(self) -> str | None:
+        """Code which does specific parsing of the operand value on disassembly.
         If the immediate is scaled, has specific attributes or gets extended, the c code for this is added here.
         """
         if self.is_constant:
-            return
+            return None
 
         indent = PluginInfo.LINE_INDENT
-        self.code_opcode_parsing = parsing_code
+        code = self.opcode_mask.c_expr
         if self.scale > 0:
-            self.code_opcode_parsing += " << {}; // scaled {}\n".format(self.scale, self.llvm_syntax)
-            self.code_opcode_parsing += "{}hi->ops[{}].attr = HEX_OP_IMM_SCALED;\n".format(indent, self.syntax_index)
-            self.code_opcode_parsing += "{}hi->ops[{}].shift = {};\n".format(indent, self.syntax_index, self.scale)
+            code += " << {}; // scaled {}\n".format(self.scale, self.llvm_syntax)
+            code += "{}hi->ops[{}].attr = HEX_OP_IMM_SCALED;\n".format(indent, self.syntax_index)
+            code += "{}hi->ops[{}].shift = {};\n".format(indent, self.syntax_index, self.scale)
         else:
-            self.code_opcode_parsing += "; // {}\n".format(self.llvm_syntax)
+            code += "; // {}\n".format(self.llvm_syntax)
 
         if self.is_signed:
-            op_bits = self.opcode_mask.count(1)
+            op_bits = self.opcode_mask.full_mask.count(1)
             if op_bits <= 0:
                 raise ImplementationException(
                     "The bits encoding the immediate value should never be <="
-                    " 0!\nOperand type: {}, Mask: {}".format(self.llvm_type, str(self.opcode_mask))
+                    " 0!\nOperand type: {}, Mask: {}".format(self.llvm_type, str(self.opcode_mask.full_mask))
                 )
             shift = (op_bits if self.scale <= 0 else op_bits + self.scale) - 1
-            self.code_opcode_parsing += "{}if (hi->ops[{}].op.imm & (1 << {})) {{ // signed\n".format(
+            code += "{}if (hi->ops[{}].op.imm & (1 << {})) {{ // signed\n".format(
                 indent, self.syntax_index, shift
             )
-            self.code_opcode_parsing += "{}{}hi->ops[{}].op.imm |= (0xffffffffffffffff << {});\n{}}}\n".format(
+            code += "{}{}hi->ops[{}].op.imm |= (0xffffffffffffffff << {});\n{}}}\n".format(
                 indent, indent, self.syntax_index, shift, indent
             )
         if self.is_extendable:
-            self.code_opcode_parsing += (
+            code += (
                 "{}hex_extend_op(state, &(hi->ops[{}]), false, addr); //"
                 " Extension possible\n".format(indent, self.syntax_index)
             )
+        return code
