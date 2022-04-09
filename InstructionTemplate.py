@@ -207,6 +207,8 @@ class InstructionTemplate:
         for op in sorted(self.operands.values(), key=lambda item: item.syntax_index):
             if op.type == OperandType.IMMEDIATE and op.is_constant:
                 mnemonic = re.sub(r"[nN]1", r"-1", mnemonic)
+                code += "hi->ops[{}].type = {}; // Constant -1\n".format(op.syntax_index, op.type.value)
+                code += "hi->ops[{}].op.imm = {};\n".format(op.syntax_index, -1)
                 continue
 
             code += "{}hi->ops[{}].type = {};\n".format(indent, op.syntax_index, op.type.value)
