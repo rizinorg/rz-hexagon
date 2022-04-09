@@ -201,12 +201,14 @@ class InstructionTemplate:
         if self.is_duplex:
             code += "{}hi->duplex = {};\n".format(indent, str(self.is_duplex).lower())
 
-        code += "{}hi->op_count = {};\n".format(indent, self.encoding.num_encoded_operands)
+        code += "hi->op_count = {}; // length of hi->ops\n".format(len(self.operands))
         mnemonic = 'sprintf(hi->mnem_infix, "{}"'.format(self.syntax)
         sprint_src = ""
         for op in sorted(self.operands.values(), key=lambda item: item.syntax_index):
             if op.type == OperandType.IMMEDIATE and op.is_constant:
                 mnemonic = re.sub(r"[nN]1", r"-1", mnemonic)
+                code += "hi->ops[{}].type = {}; // Constant -1\n".format(op.syntax_index, op.type.value)
+                code += "hi->ops[{}].op.imm = {};\n".format(op.syntax_index, -1)
                 continue
 
             code += "{}hi->ops[{}].type = {};\n".format(indent, op.syntax_index, op.type.value)
