@@ -201,7 +201,7 @@ class InstructionTemplate:
         if self.is_duplex:
             code += "{}hi->duplex = {};\n".format(indent, str(self.is_duplex).lower())
 
-        code += "{}hi->op_count = {};\n".format(indent, self.encoding.num_encoded_operands)
+        code += "hi->op_count = {}; // length of hi->ops\n".format(len(self.operands))
         mnemonic = 'sprintf(hi->mnem_infix, "{}"'.format(self.syntax)
         sprint_src = ""
         for op in sorted(self.operands.values(), key=lambda item: item.syntax_index):

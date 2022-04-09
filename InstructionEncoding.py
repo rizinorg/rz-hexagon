@@ -15,7 +15,6 @@ class InstructionEncoding:
     Attributes:
         llvm_encoding: The encoding of an instruction, as it is found in an instruction object of
         the llvm-tblgen generated json file.
-        num_encoded_operands: The number of operands which are _encoded_ (Not all operands are encoded. E.g. n1Const).
         docs_mask: The mask as it can be found in the Programmers Reference Manual.
         llvm_operand_names: A list of llvm type operand names which are encoded in the instruction.
         operand_masks: Masks of all operands encoded in the instruction.
@@ -30,7 +29,6 @@ class InstructionEncoding:
         "llvm_operand_names",
         "operand_masks",
         "instruction_mask",
-        "num_encoded_operands",
         "llvm_encoding",
         "op_code",
         "num_representation",
@@ -44,7 +42,6 @@ class InstructionEncoding:
         self.instruction_mask: int = 0
         self.op_code: int = 0
         self.parse_bits_mask: int = 0
-        self.num_encoded_operands = 0
         self.docs_mask = ""
         self.llvm_encoding = llvm_encoding
         # The first 13bit of the encoding as 13bit unsigned int. Variable fields are interpret as 0.
@@ -98,7 +95,6 @@ class InstructionEncoding:
                 op_name = bit["var"]
                 # Not yet parsed operand in encoding found. Create new mask.
                 if op_name not in self.llvm_operand_names:
-                    self.num_encoded_operands += 1
                     self.llvm_operand_names.append(op_name)
                     self.operand_masks[op_name] = bitarray(HexagonArchInfo.INSTRUCTION_LENGTH, endian="little")
                     self.operand_masks[op_name].setall(0)
