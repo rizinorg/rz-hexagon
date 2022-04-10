@@ -304,7 +304,7 @@ class InstructionTemplate:
         code += "hi->ana_op.id = hi->instruction;\n"
         code += "hi->ana_op.size = 4;\n"
         code += "hi->ana_op.cond = {};\n".format(self.get_rz_cond_type())
-        code += self.get_rizin_op_type()
+        code += self.get_rizin_op_type_assignment()
         if self.has_imm_jmp_target():
             if not self.is_call and not self.is_predicated:
                 code += "pkt->is_eob = true;\n"  # Marks potentially end of block
@@ -377,58 +377,53 @@ class InstructionTemplate:
                 return "RZ_TYPE_COND_HEX_SCL_FALSE"
 
     # RIZIN SPECIFIC
-    def get_rizin_op_type(self) -> str:
-        """Returns the c code to assign the instruction type to the RzAnalysisOp.type member."""
-
-        op_type = (
-            "hi->ana_op.type = hi->ana_op.prefix == RZ_ANALYSIS_OP_PREFIX_HWLOOP_END ? RZ_ANALYSIS_OP_TYPE_CJMP : "
-        )
-
+    @property
+    def c_rz_op_type(self) -> str:
         if self.is_trap:
-            return op_type + "RZ_ANALYSIS_OP_TYPE_TRAP;"
+            return "RZ_ANALYSIS_OP_TYPE_TRAP"
         elif self.name == "A2_nop":
-            return op_type + "RZ_ANALYSIS_OP_TYPE_NOP;"
+            return "RZ_ANALYSIS_OP_TYPE_NOP"
         elif self.name == "invalid_decode":
-            return op_type + "RZ_ANALYSIS_OP_TYPE_ILL;"
+            return "RZ_ANALYSIS_OP_TYPE_ILL"
 
         if self.is_predicated:
             if self.is_call:
                 # Immediate and register call
-                op_type += "RZ_ANALYSIS_OP_TYPE_CCALL;" if self.has_imm_jmp_target() else "RZ_ANALYSIS_OP_TYPE_UCCALL;"
+                return "RZ_ANALYSIS_OP_TYPE_CCALL" if self.has_imm_jmp_target() else "RZ_ANALYSIS_OP_TYPE_UCCALL"
             elif self.is_return:
-                op_type += "RZ_ANALYSIS_OP_TYPE_CRET;"
+                return "RZ_ANALYSIS_OP_TYPE_CRET"
             elif self.is_branch or self.is_loop:
                 # Immediate and register jump
                 if self.has_imm_jmp_target():
-                    # Remove the teneray expression since the instruction type is always CJMP,
-                    # even if it is an endloop instruction.
-                    op_type = "hi->ana_op.type = RZ_ANALYSIS_OP_TYPE_CJMP;"
-                    return op_type
+                    return "RZ_ANALYSIS_OP_TYPE_CJMP"
                 else:
-                    op_type += "RZ_ANALYSIS_OP_TYPE_RCJMP;"
+                    return "RZ_ANALYSIS_OP_TYPE_RCJMP"
             else:
-                op_type += "RZ_ANALYSIS_OP_TYPE_COND;"
+                return "RZ_ANALYSIS_OP_TYPE_COND"
         else:
             if self.is_call:
                 # Immediate and register call
-                op_type += "RZ_ANALYSIS_OP_TYPE_CALL;" if self.has_imm_jmp_target() else "RZ_ANALYSIS_OP_TYPE_RCALL;"
+                return "RZ_ANALYSIS_OP_TYPE_CALL" if self.has_imm_jmp_target() else "RZ_ANALYSIS_OP_TYPE_RCALL"
             elif self.is_return:
-                op_type += "RZ_ANALYSIS_OP_TYPE_RET;"
+                return "RZ_ANALYSIS_OP_TYPE_RET"
             elif self.is_branch or self.is_loop:
                 # Immediate and register jump
-                op_type += "RZ_ANALYSIS_OP_TYPE_JMP;" if self.has_imm_jmp_target() else "RZ_ANALYSIS_OP_TYPE_RJMP;"
+                return "RZ_ANALYSIS_OP_TYPE_JMP" if self.has_imm_jmp_target() else "RZ_ANALYSIS_OP_TYPE_RJMP"
+        log(
+            "Instruction: {} has no instr. type assigned to it yet.".format(self.name),
+            LogLevel.VERBOSE,
+        )
+        return "RZ_ANALYSIS_OP_TYPE_NULL"
 
-        if (
-            op_type
-            == "hi->ana_op.type = hi->ana_op.prefix == RZ_ANALYSIS_OP_PREFIX_HWLOOP_END ? RZ_ANALYSIS_OP_TYPE_CJMP : "
-        ):
-            log(
-                "Instruction: {} has no instr. type assigned to it yet.".format(self.name),
-                LogLevel.VERBOSE,
-            )
-            return op_type + "RZ_ANALYSIS_OP_TYPE_NULL;"
-
-        return op_type
+    # RIZIN SPECIFIC
+    def get_rizin_op_type_assignment(self) -> str:
+        """Returns the c code to assign the instruction type to the RzAnalysisOp.type member."""
+        op_type = self.c_rz_op_type
+        if op_type == "RZ_ANALYSIS_OP_TYPE_CJMP":
+            # Remove the teneray expression since the instruction type is always CJMP.
+            return "hi->ana_op.type = RZ_ANALYSIS_OP_TYPE_CJMP;"
+        return f"hi->ana_op.type = hi->ana_op.prefix == RZ_ANALYSIS_OP_PREFIX_HWLOOP_END" \
+            f" ? RZ_ANALYSIS_OP_TYPE_CJMP : {op_type};"
 
     # RIZIN SPECIFIC
     @staticmethod
