@@ -223,7 +223,7 @@ class InstructionTemplate:
                 if op.is_quadruple:
                     code += "hi->ops[{}].attr |= HEX_OP_REG_QUADRUPLE;\n".format(op.syntax_index)
 
-                mnemonic = re.sub(op.explicit_syntax, "%s", mnemonic)
+                mnemonic = re.sub(op.explicit_syntax, "%s", mnemonic, count=1)
                 src = "hi->ops[{}].op.reg".format(op.syntax_index)
                 if op.is_n_reg:
                     sprint_src += ", {}({}({}, hi->addr, pkt), {})".format(
