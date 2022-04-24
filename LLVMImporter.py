@@ -250,7 +250,6 @@ class LLVMImporter:
             if llvm_instruction["Type"]["def"] == "TypeSUBINSN":
                 self.sub_instruction_names.append(i_name)
                 self.sub_instructions[i_name] = SubInstruction(llvm_instruction)
-                # log(i_name, LogLevel.DEBUG)
             else:
                 self.normal_instruction_names.append(i_name)
                 self.normal_instructions[i_name] = Instruction(llvm_instruction)
@@ -273,7 +272,7 @@ class LLVMImporter:
                 )
                 self.duplex_instructions[dup_instr.name] = dup_instr
                 self.duplex_instructions_names.append(dup_instr.name)
-                # log("Duplex instruction generated: {}".format(dup_instr.name), LogLevel.DEBUG)
+                log("Duplex instruction generated: {}".format(dup_instr.name), LogLevel.DEBUG)
         log("Generated {} duplex instructions.".format(len(self.duplex_instructions)))
 
     def parse_hardware_registers(self) -> None:
@@ -320,8 +319,8 @@ class LLVMImporter:
                 )
                 self.hardware_regs[reg_class_name][name] = reg
                 cr += 1
-                # log("Added reg: {}::{} with hw encoding: {}".format(name, reg_class_name,
-                #                                                     reg.hw_encoding), LogLevel.DEBUG)
+                log("Added reg: {}::{} with hw encoding: {}".format(name, reg_class_name,
+                                                                    reg.hw_encoding), LogLevel.DEBUG)
 
             cc += 1
         log("Parsed {} hardware registers of {} different register classes.".format(cr, cc))

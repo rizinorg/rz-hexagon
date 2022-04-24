@@ -91,7 +91,7 @@ class Immediate(Operand):
             else:
                 self.total_width = width.group(1)
             self.is_extendable = False
-            # log("Parsed imm type: {}, width: {}".format(imm_type, self.total_width), LogLevel.DEBUG)
+            log("Parsed imm type: {}, width: {}".format(type_letter, self.total_width), LogLevel.VERBOSE)
             return
         else:
             raise ImplementationException("Unhandled immediate type: {}".format(llvm_imm_type))
