@@ -319,8 +319,10 @@ class LLVMImporter:
                 )
                 self.hardware_regs[reg_class_name][name] = reg
                 cr += 1
-                log("Added reg: {}::{} with hw encoding: {}".format(name, reg_class_name,
-                                                                    reg.hw_encoding), LogLevel.DEBUG)
+                log(
+                    "Added reg: {}::{} with hw encoding: {}".format(name, reg_class_name, reg.hw_encoding),
+                    LogLevel.DEBUG,
+                )
 
             cc += 1
         log("Parsed {} hardware registers of {} different register classes.".format(cr, cc))

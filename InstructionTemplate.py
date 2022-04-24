@@ -16,7 +16,7 @@ from Register import Register
 from UnexpectedException import UnexpectedException
 from helperFunctions import log, LogLevel
 
-PARSE_BITS_MASK_CONST = 0xc000  # currently, this is the same for all instructions, so no need to store it explicitly
+PARSE_BITS_MASK_CONST = 0xC000  # currently, this is the same for all instructions, so no need to store it explicitly
 
 
 class LoopMembership(IntFlag):
@@ -275,7 +275,8 @@ class InstructionTemplate:
         code += f".id = {self.plugin_name},\n"
         if self.encoding.parse_bits_mask != PARSE_BITS_MASK_CONST:
             raise ImplementationException(
-                f"Unknown parse_bits_mask {self.encoding.parse_bits_mask} != {PARSE_BITS_MASK_CONST}")
+                f"Unknown parse_bits_mask {self.encoding.parse_bits_mask} != {PARSE_BITS_MASK_CONST}"
+            )
         op_templates = []
         last_syntax_off = 0
         syntax = self.syntax
@@ -291,7 +292,7 @@ class InstructionTemplate:
             elif inject.start() < last_syntax_off:
                 raise ImplementationException(f"Operand pattern {pattern} in syntax {syntax} out of order")
             syntax_off = inject.start()
-            syntax = syntax[:inject.start()] + syntax[inject.end():]
+            syntax = syntax[: inject.start()] + syntax[inject.end() :]
             last_syntax_off = syntax_off
             tpl = f"{{ {op.c_template(force_extendable=only_one_imm_op)}, .syntax = {syntax_off} }}"
             op_templates.append(tpl)
@@ -302,7 +303,7 @@ class InstructionTemplate:
         code += f".pred = {self.get_predicate()},"
         code += f".cond = {self.get_rz_cond_type()},\n"
         code += f".type = {self.c_rz_op_type},\n"
-        code += f".syntax = \"{syntax}\",\n"
+        code += f'.syntax = "{syntax}",\n'
         flags = []
         if self.is_call:
             flags.append("HEX_INSN_TEMPLATE_FLAG_CALL")

@@ -50,6 +50,7 @@ class SparseMask:
     Args:
         mask: Mask of the immediate/register
     """
+
     def __init__(self, mask: bitarray):
         self.full_mask = mask
         switch = False
@@ -99,7 +100,7 @@ class Operand:
         "is_out_operand",
         "is_in_out_operand",
         "type",
-        "opcode_mask"
+        "opcode_mask",
     ]
 
     def __init__(self, llvm_syntax: str, llvm_type: str, syntax_index: int):

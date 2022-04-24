@@ -166,8 +166,10 @@ class Register(Operand):
         if self.is_n_reg:
             info.append("HEX_OP_TEMPLATE_FLAG_REG_N_REG")
         info = " | ".join(info)
-        return f".info = {info}, .masks = {{ {self.opcode_mask.c_template} }}, " + \
-            f".reg_cls = {Register.get_enum_item_of_class(self.llvm_type)}"
+        return (
+            f".info = {info}, .masks = {{ {self.opcode_mask.c_template} }}, "
+            + f".reg_cls = {Register.get_enum_item_of_class(self.llvm_type)}"
+        )
 
     @staticmethod
     def register_class_name_to_upper(s: str) -> str:

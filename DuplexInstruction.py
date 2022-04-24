@@ -161,27 +161,34 @@ class DuplexInstruction(InstructionTemplate):
         # Max. one extendable sub instruction per duplex.
         # Extendable instruction in slot 1 (high)
         if low.has_extendable_imm:
-            log("low: {}, high: {} rejected because: low is extendable.".format(
-                    low.name, high.name), LogLevel.VERBOSE)
+            log("low: {}, high: {} rejected because: low is extendable.".format(low.name, high.name), LogLevel.VERBOSE)
             return False
 
         # Same sub namespace (A, S1, S2, L1, L2...): smaller instruction in slot 1 (high)
         if low.namespace == high.namespace:
             if low.encoding.num_representation < high.encoding.num_representation:
-                log("low: {}, high: {} rejected because: type is same but numerically smaller value is high.".format(
-                    low.name, high.name), LogLevel.VERBOSE)
+                log(
+                    "low: {}, high: {} rejected because: type is same but numerically smaller value is high.".format(
+                        low.name, high.name
+                    ),
+                    LogLevel.VERBOSE,
+                )
                 return False
 
         # SL2_jumpr31[...] never in slot 1 (high)
         if "SL2_jumpr31" in high.name:
-            log("low: {}, high: {} rejected because: SL2_jumpr31 is in slot 1.".format(
-                    low.name, high.name), LogLevel.VERBOSE)
+            log(
+                "low: {}, high: {} rejected because: SL2_jumpr31 is in slot 1.".format(low.name, high.name),
+                LogLevel.VERBOSE,
+            )
             return False
 
         # S2_allocframe never in slot 1 (high).
         if "SS2_allocframe" in high.name:
-            log("low: {}, high: {} rejected because: S2_allocframe is in slot 1.".format(
-                    low.name, high.name), LogLevel.VERBOSE)
+            log(
+                "low: {}, high: {} rejected because: S2_allocframe is in slot 1.".format(low.name, high.name),
+                LogLevel.VERBOSE,
+            )
             return False
 
         return True
@@ -205,13 +212,16 @@ class DuplexInstruction(InstructionTemplate):
         encoding[30] = (i_class >> 2) & 1
         encoding[29] = (i_class >> 1) & 1
         enc = InstructionEncoding(self.correct_operand_names_in_encoding(encoding))
-        log("Name: {}\n\tDuplex:  {}\n\tSubLow:  {}\n\tSubHigh: {}\n\tIClass:  {}".format(
-            self.name,
-            enc.docs_mask,
-            self.low_instr.encoding.docs_mask,
-            self.high_instr.encoding.docs_mask,
-            bin(i_class)
-        ), LogLevel.DEBUG)
+        log(
+            "Name: {}\n\tDuplex:  {}\n\tSubLow:  {}\n\tSubHigh: {}\n\tIClass:  {}".format(
+                self.name,
+                enc.docs_mask,
+                self.low_instr.encoding.docs_mask,
+                self.high_instr.encoding.docs_mask,
+                bin(i_class),
+            ),
+            LogLevel.DEBUG,
+        )
         return enc
 
     def correct_operand_names_in_encoding(self, encoding_bits: list) -> list:
@@ -289,9 +299,12 @@ class DuplexInstruction(InstructionTemplate):
                     raise UnexpectedException("{} not in syntax {}".format(bit["var_old"], new_high_llvm_syntax))
 
         if new_high_llvm_syntax != self.high_instr.llvm_syntax:
-            log("Changed syntax: {} -> {}\n\t{}".format(self.high_instr.llvm_syntax,
-                                                        new_high_llvm_syntax, self.encoding.llvm_encoding),
-                LogLevel.VERBOSE)
+            log(
+                "Changed syntax: {} -> {}\n\t{}".format(
+                    self.high_instr.llvm_syntax, new_high_llvm_syntax, self.encoding.llvm_encoding
+                ),
+                LogLevel.VERBOSE,
+            )
             self.high_instr.llvm_syntax = new_high_llvm_syntax
             self.high_instr.syntax = normalize_llvm_syntax(self.high_instr.llvm_syntax)
         self.llvm_syntax = self.high_instr.llvm_syntax + " ; " + self.low_instr.llvm_syntax

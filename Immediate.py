@@ -138,7 +138,8 @@ class Immediate(Operand):
             if self.opcode_mask.full_mask.count(1) <= 0:
                 raise ImplementationException(
                     "The bits encoding the immediate value should never be <="
-                    " 0!\nOperand type: {}, Mask: {}".format(self.llvm_type, str(self.opcode_mask.full_mask)))
+                    " 0!\nOperand type: {}, Mask: {}".format(self.llvm_type, str(self.opcode_mask.full_mask))
+                )
             info.append("HEX_OP_TEMPLATE_FLAG_IMM_SIGNED")
         if self.is_extendable or force_extendable:
             info.append("HEX_OP_TEMPLATE_FLAG_IMM_EXTENDABLE")
