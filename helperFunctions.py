@@ -321,6 +321,15 @@ def surround_with_include_guard(filename: str, lines: list) -> list:
     return lines
 
 
+def include_file(filename):
+    """Reads and returns the content of a hand-written src file.
+    The does not return the license header and everything before that.
+    """
+    with open(filename) as include:
+        set_pos_after_license(include)
+        return "".join(include.readlines())
+
+
 def normalize_llvm_syntax(llvm_syntax: str) -> str:
     syntax = re.sub(r"#{0,2}\$", "", llvm_syntax)
     # Any number which stands before a register or immediate letter.
