@@ -425,8 +425,8 @@ class LLVMImporter:
     def build_hexagon_disas_c(self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon_disas.c") -> None:
         code = get_generation_warning_c_code()
 
-        code += include_file("handwritten/hexagon_disas_c/include.c")
-        code += include_file("handwritten/hexagon_disas_c/types.c")
+        code += include_file("hand-written/hexagon_disas_c/include.c")
+        code += include_file("hand-written/hexagon_disas_c/types.c")
 
         templates_code = "\n\n"
 
@@ -455,7 +455,7 @@ class LLVMImporter:
         templates_code += "};\n\n"
 
         code += templates_code
-        code += include_file("handwritten/hexagon_disas_c/functions.c")
+        code += include_file("hand-written/hexagon_disas_c/functions.c")
 
         self.write_src(code, path)
 
@@ -469,12 +469,12 @@ class LLVMImporter:
         code += get_include_guard("hexagon.h")
         code += "\n"
 
-        code += include_file("handwritten/hexagon_h/includes.h")
+        code += include_file("hand-written/hexagon_h/includes.h")
         code += "\n"
 
         code += f"#define {PluginInfo.GENERAL_ENUM_PREFIX}MAX_OPERANDS {PluginInfo.MAX_OPERANDS}\n"
         code += f"#define {PluginInfo.GENERAL_ENUM_PREFIX}PARSE_BITS_MASK 0x{PARSE_BITS_MASK_CONST:x}\n\n"
-        code += include_file("handwritten/hexagon_h/typedefs.h")
+        code += include_file("hand-written/hexagon_h/typedefs.h")
         code += "\n"
 
         code += "typedef enum {\n"
@@ -503,7 +503,7 @@ class LLVMImporter:
                 reg_class,
             )
 
-        code += include_file("handwritten/hexagon_h/macros.h")
+        code += include_file("hand-written/hexagon_h/macros.h")
         code += "\n"
 
         if len(self.reg_resolve_decl) == 0:
@@ -515,7 +515,7 @@ class LLVMImporter:
         for decl in self.reg_resolve_decl:
             code += decl
         code += "\n"
-        code += include_file("handwritten/hexagon_h/declarations.h")
+        code += include_file("hand-written/hexagon_h/declarations.h")
         code += "\n#endif"
 
         self.write_src(code, path)
@@ -524,7 +524,7 @@ class LLVMImporter:
     def build_hexagon_c(self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon.c") -> None:
         general_prefix = PluginInfo.GENERAL_ENUM_PREFIX
         code = get_generation_warning_c_code()
-        code += include_file("handwritten/hexagon_c/include.c")
+        code += include_file("hand-written/hexagon_c/include.c")
 
         reg_class: str
         for reg_class in self.hardware_regs:
@@ -564,7 +564,7 @@ class LLVMImporter:
         code += "}\n"
         code += "}\n\n"
 
-        code += include_file("handwritten/hexagon_c/functions.c")
+        code += include_file("hand-written/hexagon_c/functions.c")
 
         self.write_src(code, path)
 
@@ -572,8 +572,8 @@ class LLVMImporter:
     def build_asm_hexagon_c(self, path: str = "./rizin/librz/asm/p/asm_hexagon.c") -> None:
         code = get_generation_warning_c_code()
 
-        code += include_file("handwritten/asm_hexagon_c/include.c")
-        code += include_file("handwritten/asm_hexagon_c/initialization.c")
+        code += include_file("hand-written/asm_hexagon_c/include.c")
+        code += include_file("hand-written/asm_hexagon_c/initialization.c")
 
         self.write_src(code, path)
 
@@ -581,8 +581,8 @@ class LLVMImporter:
     def build_hexagon_arch_c(self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon_arch.c"):
         code = get_generation_warning_c_code()
 
-        code += include_file("handwritten/hexagon_arch_c/include.c")
-        code += include_file("handwritten/hexagon_arch_c/functions.c")
+        code += include_file("hand-written/hexagon_arch_c/include.c")
+        code += include_file("hand-written/hexagon_arch_c/functions.c")
 
         self.write_src(code, path)
 
@@ -591,9 +591,9 @@ class LLVMImporter:
         code = get_generation_warning_c_code()
         code += get_include_guard("hexagon_arch.h")
 
-        code += include_file("handwritten/hexagon_arch_h/includes.h")
-        code += include_file("handwritten/hexagon_arch_h/typedefs.h")
-        code += include_file("handwritten/hexagon_arch_h/declarations.h")
+        code += include_file("hand-written/hexagon_arch_h/includes.h")
+        code += include_file("hand-written/hexagon_arch_h/typedefs.h")
+        code += include_file("hand-written/hexagon_arch_h/declarations.h")
         code += "#endif"
 
         self.write_src(code, path)
@@ -601,12 +601,12 @@ class LLVMImporter:
     # RIZIN SPECIFIC
     @staticmethod
     def copy_tests() -> None:
-        with open("handwritten/analysis-tests/hexagon") as f:
+        with open("hand-written/analysis-tests/hexagon") as f:
             with open("./rizin/test/db/analysis/hexagon", "w+") as g:
                 set_pos_after_license(g)
                 g.writelines(f.readlines())
 
-        with open("handwritten/asm-tests/hexagon") as f:
+        with open("hand-written/asm-tests/hexagon") as f:
             with open("./rizin/test/db/asm/hexagon", "w+") as g:
                 set_pos_after_license(g)
                 g.writelines(f.readlines())
@@ -669,8 +669,8 @@ class LLVMImporter:
 
         code = get_generation_warning_c_code()
 
-        code += include_file("handwritten/analysis_hexagon_c/include.c")
-        code += include_file("handwritten/analysis_hexagon_c/functions.c")
+        code += include_file("hand-written/analysis_hexagon_c/include.c")
+        code += include_file("hand-written/analysis_hexagon_c/functions.c")
 
         tmp = list()
         tmp.append("const char *p =")
@@ -682,7 +682,7 @@ class LLVMImporter:
         )
         code += "\n" + "".join(tmp)
 
-        code += include_file("handwritten/analysis_hexagon_c/initialization.c")
+        code += include_file("hand-written/analysis_hexagon_c/initialization.c")
 
         self.write_src(code, path)
 
