@@ -21,7 +21,7 @@ This plugin is under continuous work. So checkout the Github issues for missing 
 - For formatting we need `clang-format-13`. If it is not available on your distribution, you can install it from https://apt.llvm.org/.
 
 - Python requirements are in `requirements.txt`
-- As a developer you also need `black, flake8, reuse`.
+- As a developer you also need `black`, `flake8`, `reuse`.
 
 ### Hexagon Target Description
 
