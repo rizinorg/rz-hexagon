@@ -274,11 +274,15 @@ def get_generation_timestamp(conf: dict) -> str:
 
 def compare_src_to_old_src(new_src: str, comp_src_file: str) -> bool:
     """Compares each line of the new_src string and the src code in the file comp_src_file."""
-    with open(comp_src_file) as f:
-        for line in f:
-            if "Date of code generation" in line:
-                break
-        old_src = f.readlines()
+    try:
+        with open(comp_src_file) as f:
+            for line in f:
+                if "Date of code generation" in line:
+                    break
+            old_src = f.readlines()
+    except FileNotFoundError:
+        return False
+
     l_new = "".join(new_src)
     l_old = "".join(old_src)
     # Remove clang-format introduced blanks.
@@ -321,9 +325,18 @@ def surround_with_include_guard(filename: str, lines: list) -> list:
     return lines
 
 
+def include_file(filename):
+    """Reads and returns the content of a hand-written src file.
+    The does not return the license header and everything before that.
+    """
+    with open(filename) as include:
+        set_pos_after_license(include)
+        return "".join(include.readlines())
+
+
 def normalize_llvm_syntax(llvm_syntax: str) -> str:
     syntax = re.sub(r"#{0,2}\$", "", llvm_syntax)
     # Any number which stands before a register or immediate letter.
     syntax = re.sub(r"([A-Z][a-z,A-Z]+)[0-9]+", r"\1", syntax)
-    # log("Normalized syntax: {} -> {}".format(llvm_syntax, syntax), LogLevel.DEBUG)
+    log("Normalized syntax: {} -> {}".format(llvm_syntax, syntax), LogLevel.VERBOSE)
     return syntax

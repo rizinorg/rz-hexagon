@@ -5,7 +5,6 @@
 from bitarray import bitarray
 import unittest
 
-import PluginInfo
 from DuplexInstruction import DuplexInstruction
 from LLVMImporter import LLVMImporter
 from InstructionEncoding import InstructionEncoding

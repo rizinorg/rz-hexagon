@@ -27,6 +27,7 @@ from helperFunctions import (
     get_license,
     get_generation_timestamp,
     compare_src_to_old_src,
+    include_file,
 )
 import PluginInfo
 import HexagonArchInfo
@@ -249,7 +250,6 @@ class LLVMImporter:
             if llvm_instruction["Type"]["def"] == "TypeSUBINSN":
                 self.sub_instruction_names.append(i_name)
                 self.sub_instructions[i_name] = SubInstruction(llvm_instruction)
-                # log(i_name, LogLevel.DEBUG)
             else:
                 self.normal_instruction_names.append(i_name)
                 self.normal_instructions[i_name] = Instruction(llvm_instruction)
@@ -272,7 +272,7 @@ class LLVMImporter:
                 )
                 self.duplex_instructions[dup_instr.name] = dup_instr
                 self.duplex_instructions_names.append(dup_instr.name)
-                # log("Duplex instruction generated: {}".format(dup_instr.name), LogLevel.DEBUG)
+                log("Duplex instruction generated: {}".format(dup_instr.name), LogLevel.DEBUG)
         log("Generated {} duplex instructions.".format(len(self.duplex_instructions)))
 
     def parse_hardware_registers(self) -> None:
@@ -319,8 +319,10 @@ class LLVMImporter:
                 )
                 self.hardware_regs[reg_class_name][name] = reg
                 cr += 1
-                # log("Added reg: {}::{} with hw encoding: {}".format(name, reg_class_name,
-                #                                                     reg.hw_encoding), LogLevel.DEBUG)
+                log(
+                    "Added reg: {}::{} with hw encoding: {}".format(name, reg_class_name, reg.hw_encoding),
+                    LogLevel.DEBUG,
+                )
 
             cc += 1
         log("Parsed {} hardware registers of {} different register classes.".format(cr, cc))
@@ -406,37 +408,24 @@ class LLVMImporter:
 
     # RIZIN SPECIFIC
     def build_hexagon_insn_enum_h(self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon_insn.h") -> None:
-        data = get_generation_warning_c_code()
-        data += get_include_guard("hexagon_insn.h")
-        data += "enum HEX_INS {"
+        code = get_generation_warning_c_code()
+        code += get_include_guard("hexagon_insn.h")
+        code += "enum HEX_INS {"
         enum = ""
         for name in self.normal_instruction_names + self.duplex_instructions_names:
             if "invalid_decode" in name:
                 enum = (PluginInfo.INSTR_ENUM_PREFIX + name.upper() + " = 0,") + enum
             else:
                 enum += PluginInfo.INSTR_ENUM_PREFIX + name.upper() + ","
-        data += enum
-        data += "};"
-        data += "#endif"
-        if compare_src_to_old_src(data, path):
-            self.unchanged_files.append(path)
-            return
+        code += enum
+        code += "};"
+        code += "#endif"
 
-        with open(path, "w+") as dest:
-            dest.writelines(data)
-            log(
-                "Hexagon instruction enum written to: {}".format(path),
-                LogLevel.INFO,
-            )
+        self.write_src(code, path)
 
     # RIZIN SPECIFIC
     def build_hexagon_disas_c(self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon_disas.c") -> None:
         code = get_generation_warning_c_code()
-
-        def include_file(filename):
-            with open(filename) as include:
-                set_pos_after_license(include)
-                return "".join(include.readlines())
 
         code += include_file("handwritten/hexagon_disas_c/include.c")
         code += include_file("handwritten/hexagon_disas_c/types.c")
@@ -452,7 +441,7 @@ class LLVMImporter:
             templates_code += "{ { 0 } }, };\n\n"
 
         templates_code += "static const HexInsnTemplate *templates_duplex[] = {\n"
-        templates_code += ",\n".join([f"templates_duplex_0x{c:x}" for c in range(0xf)])
+        templates_code += ",\n".join([f"templates_duplex_0x{c:x}" for c in range(0xF)])
         templates_code += "};\n\n"
 
         # Normal instructions
@@ -470,15 +459,7 @@ class LLVMImporter:
         code += templates_code
         code += include_file("handwritten/hexagon_disas_c/functions.c")
 
-        if compare_src_to_old_src(code, path):
-            self.unchanged_files.append(path)
-            return
-        with open(path, "w+") as dest:
-            dest.writelines(code)
-            log(
-                "hexagon_disas.c written to: {}".format(path),
-                LogLevel.INFO,
-            )
+        self.write_src(code, path)
 
     # RIZIN SPECIFIC
     def build_hexagon_h(self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon.h") -> None:
@@ -490,22 +471,16 @@ class LLVMImporter:
         code += get_include_guard("hexagon.h")
         code += "\n"
 
-        with open("handwritten/hexagon_h/includes.h") as includes:
-            set_pos_after_license(includes)
-            code += "".join(includes.readlines())
+        code += include_file("handwritten/hexagon_h/includes.h")
         code += "\n"
 
         code += f"#define {PluginInfo.GENERAL_ENUM_PREFIX}MAX_OPERANDS {PluginInfo.MAX_OPERANDS}\n"
         code += f"#define {PluginInfo.GENERAL_ENUM_PREFIX}PARSE_BITS_MASK 0x{PARSE_BITS_MASK_CONST:x}\n\n"
-        with open("handwritten/hexagon_h/typedefs.h") as typedefs:
-            set_pos_after_license(typedefs)
-            code += "".join(typedefs.readlines())
+        code += include_file("handwritten/hexagon_h/typedefs.h")
         code += "\n"
 
         code += "typedef enum {\n"
-        code += ",\n".join([
-            HardwareRegister.get_enum_item_of_class(reg_class)
-            for reg_class in self.hardware_regs])
+        code += ",\n".join([HardwareRegister.get_enum_item_of_class(reg_class) for reg_class in self.hardware_regs])
         code += "} HexRegClass;\n\n"
 
         reg_class: str
@@ -530,9 +505,7 @@ class LLVMImporter:
                 reg_class,
             )
 
-        with open("handwritten/hexagon_h/macros.h") as macros:
-            set_pos_after_license(macros)
-            code += "".join(macros.readlines())
+        code += include_file("handwritten/hexagon_h/macros.h")
         code += "\n"
 
         if len(self.reg_resolve_decl) == 0:
@@ -544,26 +517,16 @@ class LLVMImporter:
         for decl in self.reg_resolve_decl:
             code += decl
         code += "\n"
-        with open("handwritten/hexagon_h/declarations.h") as decl:
-            set_pos_after_license(decl)
-            code += "".join(decl.readlines())
+        code += include_file("handwritten/hexagon_h/declarations.h")
         code += "\n#endif"
 
-        if compare_src_to_old_src(code, path):
-            self.unchanged_files.append(path)
-            return
-
-        with open(path, "w+") as dest:
-            dest.writelines(code)
-            log("hexagon.h written to: {}".format(path), LogLevel.INFO)
+        self.write_src(code, path)
 
     # RIZIN SPECIFIC
     def build_hexagon_c(self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon.c") -> None:
         general_prefix = PluginInfo.GENERAL_ENUM_PREFIX
         code = get_generation_warning_c_code()
-        with open("handwritten/hexagon_c/include.c") as include:
-            set_pos_after_license(include)
-            code += "".join(include.readlines())
+        code += include_file("handwritten/hexagon_c/include.c")
 
         reg_class: str
         for reg_class in self.hardware_regs:
@@ -589,8 +552,9 @@ class LLVMImporter:
                 )
             code += "}}\n"
 
-        reg_in_cls_decl = f"char *{general_prefix.lower()}" \
-            "get_reg_in_class(HexRegClass cls, int opcode_reg, bool get_alias)"
+        reg_in_cls_decl = (
+            f"char *{general_prefix.lower()}" "get_reg_in_class(HexRegClass cls, int opcode_reg, bool get_alias)"
+        )
         self.reg_resolve_decl.append(f"{reg_in_cls_decl};")
         code += f"{reg_in_cls_decl} {{\n"
         code += "switch (cls) {\n"
@@ -602,76 +566,39 @@ class LLVMImporter:
         code += "}\n"
         code += "}\n\n"
 
-        with open("handwritten/hexagon_c/functions.c") as func:
-            set_pos_after_license(func)
-            code += "".join(func.readlines())
+        code += include_file("handwritten/hexagon_c/functions.c")
 
-        if compare_src_to_old_src(code, path):
-            self.unchanged_files.append(path)
-            return
-
-        with open(path, "w+") as dest:
-            dest.writelines(code)
-            log("hexagon.c written to: {}".format(path), LogLevel.INFO)
+        self.write_src(code, path)
 
     # RIZIN SPECIFIC
     def build_asm_hexagon_c(self, path: str = "./rizin/librz/asm/p/asm_hexagon.c") -> None:
         code = get_generation_warning_c_code()
 
-        with open("handwritten/asm_hexagon_c/include.c") as include:
-            set_pos_after_license(include)
-            code += "".join(include.readlines())
-        with open("handwritten/asm_hexagon_c/initialization.c") as init:
-            set_pos_after_license(init)
-            code += "".join(init.readlines())
+        code += include_file("handwritten/asm_hexagon_c/include.c")
+        code += include_file("handwritten/asm_hexagon_c/initialization.c")
 
-        if compare_src_to_old_src(code, path):
-            self.unchanged_files.append(path)
-            return
-        with open(path, "w+") as dest:
-            dest.writelines(code)
-            log("asm_hexagon.c written to {}".format(path), LogLevel.INFO)
+        self.write_src(code, path)
 
     # RIZIN SPECIFIC
     def build_hexagon_arch_c(self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon_arch.c"):
         code = get_generation_warning_c_code()
 
-        with open("handwritten/hexagon_arch_c/include.c") as include:
-            set_pos_after_license(include)
-            code += "".join(include.readlines())
-        with open("handwritten/hexagon_arch_c/functions.c") as functions:
-            set_pos_after_license(functions)
-            code += "".join(functions.readlines())
+        code += include_file("handwritten/hexagon_arch_c/include.c")
+        code += include_file("handwritten/hexagon_arch_c/functions.c")
 
-        if compare_src_to_old_src(code, path):
-            self.unchanged_files.append(path)
-            return
-        with open(path, "w+") as dest:
-            dest.writelines(code)
-            log("asm_hexagon.c written to {}".format(path), LogLevel.INFO)
+        self.write_src(code, path)
 
     # RIZIN SPECIFIC
     def build_hexagon_arch_h(self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon_arch.h"):
         code = get_generation_warning_c_code()
         code += get_include_guard("hexagon_arch.h")
 
-        with open("handwritten/hexagon_arch_h/includes.h") as includes:
-            set_pos_after_license(includes)
-            code += "".join(includes.readlines())
-        with open("handwritten/hexagon_arch_h/typedefs.h") as typedefs:
-            set_pos_after_license(typedefs)
-            code += "".join(typedefs.readlines())
-        with open("handwritten/hexagon_arch_h/declarations.h") as declarations:
-            set_pos_after_license(declarations)
-            code += "".join(declarations.readlines())
+        code += include_file("handwritten/hexagon_arch_h/includes.h")
+        code += include_file("handwritten/hexagon_arch_h/typedefs.h")
+        code += include_file("handwritten/hexagon_arch_h/declarations.h")
         code += "#endif"
 
-        if compare_src_to_old_src(code, path):
-            self.unchanged_files.append(path)
-            return
-        with open(path, "w+") as dest:
-            dest.writelines(code)
-            log("hexagon_arch.h written to {}".format(path), LogLevel.INFO)
+        self.write_src(code, path)
 
     # RIZIN SPECIFIC
     @staticmethod
@@ -744,12 +671,8 @@ class LLVMImporter:
 
         code = get_generation_warning_c_code()
 
-        with open("handwritten/analysis_hexagon_c/include.c") as include:
-            set_pos_after_license(include)
-            code += "".join(include.readlines())
-        with open("handwritten/analysis_hexagon_c/functions.c") as functions:
-            set_pos_after_license(functions)
-            code += "".join(functions.readlines())
+        code += include_file("handwritten/analysis_hexagon_c/include.c")
+        code += include_file("handwritten/analysis_hexagon_c/functions.c")
 
         tmp = list()
         tmp.append("const char *p =")
@@ -761,16 +684,9 @@ class LLVMImporter:
         )
         code += "\n" + "".join(tmp)
 
-        with open("handwritten/analysis_hexagon_c/initialization.c") as initialization:
-            set_pos_after_license(initialization)
-            code += "".join(initialization.readlines())
+        code += include_file("handwritten/analysis_hexagon_c/initialization.c")
 
-        if compare_src_to_old_src(code, path):
-            self.unchanged_files.append(path)
-            return
-        with open(path, "w+") as dest:
-            dest.writelines(code)
-            log("analysis_hexagon.c written to {}".format(path), LogLevel.INFO)
+        self.write_src(code, path)
 
     # RIZIN SPECIFC
     def get_alias_profile(self) -> str:
@@ -912,6 +828,19 @@ class LLVMImporter:
                 ]:
                     log("Format {}".format(p), LogLevel.VERBOSE)
                     os.system("clang-format-13 -style file -i " + p)
+
+    def write_src(self, code: str, path: str) -> None:
+        """Compares the given src code to the src code in the file at path and writes it if it differs.
+        It ignores the leading license header and timestamps in the existing src file.
+        Changes in formatting (anything which matches the regex '[[:blank:]]')
+        """
+
+        if compare_src_to_old_src(code, path):
+            self.unchanged_files.append(path)
+            return
+        with open(path, "w+") as dest:
+            dest.writelines(code)
+            log("Write {}".format(path), LogLevel.INFO)
 
 
 if __name__ == "__main__":

@@ -29,7 +29,6 @@ class SubInstruction(Instruction):
         namespace = llvm_instruction["DecoderNamespace"]
         try:
             self.namespace = SubInstrNamespace[namespace]
-            # log(self.decoding_namespace, LogLevel.DEBUG)
         except KeyError:
             raise ImplementationException("Sub instruction namespace: {} is not in Enum".format(namespace))
         self.is_sub_instruction = True

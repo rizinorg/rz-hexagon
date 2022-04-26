@@ -4,7 +4,7 @@
 
 from bitarray import bitarray
 
-from helperFunctions import bitarray_to_uint
+from helperFunctions import bitarray_to_uint, log, LogLevel
 import HexagonArchInfo
 
 
@@ -107,7 +107,7 @@ class InstructionEncoding:
         self.op_code = bitarray_to_uint(op_code, endian="little")
         self.parse_bits_mask = bitarray_to_uint(p_bits_mask, endian="little")
 
-        # log("Added encoding: {} with operands: {}".format(self.docs_mask, self.operands), LogLevel.VERBOSE)
+        log("Added encoding: {} with operands: {}".format(self.docs_mask, self.llvm_operand_names), LogLevel.VERBOSE)
 
     def get_i_class(self) -> int:
         if self.duplex_encoding:

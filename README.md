@@ -21,6 +21,8 @@ This plugin is under continuous work. So checkout the Github issues for missing 
 - For formatting we need `clang-format-13`. If it is not available on your distribution, you can install it from https://apt.llvm.org/.
 
 - Python requirements are in `requirements.txt`
+- As a developer you also need `black`, `flake8`, `reuse`.
+
 ### Hexagon Target Description
 
 We take all the information about the Hexagon instructions and operands from the many LLVM target description files.
@@ -44,13 +46,13 @@ Please add this directory to your `PATH`.
 # Install
 
 ```bash
+git clone https://github.com/rizinorg/rz-hexagon.git
 cd rz-hexagon/
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 # If you enjoy some colors
-pip install -r optional_requirements.txt
+pip3 install -r optional_requirements.txt
 # Install as develop package
-cd ..
-pip install -e .
+pip3 install -e .
 ```
 
 # Generate PlugIn
@@ -88,6 +90,9 @@ So here are some good to know points for porting:
 
 # Development info
 
+**Before you open a PR please run: `black -l 120 *.py && flake8 --max-line-length=120 && reuse lint`** and fix the warnings.
+
+### Coding info
 - The best way to start is to take a look at an instruction in `Hexagon.json`.
   We take all information from there and knowing the different objects
   makes it easier to understand the code.
@@ -117,9 +122,6 @@ So here are some good to know points for porting:
     low instruction concatenated with a semicolon.
   - `syntax` holds: `Rdd = combine(#0,#Ii) ; Rx = add(Rxin,Rs)`
   - `Instruction.operands` is a dictionary which contains `Register` and `Immediate` Python objects.
-
-- Format your Python files with `black` and verify the formatting with `flake8`.
-  - `black -l 120 *.py && flake8 --max-line-length=120`
 
 - Please take a brief look at the [Rizin development](https://github.com/rizinorg/rizin/blob/dev/DEVELOPERS.md) guide if you plan to change C code.
 

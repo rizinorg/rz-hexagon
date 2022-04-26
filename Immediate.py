@@ -91,7 +91,7 @@ class Immediate(Operand):
             else:
                 self.total_width = width.group(1)
             self.is_extendable = False
-            # log("Parsed imm type: {}, width: {}".format(imm_type, self.total_width), LogLevel.DEBUG)
+            log("Parsed imm type: {}, width: {}".format(type_letter, self.total_width), LogLevel.VERBOSE)
             return
         else:
             raise ImplementationException("Unhandled immediate type: {}".format(llvm_imm_type))
@@ -138,7 +138,8 @@ class Immediate(Operand):
             if self.opcode_mask.full_mask.count(1) <= 0:
                 raise ImplementationException(
                     "The bits encoding the immediate value should never be <="
-                    " 0!\nOperand type: {}, Mask: {}".format(self.llvm_type, str(self.opcode_mask.full_mask)))
+                    " 0!\nOperand type: {}, Mask: {}".format(self.llvm_type, str(self.opcode_mask.full_mask))
+                )
             info.append("HEX_OP_TEMPLATE_FLAG_IMM_SIGNED")
         if self.is_extendable or force_extendable:
             info.append("HEX_OP_TEMPLATE_FLAG_IMM_EXTENDABLE")
