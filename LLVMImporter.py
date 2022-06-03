@@ -1,16 +1,22 @@
 #!/usr/bin/env python3
+import argparse
 
 # SPDX-FileCopyrightText: 2021 Rot127 <unisono@quyllur.org>
 #
 # SPDX-License-Identifier: LGPL-3.0-only
 
-from itertools import chain
 import json
 import os
 import re
 import subprocess
-import argparse
+from pathlib import Path
 
+from tqdm import tqdm
+
+from Conf import OutputFile, Conf
+from rzil_compiler.Transformer.Hybrids.SubRoutine import SubRoutineInitType
+from rzil_compiler.ArchEnum import ArchEnum
+from rzil_compiler.Compiler import Compiler, RZILInstruction
 from HardwareRegister import HardwareRegister
 from ImplementationException import ImplementationException
 from Instruction import Instruction
@@ -25,12 +31,13 @@ from helperFunctions import (
     set_pos_after_license,
     get_license,
     get_generation_timestamp,
-    compare_src_to_old_src,
+    src_matches_old_src,
     include_file,
+    gen_c_doxygen,
 )
 import PluginInfo
 import HexagonArchInfo
-from InstructionTemplate import PARSE_BITS_MASK_CONST
+from InstructionTemplate import PARSE_BITS_MASK_CONST, InstructionTemplate
 
 
 class LLVMImporter:
@@ -43,9 +50,14 @@ class LLVMImporter:
     sub_instruction_names = list()
     sub_instructions = dict()
     hardware_regs = dict()
+    rzil_compiler = None
+    edited_files: [str] = list()
 
-    def __init__(self, build_json: bool, test_mode=False):
+    def __init__(self, build_json: bool, gen_rzil: bool, skip_pcpp: bool, rzil_compile: bool, test_mode=False):
+        self.gen_rzil = gen_rzil
+        self.rzil_compile = rzil_compile
         self.sub_namespaces = set()
+        self.skip_pcpp = skip_pcpp
         self.test_mode = test_mode
         if self.test_mode:
             self.hexagon_target_json_path = "../Hexagon.json"
@@ -59,6 +71,9 @@ class LLVMImporter:
                 log("No Hexagon.json found. Please check out the help message to generate it.", LogLevel.ERROR)
                 exit()
             self.set_llvm_commit_info(use_prev=True)
+
+        if self.gen_rzil:
+            self.setup_rzil_compiler()
 
         with open(self.hexagon_target_json_path) as file:
             self.hexArch = json.load(file)
@@ -83,7 +98,6 @@ class LLVMImporter:
         self.check_insn_syntax_length()
         if not test_mode:
             self.generate_rizin_code()
-            self.generate_decompiler_code()
             self.add_license_info_header()
             self.apply_clang_format()
         log("Done")
@@ -97,11 +111,12 @@ class LLVMImporter:
             if not os.path.exists(".config"):
                 with open(cwd + "/.config", "w") as f:
                     config = "# Configuration for th LLVMImporter.\n"
-                    config += "LLVM_PROJECT_REPO_DIR = /path/to/llvm_project"
+                    config += "LLVM_PROJECT_REPO_DIR = /path/to/llvm_project\n"
+                    config += "CLANG_FORMAT_BIN = clang-format-18"
                     f.write(config)
                 log(
-                    "This is your first time running the generator{}.".format(" TESTS" if self.test_mode else "")
-                    + " Please set the path to the llvm_project repo in {}/.config.".format(cwd)
+                    f"This is your first time running the generator{' TESTS' if self.test_mode else ''}."
+                    + f" Please set the path to the llvm_project repo and clang-format binary in {cwd}/.config."
                 )
                 exit()
             with open(cwd + "/.config") as f:
@@ -111,15 +126,18 @@ class LLVMImporter:
                         continue
                     ln = ln.split("=")
                     if ln[0].strip() == "LLVM_PROJECT_REPO_DIR":
-                        dr = ln[1].strip()
-                        if not os.path.exists(dr):
+                        conf_value = ln[1].strip()
+                        if not os.path.exists(conf_value):
                             log(
-                                "The LLVM_PROJECT_REPO_DIR is set to an invalid directory: '{}'".format(dr),
+                                f"The LLVM_PROJECT_REPO_DIR is set to an invalid directory: '{conf_value}'",
                                 LogLevel.ERROR,
                             )
                             exit()
-                        self.config["LLVM_PROJECT_REPO_DIR"] = dr
-                        self.config["LLVM_PROJECT_HEXAGON_DIR"] = dr + "/llvm/lib/Target/Hexagon"
+                        self.config["LLVM_PROJECT_REPO_DIR"] = conf_value
+                        self.config["LLVM_PROJECT_HEXAGON_DIR"] = conf_value + "/llvm/lib/Target/Hexagon"
+                    elif ln[0].strip() == "CLANG_FORMAT_BIN":
+                        conf_value = ln[1].strip()
+                        self.config["CLANG_FORMAT_BIN"] = conf_value
                     else:
                         log("Unknown configuration in config file: '{}'".format(ln[0]), LogLevel.WARNING)
         else:
@@ -181,6 +199,15 @@ class LLVMImporter:
             cwd=self.config["LLVM_PROJECT_HEXAGON_DIR"],
         )
 
+    def setup_rzil_compiler(self):
+        log("Init compiler")
+        self.rzil_compiler = Compiler(ArchEnum.HEXAGON)
+        if not self.skip_pcpp:
+            self.rzil_compiler.run_preprocessor()
+
+        log("Load instruction behavior.")
+        self.rzil_compiler.preprocessor.load_insn_behavior()
+
     def update_hex_arch(self):
         """Imports system instructions and registers described in the manual but not implemented by LLVM."""
         reg_count = 0
@@ -192,19 +219,23 @@ class LLVMImporter:
         for filename in sorted(os.listdir(reg_dir)):
             if filename.split(".")[-1] != "json":
                 continue
+            reg_class = ""
+            if len(filename.split("-")) == 2:
+                reg_class = filename.split("-")[0]
             with open(reg_dir + filename) as f:
                 reg = json.load(f)
             reg_name = list(reg.keys())[0]
-            if reg_name != "SysRegs" or reg_name != "SysRegs64":
-                if reg_name in self.hexArch["!instanceof"]["DwarfRegNum"]:
-                    raise ImplementationException(
-                        "Register {} already present in the LLVM definitions."
-                        " Please check whether LLVM implements System/Monitor"
-                        " instructions and system registers etc.".format(reg_name)
-                    )
-                self.hexArch["!instanceof"]["DwarfRegNum"] += reg.keys()
-                reg_count += 1
+            if reg_name in self.hexArch["!instanceof"]["DwarfRegNum"]:
+                raise ValueError(
+                    f"Register {reg_name} already present in the LLVM definitions."
+                    " Please check whether LLVM defines it."
+                )
+            self.hexArch["!instanceof"]["DwarfRegNum"] += reg.keys()
+            reg_count += 1
             self.hexArch.update(reg)
+            if reg_class:
+                arg = {"def": reg_name, "kind": "def", "printable": reg_name}
+                self.hexArch[reg_class]["MemberList"]["args"].append([arg, None])
 
         instr_count = 0
         insn_dir = "./import/instructions/" if not self.test_mode else "../import/instructions/"
@@ -218,44 +249,129 @@ class LLVMImporter:
             for llvm_instr in self.hexArch["!instanceof"]["HInst"]:
                 syntax_list[llvm_instr] = self.hexArch[llvm_instr]["AsmString"]
             if "UNDOCUMENTED" not in instn_name and insn[instn_name]["AsmString"] in syntax_list.values():
-                log(f"Imported instruction was added to LLVM. Remove it if opcodes match. Instr.: '{instn_name}'")
-                continue
+                if self.obsolete_import_handler(filename, insn, instn_name, syntax_list):
+                    continue
             self.hexArch.update(insn)
             self.hexArch["!instanceof"]["HInst"] += list(insn.keys())
             instr_count += 1
         log("Imported {} registers.".format(reg_count))
         log("Imported {} instructions.".format(instr_count))
 
-    def parse_instructions(self) -> None:
-        for i, i_name in enumerate(self.hexArch["!instanceof"]["HInst"]):
-            llvm_instruction = self.hexArch[i_name]
-            if llvm_instruction is None:
-                log(
-                    "Could not find instruction with name: {} in json file.".format(i_name),
-                    LogLevel.ERROR,
-                )
-                continue
-            if llvm_instruction["isPseudo"]:
-                log(
-                    "Pseudo instruction passed. Name: {}".format(i_name),
-                    LogLevel.VERBOSE,
-                )
-                continue
-            log("{} | Parse {}".format(i, i_name), LogLevel.VERBOSE)
-            self.llvm_instructions[i_name] = llvm_instruction
+    def obsolete_import_handler(self, filename, insn, instn_name, syntax_list) -> bool:
+        """
+        Handles the case of an imported instruction becoming obsolete because it was
+        added to LLVM.
+        :return: True if the encodings match. False otherwise.
+        """
+        name_idx = list(syntax_list.values()).index(insn[instn_name]["AsmString"])
+        llvm_insn_name = self.hexArch["!instanceof"]["HInst"][name_idx]
+        imported_enc = insn[instn_name]["Inst"]
+        llvm_enc = self.hexArch[llvm_insn_name]["Inst"]
+        encodings_match = True
+        cleaned_llvm_enc = list()
+        for imp_bit, llvm_bit in zip(imported_enc, llvm_enc):
+            if isinstance(imp_bit, dict) and isinstance(llvm_bit, dict):
+                if imp_bit["var"] != llvm_bit["var"]:
+                    encodings_match = False
+            elif imp_bit != llvm_bit:
+                encodings_match = False
 
-            if llvm_instruction["Type"]["def"] == "TypeSUBINSN":
-                self.sub_instruction_names.append(i_name)
-                self.sub_instructions[i_name] = SubInstruction(llvm_instruction)
-                ns = self.sub_instructions[i_name].namespace
-                if ns not in self.sub_namespaces:
-                    self.sub_namespaces.add(ns)
-            else:
-                self.normal_instruction_names.append(i_name)
-                self.normal_instructions[i_name] = Instruction(llvm_instruction)
+            if isinstance(llvm_bit, dict):
+                del llvm_bit["kind"]
+                del llvm_bit["printable"]
+            cleaned_llvm_enc.append(llvm_bit)
+        if encodings_match:
+            log(
+                "Imported instruction was added to LLVM.\n"
+                f"\tInstr.: '{instn_name}' -> '{llvm_insn_name}'\n"
+                f"\tRemove: {filename}"
+            )
+            return True
+        log(
+            "Imported instruction was added to LLVM. But the encodings mismatch!\n"
+            f"\tInstr.: '{instn_name}' -> '{llvm_insn_name}'\n"
+            f"\tImported enc: {imported_enc}\n"
+            f"\tLLVM enc:     {llvm_enc}",
+            LogLevel.WARNING,
+        )
+        return False
+
+    def skip_insn(self, insn_name: str) -> bool:
+        # PS_ instructions are pseudo instructions, but not marked as such.
+        # They do not exist in QEMU.
+        if insn_name.lower().startswith("ps"):
+            return True
+        return False
+
+    def parse_instructions(self) -> None:
+        compiled_insn = 0
+        hvx_compiled = 0
+        standard_compiled = 0
+        # Filter out pseudo instructions
+        no_pseudo = [
+            i for i in self.hexArch["!instanceof"]["HInst"] if not self.hexArch[i]["isPseudo"] and not self.skip_insn(i)
+        ]
+        if self.gen_rzil and self.rzil_compile:
+            self.rzil_compiler.parse_shortcode()
+
+        with tqdm(
+            desc="Parse instructions.",
+            postfix=f"Succ. compiled: {compiled_insn}/{len(no_pseudo)}",
+            total=len(no_pseudo),
+        ) as t:
+            for i, i_name in enumerate(no_pseudo):
+                llvm_instruction = self.hexArch[i_name]
+                if llvm_instruction is None:
+                    log("Could not find instruction with name: {} in json file.".format(i_name), LogLevel.ERROR)
+                    continue
+                log("{} | Parse {}".format(i, i_name), LogLevel.VERBOSE)
+                self.llvm_instructions[i_name] = llvm_instruction
+
+                if llvm_instruction["Type"]["def"] == "TypeSUBINSN":
+                    self.sub_instruction_names.append(i_name)
+                    insn = SubInstruction(llvm_instruction)
+                    self.sub_instructions[i_name] = insn
+                    ns = self.sub_instructions[i_name].namespace
+                    if ns not in self.sub_namespaces:
+                        self.sub_namespaces.add(ns)
+                else:
+                    self.normal_instruction_names.append(i_name)
+                    insn = Instruction(llvm_instruction)
+                    self.normal_instructions[i_name] = insn
+                if self.gen_rzil and self.rzil_compile:
+                    log("{} | Compile {}".format(i, i_name), LogLevel.VERBOSE)
+                    if self.set_il_op(insn):
+                        if i_name[:2] == "V6":
+                            hvx_compiled += 1
+                        else:
+                            standard_compiled += 1
+                        compiled_insn += 1
+                else:
+                    insn.il_ops = RZILInstruction.get_unimplemented_rzil_instr(insn.name)
+                t.n = i
+                t.postfix = f"Succ. compiled: {compiled_insn}/{len(no_pseudo)}"
+                t.update()
+        self.rzil_compiler.transformer.ext.report_missing_fcns()
 
         log("Parsed {} normal instructions.".format(len(self.normal_instructions)))
         log("Parsed {} sub-instructions.".format(len(self.sub_instructions)))
+        if self.gen_rzil and self.rzil_compile:
+            total = len(self.normal_instruction_names) + len(self.sub_instruction_names)
+            total_hvx = len([n for n in self.normal_instruction_names if n[:2] == "V6"])
+            total_standard = total - total_hvx
+            log(f"{standard_compiled}/{total_standard} standard instructions compiled.")
+            log(f"{hvx_compiled}/{total_hvx} HVX instructions compiled.")
+            log(f"In total: {compiled_insn}/{total} instructions compiled.")
+
+    def set_il_op(self, insn: InstructionTemplate) -> bool:
+        try:
+            insn.il_ops = self.rzil_compiler.compile_insn(insn.name)
+            return True
+        except Exception as e:
+            log(f"Failed to compile instruction {insn.name}\nException: {e}\n", LogLevel.DEBUG)
+            # Compiler failure for instruction or not implemented
+            insn.il_ops = RZILInstruction.get_unimplemented_rzil_instr(insn.name)
+            return False
 
     def parse_hardware_registers(self) -> None:
         cc = 0
@@ -357,9 +473,14 @@ class LLVMImporter:
         self.build_hexagon_c()
         self.build_hexagon_h()
         self.build_dwarf_reg_num_table()
+        self.build_hexagon_reg_tables_h()
         self.build_asm_hexagon_c()
         self.build_hexagon_arch_c()
         self.build_hexagon_arch_h()
+        self.build_hexagon_il_h()
+        self.build_hexagon_il_getter_table_h()
+        self.build_hexagon_il_c()
+        self.build_hexagon_il_X_ops_c()
         self.copy_tests()
         self.build_analysis_hexagon_c()
         self.build_cc_hexagon_32_sdb_txt()
@@ -384,14 +505,154 @@ class LLVMImporter:
                     content = f.read()
                     f.seek(0, 0)
                     f.write(get_license() + "\n" + get_generation_timestamp(self.config) + "\n" + content)
+                if p not in self.edited_files:
+                    log("Write {}".format(p), LogLevel.INFO)
 
-    def build_hexagon_insn_enum_h(self, path: str = "./rizin/librz/arch/isa/hexagon/hexagon_insn.h") -> None:
+    def build_hexagon_il_h(self, path: Path = Conf.get_path(OutputFile.HEXAGON_IL_H)) -> None:
+        if not self.gen_rzil:
+            self.unchanged_files.append(path)
+            return
+        code = get_generation_warning_c_code()
+        code += "\n"
+        code += get_include_guard("hexagon_il.h")
+        code += "\n"
+
+        code += include_file("handwritten/hexagon_il_h/includes.h")
+        code += "\n"
+
+        code += include_file("handwritten/hexagon_il_h/macros.h")
+        code += "\n"
+
+        code += include_file("handwritten/hexagon_il_h/declarations.h")
+
+        # Getter declarations
+        for insn in list(self.normal_instructions.values()) + list(self.sub_instructions.values()):
+            for fcn_decl in insn.il_ops["getter_rzil"]["fcn_decl"]:
+                code += f"{fcn_decl};\n"
+
+        with open("handwritten/misc_il_insns.json") as f:
+            misc_insns = json.loads(f.read())
+
+        for name in misc_insns["qemu_defined"]:
+            rzil_insn = self.rzil_compiler.compile_insn(name)
+            for decl in rzil_insn["getter_rzil"]["fcn_decl"]:
+                code += f"{decl};\n"
+
+        for routine_name, routine in self.rzil_compiler.sub_routines.items():
+            sub_routine = self.rzil_compiler.get_sub_routine(routine_name)
+            code += f"{sub_routine.il_init(SubRoutineInitType.DECL)};\n"
+
+        code += "\n#endif\n"
+
+        self.write_src(code, path)
+
+    def build_hexagon_il_c(self, path: Path = Conf.get_path(OutputFile.HEXAGON_IL_C)) -> None:
+        if not self.gen_rzil:
+            self.unchanged_files.append(path)
+            return
+        code = get_generation_warning_c_code()
+        code += "\n"
+
+        code += include_file("handwritten/hexagon_il_c/includes.c")
+        code += "\n"
+
+        code += include_file("handwritten/hexagon_il_c/functions.c")
+        code += "\n"
+        code += include_file("handwritten/hexagon_il_c/exclude.c")
+
+        self.write_src(code, path)
+
+    def get_il_op_c_defintion(self, syntax: str, rzil_insn: RZILInstruction) -> str:
+        code = ""
+        for rzil_code, fcn_decl, needs_hi, needs_pkt in zip(
+            rzil_insn["rzil"], rzil_insn["getter_rzil"]["fcn_decl"], rzil_insn["needs_hi"], rzil_insn["needs_pkt"]
+        ):
+            code += f"// {syntax}\n"
+            code += f"{fcn_decl} {{"
+
+            if needs_hi:
+                code += "const HexInsn *hi = bundle->insn;"
+            if needs_pkt:
+                code += "HexPkt *pkt = bundle->pkt;"
+
+            code += rzil_code
+            code += "}\n\n"
+        return code
+
+    def build_hexagon_il_X_ops_c(self, path: Path = Conf.get_path(OutputFile.IL_OPS_DIR)) -> None:
+        """Generate the IL op getter for each instruction.
+        The file the getter is written to depend on the instruction class.
+        Args:
+            path: Path to directory where the src files will be written.
+
+        Returns: None
+        """
+        if not (self.gen_rzil and self.rzil_compile):
+            for subdir, _, files in os.walk(path):
+                for file in files:
+                    self.unchanged_files.append(os.path.join(subdir, file))
+            return
+        insns = dict()
+        # Bundle instructions by category
+        for i_name in sorted(self.normal_instruction_names + self.sub_instruction_names):
+            insn = (
+                self.normal_instructions[i_name]
+                if i_name in self.normal_instruction_names
+                else self.sub_instructions[i_name]
+            )
+            try:
+                # category: A2, SA1 etc.
+                category = re.search(r"^([a-zA-Z\d]+)_", insn.name).group(1)
+            except Exception as e:
+                print(insn.name)
+                raise e
+            if category in insns:
+                insns[category].append(insn)
+            else:
+                insns[category] = [insn]
+
+        for cp in insns.keys():
+            code = get_generation_warning_c_code()
+            code += include_file("handwritten/hexagon_il_X_ops_c/includes.h") + "\n"
+            for insn in insns[cp]:
+                code += self.get_il_op_c_defintion(insn.syntax, insn.il_ops)
+            code += include_file("handwritten/hexagon_il_X_ops_c/excludes.h")
+            self.write_src(code, path.joinpath(f"hexagon_il_{cp}_ops.c"))
+
+        self.gen_misc_instructions(path)
+
+    def gen_misc_instructions(self, path: Path = Conf.get_path(OutputFile.IL_OPS_DIR)) -> None:
+        code = get_generation_warning_c_code()
+        code += include_file("handwritten/hexagon_il_X_ops_c/includes.h") + "\n"
+
+        with open("handwritten/misc_il_insns.json") as f:
+            misc_insns = json.loads(f.read())
+
+        for name in misc_insns["qemu_defined"]:
+            rzil_insn = self.rzil_compiler.compile_insn(name)
+            if name in self.normal_instructions:
+                syntax = self.normal_instructions[name]
+            elif name in self.sub_instructions:
+                syntax = self.sub_instructions[name]
+            else:
+                syntax = "No syntax"
+            code += self.get_il_op_c_defintion(syntax, rzil_insn)
+
+        for routine_name, routine in self.rzil_compiler.sub_routines.items():
+            sub_routine = self.rzil_compiler.get_sub_routine(routine_name)
+            code += sub_routine.il_init(SubRoutineInitType.DEF) + "\n\n"
+
+        code += include_file("handwritten/hexagon_il_X_ops_c/non_insn_ops.c")
+        code += include_file("handwritten/hexagon_il_X_ops_c/excludes.h")
+        self.write_src(code, path.joinpath("hexagon_il_non_insn_ops.c"))
+
+    def build_hexagon_insn_enum_h(self, path: Path = Conf.get_path(OutputFile.HEXAGON_INSN_H)) -> None:
         code = get_generation_warning_c_code()
         code += "\n"
         code += get_include_guard("hexagon_insn.h")
         code += "\ntypedef enum {\n"
         enum = ""
-        for name in self.normal_instruction_names + self.sub_instruction_names:
+        for name in sorted(self.normal_instruction_names + self.sub_instruction_names):
             if "invalid_decode" in name:
                 enum = (PluginInfo.INSTR_ENUM_PREFIX + name.upper() + " = 0,") + enum
             else:
@@ -402,7 +663,7 @@ class LLVMImporter:
 
         self.write_src(code, path)
 
-    def build_hexagon_disas_c(self, path: str = "./rizin/librz/arch/isa/hexagon/hexagon_disas.c") -> None:
+    def build_hexagon_disas_c(self, path: Path = Conf.get_path(OutputFile.HEXAGON_DISAS_C)) -> None:
         code = get_generation_warning_c_code()
 
         code += include_file("handwritten/hexagon_disas_c/include.c")
@@ -437,16 +698,75 @@ class LLVMImporter:
 
         self.write_src(code, path)
 
-    def build_hexagon_h(self, path: str = "./rizin/librz/arch/isa/hexagon/hexagon.h") -> None:
-        indent = PluginInfo.LINE_INDENT
-        general_prefix = PluginInfo.GENERAL_ENUM_PREFIX
+    def build_hexagon_il_getter_table_h(self, path: Path = Conf.get_path(OutputFile.HEXAGON_IL_GETTER_TABLE_H)) -> None:
+        if not self.gen_rzil:
+            self.unchanged_files.append(path)
+            return
+        code = get_generation_warning_c_code()
+        code += "\n"
+        code += get_include_guard("hexagon_il_getter_table.h")
+        code += "\n"
+        code += include_file("handwritten/hexagon_il_getter_table_h/includes.h")
+        code += "\n"
 
+        # Lookup table
+        code += "static HexILInsn hex_il_getter_lt[] = {\n"
+        table = ""
+        for name in sorted(self.normal_instruction_names + self.sub_instruction_names):
+            insn = self.normal_instructions[name] if name in self.normal_instructions else self.sub_instructions[name]
+            if "invalid_decode" in name.lower():
+                # Invalid decode is always at the top.
+                tmp = f"{{{{(HexILOpGetter) {insn.il_ops['getter_rzil']['name'][0]}, {insn.il_ops['meta'][0][0]}}},\n"
+                tmp += "{(HexILOpGetter) NULL, HEX_IL_INSN_ATTR_INVALID},\n"
+                tmp += "{(HexILOpGetter) NULL, HEX_IL_INSN_ATTR_INVALID}\n"
+                tmp += "},"
+                table = tmp + table
+                continue
+            members_to_set = PluginInfo.NUM_HEX_IL_INSN_MEMBERS
+            getter: str
+            meta: [str]
+            table += "{"
+            for getter, meta in zip(insn.il_ops["getter_rzil"]["name"], insn.il_ops["meta"]):
+                table += f"{{(HexILOpGetter) {getter}, {'|'.join(meta)}}},\n"
+                members_to_set -= 1
+            if members_to_set < 1:
+                log("Can not set more than two IL operations. Please add more members to HexILInsn.", LogLevel.ERROR)
+            if members_to_set == 1:
+                table += "{(HexILOpGetter) NULL, HEX_IL_INSN_ATTR_INVALID}\n"
+            else:
+                table += "{(HexILOpGetter) NULL, HEX_IL_INSN_ATTR_INVALID},\n"
+                table += "{(HexILOpGetter) NULL, HEX_IL_INSN_ATTR_INVALID}\n"
+
+            table += "},"
+        code += table + "};"
+
+        code += "\n#endif"
+        self.write_src(code, path)
+
+    def build_hexagon_reg_tables_h(self, path: Path = Conf.get_path(OutputFile.HEXAGON_REG_TABLES_H)) -> None:
+        code = get_generation_warning_c_code()
+        code += "\n"
+        code += get_include_guard("hexagon_reg_tables.h")
+        code += "\n"
+        code += include_file("handwritten/hexagon_reg_tables_h/includes.h")
+        code += "\n"
+
+        code += self.gen_alias_lt()
+        code += self.get_reg_name_tables()
+
+        code += "\n#endif"
+        self.write_src(code, path)
+
+    def build_hexagon_h(self, path: Path = Conf.get_path(OutputFile.HEXAGON_H)) -> None:
         code = get_generation_warning_c_code()
         code += "\n"
         code += get_include_guard("hexagon.h")
         code += "\n"
 
         code += include_file("handwritten/hexagon_h/includes.h")
+        code += "\n"
+
+        code += include_file("handwritten/hexagon_h/macros.h")
         code += "\n"
 
         code += f"#define {PluginInfo.GENERAL_ENUM_PREFIX}MAX_OPERANDS {PluginInfo.MAX_OPERANDS}\n"
@@ -458,30 +778,8 @@ class LLVMImporter:
         code += ",\n".join([HardwareRegister.get_enum_item_of_class(reg_class) for reg_class in self.hardware_regs])
         code += "} HexRegClass;\n\n"
 
-        reg_class: str
-        for reg_class in self.hardware_regs:
-            code += "typedef enum {\n"
-
-            hw_reg: HardwareRegister
-            for hw_reg in sorted(
-                self.hardware_regs[reg_class].values(),
-                key=lambda x: x.hw_encoding,
-            ):
-                alias = ",".join(hw_reg.alias)
-                code += "{}{} = {},{}".format(
-                    indent,
-                    hw_reg.enum_name,
-                    hw_reg.hw_encoding,
-                    " // " + alias + "\n" if alias != "" else "\n",
-                )
-            code += "}} {}{}; // {}\n\n".format(
-                general_prefix,
-                HardwareRegister.register_class_name_to_upper(reg_class),
-                reg_class,
-            )
-
-        code += include_file("handwritten/hexagon_h/macros.h")
-        code += "\n"
+        code += self.gen_reg_enums()
+        code += self.gen_alias_enum()
 
         if len(self.reg_resolve_decl) == 0:
             raise ImplementationException(
@@ -497,44 +795,140 @@ class LLVMImporter:
 
         self.write_src(code, path)
 
-    def build_hexagon_c(self, path: str = "./rizin/librz/arch/isa/hexagon/hexagon.c") -> None:
+    def get_reg_name_tables(self) -> str:
+        """
+        Generates the lookup tables of register names, alias and their corresponding .new names (<name>_tmp).
+        Each hardware register has a specific number, with which it is identified in the opcode
+        (HardwareRegister.hw_encoding).
+        The index of a hardware registers name, alias and .new names is calculated like following:
+
+        reg_name_index = HardwareRegister.hw_encoding
+        alias_index = reg_name_index + 1
+        reg_name_new_index = reg_name_index + 2
+        alias_new_index = reg_name_index + 3
+
+        Note: The hw_encoding values does not necessarily increment by one.
+        Lines which have no index due to that are filled with NULL.
+
+        Returns: The C code with lookup tables for each register class.
+        """
+        code = ""
+        for reg_class in self.hardware_regs:
+            code += "\n\n" + gen_c_doxygen(f"Lookup table for register names and alias of class {reg_class}.")
+            table_name = PluginInfo.REGISTER_LOOKUP_TABLE_NAME_V69.format(reg_class.lower())
+            code += f"HexRegNames {table_name}[] = {{\n"
+
+            index = 0
+            hw_reg: HardwareRegister
+            for hw_reg in sorted(
+                self.hardware_regs[reg_class].values(),
+                key=lambda x: x.hw_encoding,
+            ):
+                while index < hw_reg.hw_encoding:
+                    code += f"{{NULL, NULL, NULL, NULL}}, // -\n"
+                    index += 1
+                name = hw_reg.asm_name
+                alias = hw_reg.alias[0] if len(hw_reg.alias) > 0 else hw_reg.asm_name
+                code += f'{{"{name.upper()}", "{alias.upper()}", "{name.upper()}_tmp", "{alias}_tmp"}}, // {hw_reg.enum_name}\n'
+                index += 1
+            code += "};\n"
+        return code
+
+    def get_hw_alias(self) -> [dict]:
+        """
+        Generates the list with alias of hardware registers and all the information about each alias.
+        Used to generate alias enums and lookup tables.
+        """
+        alias = list()
+        for reg_class in self.hardware_regs:
+            hw_reg: HardwareRegister
+            for hw_reg in sorted(self.hardware_regs[reg_class].values(), key=lambda x: x.hw_encoding):
+                if hw_reg.is_mod:
+                    # Alias already set for c0, c1
+                    continue
+                if len(hw_reg.alias) == 0:
+                    continue
+                for a in hw_reg.alias:
+                    alias.append(
+                        {
+                            "alias_enum": f'{PluginInfo.REGISTER_ALIAS_ENUM_PREFIX}{re.sub(r":", "_", a).upper()}',
+                            "reg_class": hw_reg.get_enum_item_of_class(reg_class),
+                            "reg_enum": hw_reg.enum_name,
+                            "real": hw_reg.asm_name,
+                        }
+                    )
+        return alias
+
+    def gen_alias_lt(self) -> str:
+        """
+        Generates the lookup table for all know register alias.
+        Returns: C lookup table with register alias.
+        """
+        code = gen_c_doxygen("Lookup table for register alias.\n")
+        code += f"HexRegAliasMapping {PluginInfo.ALIAS_REGISTER_LOOKUP_TABLE_v69}[] = {{\n"
+        code += "\n".join(
+            [f'{{{a["reg_class"]}, {a["reg_enum"]}}}, // {a["alias_enum"]}' for i, a in enumerate(self.get_hw_alias())]
+        )
+        code += "\n};\n\n"
+        return code
+
+    def gen_alias_enum(self) -> str:
+        """
+        Generates the enum for all know register alias.
+        Returns: C enum with register alias.
+        """
+        code = "typedef enum {\n"
+        code += "".join([a["alias_enum"] + f" = {i},\n" for i, a in enumerate(self.get_hw_alias())])
+        code += "} HexRegAlias;\n\n"
+        return code
+
+    def gen_reg_enums(self) -> str:
+        code = ""
+        reg_class: str
+        for reg_class in self.hardware_regs:
+            code += "typedef enum {\n"
+
+            hw_reg: HardwareRegister
+            for hw_reg in sorted(
+                self.hardware_regs[reg_class].values(),
+                key=lambda x: x.hw_encoding,
+            ):
+                alias = ",".join(hw_reg.alias)
+                code += "{} = {},{}".format(
+                    hw_reg.enum_name,
+                    hw_reg.hw_encoding,
+                    " // " + alias + "\n" if alias != "" else "\n",
+                )
+            code += "}} {}{}; // {}\n\n".format(
+                PluginInfo.GENERAL_ENUM_PREFIX,
+                HardwareRegister.register_class_name_to_upper(reg_class),
+                reg_class,
+            )
+        return code
+
+    def build_hexagon_c(self, path: Path = Conf.get_path(OutputFile.HEXAGON_C)) -> None:
         general_prefix = PluginInfo.GENERAL_ENUM_PREFIX
         code = get_generation_warning_c_code()
         code += include_file("handwritten/hexagon_c/include.c")
+        code += "\n"
 
-        reg_class: str
-        for reg_class in self.hardware_regs:
-            func_name = HardwareRegister.get_func_name_of_class(reg_class, False)
-            function = "\nchar* {}(int opcode_reg, bool get_alias)".format(func_name)
-            self.reg_resolve_decl.append(function + ";")
-            code += "{} {{".format(function)
-
-            parsing_code = HardwareRegister.get_parse_code_reg_bits(reg_class, "opcode_reg")
-            if parsing_code != "":
-                code += "{}".format(parsing_code)
-
-            code += "switch (opcode_reg) {"
-            code += 'default:return "<err>";'
-
-            hw_reg: HardwareRegister
-            for hw_reg in self.hardware_regs[reg_class].values():
-                alias = "".join(hw_reg.alias).upper()
-                alias_choice = 'get_alias ? "' + alias + '" : "' + hw_reg.asm_name.upper() + '"'
-                code += "case {}:\nreturn {};".format(
-                    hw_reg.enum_name,
-                    alias_choice if alias != "" else '"' + hw_reg.asm_name.upper() + '"',
-                )
-            code += "}}\n"
+        code += self.gen_resolve_reg_enum_id_fcn()
+        code += "\n"
+        code += self.gen_get_reg_name_fcns()
+        code += "\n"
 
         reg_in_cls_decl = (
-            f"char *{general_prefix.lower()}" "get_reg_in_class(HexRegClass cls, int opcode_reg, bool get_alias)"
+            f"RZ_API const char *{general_prefix.lower()}"
+            "get_reg_in_class(HexRegClass cls, int reg_num, bool get_alias, bool get_new, bool reg_num_is_enum)"
         )
         self.reg_resolve_decl.append(f"{reg_in_cls_decl};")
         code += f"{reg_in_cls_decl} {{\n"
         code += "switch (cls) {\n"
         for reg_class in self.hardware_regs:
-            code += f"case {HardwareRegister.get_enum_item_of_class(reg_class)}:\n"
-            code += f"return {HardwareRegister.get_func_name_of_class(reg_class, False)}(opcode_reg, get_alias);\n"
+            rc = HardwareRegister.get_func_name_of_class(reg_class, False)
+            ec = HardwareRegister.get_enum_item_of_class(reg_class)
+            code += f"case {ec}:\n"
+            code += f"return {rc}(reg_num, get_alias, get_new, reg_num_is_enum);\n"
         code += "default:\n"
         code += "return NULL;\n"
         code += "}\n"
@@ -544,7 +938,7 @@ class LLVMImporter:
 
         self.write_src(code, path)
 
-    def build_dwarf_reg_num_table(self, path: str = "./rizin/librz/arch/isa/hexagon/hexagon_dwarf_reg_num_table.inc"):
+    def build_dwarf_reg_num_table(self, path: Path = Conf.get_path(OutputFile.HEXAGON_DWARF_REG_TABLE_H)):
         code = get_generation_warning_c_code()
         code += "\n"
         code += "static const char *map_dwarf_reg_to_hexagon_reg(ut32 reg_num) {"
@@ -572,7 +966,55 @@ class LLVMImporter:
         code += "}}"
         self.write_src(code, path)
 
-    def build_asm_hexagon_c(self, path: str = "./rizin/librz/arch/p/asm/asm_hexagon.c") -> None:
+    def gen_resolve_reg_enum_id_fcn(self, param_name: str = "reg_num") -> str:
+        var_name = param_name
+        decl = "RZ_API ut32 hex_resolve_reg_enum_id(HexRegClass class, ut32 reg_num)"
+        self.reg_resolve_decl.append(f"{decl};")
+
+        code = f"{decl} {{\n" "\tswitch (class) {\n" "\tdefault:\n" f"\t\treturn {var_name};\n"
+        for reg_class in self.hardware_regs:
+            class_enum = HardwareRegister.get_enum_item_of_class(reg_class)
+            parsing_code = HardwareRegister.get_parse_code_reg_bits(reg_class, var_name)
+            if not parsing_code:
+                continue
+            code += f"\tcase {class_enum}:{{\n" f"{parsing_code}\n" f"\treturn {var_name};\n" "}"
+        code += "}\n" "rz_warn_if_reached();\n" "return UT32_MAX;\n" "}"
+        return code
+
+    def gen_get_reg_name_fcns(self):
+        code = ""
+        reg_class: str
+        for reg_class in self.hardware_regs:
+            func_name = HardwareRegister.get_func_name_of_class(reg_class, False)
+            function = f"\nconst char* {func_name}(int reg_num, bool get_alias, bool get_new, bool reg_num_is_enum)"
+            self.reg_resolve_decl.append(function + ";")
+            code += f"{function} {{"
+
+            parsing_code = HardwareRegister.get_parse_code_reg_bits(reg_class, "reg_num")
+            if parsing_code != "":
+                code += f"reg_num = hex_resolve_reg_enum_id({HardwareRegister.get_enum_item_of_class(reg_class)}, reg_num);\n"
+
+            warn_ior = "%s: Index out of range during register name lookup:  i = %d\\n"
+            table_name = PluginInfo.REGISTER_LOOKUP_TABLE_NAME_V69.format(reg_class.lower())
+            code += (
+                f"if (reg_num >= ARRAY_LEN({table_name}))"
+                f'{{RZ_LOG_INFO("{warn_ior}", "{func_name}", reg_num);'
+                f'return NULL;}}'
+            )
+            code += f"const char *name;"
+            code += f"const HexRegNames rn = {table_name}[reg_num];"
+            code += "if (get_alias) {"
+            code += "name = get_new ? rn.alias_tmp : rn.alias;"
+            code += "} else {"
+            code += "name = get_new ? rn.name_tmp : rn.name;}"
+
+            warn_invalid_reg = "%s: No register name present at index: %d\\n"
+            code += "if (!name) {" f'RZ_LOG_INFO("{warn_invalid_reg}", "{func_name}", reg_num);' 'return NULL;}'
+            code += "return name;"
+            code += "}\n"
+        return code
+
+    def build_asm_hexagon_c(self, path: Path = Conf.get_path(OutputFile.ASM_HEXAGON_C)) -> None:
         code = get_generation_warning_c_code()
 
         code += include_file("handwritten/asm_hexagon_c/include.c")
@@ -580,7 +1022,7 @@ class LLVMImporter:
 
         self.write_src(code, path)
 
-    def build_hexagon_arch_c(self, path: str = "./rizin/librz/arch/isa/hexagon/hexagon_arch.c"):
+    def build_hexagon_arch_c(self, path: Path = Conf.get_path(OutputFile.HEXAGON_ARCH_C)):
         code = get_generation_warning_c_code()
 
         code += include_file("handwritten/hexagon_arch_c/include.c")
@@ -589,7 +1031,7 @@ class LLVMImporter:
 
         self.write_src(code, path)
 
-    def build_hexagon_arch_h(self, path: str = "./rizin/librz/arch/isa/hexagon/hexagon_arch.h"):
+    def build_hexagon_arch_h(self, path: Path = Conf.get_path(OutputFile.HEXAGON_ARCH_H)):
         code = get_generation_warning_c_code()
         code += get_include_guard("hexagon_arch.h")
 
@@ -603,30 +1045,33 @@ class LLVMImporter:
     @staticmethod
     def copy_tests() -> None:
         with open("handwritten/analysis-tests/hexagon") as f:
-            with open("./rizin/test/db/analysis/hexagon", "w+") as g:
+            path = Conf.get_path(OutputFile.ANA_TESTS)
+            Conf.check_path(path.absolute())
+            with open(path, "w+") as g:
                 set_pos_after_license(g)
                 g.writelines(f.readlines())
 
         with open("handwritten/asm-tests/hexagon") as f:
-            with open("./rizin/test/db/asm/hexagon", "w+") as g:
+            path = Conf.get_path(OutputFile.ASM_TESTS)
+            Conf.check_path(path.absolute())
+            with open(path, "w+") as g:
+                set_pos_after_license(g)
+                g.writelines(f.readlines())
+
+        with open("handwritten/rzil-tests/hexagon") as f:
+            path = Conf.get_path(OutputFile.RZIL_TESTS)
+            Conf.check_path(path.absolute())
+            with open(path, "w+") as g:
                 set_pos_after_license(g)
                 g.writelines(f.readlines())
         log("Copied test files to ./rizin/test/db/", LogLevel.DEBUG)
 
-    def build_analysis_hexagon_c(self, path: str = "./rizin/librz/arch/p/analysis/analysis_hexagon.c") -> None:
+    def build_analysis_hexagon_c(self, path: Path = Conf.get_path(OutputFile.ANALYSIS_HEXAGON_C)) -> None:
         """Generates and writes the register profile.
         Note that some registers share the same offsets. R0 and R1:0 are both based at offset 0.
         """
         profile = self.get_alias_profile().splitlines(keepends=True)
-        tmp_regs = []  # Tmp register for RZIL
         reg_offset = 0
-        offsets = {"IntRegs": 0}
-        offsets["CtrRegs"] = offsets["IntRegs"] + len(self.hardware_regs["IntRegs"]) * 32
-        offsets["GuestRegs"] = offsets["CtrRegs"] + len(self.hardware_regs["CtrRegs"]) * 32
-        offsets["HvxQR"] = offsets["GuestRegs"] + len(self.hardware_regs["GuestRegs"]) * 32
-        offsets["HvxVR"] = offsets["HvxQR"] + len(self.hardware_regs["HvxQR"]) * 128
-        offsets["SysRegs"] = offsets["HvxVR"] + len(self.hardware_regs["HvxVR"]) * 1024
-        offsets["TmpRegs"] = offsets["SysRegs"] + len(self.hardware_regs["SysRegs"]) * 32
 
         for hw_reg_class in self.hardware_regs:
             if hw_reg_class in [
@@ -636,41 +1081,24 @@ class LLVMImporter:
                 "ModRegs",
             ]:
                 continue  # Those registers would only be duplicates.
-            if hw_reg_class in ["IntRegs", "DoubleRegs"]:
-                reg_offset = offsets["IntRegs"]
-            elif hw_reg_class in ["CtrRegs", "CtrRegs64"]:
-                reg_offset = offsets["CtrRegs"]
-            elif hw_reg_class == "PredRegs":
-                reg_offset = offsets["CtrRegs"] + (32 * 4)  # PredRegs = C4
-            elif hw_reg_class in ["GuestRegs", "GuestRegs64"]:
-                reg_offset = offsets["GuestRegs"]
-            elif hw_reg_class in ["HvxVR", "HvxWR", "HvxVQR"]:
-                reg_offset = offsets["HvxVR"]
-            elif hw_reg_class == "HvxQR":
-                reg_offset = offsets["HvxQR"]
-            elif hw_reg_class in ["SysRegs", "SysRegs64"]:
-                reg_offset = offsets["SysRegs"]
-            else:
-                raise ImplementationException(
-                    "Register profile can't be completed. Base for type {} missing.".format(hw_reg_class)
-                )
 
             hw_reg: HardwareRegister
             for hw_reg in {
                 k: v for k, v in sorted(self.hardware_regs[hw_reg_class].items(), key=lambda item: item[1])
             }.values():
                 profile.append(hw_reg.get_reg_profile(reg_offset, False) + "\n")
-                tmp_regs.append(hw_reg.get_reg_profile(reg_offset + offsets["TmpRegs"], True) + "\n")
-                reg_offset += hw_reg.size if not (hw_reg.llvm_reg_class == "PredRegs") else 8
+                reg_offset += 8 if (hw_reg.llvm_reg_class == "PredRegs") else hw_reg.size
+                profile.append(hw_reg.get_reg_profile(reg_offset, True) + "\n")
+                reg_offset += 8 if (hw_reg.llvm_reg_class == "PredRegs") else hw_reg.size
             profile.append("\n")
-        profile = profile + tmp_regs
-        profile = profile[:-1]  # Remove line breaks
         profile[-1] = profile[-1][:-1] + ";\n"  # [:-1] to remove line break.
 
         code = get_generation_warning_c_code()
 
         code += include_file("handwritten/analysis_hexagon_c/include.c")
+        code += "\n"
         code += include_file("handwritten/analysis_hexagon_c/functions.c")
+        code += "\n"
 
         tmp = list()
         tmp.append("const char *p =")
@@ -682,16 +1110,16 @@ class LLVMImporter:
         )
         code += "\n" + "".join(tmp)
 
+        code += "\n"
         code += include_file("handwritten/analysis_hexagon_c/initialization.c")
 
         self.write_src(code, path)
 
-    # RIZIN SPECIFC
     def get_alias_profile(self) -> str:
-        """Returns the alias profile of register. A0 = R0, SP = R29 PC = pc etc."""
+        """Returns the alias profile of register. A0 = R0, SP = R29 PC = C9 etc."""
         indent = PluginInfo.LINE_INDENT
 
-        p = "\n" + '"=PC{}pc\\n"'.format(indent) + "\n"
+        p = "\n" + '"=PC{}C9\\n"'.format(indent) + "\n"
         p += '"=SP{}R29\\n"'.format(indent) + "\n"
         p += '"=BP{}R30\\n"'.format(indent) + "\n"
         p += '"=LR{}R31\\n"'.format(indent) + "\n"
@@ -741,9 +1169,7 @@ class LLVMImporter:
         return p
 
     @staticmethod
-    def build_cc_hexagon_32_sdb_txt(
-        path: str = "rizin/librz/analysis/d/cc-hexagon-32.sdb.txt",
-    ) -> None:
+    def build_cc_hexagon_32_sdb_txt(path: Path = Conf.get_path(OutputFile.CC_HEXAGON_32_SDB_TXT)) -> None:
         """Builds the *incomplete* calling convention as sdb file.
         Hexagon can pass arguments and return values via different registers. E.g. either over R0 or R1:0.
         But the calling convention logic in rizin and the sdb is not sophisticated enough to model this.
@@ -751,30 +1177,33 @@ class LLVMImporter:
         """
 
         cc_dict = dict()
+        Conf.check_path(path)
         with open(path, "w+") as f:
             for reg in HexagonArchInfo.CC_REGS["GPR_args"]:
                 n = int(re.search(r"\d{1,2}", reg).group(0))
                 if reg[0] == "R":
-                    cc_dict["cc.hexagon.arg{}".format(n)] = "r{}".format(n)
+                    cc_dict[f"cc.hexagon.arg{n}"] = f"R{n}"
                 elif reg[0] == "D":
+                    # Rizin has currently no way to define a different CC for
+                    # different sized parameters.
                     continue
                 else:
                     raise ImplementationException(
-                        "Could not assign register {} to a specific argument" " value.".format(reg)
+                        f"Could not assign register {reg} to a specific return value."
                     )
             cc_dict["cc.hexagon.argn"] = "stack_rev"
             for reg in HexagonArchInfo.CC_REGS["GPR_ret"]:
                 n = int(re.search(r"\d{1,2}", reg).group(0))
                 if reg[0] == "R":
                     if HexagonArchInfo.CC_REGS["GPR_ret"].index(reg) == 0:
-                        cc_dict["cc.hexagon.ret".format(n)] = "r{}".format(n)
+                        cc_dict["cc.hexagon.ret"] = f"R{n}"
                     else:
                         continue
                 elif reg[0] == "D":
                     continue
                 else:
                     raise ImplementationException(
-                        "Could not assign register {} to a specific return" " value.".format(reg)
+                        f"Could not assign register {reg} to a specific return value."
                     )
 
             f.write("default.cc=hexagon\n\nhexagon=cc\ncc.hexagon.maxargs=6\n")
@@ -786,31 +1215,30 @@ class LLVMImporter:
             for reg in HexagonArchInfo.CC_REGS["HVX_args"]:
                 n = int(re.search(r"\d{1,2}", reg).group(0))
                 if reg[0] == "V":
-                    cc_dict["cc.hvx.arg{}".format(n)] = "v{}".format(n)
+                    cc_dict[f"cc.hvx.arg{n}"] = f"V{n}"
                 elif reg[0] == "W":
                     continue
                 else:
                     raise ImplementationException(
-                        "Could not assign register {} to a specific argument" " value.".format(reg)
+                        f"Could not assign register {reg} to a specific return value."
                     )
             for reg in HexagonArchInfo.CC_REGS["HVX_ret"]:
                 n = int(re.search(r"\d{1,2}", reg).group(0))
                 if reg[0] == "V":
                     if HexagonArchInfo.CC_REGS["HVX_ret"].index(reg) == 0:
-                        cc_dict["cc.hvx.ret".format(n)] = "v{}".format(n)
+                        cc_dict["cc.hvx.ret"] = f"V{n}"
                     else:
                         continue
                 elif reg[0] == "W":
                     continue
                 else:
                     raise ImplementationException(
-                        "Could not assign register {} to a specific return" " value.".format(reg)
+                        f"Could not assign register {reg} to a specific return value."
                     )
             for k, v in cc_dict.items():
                 f.write(k + "=" + v + "\n")
 
-    @staticmethod
-    def apply_clang_format() -> None:
+    def apply_clang_format(self) -> None:
         log("Apply clang-format.")
         for subdir, dirs, files in os.walk("rizin/librz/"):
             for file in files:
@@ -823,20 +1251,22 @@ class LLVMImporter:
                     ".inc",
                 ]:
                     log("Format {}".format(p), LogLevel.VERBOSE)
-                    os.system("clang-format-13 -style file -i " + p)
+                    os.system(f"{self.config['CLANG_FORMAT_BIN']} -style file -i " + p)
 
-    def write_src(self, code: str, path: str) -> None:
+    def write_src(self, code: str, path: Path) -> None:
         """Compares the given src code to the src code in the file at path and writes it if it differs.
         It ignores the leading license header and timestamps in the existing src file.
-        Changes in formatting (anything which matches the regex '[[:blank:]]')
+        Changes in formatting (anything which matches the regex '[[:blank:]]') are ignored as well.
         """
 
-        if compare_src_to_old_src(code, path):
+        if src_matches_old_src(code, path):
             self.unchanged_files.append(path)
             return
-        with open(path, "w+") as dest:
-            dest.writelines(code)
+        Conf.check_path(path.absolute())
+        with open(path.absolute(), "w+") as dest:
             log("Write {}".format(path), LogLevel.INFO)
+            dest.writelines(code)
+            self.edited_files.append(path)
 
 
 if __name__ == "__main__":
@@ -848,5 +1278,28 @@ if __name__ == "__main__":
         help="Run llvm-tblgen to build a new Hexagon.json file from the LLVM definitions.",
         dest="bjs",
     )
+    parser.add_argument(
+        "--no-rzil",
+        action="store_false",
+        default=True,
+        help="Do not invoke the RZIL compiler at all.",
+        dest="rzil",
+    )
+    parser.add_argument(
+        "--no-rzil-compile",
+        action="store_false",
+        default=True,
+        help="(For testing only) Do not invoke the RZIL compiler to generate the instruction behavior. "
+        'No "il_ops" files will be generated. Other IL code will.',
+        dest="rzil_compile",
+    )
+    parser.add_argument(
+        "--no-pcpp",
+        action="store_true",
+        default=False,
+        help="Do not invoke the preprocessor of the RZIL compiler.",
+        dest="skip_pcpp",
+    )
+
     args = parser.parse_args()
-    interface = LLVMImporter(args.bjs)
+    interface = LLVMImporter(args.bjs, args.rzil, args.skip_pcpp, args.rzil_compile)

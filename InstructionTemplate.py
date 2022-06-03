@@ -8,6 +8,7 @@ import re
 
 import HexagonArchInfo
 import PluginInfo
+from rzil_compiler.Compiler import RZILInstruction
 from Immediate import Immediate
 from ImplementationException import ImplementationException
 from InstructionEncoding import InstructionEncoding
@@ -87,7 +88,7 @@ class InstructionTemplate:
         self.llvm_new_operand_index: bool = None
         self.is_predicated: bool = False
         self.is_pred_new: bool = False
-        self.is_pred_false: bool = False  # Duplex can have both, true and false predicates.
+        self.is_pred_false: bool = False
         self.is_pred_true: bool = False
 
         # Special
@@ -96,6 +97,8 @@ class InstructionTemplate:
         self.is_loop: bool = None
         self.is_loop_begin: bool = None
         self.loop_member = None
+
+        self.il_ops: RZILInstruction = None
 
         # Execution specific (Interesting for decompiler plugin)
         # The address mode of load/store instructions
@@ -216,6 +219,8 @@ class InstructionTemplate:
                 # Indices of new values (stored in "opNewValue") are only for non predicates.
                 is_new_value = self.new_operand_index == index and self.has_new_non_predicate
                 operand = Register(op_name, op_type, is_new_value, index)
+                # Second letter in reg name is used in QEMU shortcode to identify the register.
+                operand.isa_id = op_name[1]
                 # Whether the predicate registers holds a new value is denoted in "isPredicatedNew".
                 if self.is_pred_new and operand.is_predicate:
                     operand.is_new_value = True
@@ -314,7 +319,7 @@ class InstructionTemplate:
             flags.append("HEX_INSN_TEMPLATE_FLAG_LOOP_0")
         elif self.loop_member == LoopMembership.HEX_LOOP_1:
             flags.append("HEX_INSN_TEMPLATE_FLAG_LOOP_1")
-        if flags != []:
+        if flags:
             flags = " | ".join(flags)
             code += f".flags = {flags},\n"
         code += "}"

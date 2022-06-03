@@ -1,0 +1,29 @@
+{
+  "C26": {
+    "!anonymous": false,
+    "!fields": [],
+    "!name": "C26",
+    "!superclasses": [
+      "Register",
+      "HexagonReg",
+      "Rc",
+      "DwarfRegNum"
+    ],
+    "Aliases": [],
+    "AltNames": [],
+    "AsmName": "c26",
+    "CostPerUse": [
+      0
+    ],
+    "CoveredBySubRegs": 0,
+    "DwarfNumbers": [
+      93
+    ],
+    "HWEncoding": [0,1,0,1,1,0,0,0,0,0,0,0,0,0],
+    "Namespace": "Hexagon",
+    "RegAltNameIndices": [],
+    "SubRegIndices": [],
+    "SubRegs": [],
+    "isArtificial": 0
+  }
+}

@@ -167,7 +167,8 @@ class Register(Operand):
         info = " | ".join(info)
         return (
             f".info = {info}, .masks = {{ {self.opcode_mask.c_template} }}, "
-            + f".reg_cls = {Register.get_enum_item_of_class(self.llvm_type)}"
+            + f".reg_cls = {Register.get_enum_item_of_class(self.llvm_type)}, "
+            + f".isa_id = '{self.isa_id}'"
         )
 
     @staticmethod

@@ -1,0 +1,52 @@
+{
+  "C27_26": {
+    "!anonymous": false,
+    "!fields": [],
+    "!name": "C27_26",
+    "!superclasses": [
+      "Register",
+      "RegisterWithSubRegs",
+      "HexagonDoubleReg",
+      "Rcc",
+      "DwarfRegNum"
+    ],
+    "Aliases": [],
+    "AltNames": [],
+    "AsmName": "c27:26",
+    "CostPerUse": [
+      0
+    ],
+    "CoveredBySubRegs": 1,
+    "DwarfNumbers": [
+      0
+    ],
+    "HWEncoding": [0,1,0,1,1,0,0,0,0,0,0,0,0,0],
+    "Namespace": "Hexagon",
+    "RegAltNameIndices": [],
+    "SubRegIndices": [
+      {
+        "def": "isub_lo",
+        "kind": "def",
+        "printable": "isub_lo"
+      },
+      {
+        "def": "isub_hi",
+        "kind": "def",
+        "printable": "isub_hi"
+      }
+    ],
+    "SubRegs": [
+      {
+        "def": "C26",
+        "kind": "def",
+        "printable": "C26"
+      },
+      {
+        "def": "C27",
+        "kind": "def",
+        "printable": "C27"
+      }
+    ],
+    "isArtificial": 0
+  }
+}

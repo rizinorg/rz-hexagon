@@ -1,0 +1,29 @@
+{
+  "C28": {
+    "!anonymous": false,
+    "!fields": [],
+    "!name": "C28",
+    "!superclasses": [
+      "Register",
+      "HexagonReg",
+      "Rc",
+      "DwarfRegNum"
+    ],
+    "Aliases": [],
+    "AltNames": [],
+    "AsmName": "c28",
+    "CostPerUse": [
+      0
+    ],
+    "CoveredBySubRegs": 0,
+    "DwarfNumbers": [
+      95
+    ],
+    "HWEncoding": [0,0,1,1,1,0,0,0,0,0,0,0,0,0],
+    "Namespace": "Hexagon",
+    "RegAltNameIndices": [],
+    "SubRegIndices": [],
+    "SubRegs": [],
+    "isArtificial": 0
+  }
+}

@@ -39,6 +39,7 @@ typedef struct {
 typedef struct {
 	ut8 info; // HexOpTemplateType | HexOpTemplateFlag
 	ut8 syntax; // offset into HexInsnTemplate.syntax where to insert this op
+	char isa_id;
 	HexOpMask masks[HEX_OP_MASKS_MAX];
 	union {
 		ut8 imm_scale;

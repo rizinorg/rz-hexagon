@@ -10,4 +10,5 @@ RzAnalysisPlugin rz_analysis_plugin_hexagon = {
 	.op = hexagon_v6_op,
 	.esil = false,
 	.get_reg_profile = get_reg_profile,
+	.il_config = rz_hexagon_il_config,
 };
