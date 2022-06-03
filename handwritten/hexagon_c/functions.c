@@ -41,8 +41,8 @@ int resolve_n_register(const int reg_num, const ut32 addr, const HexPkt *p) {
 	hic = rz_list_get_n(p->bin, prod_i);
 
 	if (!hic || !hic->bin.insn || (hic->is_duplex && (!hic->bin.sub[0] || !hic->bin.sub[1]))) {
-        // This case happens if the current instruction (with the .new register)
-        // is yet the only one in the packet.
+		// This case happens if the current instruction (with the .new register)
+		// is yet the only one in the packet.
 		return UT32_MAX;
 	}
 	if (hic->identifier == HEX_INS_A4_EXT) {
@@ -55,4 +55,62 @@ int resolve_n_register(const int reg_num, const ut32 addr, const HexPkt *p) {
 		}
 	}
 	return UT32_MAX;
+}
+
+/**
+ * \brief Returns a HexOp of the given register number and class.
+ *
+ * \param reg_num The register number as in the name.
+ * \param reg_class The HexRegClass this register belongs to.
+ * \param tmp_reg Flag if the register is a .new register.
+ *
+ * \return A setup HexOp. Currently the HexOp.attr field is *not* set!
+ */
+RZ_API const HexOp hex_explicit_to_op(ut32 reg_num, HexRegClass reg_class, bool tmp_reg) {
+	HexOp op = { 0 };
+	op.type = HEX_OP_TYPE_REG;
+	op.class = reg_class;
+	op.op.reg = reg_num;
+	// TODO: Add attributes?
+	return op;
+}
+
+/**
+ * \brief Returns a HexOp of the given register alias.
+ *
+ * \param alias The alias to get the HexOp for.
+ * \param tmp_reg Flag if the alias is referring to the .new register.
+ *
+ * \return A setup HexOp. Currently the HexOp.attr field is *not* set!
+ */
+RZ_API const HexOp hex_alias_to_op(HexRegAlias alias, bool tmp_reg) {
+	HexOp op = { 0 };
+	if (alias >= ARRAY_LEN(hex_alias_reg_lt_v69)) {
+		rz_warn_if_reached();
+		return op;
+	}
+	op.type = HEX_OP_TYPE_REG;
+	op.class = hex_alias_reg_lt_v69[alias].cls;
+	op.op.reg = hex_alias_reg_lt_v69[alias].reg_enum;
+	// TODO: Add attributes?
+	return op;
+}
+
+/**
+ * \brief Returns the real register name for a register alias.
+ *
+ * \param alias The register alias.
+ * \param tmp_reg The register the tmp real register name.
+ * \return const char * The corresponding register name. Or NULL on error.
+ */
+RZ_API const char *hex_alias_to_reg(HexRegAlias alias, bool tmp_reg) {
+	if (alias >= ARRAY_LEN(hex_alias_reg_lt_v69)) {
+		return NULL;
+	}
+	HexRegClass reg_class = hex_alias_reg_lt_v69[alias].cls;
+	int reg_enum = hex_alias_reg_lt_v69[alias].reg_enum;
+	if (alias == HEX_REG_ALIAS_PC) {
+		return "PC";
+	}
+	return hex_get_reg_in_class(reg_class, reg_enum, false, tmp_reg, true);
 }

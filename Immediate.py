@@ -62,10 +62,15 @@ class Immediate(Operand):
         self.encoding_width = 0  # Num. bits stored in encoding.
         self.total_width = 0
 
-        self.parse_imm_type(llvm_type)
+        self.parse_imm_type(llvm_type, llvm_syntax == "II")
 
-    def parse_imm_type(self, llvm_imm_type: str) -> None:
-        """Parse immediate types like: u4_2Imm. This method sets all kinds of flags, the scale and total width."""
+    def parse_imm_type(self, llvm_imm_type: str, is_second: bool) -> None:
+        """Parse immediate types like: u4_2Imm. This method sets
+            all kinds of flags, the scale, total width and ISA identifier.
+        Args:
+            llvm_imm_type: The llvm type string (e.g.: u4_2Imm).
+            is_second: Flag if this immediate is the second immediate in the instruction.
+        """
         type_letter = re.search(r"^([a-z]+)\d{1,2}", llvm_imm_type)
         if not type_letter:
             raise ImplementationException("Unhandled immediate type: {}".format(llvm_imm_type))
@@ -80,6 +85,7 @@ class Immediate(Operand):
         elif type_letter == "a" or type_letter == "b":
             self.is_signed = True
             self.is_pc_relative = True
+            type_letter = "r"  # In QEMUs shortcode all PC relative immediates are named with 'r'
         # Constant value -1
         elif type_letter == "n":
             self.is_signed = True
@@ -95,6 +101,7 @@ class Immediate(Operand):
             return
         else:
             raise ImplementationException("Unhandled immediate type: {}".format(llvm_imm_type))
+        self.isa_id = type_letter.upper() if is_second else type_letter
 
         # Value before _ represents number of encoded bits.
         result = re.search(r"[a-z](\d+)\_", llvm_imm_type)
@@ -147,7 +154,8 @@ class Immediate(Operand):
         if self.total_width == 32:
             info.append("HEX_OP_TEMPLATE_FLAG_IMM_DOUBLE_HASH")
         info = " | ".join(info)
-        r = f".info = {info}, .masks = {{ {self.opcode_mask.c_template} }}"
+        r = f".info = {info}, .masks = {{ {self.opcode_mask.c_template} }}, "
+        r += f".isa_id = '{self.isa_id if self.isa_id != '' else 0}'"
         if self.scale > 0:
             r += f", .imm_scale = {self.scale}"
         return r

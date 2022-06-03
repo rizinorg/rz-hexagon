@@ -18,7 +18,7 @@ This plugin is under continuous work. So checkout the Github issues for missing 
 
 ### Requirements
 
-- For formatting we need `clang-format-13`. If it is not available on your distribution, you can install it from https://apt.llvm.org/.
+- For formatting we need `clang-format`. If it is not available on your distribution, you can install it from https://apt.llvm.org/.
 
 - Python requirements are in `requirements.txt`
 - As a developer you also need `black`, `flake8`, `reuse`.
@@ -45,13 +45,36 @@ Please add this directory to your `PATH`.
 
 # Install
 
+**Python 3.11**
+
+We require `Python 3.11`. Please follow the install-instructions from the [Python documentation](https://docs.python.org/3.11/). 
+
+**Clone repository**
+
 ```bash
-git clone https://github.com/rizinorg/rz-hexagon.git
+git clone --recurse-submodules https://github.com/rizinorg/rz-hexagon.git
 cd rz-hexagon/
-pip3 install -r requirements.txt
+```
+
+**Setup a virtual environment**
+
+```bash
+python3 -m venv .venv
+# Activate the virtual environment.
+# This step might differ from shell to shell (the one below is for bash/zsh).
+# Take a look at the Python docs if you are using another one.
+# https://docs.python.org/3.11/library/venv.html?highlight=virtual%20environment
+source .venv/bin/activate
+```
+
+**Install `rz-hexagon` as package**
+
+```bash
+pip3 install -r requirements.txt -r rzil_compiler/requirements.txt
 # If you enjoy some colors
 pip3 install -r optional_requirements.txt
 # Install as develop package
+pip3 install -e rzil_compiler/
 pip3 install -e .
 ```
 

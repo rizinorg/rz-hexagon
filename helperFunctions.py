@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: LGPL-3.0-only
 
 import re
+from pathlib import Path
 
 from bitarray import bitarray
 from enum import IntEnum
@@ -272,7 +273,7 @@ def get_generation_timestamp(conf: dict) -> str:
     return commit
 
 
-def compare_src_to_old_src(new_src: str, comp_src_file: str) -> bool:
+def src_matches_old_src(new_src: str, comp_src_file: Path) -> bool:
     """Compares each line of the new_src string and the src code in the file comp_src_file."""
     try:
         with open(comp_src_file) as f:
@@ -340,3 +341,38 @@ def normalize_llvm_syntax(llvm_syntax: str) -> str:
     syntax = re.sub(r"([A-Z][a-z,A-Z]+)[0-9]+", r"\1", syntax)
     log("Normalized syntax: {} -> {}".format(llvm_syntax, syntax), LogLevel.VERBOSE)
     return syntax
+
+
+def gen_c_doxygen(desc: str, ret: (str, str) = None, args: [dict] = None) -> str:
+    """
+    Generates a doxygen doc string and returns it.
+    All description strings can contain new lines.
+
+    Args:
+        desc: The general description.
+        args: Argument list description. Contains dicts {'name': str, 'desc': str}
+        ret: Return value description with tuple('type', 'desc')
+
+    Returns: The doxygen string.
+    """
+
+    def print_lines(lines: []) -> str:
+        tmp = ""
+        for line in lines:
+            tmp += f" * {line}\n"
+        return tmp
+
+    dl = desc.split("\n")
+    dox = f"/**\n"
+    dox += f" * \\brief {dl[0]}\n"
+    dox += print_lines(dl[1:])
+    if args:
+        for a in args:
+            dl = a["desc"].split("\n")
+            dox += f' * \\param {a["name"]}: {dl[0]}'
+            dox += print_lines(dl[1:])
+    if ret:
+        dl = ret[1].split("\n")
+        dox += f"* \\return {ret[0]} {dl[0]}"
+        dox += print_lines(dl[1:])
+    return dox + " */"

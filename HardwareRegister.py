@@ -55,6 +55,10 @@ class HardwareRegister(Register):
         match_alias = re.search(r"^[rcpgvqs]\d{1,2}(:\d{1,2})?$", ",".join(llvm_alt))
         if (llvm_asm == "p3:0") or (llvm_asm in llvm_alt):
             match_asm = None
+        if (llvm_asm in llvm_alt) and len(llvm_alt) == 1:
+            # Alias of some regs equal asm name.
+            self.asm_name = llvm_asm
+            self.alias = []
         if match_asm and match_alias:
             raise ImplementationException(
                 "HW reg alias and asm names match same pattern: alias: {} asm: {}".format(",".join(llvm_alt), llvm_asm)

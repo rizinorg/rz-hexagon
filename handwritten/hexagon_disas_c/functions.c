@@ -12,7 +12,7 @@
 static const HexInsnTemplate *get_sub_template_table(const ut8 duplex_iclass, bool high) {
     switch(duplex_iclass) {
     default:
-		 RZ_LOG_WARN("IClasses > 0xe are reserved.\n");
+		 RZ_LOG_INFO("IClasses > 0xe are reserved.\n");
 		 return NULL;
     case 0:
 		 return high ? templates_sub_L1 : templates_sub_L1;
@@ -139,9 +139,11 @@ static void hex_disasm_with_templates(const HexInsnTemplate *tpl, HexState *stat
 
 		hi->op_count++;
 		hi->ops[i].attr = 0;
+		hi->ops[i].isa_id = op->isa_id;
 		switch (type) {
 		case HEX_OP_TEMPLATE_TYPE_IMM: {
 			hi->ops[i].type = HEX_OP_TYPE_IMM;
+			hi->ops[i].class = op->info;
 			ut32 bits_total;
 			hi->ops[i].op.imm = hex_op_masks_extract(op->masks, hi_u32, &bits_total) << op->imm_scale;
 			hi->ops[i].shift = op->imm_scale;
@@ -184,6 +186,7 @@ static void hex_disasm_with_templates(const HexInsnTemplate *tpl, HexState *stat
 			break;
 		case HEX_OP_TEMPLATE_TYPE_REG:
 			hi->ops[i].type = HEX_OP_TYPE_REG;
+			hi->ops[i].class = op->reg_cls;
 			hi->ops[i].op.reg = hex_op_masks_extract(op->masks, hi_u32, NULL);
 			if (op->info & HEX_OP_TEMPLATE_FLAG_REG_OUT) {
 				hi->ops[i].attr |= HEX_OP_REG_OUT;
@@ -199,7 +202,13 @@ static void hex_disasm_with_templates(const HexInsnTemplate *tpl, HexState *stat
 			if (op->info & HEX_OP_TEMPLATE_FLAG_REG_N_REG) {
 				regidx = resolve_n_register(hi->ops[i].op.reg, hic->addr, pkt);
 			}
-			rz_strbuf_append(&sb, hex_get_reg_in_class(op->reg_cls, regidx, print_reg_alias));
+			const char *reg_name = hex_get_reg_in_class(op->reg_cls, regidx, print_reg_alias, false, false);
+			if (!reg_name) {
+				rz_strbuf_append(&sb, "<err>");
+				hi->identifier = HEX_INS_INVALID_DECODE;
+			} else {
+				rz_strbuf_append(&sb, reg_name);
+			}
 			break;
 		default:
 			rz_warn_if_reached();
@@ -212,6 +221,7 @@ static void hex_disasm_with_templates(const HexInsnTemplate *tpl, HexState *stat
 		rz_strbuf_append_n(&sb, tpl->syntax + syntax_cur, syntax_len - syntax_cur);
 	}
 	strncpy(hi->text_infix, rz_strbuf_get(&sb), sizeof(hi->text_infix) - 1);
+	rz_strbuf_fini(&sb);
 
 	// RzAnalysisOp contents
 	hic->ana_op.addr = hic->addr;
@@ -272,7 +282,7 @@ static void hex_set_invalid_duplex(const ut32 hi_u32, RZ_INOUT RZ_NONNULL HexIns
 	HexInsn *hi_low = hic->bin.sub[1];
 	rz_return_if_fail(hi_high && hi_low);
 	hic->identifier = HEX_INS_INVALID_DECODE;
-	hic->opcode = hi_u32;
+	hic->bytes = hi_u32;
 	hi_high->opcode = (hi_u32 >> 16) & 0x1fff;
 	hi_low->opcode = hi_u32 & 0x1fff;
 	hi_high->identifier = HEX_INS_INVALID_DECODE;
@@ -286,22 +296,27 @@ int hexagon_disasm_instruction(HexState *state, const ut32 hi_u32, RZ_INOUT HexI
 	ut32 addr = hic->addr;
 	if (hic->pkt_info.last_insn) {
 		switch (hex_get_loop_flag(pkt)) {
-		default: break;
+		default:
+		    pkt->hw_loop = HEX_NO_LOOP;
+		    break;
 		case HEX_LOOP_01:
 			hic->ana_op.prefix = RZ_ANALYSIS_OP_PREFIX_HWLOOP_END;
 			hic->ana_op.fail = pkt->hw_loop0_addr;
 			hic->ana_op.jump = pkt->hw_loop1_addr;
 			hic->ana_op.val = hic->ana_op.jump;
+			pkt->hw_loop = HEX_LOOP_01;
 			break;
 		case HEX_LOOP_0:
 			hic->ana_op.prefix = RZ_ANALYSIS_OP_PREFIX_HWLOOP_END;
 			hic->ana_op.jump = pkt->hw_loop0_addr;
 			hic->ana_op.val = hic->ana_op.jump;
+			pkt->hw_loop = HEX_LOOP_0;
 			break;
 		case HEX_LOOP_1:
 			hic->ana_op.prefix = RZ_ANALYSIS_OP_PREFIX_HWLOOP_END;
 			hic->ana_op.jump = pkt->hw_loop1_addr;
 			hic->ana_op.val = hic->ana_op.jump;
+			pkt->hw_loop = HEX_LOOP_1;
 			break;
 		}
 	}
@@ -316,7 +331,7 @@ int hexagon_disasm_instruction(HexState *state, const ut32 hi_u32, RZ_INOUT HexI
 
 			ut32 iclass = (((hi_u32 >> 29) & 0xF) << 1) | ((hi_u32 >> 13) & 1);
 			if (iclass == 0xf) {
-				RZ_LOG_WARN("Reserved duplex instruction class used at: 0x%" PFMT32x ".\n", addr);
+				RZ_LOG_INFO("Reserved duplex instruction class used at: 0x%" PFMT32x ".\n", addr);
 			}
 
 			const HexInsnTemplate *tmp_high = get_sub_template_table(iclass, true);
@@ -342,9 +357,8 @@ int hexagon_disasm_instruction(HexState *state, const ut32 hi_u32, RZ_INOUT HexI
 		hic->ana_op.eob = true;
 	}
 	if (hic->identifier == HEX_INS_INVALID_DECODE) {
+		hic->is_duplex = false;
 		hic->ana_op.type = RZ_ANALYSIS_OP_TYPE_ILL;
-		HexInsn *hi = hexagon_alloc_instr();
-		hic->bin.insn = hi;
 		snprintf(hic->bin.insn->text_infix, sizeof(hic->bin.insn->text_infix), "invalid");
 	}
 	hex_set_hic_text(hic);

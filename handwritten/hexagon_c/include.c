@@ -12,3 +12,4 @@
 #include <hexagon/hexagon.h>
 #include <hexagon/hexagon_insn.h>
 #include <hexagon/hexagon_arch.h>
+#include <hexagon/hexagon_reg_tables.h>

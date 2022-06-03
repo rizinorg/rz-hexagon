@@ -4,6 +4,7 @@
 #include <rz_asm.h>
 #include <rz_analysis.h>
 #include <rz_util.h>
+#include <rz_vector.h>
 #include <hexagon/hexagon.h>
 #include <hexagon/hexagon_insn.h>
 #include <hexagon/hexagon_arch.h>

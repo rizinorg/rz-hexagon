@@ -101,6 +101,7 @@ class Operand:
         "is_in_out_operand",
         "type",
         "opcode_mask",
+        "isa_id",
     ]
 
     def __init__(self, llvm_syntax: str, llvm_type: str, syntax_index: int):
@@ -110,6 +111,7 @@ class Operand:
         self.syntax_index = syntax_index
         self.explicit_syntax = normalize_llvm_syntax(self.llvm_syntax)
         self.opcode_mask: SparseMask = None
+        self.isa_id = ""  # ISA identifier character of the QEMU shortcode. d for Rdd, S for II of type s32_0Imm etc.
 
         self.is_in_operand = False
         self.is_out_operand = False

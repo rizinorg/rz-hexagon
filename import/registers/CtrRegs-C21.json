@@ -1,0 +1,45 @@
+{
+  "C21": {
+    "!anonymous": false,
+    "!fields": [],
+    "!name": "C21",
+    "!superclasses": [
+      "Register",
+      "HexagonReg",
+      "Rc",
+      "DwarfRegNum"
+    ],
+    "Aliases": [],
+    "AltNames": [
+    ],
+    "AsmName": "c21",
+    "CostPerUse": [
+      0
+    ],
+    "CoveredBySubRegs": 0,
+    "DwarfNumbers": [
+      88
+    ],
+    "HWEncoding": [
+      1,
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "Namespace": "Hexagon",
+    "RegAltNameIndices": [],
+    "SubRegIndices": [],
+    "SubRegs": [],
+    "isArtificial": 0
+  }
+}

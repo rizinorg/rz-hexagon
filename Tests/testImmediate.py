@@ -12,7 +12,7 @@ from helperFunctions import log, LogLevel
 
 class TestImmediate(unittest.TestCase):
     def setUp(self) -> None:
-        self.interface = LLVMImporter(False, test_mode=True)
+        self.interface = LLVMImporter(False, test_mode=True, gen_rzil=False, skip_pcpp=True, rzil_compile=False)
         self.json = self.interface.hexArch
 
     def test_immediate_initialization(self):
