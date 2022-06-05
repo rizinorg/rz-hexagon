@@ -93,7 +93,7 @@ So here are some good to know points for porting:
 **Before you open a PR please run and fix the warnings.:
 ```bash
 black -l 120 $(git ls-files '*.py')
-flake8 --max-line-length=120 $(git ls-files '*.py')
+flake8 --select=W504 --ignore=E203,W503 --max-line-length=120 $(git ls-files '*.py')
 reuse lint
 ```
 
