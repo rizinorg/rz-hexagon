@@ -107,9 +107,7 @@ sysregs64["SysRegs64"]["MemberList"]["printable"] = "(add "
 for i in range(81):
     number_name = "S" + str(i)
     name = regs[i].upper()
-    sysregs["SysRegs"]["MemberList"]["args"].append(
-        [{"def": name, "kind": "def", "printable": name}]
-    )
+    sysregs["SysRegs"]["MemberList"]["args"].append([{"def": name, "kind": "def", "printable": name}])
     sysregs["SysRegs"]["MemberList"]["printable"] += name + ", "
 
     reg = dict()
@@ -132,9 +130,7 @@ for i in range(81):
         reg = dict()
         number_name = "S{}_{}".format(i, i - 1)
         name = number_name
-        sysregs64["SysRegs64"]["MemberList"]["args"].append(
-            [{"def": name, "kind": "def", "printable": name}]
-        )
+        sysregs64["SysRegs64"]["MemberList"]["args"].append([{"def": name, "kind": "def", "printable": name}])
         sysregs64["SysRegs64"]["MemberList"]["printable"] += name + ", "
 
         reg[name] = reg_temp
@@ -149,12 +145,8 @@ for i in range(81):
         with open("registers/{}.json".format(name.upper()), "w") as f:
             f.write(json.dumps(reg, indent=2))
 
-sysregs["SysRegs"]["MemberList"]["printable"] = (
-    sysregs["SysRegs"]["MemberList"]["printable"][:-2] + ")"
-)
-sysregs64["SysRegs64"]["MemberList"]["printable"] = (
-    sysregs64["SysRegs64"]["MemberList"]["printable"][:-2] + ")"
-)
+sysregs["SysRegs"]["MemberList"]["printable"] = sysregs["SysRegs"]["MemberList"]["printable"][:-2] + ")"
+sysregs64["SysRegs64"]["MemberList"]["printable"] = sysregs64["SysRegs64"]["MemberList"]["printable"][:-2] + ")"
 with open("registers/SysRegs.json".format(name.upper()), "w") as f:
     f.write(json.dumps(sysregs, indent=2))
 with open("registers/SysRegs64.json".format(name.upper()), "w") as f:
