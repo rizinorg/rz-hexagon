@@ -3,7 +3,7 @@
 
 // LLVM commit: 96e220e6886868d6663d966ecc396befffc355e7
 // LLVM commit date: 2022-01-05 11:01:52 +0000 (ISO 8601 format)
-// Date of code generation: 2022-07-17 11:46:07-04:00
+// Date of code generation: 2022-07-17 12:07:33-04:00
 //========================================
 // The following code is generated.
 // Do not edit. Repository of code generator:
@@ -94,28 +94,7 @@ typedef struct {
 	_RzAnalysisOpType type;
 } HexInsnTemplate;
 
-static const HexInsnTemplate templates_normal_0x0[] = {
-	{
-		// 0000iiiiiiiiiiiiPPiiiiiiiiiiiiii | immext(Ii)
-		.encoding = { .mask = 0xf0000000, .op = 0x0 },
-		.id = HEX_INS_A4_EXT,
-		.ops = {
-			{ .info = HEX_OP_TEMPLATE_TYPE_IMM | HEX_OP_TEMPLATE_FLAG_IMM_EXTENDABLE | HEX_OP_TEMPLATE_FLAG_IMM_DOUBLE_HASH, .masks = { { 0xe, 0 }, { 0xc, 16 } }, .imm_scale = 6, .syntax = 7 },
-		},
-		.pred = HEX_NOPRED,
-		.cond = RZ_TYPE_COND_AL,
-		.type = RZ_ANALYSIS_OP_TYPE_NULL,
-		.syntax = "immext()",
-	},
-	{
-		// 0000000000000000PP00000000000000 | <invalid>
-		.encoding = { .mask = 0xffff3fff, .op = 0x0 },
-		.id = HEX_INS_INVALID_DECODE,
-		.pred = HEX_NOPRED,
-		.cond = RZ_TYPE_COND_AL,
-		.type = RZ_ANALYSIS_OP_TYPE_ILL,
-		.syntax = "<invalid>",
-	},
+static const HexInsnTemplate templates_sub[] = {
 	{
 		// 0000PP00iiiiiiixxxx | Rx = add(Rxin,Ii)
 		.encoding = { .mask = 0xf0001800, .op = 0x0 },
@@ -778,6 +757,35 @@ static const HexInsnTemplate templates_normal_0x0[] = {
 		.cond = RZ_TYPE_COND_AL,
 		.type = RZ_ANALYSIS_OP_TYPE_NULL,
 		.syntax = " = ",
+	},
+	{ { 0 } },
+};
+
+static const HexInsnTemplate *templates_sub[] = {
+	templates_sub
+};
+
+static const HexInsnTemplate templates_normal_0x0[] = {
+	{
+		// 0000iiiiiiiiiiiiPPiiiiiiiiiiiiii | immext(Ii)
+		.encoding = { .mask = 0xf0000000, .op = 0x0 },
+		.id = HEX_INS_A4_EXT,
+		.ops = {
+			{ .info = HEX_OP_TEMPLATE_TYPE_IMM | HEX_OP_TEMPLATE_FLAG_IMM_EXTENDABLE | HEX_OP_TEMPLATE_FLAG_IMM_DOUBLE_HASH, .masks = { { 0xe, 0 }, { 0xc, 16 } }, .imm_scale = 6, .syntax = 7 },
+		},
+		.pred = HEX_NOPRED,
+		.cond = RZ_TYPE_COND_AL,
+		.type = RZ_ANALYSIS_OP_TYPE_NULL,
+		.syntax = "immext()",
+	},
+	{
+		// 0000000000000000PP00000000000000 | <invalid>
+		.encoding = { .mask = 0xffff3fff, .op = 0x0 },
+		.id = HEX_INS_INVALID_DECODE,
+		.pred = HEX_NOPRED,
+		.cond = RZ_TYPE_COND_AL,
+		.type = RZ_ANALYSIS_OP_TYPE_ILL,
+		.syntax = "<invalid>",
 	},
 	{ { 0 } },
 };
