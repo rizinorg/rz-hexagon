@@ -30,6 +30,16 @@ typedef enum {
 	HEX_OP_TYPE_REG,
 } HexOpType;
 
+/**
+ * \brief Flags to mark which kind of predicates instructions use.
+ */
+typedef enum {
+	HEX_NOPRED, ///< no conditional execution
+	HEX_PRED_TRUE, ///< if (Pd) ...
+	HEX_PRED_FALSE, ///< if (!Pd) ...
+	HEX_PRED_NEW, ///< if (Pd.new) or if (!Pd.new)
+} HexPred;
+
 typedef enum {
 	HEX_OP_CONST_EXT = 1 << 0, // Constant extender marker for Immediate
 	HEX_OP_REG_HI = 1 << 1, // Rn.H marker
@@ -69,7 +79,8 @@ typedef struct {
 	ut8 op_count; ///< The number of operands this instruction has.
 	ut32 addr; ///< Memory address the instruction is located (high sub-instruction is unaligned by 2 byte!).
 	ut32 opcode; ///< The instruction opcode.
-	HexInsnID instruction; ///< The instruction identifier
+	HexPred pred; ///< The instruction predicate.
+	HexInsnID identifier; ///< The instruction identifier
 	char text_infix[128]; ///< Textual disassembly of the instruction.
 	HexOp ops[HEX_MAX_OPERANDS]; ///< The operands of the instructions.
 } HexInsn;

@@ -85,7 +85,7 @@ typedef struct {
 		ut32 mask;
 		ut32 op;
 	} encoding;
-	enum HEX_INS id;
+	HexInsnID id;
 	HexOpTemplate ops[HEX_MAX_OPERANDS];
 	ut8 pred; // HexPred
 	ut8 cond; // RzTypeCond

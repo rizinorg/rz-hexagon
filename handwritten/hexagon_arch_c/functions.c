@@ -813,7 +813,7 @@ RZ_API void hexagon_reverse_opcode(const RzAsm *rz_asm, HexReversedOpcode *rz_re
 	}
 
 	ut32 data = rz_read_le32(buf);
-	ut8 parse_bits = (data & 0x0000c000) >> 14;
+	ut8 parse_bits = (data & HEX_PARSE_BITS_MASK) >> 14;
 	HexInsnContainer hic_new = { 0 };
 	setup_new_hic(&hic_new, rz_reverse, addr, parse_bits);
 	// Add to state

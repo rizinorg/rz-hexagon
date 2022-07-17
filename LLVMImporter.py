@@ -417,10 +417,6 @@ class LLVMImporter:
             templates_code += instr.get_template_in_c() + ","
         templates_code += "{ { 0 } }, };\n\n"
 
-        templates_code += "static const HexInsnTemplate *templates_sub[] = {\n"
-        templates_code += f"templates_sub"
-        templates_code += "};\n\n"
-
         # Normal instructions
         for c in range(0x10):
             templates_code += f"static const HexInsnTemplate templates_normal_0x{c:x}[] = {{\n"
