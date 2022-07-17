@@ -237,7 +237,7 @@ static void hex_disasm_with_templates(const HexInsnTemplate *tpl, HexState *stat
 		}
 	}
 	ut32 i_start = !hic->is_duplex ? 0 : (hic->bin.sub[0] ? hic->bin.sub[0]->op_count : 0);
-	if (i_start + hi->op_count >= RZ_ARRAY_SIZE(hic->ana_op.analysis_vals)) {
+	if (i_start + hi->op_count > RZ_ARRAY_SIZE(hic->ana_op.analysis_vals)) {
 		RZ_LOG_WARN("Instruction at 0x%" PFMT64x " has too many ops (%" PFMT32u "). RzAnalysisOp.analysis_vals is full.\n", addr, (i_start + hi->op_count));
 	}
 	for (size_t i = i_start; i < i_start + RZ_MIN(hi->op_count, RZ_ARRAY_SIZE(hic->ana_op.analysis_vals)); i++) {
