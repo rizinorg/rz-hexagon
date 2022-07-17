@@ -3,7 +3,7 @@
 
 // LLVM commit: 96e220e6886868d6663d966ecc396befffc355e7
 // LLVM commit date: 2022-01-05 11:01:52 +0000 (ISO 8601 format)
-// Date of code generation: 2022-04-02 06:41:46-04:00
+// Date of code generation: 2022-07-17 13:12:03-04:00
 //========================================
 // The following code is generated.
 // Do not edit. Repository of code generator:
@@ -368,70 +368,70 @@ static char *get_pkt_indicator(const bool utf8, const bool sdk, const bool prefi
  * \param p The packet the instruction belongs to.
  * \param k The index of the instruction within the packet.
  */
-static void hex_set_pkt_info(const RzAsm *rz_asm, RZ_INOUT HexInsn *hi, const HexPkt *p, const ut8 k, const bool update_mnemonic) {
+static void hex_set_pkt_info(const RzAsm *rz_asm, RZ_INOUT HexInsn *hi, const HexPkt *p, const ut8 k, const bool update_text) {
 	rz_return_if_fail(hi && p);
 	bool is_first = (k == 0);
 	HexPktInfo *hi_pi = &hi->pkt_info;
 	HexState *state = hexagon_get_state();
 	bool sdk_form = rz_config_get_b(state->cfg, "plugins.hexagon.sdk");
 
-	strncpy(hi_pi->mnem_postfix, "", 16);
+	strncpy(hi_pi->text_postfix, "", 16);
 	// Parse instr. position in pkt
 	if (is_first && is_last_instr(hi->parse_bits)) { // Single instruction packet.
 		hi_pi->first_insn = true;
 		hi_pi->last_insn = true;
 		if (p->is_valid) {
-			strncpy(hi_pi->mnem_prefix, get_pkt_indicator(rz_asm->utf8, sdk_form, true, SINGLE_IN_PKT), 8);
+			strncpy(hi_pi->text_prefix, get_pkt_indicator(rz_asm->utf8, sdk_form, true, SINGLE_IN_PKT), 8);
 			if (sdk_form) {
-				strncpy(hi_pi->mnem_postfix, get_pkt_indicator(rz_asm->utf8, sdk_form, false, SINGLE_IN_PKT), 8);
+				strncpy(hi_pi->text_postfix, get_pkt_indicator(rz_asm->utf8, sdk_form, false, SINGLE_IN_PKT), 8);
 			}
 		} else {
-			strncpy(hi_pi->mnem_prefix, HEX_PKT_UNK, 8);
+			strncpy(hi_pi->text_prefix, HEX_PKT_UNK, 8);
 		}
 	} else if (is_first) {
 		hi_pi->first_insn = true;
 		hi_pi->last_insn = false;
 		if (p->is_valid) {
-			strncpy(hi_pi->mnem_prefix, get_pkt_indicator(rz_asm->utf8, sdk_form, true, FIRST_IN_PKT), 8);
+			strncpy(hi_pi->text_prefix, get_pkt_indicator(rz_asm->utf8, sdk_form, true, FIRST_IN_PKT), 8);
 		} else {
-			strncpy(hi_pi->mnem_prefix, HEX_PKT_UNK, 8);
+			strncpy(hi_pi->text_prefix, HEX_PKT_UNK, 8);
 		}
 	} else if (is_last_instr(hi->parse_bits)) {
 		hi_pi->first_insn = false;
 		hi_pi->last_insn = true;
 		if (p->is_valid) {
-			strncpy(hi_pi->mnem_prefix, get_pkt_indicator(rz_asm->utf8, sdk_form, true, LAST_IN_PKT), 8);
+			strncpy(hi_pi->text_prefix, get_pkt_indicator(rz_asm->utf8, sdk_form, true, LAST_IN_PKT), 8);
 			if (sdk_form) {
-				strncpy(hi_pi->mnem_postfix, get_pkt_indicator(rz_asm->utf8, sdk_form, false, LAST_IN_PKT), 8);
+				strncpy(hi_pi->text_postfix, get_pkt_indicator(rz_asm->utf8, sdk_form, false, LAST_IN_PKT), 8);
 			}
 
 			switch (hex_get_loop_flag(p)) {
 			default:
 				break;
 			case HEX_LOOP_01:
-				strncat(hi_pi->mnem_postfix, get_pkt_indicator(rz_asm->utf8, sdk_form, false, ELOOP_01_PKT), 23 - strlen(hi_pi->mnem_postfix));
+				strncat(hi_pi->text_postfix, get_pkt_indicator(rz_asm->utf8, sdk_form, false, ELOOP_01_PKT), 23 - strlen(hi_pi->text_postfix));
 				break;
 			case HEX_LOOP_0:
-				strncat(hi_pi->mnem_postfix, get_pkt_indicator(rz_asm->utf8, sdk_form, false, ELOOP_0_PKT), 23 - strlen(hi_pi->mnem_postfix));
+				strncat(hi_pi->text_postfix, get_pkt_indicator(rz_asm->utf8, sdk_form, false, ELOOP_0_PKT), 23 - strlen(hi_pi->text_postfix));
 				break;
 			case HEX_LOOP_1:
-				strncat(hi_pi->mnem_postfix, get_pkt_indicator(rz_asm->utf8, sdk_form, false, ELOOP_1_PKT), 23 - strlen(hi_pi->mnem_postfix));
+				strncat(hi_pi->text_postfix, get_pkt_indicator(rz_asm->utf8, sdk_form, false, ELOOP_1_PKT), 23 - strlen(hi_pi->text_postfix));
 				break;
 			}
 		} else {
-			strncpy(hi_pi->mnem_prefix, HEX_PKT_UNK, 8);
+			strncpy(hi_pi->text_prefix, HEX_PKT_UNK, 8);
 		}
 	} else {
 		hi_pi->first_insn = false;
 		hi_pi->last_insn = false;
 		if (p->is_valid) {
-			strncpy(hi_pi->mnem_prefix, get_pkt_indicator(rz_asm->utf8, sdk_form, true, MID_IN_PKT), 8);
+			strncpy(hi_pi->text_prefix, get_pkt_indicator(rz_asm->utf8, sdk_form, true, MID_IN_PKT), 8);
 		} else {
-			strncpy(hi_pi->mnem_prefix, HEX_PKT_UNK, 8);
+			strncpy(hi_pi->text_prefix, HEX_PKT_UNK, 8);
 		}
 	}
-	if (update_mnemonic) {
-		sprintf(hi->mnem, "%s%s%s", hi_pi->mnem_prefix, hi->mnem_infix, hi_pi->mnem_postfix);
+	if (update_text) {
+		sprintf(hi->text, "%s%s%s", hi_pi->text_prefix, hi->text_infix, hi_pi->text_postfix);
 	}
 }
 
@@ -466,9 +466,9 @@ RZ_API HexLoopAttr hex_get_loop_flag(const HexPkt *p) {
 }
 
 /**
- * \brief Sets the packet after pkt to valid and updates its mnemonic.
+ * \brief Sets the packet after pkt to valid and updates its textual assembly.
  *
- * \param state The state to operade on.
+ * \param state The state to operate on.
  * \param pkt The packet which predecessor will be updated.
  */
 static void make_next_packet_valid(HexState *state, const HexPkt *pkt) {
@@ -784,13 +784,13 @@ RZ_API void hexagon_reverse_opcode(const RzAsm *rz_asm, HexReversedOpcode *rz_re
 		default:
 			memcpy(rz_reverse->asm_op, &(hi->asm_op), sizeof(RzAsmOp));
 			memcpy(rz_reverse->ana_op, &(hi->ana_op), sizeof(RzAnalysisOp));
-			rz_strbuf_set(&rz_reverse->asm_op->buf_asm, hi->mnem);
+			rz_strbuf_set(&rz_reverse->asm_op->buf_asm, hi->text);
 			rz_reverse->asm_op->asm_toks = rz_asm_tokenize_asm_regex(&rz_reverse->asm_op->buf_asm, state->token_patterns);
 			rz_reverse->asm_op->asm_toks->op_type = hi->ana_op.type;
 			return;
 		case HEXAGON_DISAS:
 			memcpy(rz_reverse->asm_op, &(hi->asm_op), sizeof(RzAsmOp));
-			rz_strbuf_set(&rz_reverse->asm_op->buf_asm, hi->mnem);
+			rz_strbuf_set(&rz_reverse->asm_op->buf_asm, hi->text);
 			rz_reverse->asm_op->asm_toks = rz_asm_tokenize_asm_regex(&rz_reverse->asm_op->buf_asm, state->token_patterns);
 			rz_reverse->asm_op->asm_toks->op_type = hi->ana_op.type;
 			return;
@@ -818,13 +818,13 @@ RZ_API void hexagon_reverse_opcode(const RzAsm *rz_asm, HexReversedOpcode *rz_re
 	default:
 		memcpy(rz_reverse->asm_op, &hi->asm_op, sizeof(RzAsmOp));
 		memcpy(rz_reverse->ana_op, &hi->ana_op, sizeof(RzAnalysisOp));
-		rz_strbuf_set(&rz_reverse->asm_op->buf_asm, hi->mnem);
+		rz_strbuf_set(&rz_reverse->asm_op->buf_asm, hi->text);
 		rz_reverse->asm_op->asm_toks = rz_asm_tokenize_asm_regex(&rz_reverse->asm_op->buf_asm, state->token_patterns);
 		rz_reverse->asm_op->asm_toks->op_type = hi->ana_op.type;
 		break;
 	case HEXAGON_DISAS:
 		memcpy(rz_reverse->asm_op, &hi->asm_op, sizeof(RzAsmOp));
-		rz_strbuf_set(&rz_reverse->asm_op->buf_asm, hi->mnem);
+		rz_strbuf_set(&rz_reverse->asm_op->buf_asm, hi->text);
 		rz_reverse->asm_op->asm_toks = rz_asm_tokenize_asm_regex(&rz_reverse->asm_op->buf_asm, state->token_patterns);
 		rz_reverse->asm_op->asm_toks->op_type = hi->ana_op.type;
 		break;

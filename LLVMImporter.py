@@ -313,7 +313,7 @@ class LLVMImporter:
                 if len(insn.syntax) >= 128:
                     sl = len(insn.syntax) + 1  # +1 for \0 in the string
                     raise ImplementationException(
-                        "The mnemonic variable is at the moment only 128 byte."
+                        "The text infix variable is at the moment only 128 byte."
                         + "This syntax takes at least {}+1 bytes.".format(sl)
                     )
 

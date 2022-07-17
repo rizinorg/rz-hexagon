@@ -29,8 +29,8 @@ typedef enum {
 typedef struct {
 	bool first_insn;
 	bool last_insn;
-	char mnem_prefix[16]; // Package indicator
-	char mnem_postfix[24]; // for ":endloop" string.
+	char text_prefix[16]; // Package indicator
+	char text_postfix[24]; // for ":endloop" string.
 } HexPktInfo;
 
 typedef struct {
@@ -67,7 +67,7 @@ typedef struct {
     } bin;
     ut32 addr; ///< Address of container. Equals address of instruction or of the low sub-instruction if this is a duplex.
     ut32 opcode; ///< The instruction opcode.
-    HexPktInfo pkt_info; ///< Packet related information. First/last instr., prefix and postfix for mnemonic etc.
+    HexPktInfo pkt_info; ///< Packet related information. First/last instr., prefix and postfix for text etc.
     RzAsmOp asm_op; ///< Private copy of AsmOp. Currently only of interest because it holds the utf8 flag.
 	RzAnalysisOp ana_op; ///< Private copy of AnalysisOp. Analysis info is written into it.
 	char text[192]; ///< Textual disassembly

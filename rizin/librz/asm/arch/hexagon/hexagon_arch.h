@@ -13,7 +13,7 @@
 
 #include "hexagon.h"
 
-// The packet position indicators added to the instruction mnemonic.
+// The packet position indicators added to the instruction text.
 typedef enum {
 	SINGLE_IN_PKT,
 	FIRST_IN_PKT,

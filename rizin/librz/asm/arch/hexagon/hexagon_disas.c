@@ -34035,8 +34035,8 @@ static void hex_disasm_with_templates(const HexInsnTemplate *tpl, HexState *stat
 	if (syntax_len > syntax_cur) {
 		rz_strbuf_append_n(&sb, tpl->syntax + syntax_cur, syntax_len - syntax_cur);
 	}
-	strncpy(hi->mnem_infix, rz_strbuf_get(&sb), sizeof(hi->mnem_infix) - 1);
-	snprintf(hi->mnem, sizeof(hi->mnem), "%s%s%s", hi->pkt_info.mnem_prefix, hi->mnem_infix, hi->pkt_info.mnem_postfix);
+	strncpy(hi->text_infix, rz_strbuf_get(&sb), sizeof(hi->text_infix) - 1);
+	snprintf(hi->text, sizeof(hi->text), "%s%s%s", hi->pkt_info.text_prefix, hi->text_infix, hi->pkt_info.text_postfix);
 
 	// RzAnalysisOp contents
 	hi->ana_op.addr = hi->addr;
@@ -34123,8 +34123,8 @@ int hexagon_disasm_instruction(HexState *state, const ut32 hi_u32, RZ_INOUT HexI
 	if (hi->instruction == HEX_INS_INVALID_DECODE) {
 		hi->parse_bits = ((hi_u32)&0xc000) >> 14;
 		hi->ana_op.type = RZ_ANALYSIS_OP_TYPE_ILL;
-		sprintf(hi->mnem_infix, "invalid");
-		sprintf(hi->mnem, "%s%s%s", hi->pkt_info.mnem_prefix, hi->mnem_infix, hi->pkt_info.mnem_postfix);
+		sprintf(hi->text_infix, "invalid");
+		sprintf(hi->text, "%s%s%s", hi->pkt_info.text_prefix, hi->text_infix, hi->pkt_info.text_postfix);
 	}
 	return 4;
 }
