@@ -3,14 +3,17 @@
 
 // LLVM commit: 96e220e6886868d6663d966ecc396befffc355e7
 // LLVM commit date: 2022-01-05 11:01:52 +0000 (ISO 8601 format)
-// Date of code generation: 2022-07-17 11:46:07-04:00
+// Date of code generation: 2022-07-17 13:04:04-04:00
 //========================================
 // The following code is generated.
 // Do not edit. Repository of code generator:
 // https://github.com/rizinorg/rz-hexagon
+
 #ifndef HEXAGON_INSN_H
 #define HEXAGON_INSN_H
-enum HEX_INS { HEX_INS_INVALID_DECODE = 0,
+
+typedef enum {
+	HEX_INS_INVALID_DECODE = 0,
 	HEX_INS_A2_ABS,
 	HEX_INS_A2_ABSP,
 	HEX_INS_A2_ABSSAT,
@@ -2383,5 +2386,5 @@ enum HEX_INS { HEX_INS_INVALID_DECODE = 0,
 	HEX_INS_SS2_STOREWI0,
 	HEX_INS_SS2_STOREWI1,
 	HEX_INS_UNDOCUMENTED_SA2_TFRSI,
-};
+} HexInsnID;
 #endif

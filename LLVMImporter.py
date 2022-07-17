@@ -386,8 +386,9 @@ class LLVMImporter:
     # RIZIN SPECIFIC
     def build_hexagon_insn_enum_h(self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon_insn.h") -> None:
         code = get_generation_warning_c_code()
+        code += "\n"
         code += get_include_guard("hexagon_insn.h")
-        code += "enum HEX_INS {"
+        code += "\ntypedef enum {\n"
         enum = ""
         for name in self.normal_instruction_names + self.sub_instruction_names:
             if "invalid_decode" in name:
@@ -395,7 +396,7 @@ class LLVMImporter:
             else:
                 enum += PluginInfo.INSTR_ENUM_PREFIX + name.upper() + ","
         code += enum
-        code += "};"
+        code += "} HexInsnID;\n"
         code += "#endif"
 
         self.write_src(code, path)
