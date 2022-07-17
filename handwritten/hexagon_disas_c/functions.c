@@ -190,7 +190,7 @@ static void hex_disasm_with_templates(const HexInsnTemplate *tpl, HexState *stat
 			}
 		}
 	}
-	size_t i_start = !hic->is_duplex ? 0 : (hic->bin.sub[0] ? 0 : hic->bin.sub[0]->op_count);
+	size_t i_start = !hic->is_duplex ? 0 : (hic->bin.sub[0] ? hic->bin.sub[0]->op_count : 0);
 	size_t max_ops = RZ_MIN(hi->op_count, RZ_ARRAY_SIZE(hic->ana_op.analysis_vals));
 	if (i_start + hi->op_count >= max_ops) {
 		RZ_LOG_WARN("Instruction at 0x%" PFMT64x " has too many ops. RzAnalysisOp.analysis_vals is full.\n", addr);
