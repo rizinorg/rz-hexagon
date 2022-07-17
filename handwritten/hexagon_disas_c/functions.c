@@ -118,7 +118,7 @@ static void hex_disasm_with_templates(const HexInsnTemplate *tpl, HexState *stat
 				rz_strbuf_appendf(&sb, "0x%" PFMT32x, pkt->pkt_addr + (st32)hi->ops[i].op.imm);
 			} else if (op->info & HEX_OP_TEMPLATE_FLAG_IMM_SIGNED) {
 				if (sign_nums && ((st32)hi->ops[i].op.imm) < 0) {
-					char tmp[28] = {0};
+					char tmp[28] = { 0 };
 					rz_hex_ut2st_str(hi->ops[i].op.imm, tmp, 28);
 					snprintf(signed_imm[i], sizeof(signed_imm[i]), "%s%s", h, tmp);
 				} else {

@@ -71,21 +71,41 @@ typedef struct {
 typedef struct {
 	ut8 parse_bits; ///< Parse bits of instruction.
     bool is_duplex; ///< DOes this container hold two sub-instructions?
-    ut32 identifier; ///< Equals instruction ID if is_duplex = false. Otherwise: (low.id << 16) | (high.id << 0)
+    ut32 identifier; ///< Equals instruction ID if is_duplex = false. Otherwise: (high.id << 16) | (low.id & 0xffff)
     union {
-        HexInsn *sub[2]; ///< Pointer to sub-instructions if is_duplex = true. sub[0] = low, sub[1] = high
+        HexInsn *sub[2]; ///< Pointer to sub-instructions if is_duplex = true. sub[0] = high, sub[1] = low
         HexInsn *insn; ///< Pointer to instruction if is_duplex = false.
     } bin;
-    ut32 addr; ///< Address of container. Equals address of instruction or of the low sub-instruction if this is a duplex.
+    ut32 addr; ///< Address of container. Equals address of instruction or of the high sub-instruction if this is a duplex.
     ut32 opcode; ///< The instruction opcode.
     HexPktInfo pkt_info; ///< Packet related information. First/last instr., prefix and postfix for text etc.
     RzAsmOp asm_op; ///< Private copy of AsmOp. Currently only of interest because it holds the utf8 flag.
 	RzAnalysisOp ana_op; ///< Private copy of AnalysisOp. Analysis info is written into it.
-	char text[192]; ///< Textual disassembly
+	char text[296]; ///< Textual disassembly
 } HexInsnContainer;
 
+/**
+ * \brief Represents an Hexagon instruction packet.
+ * We do not assign instructions to slots, but the order of instructions matters nonetheless.
+ * The layout of a packet is:
+ *
+ * low addr | Slot 3
+ * ---------+----------
+ *          | Slot 2
+ * ---------+----------
+ *          | Slot 1    -> High Sub-Instruction is always in Slot 1
+ * ---------+----------
+ * high addr| Slot 0    -> Low Sub-Instruction is always in Slot 0
+ *
+ * Because of this order the textual disassembly of duplex instructions is: "<high-text> ; <low-text>".
+ * Also, the high sub-instruction is located at the _lower_ memory address (aligned to 4 bytes).
+ * The low sub-instruction at <high.addr + 2>.
+ *
+ * This said: The HexPkt.bin holds only instruction container, no instructions!
+ * The container holds the instructions or sub-instructions.
+ */
 typedef struct {
-	RzList /* HexInsnContainer */ *bin; ///< List of instruction containers.
+	RzList /* HexInsnContainer */ *bin; ///< Descending by address sorted list of instruction containers.
 	bool last_instr_present; ///< Has an instruction the parsing bits 0b11 set (is last instruction).
 	bool is_valid; ///< Is it a valid packet? Do we know which instruction is the first?
 	ut32 hw_loop0_addr; ///< Start address of hardware loop 0
