@@ -45,6 +45,7 @@ class LLVMImporter:
     hardware_regs = dict()
 
     def __init__(self, build_json: bool, test_mode=False):
+        self.sub_namespaces = set()
         self.test_mode = test_mode
         if self.test_mode:
             self.hexagon_target_json_path = "../Hexagon.json"
@@ -246,6 +247,9 @@ class LLVMImporter:
             if llvm_instruction["Type"]["def"] == "TypeSUBINSN":
                 self.sub_instruction_names.append(i_name)
                 self.sub_instructions[i_name] = SubInstruction(llvm_instruction)
+                ns = self.sub_instructions[i_name].namespace
+                if ns not in self.sub_namespaces:
+                    self.sub_namespaces.add(ns)
             else:
                 self.normal_instruction_names.append(i_name)
                 self.normal_instructions[i_name] = Instruction(llvm_instruction)
@@ -411,11 +415,13 @@ class LLVMImporter:
         templates_code = "\n\n"
 
         # Sub-Instructions instructions
-        templates_code += f"static const HexInsnTemplate templates_sub[] = {{\n"
-        instr: SubInstruction
-        for instr in self.sub_instructions.values():
-            templates_code += instr.get_template_in_c() + ","
-        templates_code += "{ { 0 } }, };\n\n"
+        for ns in sorted(self.sub_namespaces):
+            templates_code += f"static const HexInsnTemplate templates_sub_{ns.name}[] = {{\n"
+            instr: SubInstruction
+            for instr in self.sub_instructions.values():
+                if instr.namespace == ns:
+                    templates_code += instr.get_template_in_c() + ","
+            templates_code += "{ { 0 } }, };\n\n"
 
         # Normal instructions
         for c in range(0x10):

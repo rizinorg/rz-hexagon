@@ -2,19 +2,19 @@
 #
 # SPDX-License-Identifier: LGPL-3.0-only
 
-from enum import Enum
+from enum import StrEnum
 
 from ImplementationException import ImplementationException
 from Instruction import Instruction
 from UnexpectedException import UnexpectedException
 
 
-class SubInstrNamespace(Enum):
-    SUBINSN_A = "SUBINSN_A"
-    SUBINSN_L1 = "SUBINSN_L1"
-    SUBINSN_L2 = "SUBINSN_L2"
-    SUBINSN_S1 = "SUBINSN_S1"
-    SUBINSN_S2 = "SUBINSN_S2"
+class SubInstrNamespace(StrEnum):
+    A = "SUBINSN_A"
+    L1 = "SUBINSN_L1"
+    L2 = "SUBINSN_L2"
+    S1 = "SUBINSN_S1"
+    S2 = "SUBINSN_S2"
 
 
 class SubInstruction(Instruction):
@@ -28,7 +28,7 @@ class SubInstruction(Instruction):
 
         namespace = llvm_instruction["DecoderNamespace"]
         try:
-            self.namespace = SubInstrNamespace[namespace]
+            self.namespace = SubInstrNamespace(namespace)
         except KeyError:
             raise ImplementationException("Sub instruction namespace: {} is not in Enum".format(namespace))
         self.is_sub_instruction = True

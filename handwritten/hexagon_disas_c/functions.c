@@ -1,6 +1,52 @@
 // SPDX-FileCopyrightText: 2021 Rot127 <unisono@quyllur.org>
 // SPDX-License-Identifier: LGPL-3.0-only
 
+
+/**
+ * \brief Get the sub-instruction template for a given duplex IClass.
+ *
+ * \param duplex_iclass The duplex IClass.
+ * \param high True: returns the table of the high instruction. False: the table of the low instructions.
+ * \return const HexInsnTemplate* The template table of the requested instructions. Or NULL if the IClass is invalid.
+ */
+static const HexInsnTemplate *get_sub_template_table(const ut8 duplex_iclass, bool high) {
+    switch(duplex_iclass) {
+    default:
+		 RZ_LOG_WARN("IClasses > 0xe are reserved.\n");
+		 return NULL;
+    case 0:
+		 return high ? templates_sub_L1 : templates_sub_L1;
+    case 1:
+		 return high ? templates_sub_L1 : templates_sub_L2;
+    case 2:
+		 return high ? templates_sub_L2 : templates_sub_L2;
+    case 3:
+		 return high ? templates_sub_A : templates_sub_A;
+    case 4:
+		 return high ? templates_sub_A : templates_sub_L1;
+    case 5:
+		 return high ? templates_sub_A : templates_sub_L2;
+    case 6:
+		 return high ? templates_sub_A : templates_sub_S1;
+    case 7:
+		 return high ? templates_sub_A : templates_sub_S2;
+    case 8:
+		 return high ? templates_sub_L1 : templates_sub_S1;
+    case 9:
+		 return high ? templates_sub_L2 : templates_sub_S1;
+    case 0xA:
+		 return high ? templates_sub_S1 : templates_sub_S1;
+    case 0xB:
+		 return high ? templates_sub_S1 : templates_sub_S2;
+    case 0xC:
+		 return high ? templates_sub_L1 : templates_sub_S2;
+    case 0xD:
+		 return high ? templates_sub_L2 : templates_sub_S2;
+    case 0xE:
+		 return high ? templates_sub_S2 : templates_sub_S2;
+    }
+}
+
 static inline bool is_last_instr(const ut8 parse_bits) {
 	// Duplex instr. (parse bits = 0) are always the last.
 	return ((parse_bits == 0x3) || (parse_bits == 0x0));
@@ -251,9 +297,9 @@ int hexagon_disasm_instruction(HexState *state, const ut32 hi_u32, RZ_INOUT HexI
 				RZ_LOG_WARN("Reserved duplex instruction class used at: 0x%" PFMT32x ".\n", addr);
 			}
 
-			hex_disasm_with_templates(templates_sub, state, opcode_high, hi_high, hic, addr, pkt);
+			hex_disasm_with_templates(get_sub_template_table(iclass, true), state, opcode_high, hi_high, hic, addr, pkt);
 			hic->bin.sub[0] = hi_high;
-			hex_disasm_with_templates(templates_sub, state, opcode_low, hi_low, hic, addr + 2, pkt);
+			hex_disasm_with_templates(get_sub_template_table(iclass, false), state, opcode_low, hi_low, hic, addr + 2, pkt);
 			hic->bin.sub[1] = hi_low;
 
 			hic->identifier = (hi_high->identifier << 16) | (hi_low->identifier & 0xffff);
