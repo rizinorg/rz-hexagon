@@ -121,11 +121,8 @@ reuse lint
   For example:
   
   - `llvm_in_operands` holds a list with the content of `Hexagon.json::[Instr].InOperandList`.
-  - `llvm_syntax` holds: `$Rdd8 = combine(#0,#$Ii) ; $Rx16 = add($Rx16in,$Rs16)` (the syntax in LLVM style).
-
-    In case of this duplex Instruction it is actually the LLVM-syntax of the high and
-    low instruction concatenated with a semicolon.
-  - `syntax` holds: `Rdd = combine(#0,#Ii) ; Rx = add(Rxin,Rs)`
+  - `llvm_syntax` holds: `$Rdd8 = combine(#0,#$Ii)` (the syntax in LLVM style).
+  - `syntax` holds: `Rdd = combine(#0,#Ii)` (cleaned up LLVM syntax)
   - `Instruction.operands` is a dictionary which contains `Register` and `Immediate` Python objects.
 
 - Please take a brief look at the [Rizin development](https://github.com/rizinorg/rizin/blob/dev/DEVELOPERS.md) guide if you plan to change C code.
@@ -135,4 +132,3 @@ reuse lint
 * Rot127
 * Anton Kochkov
 * Florian Märkl
-

@@ -4,7 +4,6 @@
 
 import unittest
 
-from DuplexInstruction import DuplexInstruction
 from Immediate import Immediate
 from Instruction import Instruction
 from LLVMImporter import LLVMImporter
@@ -70,18 +69,3 @@ class TestImmediate(unittest.TestCase):
                     LogLevel.ERROR,
                 )
             self.assertEqual(1, c)
-
-        # Duplex instructions
-        for duplex_name in self.interface.duplex_instructions_names:
-            d_instr: DuplexInstruction = self.interface.duplex_instructions[duplex_name]
-            if d_instr.has_extendable_imm:
-                c = 0
-                for op_name, op in d_instr.operands.items():
-                    if isinstance(op, Immediate) and op.is_extendable:
-                        c += 1
-                if c != 1:
-                    log(
-                        "Extendable immediate not set in instruction: {}".format(d_instr.llvm_syntax),
-                        LogLevel.ERROR,
-                    )
-                self.assertEqual(1, c)
