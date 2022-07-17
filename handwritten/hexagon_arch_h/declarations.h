@@ -23,7 +23,10 @@
 #define HEX_PKT_ELOOP_1_SDK ":endloop1"
 #define HEX_PKT_ELOOP_0_SDK ":endloop0"
 
-RZ_API void hex_insn_free(HexInsn *i);
+RZ_API HexInsn *hexagon_alloc_instr();
+RZ_API void hex_insn_free(RZ_NULLABLE HexInsn *i);
+RZ_API HexInsnContainer *hexagon_alloc_instr_container();
+RZ_API void hex_insn_container_free(RZ_NULLABLE HexInsnContainer *c);
 RZ_API void hex_const_ext_free(HexConstExt *ce);
 RZ_API HexState *hexagon_get_state();
 RZ_API void hexagon_reverse_opcode(const RzAsm *rz_asm, HexReversedOpcode *rz_reverse, const ut8 *buf, const ut64 addr);

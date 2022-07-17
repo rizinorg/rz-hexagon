@@ -7,7 +7,7 @@
  * \param addr The address of the current instruction.
  * \param reg_num Bits of Nt.new reg.
  * \param p The current packet.
- * \return int The number of the general register. Or UT32_MAX if any error occured.
+ * \return int The number of the general register. Or UT32_MAX if any error occurred.
  */
 int resolve_n_register(const int reg_num, const ut32 addr, const HexPkt *p) {
 	// .new values are documented in Programmers Reference Manual
