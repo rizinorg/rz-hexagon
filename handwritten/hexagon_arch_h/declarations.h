@@ -33,3 +33,4 @@ RZ_API void hexagon_reverse_opcode(const RzAsm *rz_asm, HexReversedOpcode *rz_re
 RZ_API ut8 hexagon_get_pkt_index_of_addr(const ut32 addr, const HexPkt *p);
 RZ_API HexLoopAttr hex_get_loop_flag(const HexPkt *p);
 void hex_set_hic_text(RZ_INOUT HexInsnContainer *hic);
+RZ_API void hex_copy_insn_container(RZ_OUT HexInsnContainer *dest, const HexInsnContainer *src);

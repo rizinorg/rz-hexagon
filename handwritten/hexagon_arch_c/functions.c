@@ -184,6 +184,23 @@ RZ_API void hex_insn_container_free(RZ_NULLABLE HexInsnContainer *c) {
 }
 
 /**
+ * \brief Copies one instruction container to another.
+ *
+ * \param dest The destination insruction container.
+ * \param src The source instruction container.
+ */
+RZ_API void hex_copy_insn_container(RZ_OUT HexInsnContainer *dest, const HexInsnContainer *src) {
+	rz_return_if_fail(dest && src);
+	memcpy(dest, src, sizeof(HexInsnContainer));
+	if (src->is_duplex) {
+		memcpy(dest->bin.sub[0], src->bin.sub[0], sizeof(HexInsn));
+		memcpy(dest->bin.sub[1], src->bin.sub[1], sizeof(HexInsn));
+	} else {
+		memcpy(dest->bin.insn, src->bin.insn, sizeof(HexInsn));
+	}
+}
+
+/**
  * \brief Frees an constant extender.
  *
  * \param ce The constant extender to be freed.
@@ -544,17 +561,17 @@ RZ_API HexInsnContainer *hexagon_alloc_instr_container() {
  * \brief Copies an instruction container to the packet p at position k.
  *
  * \param state The state to operate on.
- * \param new_ins The instruction container to copy.
+ * \param new_hic The instruction container to copy.
  * \param p The packet in which will hold the instruction container.
  * \param k The index of the instruction container in the packet.
  * \return HexInsnContainer* Pointer to the copied instruction container on the heap.
  */
-static HexInsnContainer *hex_add_to_pkt(HexState *state, const HexInsnContainer *new_ic, RZ_INOUT HexPkt *p, const ut8 k) {
+static HexInsnContainer *hex_add_to_pkt(HexState *state, const HexInsnContainer *new_hic, RZ_INOUT HexPkt *p, const ut8 k) {
 	if (k > 3) {
 		RZ_LOG_FATAL("Instruction could not be set! A packet can only hold four instructions but k=%d.", k);
 	}
 	HexInsnContainer *hic = hexagon_alloc_instr_container();
-	memcpy(hic, new_ic, sizeof(HexInsnContainer));
+	hex_copy_insn_container(hic, new_hic);
 	rz_list_insert(p->bin, k, hic);
 
 	if (k == 0) {
@@ -587,7 +604,7 @@ static HexInsnContainer *hex_to_new_pkt(HexState *state, const HexInsnContainer 
 	hex_clear_pkt(new_p);
 
 	HexInsnContainer *hic = hexagon_alloc_instr_container();
-	memcpy(hic, new_hic, sizeof(HexInsnContainer));
+	hex_copy_insn_container(hic, new_hic);
 	rz_list_insert(new_p->bin, 0, hic);
 
 	new_p->last_instr_present |= is_last_instr(hic->parse_bits);
@@ -615,7 +632,7 @@ static HexInsnContainer *hex_add_to_stale_pkt(HexState *state, const HexInsnCont
 	hex_clear_pkt(p);
 
 	HexInsnContainer *hic = hexagon_alloc_instr_container();
-	memcpy(hic, new_hic, sizeof(HexInsnContainer));
+	hex_copy_insn_container(hic, new_hic);
 	rz_list_insert(p->bin, 0, hic);
 
 	p->last_instr_present |= is_last_instr(hic->parse_bits);
