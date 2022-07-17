@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: LGPL-3.0-only
 
 /**
- * \brief Resolves the 3 bit value of an Nt.new reg to the general register of the producer. 
- * 
+ * \brief Resolves the 3 bit value of an Nt.new reg to the general register of the producer.
+ *
  * \param addr The address of the current instruction.
  * \param reg_num Bits of Nt.new reg.
  * \param p The current packet.
@@ -22,14 +22,14 @@ int resolve_n_register(const int reg_num, const ut32 addr, const HexPkt *p) {
 	}
 
 	ut8 prod_i = i; // Producer index
-	HexInsn *hi;
+	HexInsnContainer *hic;
 	RzListIter *it;
-	rz_list_foreach_prev(p->insn, it, hi) {
+	rz_list_foreach_prev(p->bin, it, hic) {
 		if (ahead == 0) {
 			break;
 		}
-		if (hi->addr < addr) {
-			if (hi->instruction == HEX_INS_A4_EXT) {
+		if (hic->addr < addr) {
+			if (hic->identifier == HEX_INS_A4_EXT) {
 				--prod_i;
 				continue;
 			}
@@ -38,16 +38,16 @@ int resolve_n_register(const int reg_num, const ut32 addr, const HexPkt *p) {
 		}
 	}
 
-	hi = rz_list_get_n(p->insn, prod_i);
+	hic = rz_list_get_n(p->bin, prod_i);
 
-	if (!hi) {
+	if (!hic) {
 		return UT32_MAX;
 	}
-	if (hi->instruction == HEX_INS_A4_EXT) {
+	if (hic->identifier == HEX_INS_A4_EXT) {
 		return UT32_MAX;
 	}
-
-	for (ut8 i = 0; i < 6; ++i) {
+	HexInsn *hi = !hic->is_duplex ? hic->bin.insn : (hic->bin.sub[0]->addr == addr ? hic->bin.sub[0] : hic->bin.sub[1]);
+	for (ut8 i = 0; i < hi->op_count; ++i) {
 		if (hi->ops[i].attr & HEX_OP_REG_OUT) {
 			return hi->ops[i].op.reg;
 		}
