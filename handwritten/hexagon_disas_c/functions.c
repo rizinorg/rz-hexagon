@@ -113,6 +113,7 @@ static void hex_disasm_with_templates(const HexInsnTemplate *tpl, HexState *stat
 		// unknown/invalid
 		return;
 	}
+	hi->addr = addr;
 	hi->identifier = tpl->id;
 	hi->opcode = hi_u32;
 	hi->pred = tpl->pred;
@@ -196,7 +197,7 @@ static void hex_disasm_with_templates(const HexInsnTemplate *tpl, HexState *stat
 			// textual disasm
 			int regidx = hi->ops[i].op.reg;
 			if (op->info & HEX_OP_TEMPLATE_FLAG_REG_N_REG) {
-				regidx = resolve_n_register(hi->ops[i].op.reg, hi->addr, pkt);
+				regidx = resolve_n_register(hi->ops[i].op.reg, hic->addr, pkt);
 			}
 			rz_strbuf_append(&sb, hex_get_reg_in_class(op->reg_cls, regidx, print_reg_alias));
 			break;
