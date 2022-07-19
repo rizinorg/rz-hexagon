@@ -906,7 +906,7 @@ int resolve_n_register(const int reg_num, const ut32 addr, const HexPkt *p) {
 
 	hic = rz_list_get_n(p->bin, prod_i);
 
-	if (!hic) {
+	if (!hic || !hic->bin.insn || !hic->bin.sub[0] || !hic->bin.sub[1]) {
 		return UT32_MAX;
 	}
 	if (hic->identifier == HEX_INS_A4_EXT) {
