@@ -34166,7 +34166,7 @@ int hexagon_disasm_instruction(HexState *state, const ut32 hi_u32, RZ_INOUT HexI
 		}
 	}
 	if (hi_u32 != 0x00000000) {
-		if (((hi_u32 >> 14) & 0x3) == 0) {
+		if (hic->parse_bits == 0) {
 			// DUPLEXES
 			hic->is_duplex = true;
 			HexInsn *hi_low = hexagon_alloc_instr();
@@ -34199,7 +34199,6 @@ int hexagon_disasm_instruction(HexState *state, const ut32 hi_u32, RZ_INOUT HexI
 		hic->ana_op.eob = true;
 	}
 	if (hic->identifier == HEX_INS_INVALID_DECODE) {
-		hic->parse_bits = ((hi_u32)&0xc000) >> 14;
 		hic->ana_op.type = RZ_ANALYSIS_OP_TYPE_ILL;
 		HexInsn *hi = hexagon_alloc_instr();
 		hic->bin.insn = hi;
