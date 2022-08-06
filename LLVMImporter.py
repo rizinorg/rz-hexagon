@@ -564,6 +564,7 @@ class LLVMImporter:
         code = get_generation_warning_c_code()
 
         code += include_file("handwritten/hexagon_arch_c/include.c")
+        code += "\n"
         code += include_file("handwritten/hexagon_arch_c/functions.c")
 
         self.write_src(code, path)

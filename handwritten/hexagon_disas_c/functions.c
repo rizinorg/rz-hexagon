@@ -288,8 +288,8 @@ int hexagon_disasm_instruction(HexState *state, const ut32 hi_u32, RZ_INOUT HexI
 		if (hic->parse_bits == 0) {
 			// DUPLEXES
 			hic->is_duplex = true;
-			HexInsn *hi_low = hexagon_alloc_instr();
-			HexInsn *hi_high = hexagon_alloc_instr();
+			HexInsn *hi_high = hic->bin.sub[0];
+			HexInsn *hi_low = hic->bin.sub[1];
 			ut32 opcode_low = hi_u32 & 0x1fff; // Low Sub-Insn: Bits 12:0
 			ut32 opcode_high = (hi_u32 >> 16) & 0x1fff; // High Sub-Insn: Bits 28:16
 
@@ -299,19 +299,15 @@ int hexagon_disasm_instruction(HexState *state, const ut32 hi_u32, RZ_INOUT HexI
 			}
 
 			hex_disasm_with_templates(get_sub_template_table(iclass, true), state, opcode_high, hi_high, hic, addr, pkt);
-			hic->bin.sub[0] = hi_high;
 			hex_disasm_with_templates(get_sub_template_table(iclass, false), state, opcode_low, hi_low, hic, addr + 2, pkt);
-			hic->bin.sub[1] = hi_low;
 
 			hic->identifier = (hi_high->identifier << 16) | (hi_low->identifier & 0xffff);
 			hic->ana_op.id = hic->identifier;
 		} else {
 			hic->is_duplex = false;
-			HexInsn *hi = hexagon_alloc_instr();
 			ut32 cat = (hi_u32 >> 28) & 0xF;
-			hex_disasm_with_templates(templates_normal[cat], state, hi_u32, hi, hic, addr, pkt);
-			hic->bin.insn = hi;
-			hic->identifier = hi->identifier;
+			hex_disasm_with_templates(templates_normal[cat], state, hi_u32, hic->bin.insn, hic, addr, pkt);
+			hic->identifier = hic->bin.insn->identifier;
 		}
 	}
 	if (pkt->is_eob && is_last_instr(hic->parse_bits)) {

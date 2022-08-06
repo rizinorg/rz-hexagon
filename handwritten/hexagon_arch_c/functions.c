@@ -750,6 +750,12 @@ static void setup_new_hic(HexInsnContainer *hic, const HexReversedOpcode *rz_rev
 
 	hic->asm_op.size = 4;
 	hic->ana_op.size = 4;
+	if (parse_bits == 0b00) {
+		hic->bin.sub[0] = hexagon_alloc_instr();
+		hic->bin.sub[1] = hexagon_alloc_instr();
+	} else {
+		hic->bin.insn = hexagon_alloc_instr();
+	}
 }
 
 static inline bool imm_is_scaled(const HexOpAttr attr) {
