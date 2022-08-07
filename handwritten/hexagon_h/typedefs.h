@@ -70,7 +70,7 @@ typedef struct {
  */
 typedef struct {
 	ut8 parse_bits; ///< Parse bits of instruction.
-    bool is_duplex; ///< DOes this container hold two sub-instructions?
+    bool is_duplex; ///< Does this container hold two sub-instructions?
     ut32 identifier; ///< Equals instruction ID if is_duplex = false. Otherwise: (high.id << 16) | (low.id & 0xffff)
     union {
         HexInsn *sub[2]; ///< Pointer to sub-instructions if is_duplex = true. sub[0] = high, sub[1] = low
@@ -79,8 +79,9 @@ typedef struct {
     ut32 addr; ///< Address of container. Equals address of instruction or of the high sub-instruction if this is a duplex.
     ut32 opcode; ///< The instruction opcode.
     HexPktInfo pkt_info; ///< Packet related information. First/last instr., prefix and postfix for text etc.
-    RzAsmOp asm_op; ///< Private copy of AsmOp. Currently only of interest because it holds the utf8 flag.
-	RzAnalysisOp ana_op; ///< Private copy of AnalysisOp. Analysis info is written into it.
+    // Deprecated members will be removed on RzArch introduction.
+    RZ_DEPRECATE RzAsmOp asm_op; ///< Private copy of AsmOp. Currently only of interest because it holds the utf8 flag.
+	RZ_DEPRECATE RzAnalysisOp ana_op; ///< Private copy of AnalysisOp. Analysis info is written into it.
 	char text[296]; ///< Textual disassembly
 } HexInsnContainer;
 
