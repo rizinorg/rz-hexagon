@@ -62,7 +62,6 @@ class InstructionTemplate:
         self.is_solo: bool = None
 
         self.is_sub_instruction: bool = None
-        self.is_duplex: bool = None
 
         # Operands
         self.llvm_in_operands: list = self.llvm_instr["InOperandList"]["args"]
@@ -183,10 +182,7 @@ class InstructionTemplate:
     def parse_instruction(self) -> None:
         """Parses all operands of the instruction which are encoded."""
 
-        if self.is_duplex:
-            all_ops = deepcopy(self.high_instr.llvm_in_out_operands + self.low_instr.llvm_in_out_operands)
-        else:
-            all_ops = deepcopy(self.llvm_in_out_operands)
+        all_ops = deepcopy(self.llvm_in_out_operands)
 
         self.llvm_filtered_operands = self.remove_invisible_in_out_regs(self.llvm_syntax, all_ops)
         self.operand_indices = self.get_syntax_operand_indices(self.llvm_syntax, self.llvm_filtered_operands)

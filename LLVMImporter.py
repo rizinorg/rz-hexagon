@@ -4,7 +4,7 @@
 #
 # SPDX-License-Identifier: LGPL-3.0-only
 
-import itertools
+from itertools import chain
 import json
 import os
 import re
@@ -12,7 +12,6 @@ import subprocess
 import argparse
 
 from HardwareRegister import HardwareRegister
-from DuplexInstruction import DuplexInstruction, DuplexIClass
 from ImplementationException import ImplementationException
 from Instruction import Instruction
 from SubInstruction import SubInstruction
@@ -43,11 +42,10 @@ class LLVMImporter:
     normal_instructions = dict()
     sub_instruction_names = list()
     sub_instructions = dict()
-    duplex_instructions_names = list()
-    duplex_instructions = dict()
     hardware_regs = dict()
 
     def __init__(self, build_json: bool, test_mode=False):
+        self.sub_namespaces = set()
         self.test_mode = test_mode
         if self.test_mode:
             self.hexagon_target_json_path = "../Hexagon.json"
@@ -83,7 +81,6 @@ class LLVMImporter:
 
         self.parse_hardware_registers()
         self.parse_instructions()
-        self.generate_duplex_instructions()
         self.check_insn_syntax_length()
         if not test_mode:
             self.generate_rizin_code()
@@ -250,30 +247,15 @@ class LLVMImporter:
             if llvm_instruction["Type"]["def"] == "TypeSUBINSN":
                 self.sub_instruction_names.append(i_name)
                 self.sub_instructions[i_name] = SubInstruction(llvm_instruction)
+                ns = self.sub_instructions[i_name].namespace
+                if ns not in self.sub_namespaces:
+                    self.sub_namespaces.add(ns)
             else:
                 self.normal_instruction_names.append(i_name)
                 self.normal_instructions[i_name] = Instruction(llvm_instruction)
 
         log("Parsed {} normal instructions.".format(len(self.normal_instructions)))
         log("Parsed {} sub-instructions.".format(len(self.sub_instructions)))
-
-    def generate_duplex_instructions(self) -> None:
-        sub_instr_pairs = itertools.product(self.sub_instructions.values(), self.sub_instructions.values())
-        for pair in sub_instr_pairs:
-            low_instr = pair[0]
-            high_instr = pair[1]
-            i_class = DuplexInstruction.get_duplex_i_class_of_instr_pair(low=low_instr, high=high_instr)
-            if i_class != DuplexIClass.INVALID and DuplexInstruction.fulfill_constraints(low_instr, high_instr):
-                llvm_dup_instr = self.hexArch[i_class.name]
-                dup_instr = DuplexInstruction(
-                    llvm_duplex_instr=llvm_dup_instr,
-                    low=low_instr,
-                    high=high_instr,
-                )
-                self.duplex_instructions[dup_instr.name] = dup_instr
-                self.duplex_instructions_names.append(dup_instr.name)
-                log("Duplex instruction generated: {}".format(dup_instr.name), LogLevel.DEBUG)
-        log("Generated {} duplex instructions.".format(len(self.duplex_instructions)))
 
     def parse_hardware_registers(self) -> None:
         cc = 0
@@ -305,8 +287,7 @@ class LLVMImporter:
                     reg_names.append(arg["def"])
                 elif "sequence" in arg["printable"]:
                     reg_names = reg_names + unfold_llvm_sequence(arg["printable"])
-                # Remove registers whichs tart with WR; WR register are reverse double vector regs: V0:1 instead of V1:0
-                # TODO This is not nice. Isn't there a simpler way?
+                # Remove registers which start with WR; WR register are reverse double vector regs: V0:1 instead of V1:0
                 reg_names = [name for name in reg_names if not re.search(r"WR\d{1,2}", name)]
 
             for name in reg_names:
@@ -330,20 +311,20 @@ class LLVMImporter:
     def check_insn_syntax_length(self):
         for instr_set in [
             self.normal_instructions.values(),
-            self.duplex_instructions.values(),
+            self.sub_instructions.values(),
         ]:
             for insn in instr_set:
                 if len(insn.syntax) >= 128:
                     sl = len(insn.syntax) + 1  # +1 for \0 in the string
                     raise ImplementationException(
-                        "The mnemonic variable is at the moment only 128 byte."
+                        "The text infix variable is at the moment only 128 byte."
                         + "This syntax takes at least {}+1 bytes.".format(sl)
                     )
 
     def get_cc_regs(self) -> dict:
         """Returns a list of register names which are argument or return register in the calling convention.
         This part is a bit tricky. The register names are stored in objects named "anonymous_XXX" in Hexagon.json.
-        Since they do not have a explicit name, we can only check check the names against the source.
+        Since they do not have an explicit name, we can only check the names against the source.
 
         Note: LLVM defines the calling convention in: HexagonCallingConv.td
 
@@ -409,16 +390,17 @@ class LLVMImporter:
     # RIZIN SPECIFIC
     def build_hexagon_insn_enum_h(self, path: str = "./rizin/librz/asm/arch/hexagon/hexagon_insn.h") -> None:
         code = get_generation_warning_c_code()
+        code += "\n"
         code += get_include_guard("hexagon_insn.h")
-        code += "enum HEX_INS {"
+        code += "\ntypedef enum {\n"
         enum = ""
-        for name in self.normal_instruction_names + self.duplex_instructions_names:
+        for name in self.normal_instruction_names + self.sub_instruction_names:
             if "invalid_decode" in name:
                 enum = (PluginInfo.INSTR_ENUM_PREFIX + name.upper() + " = 0,") + enum
             else:
                 enum += PluginInfo.INSTR_ENUM_PREFIX + name.upper() + ","
         code += enum
-        code += "};"
+        code += "} HexInsnID;\n"
         code += "#endif"
 
         self.write_src(code, path)
@@ -432,21 +414,19 @@ class LLVMImporter:
 
         templates_code = "\n\n"
 
-        # Duplexes
-        for c in range(0xF):  # Class 0xf is reserved yet.
-            templates_code += f"static const HexInsnTemplate templates_duplex_0x{c:x}[] = {{\n"
-            for d_instr in self.duplex_instructions.values():
-                if d_instr.encoding.get_i_class() == c:
-                    templates_code += d_instr.get_template_in_c() + ","
+        # Sub-Instructions instructions
+        for ns in sorted(self.sub_namespaces):
+            templates_code += f"static const HexInsnTemplate templates_sub_{ns.name}[] = {{\n"
+            instr: SubInstruction
+            for instr in self.sub_instructions.values():
+                if instr.namespace == ns:
+                    templates_code += instr.get_template_in_c() + ","
             templates_code += "{ { 0 } }, };\n\n"
-
-        templates_code += "static const HexInsnTemplate *templates_duplex[] = {\n"
-        templates_code += ",\n".join([f"templates_duplex_0x{c:x}" for c in range(0xF)])
-        templates_code += "};\n\n"
 
         # Normal instructions
         for c in range(0x10):
             templates_code += f"static const HexInsnTemplate templates_normal_0x{c:x}[] = {{\n"
+            instr: Instruction
             for instr in self.normal_instructions.values():
                 if instr.encoding.get_i_class() == c:
                     templates_code += instr.get_template_in_c() + ","
@@ -584,6 +564,7 @@ class LLVMImporter:
         code = get_generation_warning_c_code()
 
         code += include_file("handwritten/hexagon_arch_c/include.c")
+        code += "\n"
         code += include_file("handwritten/hexagon_arch_c/functions.c")
 
         self.write_src(code, path)
@@ -849,7 +830,7 @@ if __name__ == "__main__":
         "-j",
         action="store_true",
         default=False,
-        help="Run llvm-tblgen to build a new Hexagon.json file from the LLVM definitons.",
+        help="Run llvm-tblgen to build a new Hexagon.json file from the LLVM definitions.",
         dest="bjs",
     )
     args = parser.parse_args()

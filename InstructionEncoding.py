@@ -32,7 +32,6 @@ class InstructionEncoding:
         "llvm_encoding",
         "op_code",
         "num_representation",
-        "duplex_encoding",
         "parse_bits_mask",
     ]
 
@@ -44,9 +43,8 @@ class InstructionEncoding:
         self.parse_bits_mask: int = 0
         self.docs_mask = ""
         self.llvm_encoding = llvm_encoding
-        # The first 13bit of the encoding as 13bit unsigned int. Variable fields are interpret as 0.
+        # The first 13bit of the encoding as 13bit unsigned int. Variable fields are interpreted as 0.
         self.num_representation = 0
-        self.duplex_encoding = False
 
         self.parse_encoding()
 
@@ -59,10 +57,6 @@ class InstructionEncoding:
         op_code.setall(0)
         p_bits_mask = bitarray(HexagonArchInfo.INSTRUCTION_LENGTH, endian="little")
         p_bits_mask.setall(0)
-
-        # Bit 15:14 are only set if a duplex instruction is parsed. Else the parsing bits are None.
-        if self.llvm_encoding[14] == 0 and self.llvm_encoding[15] == 0:
-            self.duplex_encoding = True
 
         for i in range(0, 32):
             bit = self.llvm_encoding[i]
@@ -110,9 +104,5 @@ class InstructionEncoding:
         log("Added encoding: {} with operands: {}".format(self.docs_mask, self.llvm_operand_names), LogLevel.VERBOSE)
 
     def get_i_class(self) -> int:
-        if self.duplex_encoding:
-            enc = self.llvm_encoding
-            return enc[31] << 3 | enc[30] << 2 | enc[29] << 1 | enc[13]
-        else:
-            i_class = self.llvm_encoding[28:32]
-            return i_class[3] << 3 | i_class[2] << 2 | i_class[1] << 1 | i_class[0]
+        i_class = self.llvm_encoding[28:32]
+        return i_class[3] << 3 | i_class[2] << 2 | i_class[1] << 1 | i_class[0]

@@ -13,4 +13,3 @@ IMMEDIATE_TYPES = dict()
 REG_CLASS_NAMES = dict()
 
 MAX_IMM_LEN = 32
-duplex_constrains_info_shown = False

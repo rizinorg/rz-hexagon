@@ -6,6 +6,7 @@
 #include <rz_types.h>
 #include <rz_util.h>
 #include <rz_util/rz_hex.h>
+#include <rz_util/rz_strbuf.h>
 #include <rz_analysis.h>
 #include "hexagon.h"
 #include "hexagon_insn.h"

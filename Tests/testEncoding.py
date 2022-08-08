@@ -5,11 +5,9 @@
 from bitarray import bitarray
 import unittest
 
-from DuplexInstruction import DuplexInstruction
 from LLVMImporter import LLVMImporter
 from InstructionEncoding import InstructionEncoding
 from Operand import SparseMask
-from SubInstruction import SubInstruction
 
 
 class TestInstructionEncoding(unittest.TestCase):
@@ -70,14 +68,6 @@ class TestInstructionEncoding(unittest.TestCase):
             0xD,
             InstructionEncoding(self.json["A2_addh_h16_hh"]["Inst"]).get_i_class(),
         )
-
-        high = SubInstruction(self.json["SL2_return_tnew"])
-        low = SubInstruction(self.json["SS2_storewi1"])
-        d = DuplexInstruction.get_duplex_i_class_of_instr_pair(low=low, high=high)
-
-        duplex = DuplexInstruction(self.json[d.name], low=low, high=high)
-
-        self.assertEqual(0xD, duplex.encoding.get_i_class())
 
     def test_num_representation(self) -> None:
         self.assertEqual(

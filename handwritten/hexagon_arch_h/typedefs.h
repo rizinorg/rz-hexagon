@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2021 Rot127 <unisono@quyllur.org>
 // SPDX-License-Identifier: LGPL-3.0-only
 
-// The packet position indicators added to the instruction mnemonic.
+// The packet position indicators added to the instruction text.
 typedef enum {
 	SINGLE_IN_PKT,
 	FIRST_IN_PKT,

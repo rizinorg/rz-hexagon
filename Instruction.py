@@ -21,8 +21,6 @@ class Instruction(InstructionTemplate):
         "is_imm_ext",
         "llvm_filtered_operands",
         "mult_inst",
-        "is_duplex",
-        "duplex_type",
         "imm_ops",
         "reg_ops",
         "opt_ops",
@@ -60,7 +58,6 @@ class Instruction(InstructionTemplate):
         self.is_solo = self.llvm_instr["isSolo"][0] if "isSolo" in self.llvm_instr else None
 
         self.is_sub_instruction = False
-        self.is_duplex = False
 
         # Operands
         self.num_operands = self.get_num_operands(self.llvm_syntax, self.llvm_in_out_operands)

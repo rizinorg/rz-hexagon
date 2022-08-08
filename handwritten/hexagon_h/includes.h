@@ -5,3 +5,5 @@
 #include <rz_config.h>
 #include <rz_list.h>
 #include <rz_types.h>
+#include <rz_util/rz_print.h>
+#include "hexagon_insn.h"
