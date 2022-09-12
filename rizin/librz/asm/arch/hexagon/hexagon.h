@@ -3,7 +3,7 @@
 
 // LLVM commit: 96e220e6886868d6663d966ecc396befffc355e7
 // LLVM commit date: 2022-01-05 11:01:52 +0000 (ISO 8601 format)
-// Date of code generation: 2022-09-12 13:55:16-04:00
+// Date of code generation: 2022-09-12 14:26:04-04:00
 //========================================
 // The following code is generated.
 // Do not edit. Repository of code generator:
@@ -127,7 +127,7 @@ typedef struct {
  * The container holds the instructions or sub-instructions.
  */
 typedef struct {
-	RzList /* HexInsnContainer */ *bin; ///< Descending by address sorted list of instruction containers.
+	RzList /*<HexInsnContainer *>*/ *bin; ///< Descending by address sorted list of instruction containers.
 	bool last_instr_present; ///< Has an instruction the parsing bits 0b11 set (is last instruction).
 	bool is_valid; ///< Is it a valid packet? Do we know which instruction is the first?
 	ut32 hw_loop0_addr; ///< Start address of hardware loop 0
@@ -151,7 +151,7 @@ typedef struct {
 	RzList /*<HexConstExt *>*/ *const_ext_l; // Constant extender values.
 	RzAsm rz_asm; // Copy of RzAsm struct. Holds certain flags of interesed for disassembly formatting.
 	RzConfig *cfg;
-	RzPVector /* RzAsmTokenPattern* */ *token_patterns; ///< PVector with token patterns. Priority ordered.
+	RzPVector /*<RzAsmTokenPattern *>*/ *token_patterns; ///< PVector with token patterns. Priority ordered.
 } HexState;
 
 typedef enum {
