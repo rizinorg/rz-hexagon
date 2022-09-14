@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2021 Rot127 <unisono@quyllur.org>
 // SPDX-License-Identifier: LGPL-3.0-only
 
-static RZ_OWN RzPVector /* RzAsmTokenPattern */ *get_token_patterns() {
+static RZ_OWN RzPVector /*<RzAsmTokenPattern *>*/ *get_token_patterns() {
 	static RzPVector *pvec = NULL;
 	if (pvec) {
 		return pvec;
@@ -93,7 +93,7 @@ static RZ_OWN RzPVector /* RzAsmTokenPattern */ *get_token_patterns() {
 	return pvec;
 }
 
-static void compile_token_patterns(RZ_INOUT RzPVector /* RzAsmTokenPattern* */ *patterns) {
+static void compile_token_patterns(RZ_INOUT RzPVector /*<RzAsmTokenPattern *>*/ *patterns) {
 	rz_return_if_fail(patterns);
 
 	void **it;
