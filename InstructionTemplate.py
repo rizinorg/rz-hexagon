@@ -184,7 +184,8 @@ class InstructionTemplate:
 
         all_ops = deepcopy(self.llvm_in_out_operands)
 
-        self.llvm_filtered_operands = self.remove_invisible_in_out_regs(self.llvm_syntax, all_ops)
+        self.llvm_filtered_operands = self.remove_const_operands(all_ops)
+        self.llvm_filtered_operands = self.remove_invisible_in_out_regs(self.llvm_syntax, self.llvm_filtered_operands)
         self.operand_indices = self.get_syntax_operand_indices(self.llvm_syntax, self.llvm_filtered_operands)
 
         # Update syntax indices.
@@ -405,3 +406,20 @@ class InstructionTemplate:
     def get_pkt_info_code(self) -> str:
         # Duplexes are always last instr. in packet.
         pass
+
+    def remove_const_operands(self, all_ops):
+        if self.name != "Y4_crswap10":
+            return all_ops
+        # This instruction has a constant operand sgp10 which is equal to SGP1:0.
+        # But it also has a unique type ("sgp10Const") which
+        # appears nowhere else (not in the register type list etc.).
+        # So we remove the operand if it exists and patch the syntax.
+        res = list()
+        for op in all_ops:
+            op_type = op[1]
+            if op_type == "sgp10":
+                continue
+            res.append(op)
+        self.llvm_syntax = self.llvm_syntax.replace("$sgp10", "sgp1:0")
+        self.syntax = self.syntax.replace("sgp10", "sgp1:0")
+        return res

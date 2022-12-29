@@ -215,10 +215,11 @@ class LLVMImporter:
             instn_name = filename.replace(".json", "")
             with open(insn_dir + filename) as f:
                 insn = json.load(f)
-            syntax_list = list()
+            syntax_list = dict()
             for llvm_instr in self.hexArch["!instanceof"]["HInst"]:
-                syntax_list.append(self.hexArch[llvm_instr]["AsmString"])
-            if "UNDOCUMENTED" not in instn_name and insn[instn_name]["AsmString"] in syntax_list:
+                syntax_list[llvm_instr] = self.hexArch[llvm_instr]["AsmString"]
+            if "UNDOCUMENTED" not in instn_name and insn[instn_name]["AsmString"] in syntax_list.values():
+                log(f"Imported instruction was added to LLVM. Remove it if opcodes match. Instr.: '{instn_name}'")
                 continue
             self.hexArch.update(insn)
             self.hexArch["!instanceof"]["HInst"] += list(insn.keys())
