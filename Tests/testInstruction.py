@@ -10,7 +10,6 @@ from helperFunctions import normalize_llvm_syntax
 
 
 class TestInstruction(unittest.TestCase):
-
     # TODO Indices for: V6_vS32b_nt_new_pred_ppu: "if ($Pv4) vmem($Rx32++$Mu2):nt = $Os8.new"
 
     # TODO
