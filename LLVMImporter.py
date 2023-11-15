@@ -358,6 +358,7 @@ class LLVMImporter:
         self.build_hexagon_disas_c()
         self.build_hexagon_c()
         self.build_hexagon_h()
+        self.build_dwarf_reg_num_table()
         self.build_asm_hexagon_c()
         self.build_hexagon_arch_c()
         self.build_hexagon_arch_h()
@@ -549,6 +550,34 @@ class LLVMImporter:
 
         code += include_file("handwritten/hexagon_c/functions.c")
 
+        self.write_src(code, path)
+
+    def build_dwarf_reg_num_table(self, path: str = "./rizin/librz/analysis/hexagon_dwarf_reg_num_table.inc"):
+        code = get_generation_warning_c_code()
+        code += "\n"
+        code += "static const char *map_dwarf_reg_to_hexagon_reg(ut32 reg_num) {"
+        code += "\tswitch(reg_num) {"
+        code += "\tdefault:\n"
+        code += '\t\trz_warn_if_reached();\n\t\treturn "unsupported_reg";'
+        dwarf_map = dict()
+        hw: HardwareRegister
+        for class_regs in self.hardware_regs.values():
+            for hw in class_regs.values():
+                if len(hw.dwarf_numbers) > 1:
+                    # Alias register like P3:0 which combines all of them.
+                    continue
+                n = hw.dwarf_numbers[0]
+                if n in dwarf_map:
+                    # Always choose register with shorter name (no double regs)
+                    if len(hw.asm_name) < len(dwarf_map[n].asm_name):
+                        dwarf_map[n] = hw
+                    continue
+                dwarf_map[n] = hw
+
+        sorted_dnums = {k: v for k, v in sorted(dwarf_map.items(), key=lambda item: item[0])}
+        for num, hw in sorted_dnums.items():
+            code += f'\tcase {num}: return "{hw.asm_name.upper()}";\n'
+        code += "}}"
         self.write_src(code, path)
 
     # RIZIN SPECIFIC
