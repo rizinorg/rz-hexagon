@@ -27,6 +27,7 @@ class HardwareRegister(Register):
         self.asm_name = ""
         self.alias = ""
         self.set_well_defined_asm_names(llvm_object["AsmName"], llvm_object["AltNames"])
+        self.dwarf_numbers = llvm_object["DwarfNumbers"]
         self.enum_name = (
             PluginInfo.REGISTER_ENUM_PREFIX
             + HardwareRegister.register_class_name_to_upper(llvm_reg_class)
