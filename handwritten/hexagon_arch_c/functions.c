@@ -232,13 +232,18 @@ static ut8 get_state_pkt_index(HexState *state, const HexPkt *p) {
 
 /**
  * \brief Initializes each packet of the state once.
+ * Note that this state is not thread safe.
+ * It requires RzArch for this.
  *
- * \return The initialized state of the plugins.
+ * \param reset Reset the state to NULL. Assumes it was freed before.
+ *
+ * \return The initialized state of the plugins or NULL if \p reset = true.
  */
-RZ_API HexState *hexagon_get_state() {
+RZ_API HexState *hexagon_state(bool reset) {
 	static HexState *state = NULL;
-	if (state) {
-		return state;
+	if (reset) {
+		state = NULL;
+		return NULL;
 	}
 
 	state = calloc(1, sizeof(HexState));
@@ -408,7 +413,7 @@ static void hex_set_pkt_info(const RzAsm *rz_asm, RZ_INOUT HexInsnContainer *hic
 	rz_return_if_fail(hic && p);
 	bool is_first = (k == 0);
 	HexPktInfo *hi_pi = &hic->pkt_info;
-	HexState *state = hexagon_get_state();
+	HexState *state = hexagon_state(false);
 	bool sdk_form = rz_config_get_b(state->cfg, "plugins.hexagon.sdk");
 
 	strncpy(hi_pi->text_postfix, "", 16);
@@ -467,7 +472,7 @@ static void hex_set_pkt_info(const RzAsm *rz_asm, RZ_INOUT HexInsnContainer *hic
 		}
 	}
 	if (update_text) {
-        hex_set_hic_text(hic);
+		hex_set_hic_text(hic);
 	}
 }
 
@@ -823,7 +828,7 @@ RZ_API void hex_extend_op(HexState *state, RZ_INOUT HexOp *op, const bool set_ne
  * \param addr The address of the current opcode.
  */
 RZ_API void hexagon_reverse_opcode(const RzAsm *rz_asm, HexReversedOpcode *rz_reverse, const ut8 *buf, const ut64 addr) {
-	HexState *state = hexagon_get_state();
+	HexState *state = hexagon_state(false);
 	if (!state) {
 		RZ_LOG_FATAL("HexState was NULL.");
 	}
@@ -839,13 +844,13 @@ RZ_API void hexagon_reverse_opcode(const RzAsm *rz_asm, HexReversedOpcode *rz_re
 			memcpy(rz_reverse->ana_op, &(hic->ana_op), sizeof(RzAnalysisOp));
 			rz_strbuf_set(&rz_reverse->asm_op->buf_asm, hic->text);
 			rz_reverse->asm_op->asm_toks = rz_asm_tokenize_asm_regex(&rz_reverse->asm_op->buf_asm, state->token_patterns);
-            rz_reverse->asm_op->asm_toks->op_type = hic->ana_op.type;
+			rz_reverse->asm_op->asm_toks->op_type = hic->ana_op.type;
 			return;
 		case HEXAGON_DISAS:
 			memcpy(rz_reverse->asm_op, &(hic->asm_op), sizeof(RzAsmOp));
 			rz_strbuf_set(&rz_reverse->asm_op->buf_asm, hic->text);
-            rz_reverse->asm_op->asm_toks = rz_asm_tokenize_asm_regex(&rz_reverse->asm_op->buf_asm, state->token_patterns);
-            rz_reverse->asm_op->asm_toks->op_type = hic->ana_op.type;
+			rz_reverse->asm_op->asm_toks = rz_asm_tokenize_asm_regex(&rz_reverse->asm_op->buf_asm, state->token_patterns);
+			rz_reverse->asm_op->asm_toks->op_type = hic->ana_op.type;
 			return;
 		case HEXAGON_ANALYSIS:
 			memcpy(rz_reverse->ana_op, &(hic->ana_op), sizeof(RzAnalysisOp));
@@ -872,14 +877,14 @@ RZ_API void hexagon_reverse_opcode(const RzAsm *rz_asm, HexReversedOpcode *rz_re
 		memcpy(rz_reverse->asm_op, &hic->asm_op, sizeof(RzAsmOp));
 		memcpy(rz_reverse->ana_op, &hic->ana_op, sizeof(RzAnalysisOp));
 		rz_strbuf_set(&rz_reverse->asm_op->buf_asm, hic->text);
-        rz_reverse->asm_op->asm_toks = rz_asm_tokenize_asm_regex(&rz_reverse->asm_op->buf_asm, state->token_patterns);
-        rz_reverse->asm_op->asm_toks->op_type = hic->ana_op.type;
+		rz_reverse->asm_op->asm_toks = rz_asm_tokenize_asm_regex(&rz_reverse->asm_op->buf_asm, state->token_patterns);
+		rz_reverse->asm_op->asm_toks->op_type = hic->ana_op.type;
 		break;
 	case HEXAGON_DISAS:
 		memcpy(rz_reverse->asm_op, &hic->asm_op, sizeof(RzAsmOp));
 		rz_strbuf_set(&rz_reverse->asm_op->buf_asm, hic->text);
-        rz_reverse->asm_op->asm_toks = rz_asm_tokenize_asm_regex(&rz_reverse->asm_op->buf_asm, state->token_patterns);
-        rz_reverse->asm_op->asm_toks->op_type = hic->ana_op.type;
+		rz_reverse->asm_op->asm_toks = rz_asm_tokenize_asm_regex(&rz_reverse->asm_op->buf_asm, state->token_patterns);
+		rz_reverse->asm_op->asm_toks->op_type = hic->ana_op.type;
 		break;
 	case HEXAGON_ANALYSIS:
 		memcpy(rz_reverse->ana_op, &hic->ana_op, sizeof(RzAnalysisOp));

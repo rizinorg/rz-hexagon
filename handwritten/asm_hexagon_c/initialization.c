@@ -120,7 +120,7 @@ static void compile_token_patterns(RZ_INOUT RzPVector /*<RzAsmTokenPattern *>*/ 
  */
 static bool hex_cfg_set(void *user, void *data) {
 	rz_return_val_if_fail(user && data, false);
-	HexState *state = hexagon_get_state();
+	HexState *state = hexagon_state(false);
 	if (!state) {
 		return false;
 	}
@@ -139,8 +139,24 @@ static bool hex_cfg_set(void *user, void *data) {
 	return false;
 }
 
+RZ_IPI void hexagon_state_fini(HexState *state) {
+	if (!state) {
+		return;
+	}
+	rz_config_free(state->cfg);
+	rz_pvector_free(state->token_patterns);
+	rz_list_free(state->const_ext_l);
+	return;
+}
+
+static bool hexagon_fini(void *user) {
+	hexagon_state_fini(hexagon_state(false));
+	hexagon_state(true);
+	return true;
+}
+
 static bool hexagon_init(void **user) {
-	HexState *state = hexagon_get_state();
+	HexState *state = hexagon_state(false);
 	rz_return_val_if_fail(state, false);
 
 	*user = state; // user = RzAsm.plugin_data
@@ -161,7 +177,7 @@ static bool hexagon_init(void **user) {
 }
 
 RZ_API RZ_BORROW RzConfig *hexagon_get_config() {
-	HexState *state = hexagon_get_state();
+	HexState *state = hexagon_state(false);
 	rz_return_val_if_fail(state, NULL);
 	return state->cfg;
 }
@@ -195,6 +211,7 @@ RzAsmPlugin rz_asm_plugin_hexagon = {
 	.bits = 32,
 	.desc = "Qualcomm Hexagon (QDSP6) V6",
 	.init = &hexagon_init,
+	.fini = &hexagon_fini,
 	.disassemble = &disassemble,
 	.get_config = &hexagon_get_config,
 };
