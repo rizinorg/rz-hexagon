@@ -761,10 +761,10 @@ class LLVMImporter:
                         "Could not assign register {} to a specific return" " value.".format(reg)
                     )
 
-            f.write("default.cc=hexagon\n\nhexagon=cc\n")
+            f.write("default.cc=hexagon\n\nhexagon=cc\ncc.hexagon.maxargs=6\n")
             for k, v in cc_dict.items():
                 f.write(k + "=" + v + "\n")
-            f.write("\nhvx=cc\ncc.hvx.name=hvx\n")
+            f.write("\nhvx=cc\ncc.hvx.name=hvx\ncc.hvx.maxargs=16\n")
 
             cc_dict = dict()
             for reg in HexagonArchInfo.CC_REGS["HVX_args"]:
