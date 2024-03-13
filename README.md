@@ -78,16 +78,6 @@ cd Tests
 python3 -m unittest discover -s . -t .
 ```
 
-# Porting
-
-Apart from some methods, which produce the C code for `rizin`, this code is `rizin` independent.
-In theory, it shouldn't be that hard to use it for disassembler plugins of other reverse engineering frameworks.
-
-So here are some good to know points for porting:
-- All `rizin` specific methods have the leading comment: `# RIZIN SPECIFIC`.
-- Please open an issue if you start working on this code for another reverse engineering framework.
-  We could remove all `rizin` code from this repo and fork our framework specific plugins from it.
-
 # Development info
 
 **Before you open a PR please run and fix the warnings.:

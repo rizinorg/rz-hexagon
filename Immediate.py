@@ -129,7 +129,6 @@ class Immediate(Operand):
                 "Extendable immediate is not 32 or 64bits long!\n" + "imm: {}".format(self.llvm_syntax)
             )
 
-    # RIZIN SPECIFIC
     def c_template(self, force_extendable=False) -> str:
         if self.is_constant:
             return ".info = HEX_OP_TEMPLATE_TYPE_IMM_CONST"
