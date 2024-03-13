@@ -3,12 +3,8 @@ Upstream-Name: Rizin
 Upstream-Contact: RizinOrg <info@rizin.re>
 Source: https://github.com/rizinorg/rizin
 
-Files: rizin/test/db/**
-Copyright: 2021 Rot127 <unisono@quyllur.org>
-License: LGPL-3.0-only
-
-Files: rizin/librz/analysis/d/cc-hexagon-32.sdb.txt
-Copyright: 2021 Rot127 <unisono@quyllur.org>
+Files: paths.json
+Copyright: 2024 Rot127 <unisono@quyllur.org>
 License: LGPL-3.0-only
 
 Files: .github/**
