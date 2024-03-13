@@ -10,12 +10,10 @@ import os
 import re
 import subprocess
 import argparse
-from pathlib import Path
 
 from HardwareRegister import HardwareRegister
 from ImplementationException import ImplementationException
 from Instruction import Instruction
-from Paths import PathHandler
 from SubInstruction import SubInstruction
 from helperFunctions import (
     log,
@@ -95,6 +93,7 @@ class LLVMImporter:
         cwd = os.getcwd()
         log("Load LLVMImporter configuration from {}/.config".format(cwd))
         if cwd.split("/")[-1] == "rz-hexagon" or self.test_mode:
+            self.config["GENERATOR_ROOT_DIR"] = cwd if not self.test_mode else "/".join(cwd.split("/")[:-1])
             if not os.path.exists(".config"):
                 with open(cwd + "/.config", "w") as f:
                     config = "# Configuration for th LLVMImporter.\n"
@@ -176,7 +175,7 @@ class LLVMImporter:
                 "../../../include/",
                 "--dump-json",
                 "-o",
-                str(PathHandler().get_gen_file("Hexagon.json")),
+                "{}/Hexagon.json".format(self.config["GENERATOR_ROOT_DIR"]),
                 "Hexagon.td",
             ],
             cwd=self.config["LLVM_PROJECT_HEXAGON_DIR"],
@@ -189,11 +188,11 @@ class LLVMImporter:
             "SysRegs",
             "SysRegs64",
         ]
-        reg_dir: Path = PathHandler().get_input_dir("import_registers")
+        reg_dir = "./import/registers/" if not self.test_mode else "../import/registers/"
         for filename in sorted(os.listdir(reg_dir)):
             if filename.split(".")[-1] != "json":
                 continue
-            with open(reg_dir.joinpath(filename)) as f:
+            with open(reg_dir + filename) as f:
                 reg = json.load(f)
             reg_name = list(reg.keys())[0]
             if reg_name != "SysRegs" or reg_name != "SysRegs64":
@@ -208,12 +207,12 @@ class LLVMImporter:
             self.hexArch.update(reg)
 
         instr_count = 0
-        insn_dir: Path = PathHandler().get_input_dir("import_instructions")
+        insn_dir = "./import/instructions/" if not self.test_mode else "../import/instructions/"
         for filename in sorted(os.listdir(insn_dir)):
             if filename.split(".")[-1] != "json":
                 continue
             instn_name = filename.replace(".json", "")
-            with open(insn_dir.joinpath(filename)) as f:
+            with open(insn_dir + filename) as f:
                 insn = json.load(f)
             syntax_list = dict()
             for llvm_instr in self.hexArch["!instanceof"]["HInst"]:
@@ -374,7 +373,7 @@ class LLVMImporter:
 
     def add_license_info_header(self) -> None:
         log("Add license headers")
-        for subdir, dirs, files in os.walk(PathHandler().complete_path("{RIZIN_DIR}")):
+        for subdir, dirs, files in os.walk("./rizin/"):
             for file in files:
                 if file == "hexagon" or file[-3:] == "txt":  # Tests
                     continue
@@ -386,7 +385,7 @@ class LLVMImporter:
                     f.seek(0, 0)
                     f.write(get_license() + "\n" + get_generation_timestamp(self.config) + "\n" + content)
 
-    def build_hexagon_insn_enum_h(self, path: Path = PathHandler().get_output_file("hexagon_insn.h")) -> None:
+    def build_hexagon_insn_enum_h(self, path: str = "./rizin/librz/arch/isa/hexagon/hexagon_insn.h") -> None:
         code = get_generation_warning_c_code()
         code += "\n"
         code += get_include_guard("hexagon_insn.h")
@@ -403,11 +402,11 @@ class LLVMImporter:
 
         self.write_src(code, path)
 
-    def build_hexagon_disas_c(self, path: Path = PathHandler().get_output_file("hexagon_disas.c")) -> None:
+    def build_hexagon_disas_c(self, path: str = "./rizin/librz/arch/isa/hexagon/hexagon_disas.c") -> None:
         code = get_generation_warning_c_code()
 
-        code += include_file(PathHandler().get_input_dir("hexagon_disas.c").joinpath("include.c"))
-        code += include_file(PathHandler().get_input_dir("hexagon_disas.c").joinpath("types.c"))
+        code += include_file("handwritten/hexagon_disas_c/include.c")
+        code += include_file("handwritten/hexagon_disas_c/types.c")
 
         templates_code = "\n\n"
 
@@ -434,11 +433,11 @@ class LLVMImporter:
         templates_code += "};\n\n"
 
         code += templates_code
-        code += include_file(PathHandler().get_input_dir("hexagon_disas.c").joinpath("functions.c"))
+        code += include_file("handwritten/hexagon_disas_c/functions.c")
 
         self.write_src(code, path)
 
-    def build_hexagon_h(self, path: Path = PathHandler().get_output_file("hexagon.h")) -> None:
+    def build_hexagon_h(self, path: str = "./rizin/librz/arch/isa/hexagon/hexagon.h") -> None:
         indent = PluginInfo.LINE_INDENT
         general_prefix = PluginInfo.GENERAL_ENUM_PREFIX
 
@@ -447,12 +446,12 @@ class LLVMImporter:
         code += get_include_guard("hexagon.h")
         code += "\n"
 
-        code += include_file(PathHandler().get_input_dir("hexagon.h").joinpath("includes.h"))
+        code += include_file("handwritten/hexagon_h/includes.h")
         code += "\n"
 
         code += f"#define {PluginInfo.GENERAL_ENUM_PREFIX}MAX_OPERANDS {PluginInfo.MAX_OPERANDS}\n"
         code += f"#define {PluginInfo.GENERAL_ENUM_PREFIX}PARSE_BITS_MASK 0x{PARSE_BITS_MASK_CONST:x}\n\n"
-        code += include_file(PathHandler().get_input_dir("hexagon.h").joinpath("typedefs.h"))
+        code += include_file("handwritten/hexagon_h/typedefs.h")
         code += "\n"
 
         code += "typedef enum {\n"
@@ -481,7 +480,7 @@ class LLVMImporter:
                 reg_class,
             )
 
-        code += include_file(PathHandler().get_input_dir("hexagon.h").joinpath("macros.h"))
+        code += include_file("handwritten/hexagon_h/macros.h")
         code += "\n"
 
         if len(self.reg_resolve_decl) == 0:
@@ -493,15 +492,15 @@ class LLVMImporter:
         for decl in self.reg_resolve_decl:
             code += decl
         code += "\n"
-        code += include_file(PathHandler().get_input_dir("hexagon.h").joinpath("declarations.h"))
+        code += include_file("handwritten/hexagon_h/declarations.h")
         code += "\n#endif"
 
         self.write_src(code, path)
 
-    def build_hexagon_c(self, path: Path = PathHandler().get_output_file("hexagon.c")) -> None:
+    def build_hexagon_c(self, path: str = "./rizin/librz/arch/isa/hexagon/hexagon.c") -> None:
         general_prefix = PluginInfo.GENERAL_ENUM_PREFIX
         code = get_generation_warning_c_code()
-        code += include_file(PathHandler().get_input_dir("hexagon.c").joinpath("include.c"))
+        code += include_file("handwritten/hexagon_c/include.c")
 
         reg_class: str
         for reg_class in self.hardware_regs:
@@ -541,11 +540,11 @@ class LLVMImporter:
         code += "}\n"
         code += "}\n\n"
 
-        code += include_file(PathHandler().get_input_dir("hexagon.c").joinpath("functions.c"))
+        code += include_file("handwritten/hexagon_c/functions.c")
 
         self.write_src(code, path)
 
-    def build_dwarf_reg_num_table(self, path: Path = PathHandler().get_output_file("hexagon_dwarf_reg_num_table.inc")):
+    def build_dwarf_reg_num_table(self, path: str = "./rizin/librz/arch/isa/hexagon/hexagon_dwarf_reg_num_table.inc"):
         code = get_generation_warning_c_code()
         code += "\n"
         code += "static const char *map_dwarf_reg_to_hexagon_reg(ut32 reg_num) {"
@@ -573,48 +572,48 @@ class LLVMImporter:
         code += "}}"
         self.write_src(code, path)
 
-    def build_asm_hexagon_c(self, path: Path = PathHandler().get_output_file("asm_hexagon.c")) -> None:
+    def build_asm_hexagon_c(self, path: str = "./rizin/librz/arch/p/asm/asm_hexagon.c") -> None:
         code = get_generation_warning_c_code()
 
-        code += include_file(PathHandler().get_input_dir("asm_hexagon.c").joinpath("include.c"))
-        code += include_file(PathHandler().get_input_dir("asm_hexagon.c").joinpath("initialization.c"))
+        code += include_file("handwritten/asm_hexagon_c/include.c")
+        code += include_file("handwritten/asm_hexagon_c/initialization.c")
 
         self.write_src(code, path)
 
-    def build_hexagon_arch_c(self, path: Path = PathHandler().get_output_file("hexagon_arch.c")):
+    def build_hexagon_arch_c(self, path: str = "./rizin/librz/arch/isa/hexagon/hexagon_arch.c"):
         code = get_generation_warning_c_code()
 
-        code += include_file(PathHandler().get_input_dir("hexagon_arch.c").joinpath("include.c"))
+        code += include_file("handwritten/hexagon_arch_c/include.c")
         code += "\n"
-        code += include_file(PathHandler().get_input_dir("hexagon_arch.c").joinpath("functions.c"))
+        code += include_file("handwritten/hexagon_arch_c/functions.c")
 
         self.write_src(code, path)
 
-    def build_hexagon_arch_h(self, path: Path = PathHandler().get_output_file("hexagon_arch.h")):
+    def build_hexagon_arch_h(self, path: str = "./rizin/librz/arch/isa/hexagon/hexagon_arch.h"):
         code = get_generation_warning_c_code()
         code += get_include_guard("hexagon_arch.h")
 
-        code += include_file(PathHandler().get_input_dir("hexagon_arch.h").joinpath("includes.h"))
-        code += include_file(PathHandler().get_input_dir("hexagon_arch.h").joinpath("typedefs.h"))
-        code += include_file(PathHandler().get_input_dir("hexagon_arch.h").joinpath("declarations.h"))
+        code += include_file("handwritten/hexagon_arch_h/includes.h")
+        code += include_file("handwritten/hexagon_arch_h/typedefs.h")
+        code += include_file("handwritten/hexagon_arch_h/declarations.h")
         code += "#endif"
 
         self.write_src(code, path)
 
     @staticmethod
     def copy_tests() -> None:
-        with open(PathHandler().get_input_dir("analysis-tests").joinpath("hexagon")) as f:
-            with open(PathHandler().get_output_file("analysis-tests"), "w+") as g:
+        with open("handwritten/analysis-tests/hexagon") as f:
+            with open("./rizin/test/db/analysis/hexagon", "w+") as g:
                 set_pos_after_license(g)
                 g.writelines(f.readlines())
 
-        with open(PathHandler().get_input_dir("asm-tests").joinpath("hexagon")) as f:
-            with open(PathHandler().get_output_file("asm-tests"), "w+") as g:
+        with open("handwritten/asm-tests/hexagon") as f:
+            with open("./rizin/test/db/asm/hexagon", "w+") as g:
                 set_pos_after_license(g)
                 g.writelines(f.readlines())
         log("Copied test files to ./rizin/test/db/", LogLevel.DEBUG)
 
-    def build_analysis_hexagon_c(self, path: Path = PathHandler().get_output_file("analysis_hexagon.c")) -> None:
+    def build_analysis_hexagon_c(self, path: str = "./rizin/librz/arch/p/analysis/analysis_hexagon.c") -> None:
         """Generates and writes the register profile.
         Note that some registers share the same offsets. R0 and R1:0 are both based at offset 0.
         """
@@ -670,8 +669,8 @@ class LLVMImporter:
 
         code = get_generation_warning_c_code()
 
-        code += include_file(PathHandler().get_input_dir("analysis_hexagon.c").joinpath("include.c"))
-        code += include_file(PathHandler().get_input_dir("analysis_hexagon.c").joinpath("functions.c"))
+        code += include_file("handwritten/analysis_hexagon_c/include.c")
+        code += include_file("handwritten/analysis_hexagon_c/functions.c")
 
         tmp = list()
         tmp.append("const char *p =")
@@ -683,7 +682,7 @@ class LLVMImporter:
         )
         code += "\n" + "".join(tmp)
 
-        code += include_file(PathHandler().get_input_dir("analysis_hexagon.c").joinpath("initialization.c"))
+        code += include_file("handwritten/analysis_hexagon_c/initialization.c")
 
         self.write_src(code, path)
 
@@ -743,7 +742,7 @@ class LLVMImporter:
 
     @staticmethod
     def build_cc_hexagon_32_sdb_txt(
-        path: Path = PathHandler().get_output_file("cc-hexagon-32.sdb.txt"),
+        path: str = "rizin/librz/analysis/d/cc-hexagon-32.sdb.txt",
     ) -> None:
         """Builds the *incomplete* calling convention as sdb file.
         Hexagon can pass arguments and return values via different registers. E.g. either over R0 or R1:0.
@@ -813,7 +812,7 @@ class LLVMImporter:
     @staticmethod
     def apply_clang_format() -> None:
         log("Apply clang-format.")
-        for subdir, dirs, files in os.walk(PathHandler().complete_path("{LIBRZ_DIR}")):
+        for subdir, dirs, files in os.walk("rizin/librz/"):
             for file in files:
                 p = os.path.join(subdir, file)
                 if os.path.splitext(p)[-1] in [
@@ -826,7 +825,7 @@ class LLVMImporter:
                     log("Format {}".format(p), LogLevel.VERBOSE)
                     os.system("clang-format-13 -style file -i " + p)
 
-    def write_src(self, code: str, path: Path) -> None:
+    def write_src(self, code: str, path: str) -> None:
         """Compares the given src code to the src code in the file at path and writes it if it differs.
         It ignores the leading license header and timestamps in the existing src file.
         Changes in formatting (anything which matches the regex '[[:blank:]]')

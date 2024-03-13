@@ -3,7 +3,6 @@
 # SPDX-License-Identifier: LGPL-3.0-only
 
 import re
-from pathlib import Path
 
 from bitarray import bitarray
 from enum import IntEnum
@@ -273,7 +272,7 @@ def get_generation_timestamp(conf: dict) -> str:
     return commit
 
 
-def compare_src_to_old_src(new_src: str, comp_src_file: Path) -> bool:
+def compare_src_to_old_src(new_src: str, comp_src_file: str) -> bool:
     """Compares each line of the new_src string and the src code in the file comp_src_file."""
     try:
         with open(comp_src_file) as f:
@@ -326,11 +325,11 @@ def surround_with_include_guard(filename: str, lines: list) -> list:
     return lines
 
 
-def include_file(file: Path):
+def include_file(filename):
     """Reads and returns the content of a hand-written src file.
     The does not return the license header and everything before that.
     """
-    with open(file) as include:
+    with open(filename) as include:
         set_pos_after_license(include)
         return "".join(include.readlines())
 
