@@ -72,7 +72,6 @@ class HardwareRegister(Register):
                 )
             )
 
-    # RIZIN SPECIFIC
     @staticmethod
     def get_parse_code_reg_bits(reg_class: str, var: str) -> str:
         """Sub register bits are encoded in a space saving way in the instruction encoding.
@@ -107,7 +106,6 @@ class HardwareRegister(Register):
             code += "{} |= 6;\n".format(var)
         return code
 
-    # RIZIN SPECIFIC
     def get_reg_profile(self, offset: int, is_tmp: bool) -> str:
         """Returns a one line register profile description.
 
@@ -126,7 +124,6 @@ class HardwareRegister(Register):
             i=indent,
         )
 
-    # RIZIN SPECIFIC
     def get_rz_reg_type(self) -> str:
         if self.is_control and self.is_hvx:
             return "vcc"

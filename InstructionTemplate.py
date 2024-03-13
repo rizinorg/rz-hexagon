@@ -320,7 +320,6 @@ class InstructionTemplate:
         code += "}"
         return code
 
-    # RIZIN SPECIFIC
     def get_predicate(self) -> str:
         if not self.is_predicated:
             pred = ["HEX_NOPRED"]
@@ -334,7 +333,6 @@ class InstructionTemplate:
                 pred.append("HEX_PRED_NEW")
         return " | ".join(pred)
 
-    # RIZIN SPECIFIC
     def get_rz_cond_type(self):
         """Returns the rizin conditional type."""
 
@@ -352,7 +350,6 @@ class InstructionTemplate:
             else:
                 return "RZ_TYPE_COND_HEX_SCL_FALSE"
 
-    # RIZIN SPECIFIC
     @property
     def c_rz_op_type(self) -> str:
         if self.is_trap:
@@ -391,7 +388,6 @@ class InstructionTemplate:
         )
         return "RZ_ANALYSIS_OP_TYPE_NULL"
 
-    # RIZIN SPECIFIC
     @staticmethod
     def register_names_to_upper(mnemonic: str) -> str:
         """The syntax can contain lower case register names. Here we convert them to upper case to enable syntax
@@ -402,7 +398,6 @@ class InstructionTemplate:
                 mnemonic = re.sub(reg_name.lower(), reg_name.upper(), mnemonic)
         return mnemonic
 
-    # RIZIN SPECIFIC
     def get_pkt_info_code(self) -> str:
         # Duplexes are always last instr. in packet.
         pass

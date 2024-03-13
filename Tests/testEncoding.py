@@ -79,7 +79,6 @@ class TestInstructionEncoding(unittest.TestCase):
         # TODO
         pass
 
-    # RIZIN SPECIFIC
     def test_shifting_c_code(self) -> None:
         self.assertEqual(
             "{ 0x8, 5 }",

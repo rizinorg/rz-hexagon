@@ -77,7 +77,6 @@ class LLVMImporter:
 
         self.unchanged_files = []  # Src files which had no changes after generation.
 
-        # RIZIN SPECIFIC
         # Name of the function which parses the encoded register index bits.
         self.reg_resolve_decl = list()
 
@@ -352,7 +351,6 @@ class LLVMImporter:
 
         return cc_regs
 
-    # RIZIN SPECIFIC
     def generate_rizin_code(self) -> None:
         log("Generate and write source code.")
         self.build_hexagon_insn_enum_h()
@@ -370,12 +368,10 @@ class LLVMImporter:
         # TODO hexagon.h: Gen - HexOpType, IClasses, Regs and its aliases (system = guest),
         #  + corresponding functions in hexagon.c: hex_get_sub_regpair etc.
 
-    # RIZIN SPECIFIC
     # TODO Wouldn't it be a wonderful world...
     def generate_decompiler_code(self) -> None:
         pass
 
-    # RIZIN SPECIFIC
     def add_license_info_header(self) -> None:
         log("Add license headers")
         for subdir, dirs, files in os.walk(PathHandler().complete_path("{RIZIN_DIR}")):
@@ -390,7 +386,6 @@ class LLVMImporter:
                     f.seek(0, 0)
                     f.write(get_license() + "\n" + get_generation_timestamp(self.config) + "\n" + content)
 
-    # RIZIN SPECIFIC
     def build_hexagon_insn_enum_h(self, path: Path = PathHandler().get_output_file("hexagon_insn.h")) -> None:
         code = get_generation_warning_c_code()
         code += "\n"
@@ -408,7 +403,6 @@ class LLVMImporter:
 
         self.write_src(code, path)
 
-    # RIZIN SPECIFIC
     def build_hexagon_disas_c(self, path: Path = PathHandler().get_output_file("hexagon_disas.c")) -> None:
         code = get_generation_warning_c_code()
 
@@ -444,7 +438,6 @@ class LLVMImporter:
 
         self.write_src(code, path)
 
-    # RIZIN SPECIFIC
     def build_hexagon_h(self, path: Path = PathHandler().get_output_file("hexagon.h")) -> None:
         indent = PluginInfo.LINE_INDENT
         general_prefix = PluginInfo.GENERAL_ENUM_PREFIX
@@ -505,7 +498,6 @@ class LLVMImporter:
 
         self.write_src(code, path)
 
-    # RIZIN SPECIFIC
     def build_hexagon_c(self, path: Path = PathHandler().get_output_file("hexagon.c")) -> None:
         general_prefix = PluginInfo.GENERAL_ENUM_PREFIX
         code = get_generation_warning_c_code()
@@ -581,7 +573,6 @@ class LLVMImporter:
         code += "}}"
         self.write_src(code, path)
 
-    # RIZIN SPECIFIC
     def build_asm_hexagon_c(self, path: Path = PathHandler().get_output_file("asm_hexagon.c")) -> None:
         code = get_generation_warning_c_code()
 
@@ -590,7 +581,6 @@ class LLVMImporter:
 
         self.write_src(code, path)
 
-    # RIZIN SPECIFIC
     def build_hexagon_arch_c(self, path: Path = PathHandler().get_output_file("hexagon_arch.c")):
         code = get_generation_warning_c_code()
 
@@ -600,7 +590,6 @@ class LLVMImporter:
 
         self.write_src(code, path)
 
-    # RIZIN SPECIFIC
     def build_hexagon_arch_h(self, path: Path = PathHandler().get_output_file("hexagon_arch.h")):
         code = get_generation_warning_c_code()
         code += get_include_guard("hexagon_arch.h")
@@ -612,7 +601,6 @@ class LLVMImporter:
 
         self.write_src(code, path)
 
-    # RIZIN SPECIFIC
     @staticmethod
     def copy_tests() -> None:
         with open(PathHandler().get_input_dir("analysis-tests").joinpath("hexagon")) as f:
@@ -626,7 +614,6 @@ class LLVMImporter:
                 g.writelines(f.readlines())
         log("Copied test files to ./rizin/test/db/", LogLevel.DEBUG)
 
-    # RIZIN SPECIFIC
     def build_analysis_hexagon_c(self, path: Path = PathHandler().get_output_file("analysis_hexagon.c")) -> None:
         """Generates and writes the register profile.
         Note that some registers share the same offsets. R0 and R1:0 are both based at offset 0.
@@ -754,7 +741,6 @@ class LLVMImporter:
 
         return p
 
-    # RIZIN SPECIFIC
     @staticmethod
     def build_cc_hexagon_32_sdb_txt(
         path: Path = PathHandler().get_output_file("cc-hexagon-32.sdb.txt"),
@@ -824,7 +810,6 @@ class LLVMImporter:
             for k, v in cc_dict.items():
                 f.write(k + "=" + v + "\n")
 
-    # RIZIN SPECIFIC
     @staticmethod
     def apply_clang_format() -> None:
         log("Apply clang-format.")

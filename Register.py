@@ -154,7 +154,6 @@ class Register(Operand):
         else:
             raise ImplementationException("Unhandled register type: {}".format(self.llvm_reg_class))
 
-    # RIZIN SPECIFIC
     def c_template(self, force_extendable=False) -> str:
         info = ["HEX_OP_TEMPLATE_TYPE_REG"]
         if self.is_out_operand:
@@ -181,7 +180,6 @@ class Register(Operand):
             s = s[:-1]
         return s
 
-    # RIZIN SPECIFIC
     @staticmethod
     def get_func_name_of_class(reg_class: str, is_n_reg: bool) -> str:
         """
@@ -198,7 +196,6 @@ class Register(Operand):
         code = PluginInfo.GENERAL_ENUM_PREFIX.lower() + "get_" + reg_func
         return code
 
-    # RIZIN SPECIFIC
     @staticmethod
     def get_enum_item_of_class(reg_class: str) -> str:
         """
