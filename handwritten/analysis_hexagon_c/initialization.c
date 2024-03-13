@@ -11,11 +11,3 @@ RzAnalysisPlugin rz_analysis_plugin_hexagon = {
 	.esil = false,
 	.get_reg_profile = get_reg_profile,
 };
-
-#ifndef RZ_PLUGIN_INCORE
-RZ_API RzLibStruct rizin_plugin = {
-	.type = RZ_LIB_TYPE_ANALYSIS,
-	.data = &rz_analysis_plugin_hexagon_v6,
-	.version = RZ_VERSION
-};
-#endif

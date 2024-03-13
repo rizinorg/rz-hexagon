@@ -6,6 +6,6 @@
 #include <rz_asm.h>
 #include <rz_analysis.h>
 #include <rz_lib.h>
-#include "hexagon.h"
-#include "hexagon_insn.h"
-#include "hexagon_arch.h"
+#include <hexagon/hexagon.h>
+#include <hexagon/hexagon_insn.h>
+#include <hexagon/hexagon_arch.h>
