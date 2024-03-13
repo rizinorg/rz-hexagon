@@ -1,0 +1,44 @@
+{
+  "path_variables": {
+    "{RIZIN_DIR}": "{REPO_ROOT}/rizin/",
+    "{LIBRZ_DIR}": "{REPO_ROOT}/rizin/librz/",
+    "{ISA_DIR}": "{REPO_ROOT}/rizin/librz/arch/isa/hexagon",
+    "{ASM_DIR}": "{REPO_ROOT}/rizin/librz/arch/p/asm/",
+    "{ANALYSIS_DIR}": "{REPO_ROOT}/rizin/librz/arch/p/analysis/",
+    "{TYPES_DIR}": "{REPO_ROOT}/rizin/librz/arch/types/",
+    "{TEST_ANA_DIR}": "{REPO_ROOT}/rizin/test/db/analysis/",
+    "{TEST_ASM_DIR}": "{REPO_ROOT}/rizin/test/db/asm/",
+    "{HANDWRITTEN_DIR}": "{REPO_ROOT}/handwritten/",
+    "{IMPORT_DIR}": "{REPO_ROOT}/import/"
+  },
+  "generator_files": {
+    "Hexagon.json": "{REPO_ROOT}/Hexagon.json"
+  },
+  "input_file_dirs": {
+    "analysis_hexagon.c": "{HANDWRITTEN_DIR}/analysis_hexagon_c",
+    "asm_hexagon.c": "{HANDWRITTEN_DIR}/asm_hexagon_c",
+    "hexagon_arch.c": "{HANDWRITTEN_DIR}/hexagon_arch_c",
+    "hexagon_arch.h": "{HANDWRITTEN_DIR}/hexagon_arch_h",
+    "hexagon.c": "{HANDWRITTEN_DIR}/hexagon_c",
+    "hexagon_disas.c": "{HANDWRITTEN_DIR}/hexagon_disas_c",
+    "hexagon.h": "{HANDWRITTEN_DIR}/hexagon_h",
+    "import_registers": "{IMPORT_DIR}/registers",
+    "import_instructions": "{IMPORT_DIR}/instructions",
+    "analysis-tests": "{HANDWRITTEN_DIR}/analysis-tests",
+    "asm-tests": "{HANDWRITTEN_DIR}/asm-tests"
+  },
+  "output_files": {
+    "hexagon_insn.h": "{ISA_DIR}/hexagon_insn.h",
+    "hexagon_disas.c": "{ISA_DIR}/hexagon_disas.c",
+    "hexagon.h": "{ISA_DIR}/hexagon.h",
+    "hexagon.c": "{ISA_DIR}/hexagon.c",
+    "hexagon_dwarf_reg_num_table.inc": "{ISA_DIR}/hexagon_dwarf_reg_num_table.inc",
+    "hexagon_arch.c": "{ISA_DIR}/hexagon_arch.c",
+    "hexagon_arch.h": "{ISA_DIR}/hexagon_arch.h",
+    "asm_hexagon.c": "{ASM_DIR}/asm_hexagon.c",
+    "analysis_hexagon.c": "{ANALYSIS_DIR}/analysis_hexagon.c",
+    "cc-hexagon-32.sdb.txt": "{TYPES_DIR}/cc-hexagon-32.sdb.txt",
+    "analysis-tests": "{TEST_ANA_DIR}/hexagon",
+    "asm-tests": "{TEST_ASM_DIR}/hexagon"
+  }
+}
