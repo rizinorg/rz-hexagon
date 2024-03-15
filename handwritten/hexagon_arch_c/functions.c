@@ -620,7 +620,7 @@ static void make_packet_valid(RZ_BORROW HexState *state, RZ_BORROW HexPkt *pkt) 
  * \param pkt The packet which predecessor will be updated.
  */
 static void make_next_packet_valid(HexState *state, const HexPkt *pkt) {
-	HexInsnContainer *tmp = rz_list_get_top(pkt->bin);
+	HexInsnContainer *tmp = rz_list_get_n(pkt->bin, 0);
 	if (!tmp) {
 		return;
 	}
@@ -1027,13 +1027,17 @@ static void copy_asm_ana_ops(const HexState *state, RZ_BORROW HexReversedOpcode 
 		memcpy(rz_reverse->ana_op, &hic->ana_op, sizeof(RzAnalysisOp));
 		rz_strbuf_set(&rz_reverse->asm_op->buf_asm, hic->text);
 		rz_reverse->asm_op->asm_toks = rz_asm_tokenize_asm_regex(&rz_reverse->asm_op->buf_asm, state->token_patterns);
-		rz_reverse->asm_op->asm_toks->op_type = hic->ana_op.type;
+		if (rz_reverse->asm_op->asm_toks) {
+		    rz_reverse->asm_op->asm_toks->op_type = hic->ana_op.type;
+		}
 		break;
 	case HEXAGON_DISAS:
 		memcpy(rz_reverse->asm_op, &hic->asm_op, sizeof(RzAsmOp));
 		rz_strbuf_set(&rz_reverse->asm_op->buf_asm, hic->text);
 		rz_reverse->asm_op->asm_toks = rz_asm_tokenize_asm_regex(&rz_reverse->asm_op->buf_asm, state->token_patterns);
-		rz_reverse->asm_op->asm_toks->op_type = hic->ana_op.type;
+		if (rz_reverse->asm_op->asm_toks) {
+		    rz_reverse->asm_op->asm_toks->op_type = hic->ana_op.type;
+		}
 		break;
 	case HEXAGON_ANALYSIS:
 		memcpy(rz_reverse->ana_op, &hic->ana_op, sizeof(RzAnalysisOp));
