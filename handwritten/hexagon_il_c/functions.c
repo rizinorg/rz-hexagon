@@ -57,7 +57,7 @@ static void hex_send_insn_to_i(RzPVector /*<HexILOp *>*/ *ops, ut8 start, ut8 ne
 		direction = -1;
 	}
 	for (i = start; i != newloc; i += direction) {
-		HexILOp *tmp_op = *rz_pvector_assign_at(ops, i, (HexILOp *)*rz_pvector_index_ptr(ops, i + direction));
+		HexILOp *tmp_op = *rz_pvector_assign_at(ops, i, (HexILOp *)rz_pvector_at(ops, i + direction));
 		rz_pvector_assign_at(ops, i + direction, tmp_op);
 	}
 }
@@ -109,7 +109,7 @@ RZ_IPI bool hex_shuffle_insns(RZ_INOUT HexPkt *p) {
 		n_mems = 0;
 		flag = false;
 		for (flag = false, n_mems = 0, i = last_insn; i >= 0; i--) {
-			op = (HexILOp *)*rz_pvector_index_ptr(ops, i);
+			op = (HexILOp *)rz_pvector_at(ops, i);
 			if (!op) {
 				RZ_LOG_FATAL("NULL il op at index %" PFMT32d "\n", i);
 			}
@@ -140,7 +140,7 @@ RZ_IPI bool hex_shuffle_insns(RZ_INOUT HexPkt *p) {
 
 		/* Comparisons go first, may be reordered with regard to each other */
 		for (flag = false, i = 0; i < last_insn + 1; i++) {
-			op = (HexILOp *)*rz_pvector_index_ptr(ops, i);
+			op = (HexILOp *)rz_pvector_at(ops, i);
 			if ((op->attr & HEX_IL_INSN_ATTR_WPRED) &&
 				(op->attr & HEX_IL_INSN_ATTR_MEM_WRITE)) {
 				/* This should be a comparison (not a store conditional) */
@@ -177,7 +177,7 @@ RZ_IPI bool hex_shuffle_insns(RZ_INOUT HexPkt *p) {
 	 * very end, past stores
 	 */
 	for (i = 0; i < last_insn; i++) {
-		op = (HexILOp *)*rz_pvector_index_ptr(ops, i);
+		op = (HexILOp *)rz_pvector_at(ops, i);
 		if (op->attr & HEX_IL_INSN_ATTR_NEW) {
 			hex_send_insn_to_i(ops, i, last_insn);
 			break;
@@ -212,7 +212,7 @@ static RZ_OWN RzILOpEffect *hex_pkt_to_il_seq(HexPkt *pkt) {
 	}
 	RzILOpEffect *complete_seq = EMPTY();
 	for (ut32 i = 0; i < rz_pvector_len(pkt->il_ops); ++i) {
-		complete_seq = SEQ2(complete_seq, hex_il_op_to_effect((HexILOp *)*rz_pvector_index_ptr(pkt->il_ops, i), pkt));
+		complete_seq = SEQ2(complete_seq, hex_il_op_to_effect((HexILOp *)rz_pvector_at(pkt->il_ops, i), pkt));
 	}
 	return complete_seq;
 }
