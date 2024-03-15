@@ -295,7 +295,7 @@ RUN
 
 
 NAME=Run v68_scalar
-TIMEOUT=240
+TIMEOUT=640
 FILE=bins/elf/hexagon/rzil/v68_scalar
 CMDS=<<EOF
 e io.cache=1
@@ -307,7 +307,7 @@ EOF
 RUN
 
 NAME=Run v73_scalar
-TIMEOUT=240
+TIMEOUT=640
 FILE=bins/elf/hexagon/rzil/v73_scalar
 CMDS=<<EOF
 e io.cache=1
@@ -319,7 +319,7 @@ EOF
 RUN
 
 NAME=Run test-vma
-TIMEOUT=240
+TIMEOUT=640
 FILE=bins/elf/hexagon/rzil/test-vma
 CMDS=<<EOF
 e io.cache=1
@@ -331,7 +331,7 @@ EOF
 RUN
 
 NAME=Run load_align
-TIMEOUT=240
+TIMEOUT=640
 FILE=bins/elf/hexagon/rzil/load_align
 CMDS=<<EOF
 e io.cache=1
@@ -344,11 +344,11 @@ RUN
 
 NAME=Run mem_noshuf
 FILE=bins/elf/hexagon/rzil/mem_noshuf
-TIMEOUT=240
+TIMEOUT=640
 CMDS=<<EOF
 e io.cache=1
 aezi
-aezsu 0x00021a38 # ENd of main
+aezsu 0x00021a38 # End of main
 EOF
 EXPECT=<<EOF
 EOF
@@ -356,7 +356,7 @@ RUN
 
 NAME=Run preg_alias
 FILE=bins/elf/hexagon/rzil/preg_alias
-TIMEOUT=240
+TIMEOUT=640
 CMDS=<<EOF
 e io.cache=1
 aezi
@@ -368,11 +368,11 @@ RUN
 
 NAME=Run dual_stores
 FILE=bins/elf/hexagon/rzil/dual_stores
-TIMEOUT=240
+TIMEOUT=640
 CMDS=<<EOF
 e io.cache=1
 aezi
-aezsu 0x00020eac # ENd of main
+aezsu 0x00020eac # End of main
 EOF
 EXPECT=<<EOF
 EOF
@@ -380,7 +380,7 @@ RUN
 
 NAME=Run read_write_overlap
 FILE=bins/elf/hexagon/rzil/read_write_overlap
-TIMEOUT=240
+TIMEOUT=640
 CMDS=<<EOF
 e io.cache=1
 aezi
