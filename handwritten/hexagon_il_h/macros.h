@@ -21,6 +21,10 @@
 #define HEX_F_TO_SINT(mode, fval)                  F2SINT(32, mode, fval)
 #define HEX_D_TO_INT(mode, fval)                   F2INT(64, mode, fval)
 #define HEX_F_TO_INT(mode, fval)                   F2INT(32, mode, fval)
+#define HEX_SINT_TO_D(mode, fval)                  SINT2F(64, mode, fval)
+#define HEX_SINT_TO_F(mode, fval)                  SINT2F(32, mode, fval)
+#define HEX_INT_TO_D(mode, fval)                   INT2F(64, mode, fval)
+#define HEX_INT_TO_F(mode, fval)                   INT2F(32, mode, fval)
 
 #define HEX_IMMUTABLE_REG (~0)
 #define HEX_NOT_MASKED 0
