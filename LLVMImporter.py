@@ -33,7 +33,7 @@ from helperFunctions import (
     get_generation_timestamp,
     src_matches_old_src,
     include_file,
-    gen_c_doxygen,
+    gen_c_doxygen, get_delimiter_line,
 )
 import PluginInfo
 import HexagonArchInfo
@@ -504,6 +504,11 @@ class LLVMImporter:
                 with open(p, "r+") as f:
                     content = f.read()
                     f.seek(0, 0)
+
+                    # If header message is there, skip it.
+                    match = re.search(get_delimiter_line(), content)
+                    if match:
+                        content = content[match.start():]
                     f.write(get_license() + "\n" + get_generation_timestamp(self.config) + "\n" + content)
                 if p not in self.edited_files:
                     log("Write {}".format(p), LogLevel.INFO)
