@@ -242,9 +242,13 @@ def set_pos_after_license(file: TextIO) -> None:
     return
 
 
+def get_delimiter_line() -> str:
+    return "{}\n".format(PluginInfo.GENERATION_WARNING_DELIMITER)
+
+
 def get_generation_warning_c_code() -> str:
     url = PluginInfo.REPO_URL
-    msg = "{}\n".format(PluginInfo.GENERATION_WARNING_DELIMITER)
+    msg = get_delimiter_line()
     msg += "// The following code is generated.\n"
     msg += "// Do not edit. Repository of code generator:\n"
     msg += "// {}\n".format(url)
