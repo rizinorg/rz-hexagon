@@ -307,7 +307,7 @@ static void check_for_jumps(const HexPkt *p, RZ_OUT bool *jump_flag) {
  */
 static inline bool pkt_at_addr_is_emu_ready(const HexPkt *pkt, const ut32 addr) {
 	if (rz_list_length(pkt->bin) == 1) {
-		const HexInsnContainer *hic = rz_list_get_top(pkt->bin);
+		const HexInsnContainer *hic = rz_list_get_n(pkt->bin, 0);
 		if (hic->identifier == HEX_INS_INVALID_DECODE) {
 			return false;
 		}

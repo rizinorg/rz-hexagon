@@ -35,7 +35,7 @@ RZ_API int hexagon_v6_op(RzAnalysis *analysis, RzAnalysisOp *op, ut64 addr, cons
 }
 
 static RzAnalysisILConfig *rz_hexagon_il_config(RzAnalysis *a) {
-	HexState *state = hexagon_get_state();
+	HexState *state = hexagon_state(true);
 	state->just_init = true;
 	return rz_analysis_il_config_new(32, a->big_endian, 32);
 }
