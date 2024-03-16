@@ -33,7 +33,8 @@ from helperFunctions import (
     get_generation_timestamp,
     src_matches_old_src,
     include_file,
-    gen_c_doxygen, get_delimiter_line,
+    gen_c_doxygen,
+    get_delimiter_line,
 )
 import PluginInfo
 import HexagonArchInfo
@@ -508,7 +509,7 @@ class LLVMImporter:
                     # If header message is there, skip it.
                     match = re.search(get_delimiter_line(), content)
                     if match:
-                        content = content[match.start():]
+                        content = content[match.start() :]
                     f.write(get_license() + "\n" + get_generation_timestamp(self.config) + "\n" + content)
                 if p not in self.edited_files:
                     log("Write {}".format(p), LogLevel.INFO)
@@ -1004,7 +1005,7 @@ class LLVMImporter:
             code += (
                 f"if (reg_num >= ARRAY_LEN({table_name}))"
                 f'{{RZ_LOG_INFO("{warn_ior}", "{func_name}", reg_num);'
-                f'return NULL;}}'
+                f"return NULL;}}"
             )
             code += f"const char *name;"
             code += f"const HexRegNames rn = {table_name}[reg_num];"
@@ -1014,7 +1015,7 @@ class LLVMImporter:
             code += "name = get_new ? rn.name_tmp : rn.name;}"
 
             warn_invalid_reg = "%s: No register name present at index: %d\\n"
-            code += "if (!name) {" f'RZ_LOG_INFO("{warn_invalid_reg}", "{func_name}", reg_num);' 'return NULL;}'
+            code += "if (!name) {" f'RZ_LOG_INFO("{warn_invalid_reg}", "{func_name}", reg_num);' "return NULL;}"
             code += "return name;"
             code += "}\n"
         return code
@@ -1193,9 +1194,7 @@ class LLVMImporter:
                     # different sized parameters.
                     continue
                 else:
-                    raise ImplementationException(
-                        f"Could not assign register {reg} to a specific return value."
-                    )
+                    raise ImplementationException(f"Could not assign register {reg} to a specific return value.")
             cc_dict["cc.hexagon.argn"] = "stack_rev"
             for reg in HexagonArchInfo.CC_REGS["GPR_ret"]:
                 n = int(re.search(r"\d{1,2}", reg).group(0))
@@ -1207,9 +1206,7 @@ class LLVMImporter:
                 elif reg[0] == "D":
                     continue
                 else:
-                    raise ImplementationException(
-                        f"Could not assign register {reg} to a specific return value."
-                    )
+                    raise ImplementationException(f"Could not assign register {reg} to a specific return value.")
 
             f.write("default.cc=hexagon\n\nhexagon=cc\ncc.hexagon.maxargs=6\n")
             for k, v in cc_dict.items():
@@ -1224,9 +1221,7 @@ class LLVMImporter:
                 elif reg[0] == "W":
                     continue
                 else:
-                    raise ImplementationException(
-                        f"Could not assign register {reg} to a specific return value."
-                    )
+                    raise ImplementationException(f"Could not assign register {reg} to a specific return value.")
             for reg in HexagonArchInfo.CC_REGS["HVX_ret"]:
                 n = int(re.search(r"\d{1,2}", reg).group(0))
                 if reg[0] == "V":
@@ -1237,9 +1232,7 @@ class LLVMImporter:
                 elif reg[0] == "W":
                     continue
                 else:
-                    raise ImplementationException(
-                        f"Could not assign register {reg} to a specific return value."
-                    )
+                    raise ImplementationException(f"Could not assign register {reg} to a specific return value.")
             for k, v in cc_dict.items():
                 f.write(k + "=" + v + "\n")
 
