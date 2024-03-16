@@ -14,9 +14,9 @@ from pathlib import Path
 from tqdm import tqdm
 
 from Conf import OutputFile, Conf
-from rzil_compiler.Transformer.Hybrids.SubRoutine import SubRoutineInitType
-from rzil_compiler.ArchEnum import ArchEnum
-from rzil_compiler.Compiler import Compiler, RZILInstruction
+from rzilcompiler.Transformer.Hybrids.SubRoutine import SubRoutineInitType
+from rzilcompiler.ArchEnum import ArchEnum
+from rzilcompiler.Compiler import Compiler, RZILInstruction
 from HardwareRegister import HardwareRegister
 from ImplementationException import ImplementationException
 from Instruction import Instruction
@@ -203,10 +203,10 @@ class LLVMImporter:
         log("Init compiler")
         self.rzil_compiler = Compiler(ArchEnum.HEXAGON)
         if not self.skip_pcpp:
-            self.rzil_compiler.run_preprocessor()
+            self.rzilcompiler.run_preprocessor()
 
         log("Load instruction behavior.")
-        self.rzil_compiler.preprocessor.load_insn_behavior()
+        self.rzilcompiler.preprocessor.load_insn_behavior()
 
     def update_hex_arch(self):
         """Imports system instructions and registers described in the manual but not implemented by LLVM."""
@@ -312,7 +312,7 @@ class LLVMImporter:
             i for i in self.hexArch["!instanceof"]["HInst"] if not self.hexArch[i]["isPseudo"] and not self.skip_insn(i)
         ]
         if self.gen_rzil and self.rzil_compile:
-            self.rzil_compiler.parse_shortcode()
+            self.rzilcompiler.parse_shortcode()
 
         with tqdm(
             desc="Parse instructions.",
@@ -351,7 +351,7 @@ class LLVMImporter:
                 t.n = i
                 t.postfix = f"Succ. compiled: {compiled_insn}/{len(no_pseudo)}"
                 t.update()
-        self.rzil_compiler.transformer.ext.report_missing_fcns()
+        self.rzilcompiler.transformer.ext.report_missing_fcns()
 
         log("Parsed {} normal instructions.".format(len(self.normal_instructions)))
         log("Parsed {} sub-instructions.".format(len(self.sub_instructions)))
@@ -365,7 +365,7 @@ class LLVMImporter:
 
     def set_il_op(self, insn: InstructionTemplate) -> bool:
         try:
-            insn.il_ops = self.rzil_compiler.compile_insn(insn.name)
+            insn.il_ops = self.rzilcompiler.compile_insn(insn.name)
             return True
         except Exception as e:
             log(f"Failed to compile instruction {insn.name}\nException: {e}\n", LogLevel.DEBUG)
@@ -539,12 +539,12 @@ class LLVMImporter:
             misc_insns = json.loads(f.read())
 
         for name in misc_insns["qemu_defined"]:
-            rzil_insn = self.rzil_compiler.compile_insn(name)
+            rzil_insn = self.rzilcompiler.compile_insn(name)
             for decl in rzil_insn["getter_rzil"]["fcn_decl"]:
                 code += f"{decl};\n"
 
-        for routine_name, routine in self.rzil_compiler.sub_routines.items():
-            sub_routine = self.rzil_compiler.get_sub_routine(routine_name)
+        for routine_name, routine in self.rzilcompiler.sub_routines.items():
+            sub_routine = self.rzilcompiler.get_sub_routine(routine_name)
             code += f"{sub_routine.il_init(SubRoutineInitType.DECL)};\n"
 
         code += "\n#endif\n"
@@ -634,7 +634,7 @@ class LLVMImporter:
             misc_insns = json.loads(f.read())
 
         for name in misc_insns["qemu_defined"]:
-            rzil_insn = self.rzil_compiler.compile_insn(name)
+            rzil_insn = self.rzilcompiler.compile_insn(name)
             if name in self.normal_instructions:
                 syntax = self.normal_instructions[name]
             elif name in self.sub_instructions:
@@ -643,8 +643,8 @@ class LLVMImporter:
                 syntax = "No syntax"
             code += self.get_il_op_c_defintion(syntax, rzil_insn)
 
-        for routine_name, routine in self.rzil_compiler.sub_routines.items():
-            sub_routine = self.rzil_compiler.get_sub_routine(routine_name)
+        for routine_name, routine in self.rzilcompiler.sub_routines.items():
+            sub_routine = self.rzilcompiler.get_sub_routine(routine_name)
             code += sub_routine.il_init(SubRoutineInitType.DEF) + "\n\n"
 
         code += include_file("handwritten/hexagon_il_X_ops_c/non_insn_ops.c")
