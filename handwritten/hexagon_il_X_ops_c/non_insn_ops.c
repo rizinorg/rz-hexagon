@@ -84,17 +84,5 @@ RZ_IPI RZ_OWN RzILOpEffect *hex_il_op_jump_flag_init(HexInsnPktBundle *bundle) {
 }
 
 RZ_IPI RZ_OWN RzILOpEffect *hex_il_op_next_pkt_jmp(HexInsnPktBundle *bundle) {
-	bool has_direct_jump = false;
-	void **it;
-	rz_pvector_foreach (bundle->pkt->il_ops, it) {
-		HexILOp *op = *it;
-		if (op->attr & HEX_IL_INSN_ATTR_BRANCH && !(op->attr & HEX_IL_INSN_ATTR_COND)) {
-			has_direct_jump = true;
-		}
-	}
-	if (!has_direct_jump) {
-		// Append the jump to the adjacent packet.
-		return BRANCH(VARL("jump_flag"), EMPTY(), JMP(U32(bundle->pkt->pkt_addr + (HEX_INSN_SIZE * rz_list_length(bundle->pkt->bin)))));
-	}
-	return EMPTY();
+	return BRANCH(VARL("jump_flag"), JMP(VARL("jump_target")), JMP(U32(bundle->pkt->pkt_addr + (HEX_INSN_SIZE * rz_list_length(bundle->pkt->bin)))));
 }
