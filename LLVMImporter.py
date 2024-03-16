@@ -51,7 +51,7 @@ class LLVMImporter:
     sub_instruction_names = list()
     sub_instructions = dict()
     hardware_regs = dict()
-    rzil_compiler = None
+    rzilcompiler = None
     edited_files: [str] = list()
 
     def __init__(self, build_json: bool, gen_rzil: bool, skip_pcpp: bool, rzil_compile: bool, test_mode=False):
@@ -202,7 +202,7 @@ class LLVMImporter:
 
     def setup_rzil_compiler(self):
         log("Init compiler")
-        self.rzil_compiler = Compiler(ArchEnum.HEXAGON)
+        self.rzilcompiler = Compiler(ArchEnum.HEXAGON)
         if not self.skip_pcpp:
             self.rzilcompiler.run_preprocessor()
 
@@ -352,7 +352,8 @@ class LLVMImporter:
                 t.n = i
                 t.postfix = f"Succ. compiled: {compiled_insn}/{len(no_pseudo)}"
                 t.update()
-        self.rzilcompiler.transformer.ext.report_missing_fcns()
+        if self.gen_rzil:
+            self.rzilcompiler.transformer.ext.report_missing_fcns()
 
         log("Parsed {} normal instructions.".format(len(self.normal_instructions)))
         log("Parsed {} sub-instructions.".format(len(self.sub_instructions)))
