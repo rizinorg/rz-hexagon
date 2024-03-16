@@ -389,9 +389,10 @@ RZ_IPI RzILOpEffect *hex_get_il_op(const ut32 addr, const bool get_pkt_op) {
 		rz_pvector_push(p->il_ops, &hex_endloop01_op);
 	}
 
-	// Add a jump to the next packet.
-	rz_pvector_push(p->il_ops, &hex_next_jump_to_next_pkt);
 	rz_pvector_push(p->il_ops, &hex_pkt_commit);
+	// Add a jump to the next packet. This always has to come last.
+	rz_pvector_push(p->il_ops, &hex_next_jump_to_next_pkt);
+
 
 	check_for_jumps(p, &might_has_jumped);
 
