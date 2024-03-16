@@ -2,3 +2,5 @@
 	path = rzil_compiler
 	url = git@github.com:Rot127/rzil-compiler.git
     branch = main
+[submodule "rzil_compiler/"]
+	url = git@github.com:Rot127/rz-rzilcompiler.git

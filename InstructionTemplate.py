@@ -8,7 +8,7 @@ import re
 
 import HexagonArchInfo
 import PluginInfo
-from rzil_compiler.Compiler import RZILInstruction
+from rzilcompiler.Compiler import RZILInstruction
 from Immediate import Immediate
 from ImplementationException import ImplementationException
 from InstructionEncoding import InstructionEncoding
