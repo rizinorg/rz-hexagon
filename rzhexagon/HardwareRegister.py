@@ -38,9 +38,7 @@ class HardwareRegister(Register):
 
         self.hw_encoding = index
         self.size: int = size if not self.is_vector else size * 2
-        self.sub_register_names: list = [
-            r["def"] for r in llvm_object["SubRegs"] if r["def"] not in hai.LLVM_FAKE_REGS
-        ]
+        self.sub_register_names: list = [r["def"] for r in llvm_object["SubRegs"] if r["def"] not in hai.LLVM_FAKE_REGS]
 
     def __lt__(self, other):
         return self.sorting_val < other.sorting_val

@@ -256,8 +256,10 @@ def get_generation_warning_c_code() -> str:
 
 
 def get_license() -> str:
+    # REUSE-IgnoreStart
     lcs = "// SPDX-FileCopyrightText: 2021 Rot127 <rot127@posteo.com>\n"
     lcs += "// SPDX-License-Identifier: LGPL-3.0-only\n"
+    # REUSE-IgnoreEnd
     return lcs
 
 

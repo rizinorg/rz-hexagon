@@ -1,0 +1,113 @@
+version = 1
+SPDX-PackageName = "Rizin"
+SPDX-PackageSupplier = "RizinOrg <info@rizin.re>"
+SPDX-PackageDownloadLocation = "https://github.com/rizinorg/rizin"
+
+[[annotations]]
+path = "paths.json"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2024 Rot127 <rot127@posteo.com>"
+SPDX-License-Identifier = "LGPL-3.0-only"
+
+[[annotations]]
+path = ".github/**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2021 RizinOrg <info@rizin.re>"
+SPDX-License-Identifier = "LGPL-3.0-only"
+
+[[annotations]]
+path = ".clang-format"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2021 RizinOrg <info@rizin.re>"
+SPDX-License-Identifier = "LGPL-3.0-only"
+
+[[annotations]]
+path = ".gitattributes"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2021 RizinOrg <info@rizin.re>"
+SPDX-License-Identifier = "LGPL-3.0-only"
+
+[[annotations]]
+path = ".gitignore"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2021 RizinOrg <info@rizin.re>"
+SPDX-License-Identifier = "LGPL-3.0-only"
+
+[[annotations]]
+path = ".gitmodules"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2022 Rot127 <rot127@posteo.com>"
+SPDX-License-Identifier = "LGPL-3.0-only"
+
+[[annotations]]
+path = ".pylintrc"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2021 RizinOrg <info@rizin.re>"
+SPDX-License-Identifier = "LGPL-3.0-only"
+
+[[annotations]]
+path = "**.yml"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2021 RizinOrg <info@rizin.re>"
+SPDX-License-Identifier = "LGPL-3.0-only"
+
+[[annotations]]
+path = "**.md"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2021 RizinOrg <info@rizin.re>"
+SPDX-License-Identifier = "LGPL-3.0-only"
+
+[[annotations]]
+path = "requirements.txt"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2021 Rot127 <rot127@posteo.com>"
+SPDX-License-Identifier = "CC0-1.0"
+
+[[annotations]]
+path = "optional_requirements.txt"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2021 Rot127 <rot127@posteo.com>"
+SPDX-License-Identifier = "CC0-1.0"
+
+[[annotations]]
+path = "handwritten/**-tests/**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2021 Rot127 <rot127@posteo.com>"
+SPDX-License-Identifier = "LGPL-3.0-only"
+
+[[annotations]]
+path = "test-bins/**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2021 Rot127 <rot127@posteo.com>"
+SPDX-License-Identifier = "LGPL-3.0-only"
+
+[[annotations]]
+path = "import/**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2022 Rot127 <rot127@posteo.com>"
+SPDX-License-Identifier = "LGPL-3.0-only"
+
+[[annotations]]
+path = "handwritten/**.json"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2023 Rot127 <rot127@posteo.com>"
+SPDX-License-Identifier = "LGPL-3.0-only"
+
+[[annotations]]
+path = ".python-version"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 Rot127 <rot127@posteo.com>"
+SPDX-License-Identifier = "LGPL-3.0-only"
+
+[[annotations]]
+path = "pyproject.toml"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 Rot127 <rot127@posteo.com>"
+SPDX-License-Identifier = "LGPL-3.0-only"
+
+[[annotations]]
+path = "uv.lock"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 Rot127 <rot127@posteo.com>"
+SPDX-License-Identifier = "LGPL-3.0-only"
+
