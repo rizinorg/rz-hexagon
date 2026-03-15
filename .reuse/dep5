@@ -4,7 +4,7 @@ Upstream-Contact: RizinOrg <info@rizin.re>
 Source: https://github.com/rizinorg/rizin
 
 Files: paths.json
-Copyright: 2024 Rot127 <unisono@quyllur.org>
+Copyright: 2024 Rot127 <rot127@posteo.com>
 License: LGPL-3.0-only
 
 Files: .github/**
@@ -24,7 +24,7 @@ Copyright: 2021 RizinOrg <info@rizin.re>
 License: LGPL-3.0-only
 
 Files: .gitmodules
-Copyright: 2022 Rot127 <unisono@quyllur.org>
+Copyright: 2022 Rot127 <rot127@posteo.com>
 License: LGPL-3.0-only
 
 Files: .pylintrc
@@ -40,25 +40,25 @@ Copyright: 2021 RizinOrg <info@rizin.re>
 License: LGPL-3.0-only
 
 Files: requirements.txt
-Copyright: 2021 Rot127 <unisono@quyllur.org>
+Copyright: 2021 Rot127 <rot127@posteo.com>
 License: CC0-1.0
 
 Files: optional_requirements.txt
-Copyright: 2021 Rot127 <unisono@quyllur.org>
+Copyright: 2021 Rot127 <rot127@posteo.com>
 License: CC0-1.0
 
 Files: handwritten/*-tests/*
-Copyright: 2021 Rot127 <unisono@quyllur.org>
+Copyright: 2021 Rot127 <rot127@posteo.com>
 License: LGPL-3.0-only
 
 Files: test-bins/*
-Copyright: 2021 Rot127 <unisono@quyllur.org>
+Copyright: 2021 Rot127 <rot127@posteo.com>
 License: LGPL-3.0-only
 
 Files: import/*
-Copyright: 2022 Rot127 <unisono@quyllur.org>
+Copyright: 2022 Rot127 <rot127@posteo.com>
 License: LGPL-3.0-only
 
 Files: handwritten/*.json
-Copyright: 2023 Rot127 <unisono@quyllur.org>
+Copyright: 2023 Rot127 <rot127@posteo.com>
 License: LGPL-3.0-only
