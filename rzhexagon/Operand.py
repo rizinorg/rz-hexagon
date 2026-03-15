@@ -8,9 +8,9 @@ from enum import Enum
 
 from bitarray import bitarray
 
-import HexagonArchInfo
-from ImplementationException import ImplementationException
-from helperFunctions import normalize_llvm_syntax
+import rzhexagon.HexagonArchInfo as hai
+from rzhexagon.ImplementationException import ImplementationException
+from rzhexagon.helperFunctions import normalize_llvm_syntax
 
 
 class SparseMask:
@@ -128,9 +128,9 @@ class Operand:
 
     @staticmethod
     def get_operand_type(operand_type: str) -> OperandType:
-        if operand_type in HexagonArchInfo.REG_CLASS_NAMES:
+        if operand_type in hai.REG_CLASS_NAMES:
             return OperandType.REGISTER
-        elif operand_type in HexagonArchInfo.IMMEDIATE_TYPES:
+        elif operand_type in hai.IMMEDIATE_TYPES:
             return OperandType.IMMEDIATE
         else:
             raise ImplementationException("Unknown operand type: {}".format(operand_type))

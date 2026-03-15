@@ -5,9 +5,9 @@
 from bitarray import bitarray
 import unittest
 
-from LLVMImporter import LLVMImporter
-from InstructionEncoding import InstructionEncoding
-from Operand import SparseMask
+from rzhexagon.LLVMImporter import LLVMImporter
+from rzhexagon.InstructionEncoding import InstructionEncoding
+from rzhexagon.Operand import SparseMask
 
 
 class TestInstructionEncoding(unittest.TestCase):

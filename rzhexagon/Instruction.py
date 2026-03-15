@@ -4,9 +4,9 @@
 
 import re
 
-from InstructionTemplate import InstructionTemplate, LoopMembership
-from InstructionEncoding import InstructionEncoding
-from helperFunctions import normalize_llvm_syntax, list_to_int
+from rzhexagon.InstructionTemplate import InstructionTemplate, LoopMembership
+from rzhexagon.InstructionEncoding import InstructionEncoding
+from rzhexagon.helperFunctions import normalize_llvm_syntax, list_to_int
 
 
 class Instruction(InstructionTemplate):

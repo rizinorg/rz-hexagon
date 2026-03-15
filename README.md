@@ -20,8 +20,7 @@ This plugin is under continuous work. So checkout the Github issues for missing 
 
 - For formatting we need `clang-format`. If it is not available on your distribution, you can install it from https://apt.llvm.org/.
 
-- Python requirements are in `requirements.txt`
-- As a developer you also need `black`, `flake8`, `reuse`.
+- Python requirements should be installed with `uv sync`
 
 ### Hexagon Target Description
 
@@ -45,10 +44,6 @@ Please add this directory to your `PATH`.
 
 # Install
 
-**Python 3.11**
-
-We require `Python 3.11`. Please follow the install-instructions from the [Python documentation](https://docs.python.org/3.11/). 
-
 **Clone repository**
 
 ```bash
@@ -59,7 +54,7 @@ cd rz-hexagon/
 **Setup a virtual environment**
 
 ```bash
-python3 -m venv .venv
+uv venv
 # Activate the virtual environment.
 # This step might differ from shell to shell (the one below is for bash/zsh).
 # Take a look at the Python docs if you are using another one.
@@ -70,12 +65,10 @@ source .venv/bin/activate
 **Install `rz-hexagon` as package**
 
 ```bash
-pip3 install -r requirements.txt -r rzil_compiler/requirements.txt
-# If you enjoy some colors
-pip3 install -r optional_requirements.txt
+uv sync
 # Install as develop package
-pip3 install -e rzil_compiler/
-pip3 install -e .
+uv pip install -e rzil_compiler/
+uv pip install -e .
 ```
 
 # Generate PlugIn
@@ -89,16 +82,15 @@ This will generate the `Hexagon.json` from the current `LLVM` source.
 It processes the LLVM definition files and generates C code in `./rizin` and its subdirectories.
 
 Copy the generated files to the `rizin` directory with
-  ```commandline
-  rsync -a rizin/ <rz-src-path>/
-  ```
+```commandline
+rsync -a rizin/ <rz-src-path>/
+```
 
 ## Test
 
 You can run the tests with:
 ```bash
-cd Tests
-python3 -m unittest discover -s . -t .
+uv run pytest
 ```
 
 # Development info

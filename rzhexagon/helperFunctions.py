@@ -8,10 +8,10 @@ from pathlib import Path
 from bitarray import bitarray
 from enum import IntEnum
 
-from typing.io import TextIO
+from typing import TextIO
 
-import PluginInfo
-from UnexpectedException import UnexpectedException
+import rzhexagon.PluginInfo as pi
+from rzhexagon.UnexpectedException import UnexpectedException
 
 try:
     from colorama import init, Fore, Style
@@ -216,8 +216,8 @@ def make_c_block(
     """
 
     new = []
-    indent: str = PluginInfo.LINE_INDENT * indent_depth
-    p_ind: str = PluginInfo.LINE_INDENT * (indent_depth - 1)
+    indent: str = pi.LINE_INDENT * indent_depth
+    p_ind: str = pi.LINE_INDENT * (indent_depth - 1)
 
     if begin != "":
         new += [p_ind + begin + " {\n"]
@@ -243,11 +243,11 @@ def set_pos_after_license(file: TextIO) -> None:
 
 
 def get_delimiter_line() -> str:
-    return "{}\n".format(PluginInfo.GENERATION_WARNING_DELIMITER)
+    return "{}\n".format(pi.GENERATION_WARNING_DELIMITER)
 
 
 def get_generation_warning_c_code() -> str:
-    url = PluginInfo.REPO_URL
+    url = pi.REPO_URL
     msg = get_delimiter_line()
     msg += "// The following code is generated.\n"
     msg += "// Do not edit. Repository of code generator:\n"
@@ -298,7 +298,7 @@ def src_matches_old_src(new_src: str, comp_src_file: Path) -> bool:
 
 def indent_code_block(code: str, indent_depth: int) -> str:
     ret = ""
-    indent: str = PluginInfo.LINE_INDENT
+    indent: str = pi.LINE_INDENT
     for line in code.splitlines(keepends=True):
         ret += (indent * indent_depth) + line
     return ret

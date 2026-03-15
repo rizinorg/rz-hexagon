@@ -13,15 +13,15 @@ from pathlib import Path
 
 from tqdm import tqdm
 
-from Conf import OutputFile, Conf
+from rzhexagon.Conf import OutputFile, Conf
 from rzilcompiler.Transformer.Hybrids.SubRoutine import SubRoutineInitType
 from rzilcompiler.ArchEnum import ArchEnum
 from rzilcompiler.Compiler import Compiler, RZILInstruction
-from HardwareRegister import HardwareRegister
-from ImplementationException import ImplementationException
-from Instruction import Instruction
-from SubInstruction import SubInstruction
-from helperFunctions import (
+from rzhexagon.HardwareRegister import HardwareRegister
+from rzhexagon.ImplementationException import ImplementationException
+from rzhexagon.Instruction import Instruction
+from rzhexagon.SubInstruction import SubInstruction
+from rzhexagon.helperFunctions import (
     log,
     LogLevel,
     get_generation_warning_c_code,
@@ -36,9 +36,9 @@ from helperFunctions import (
     gen_c_doxygen,
     get_delimiter_line,
 )
-import PluginInfo
-import HexagonArchInfo
-from InstructionTemplate import PARSE_BITS_MASK_CONST, InstructionTemplate
+import rzhexagon.PluginInfo as pi
+import rzhexagon.HexagonArchInfo as hai
+from rzhexagon.InstructionTemplate import PARSE_BITS_MASK_CONST, InstructionTemplate
 
 
 class LLVMImporter:
@@ -52,7 +52,7 @@ class LLVMImporter:
     sub_instructions = dict()
     hardware_regs = dict()
     rzilcompiler = None
-    edited_files: [str] = list()
+    edited_files: list[str] = list()
 
     def __init__(self, build_json: bool, gen_rzil: bool, skip_pcpp: bool, rzil_compile: bool, test_mode=False):
         self.gen_rzil = gen_rzil
@@ -82,12 +82,12 @@ class LLVMImporter:
         log("LLVM Hexagon target dump successfully loaded.")
 
         # Save types
-        HexagonArchInfo.IMMEDIATE_TYPES = self.hexArch["!instanceof"]["Operand"]
-        HexagonArchInfo.REG_CLASS_NAMES = self.hexArch["!instanceof"]["RegisterClass"]
-        HexagonArchInfo.LLVM_FAKE_REGS = self.hexArch["!instanceof"]["HexagonFakeReg"]
-        HexagonArchInfo.ALL_REG_NAMES = self.hexArch["!instanceof"]["DwarfRegNum"]
-        HexagonArchInfo.CALLEE_SAVED_REGS = [name[0]["def"] for name in self.hexArch["HexagonCSR"]["SaveList"]["args"]]
-        HexagonArchInfo.CC_REGS = self.get_cc_regs()
+        hai.IMMEDIATE_TYPES = self.hexArch["!instanceof"]["Operand"]
+        hai.REG_CLASS_NAMES = self.hexArch["!instanceof"]["RegisterClass"]
+        hai.LLVM_FAKE_REGS = self.hexArch["!instanceof"]["HexagonFakeReg"]
+        hai.ALL_REG_NAMES = self.hexArch["!instanceof"]["DwarfRegNum"]
+        hai.CALLEE_SAVED_REGS = [name[0]["def"] for name in self.hexArch["HexagonCSR"]["SaveList"]["args"]]
+        hai.CC_REGS = self.get_cc_regs()
 
         self.unchanged_files = []  # Src files which had no changes after generation.
 
@@ -378,7 +378,7 @@ class LLVMImporter:
     def parse_hardware_registers(self) -> None:
         cc = 0
         cr = 0
-        for reg_class_name in HexagonArchInfo.REG_CLASS_NAMES:
+        for reg_class_name in hai.REG_CLASS_NAMES:
             # LLVM fake register class; VectRegRev = reverse double register: V0:1 instead of V1:0
             if reg_class_name == "UsrBits" or reg_class_name == "VectRegRev":
                 continue
@@ -661,9 +661,9 @@ class LLVMImporter:
         enum = ""
         for name in sorted(self.normal_instruction_names + self.sub_instruction_names):
             if "invalid_decode" in name:
-                enum = (PluginInfo.INSTR_ENUM_PREFIX + name.upper() + " = 0,") + enum
+                enum = (pi.INSTR_ENUM_PREFIX + name.upper() + " = 0,") + enum
             else:
-                enum += PluginInfo.INSTR_ENUM_PREFIX + name.upper() + ","
+                enum += pi.INSTR_ENUM_PREFIX + name.upper() + ","
         code += enum
         code += "} HexInsnID;\n"
         code += "#endif"
@@ -729,9 +729,9 @@ class LLVMImporter:
                 tmp += "},"
                 table = tmp + table
                 continue
-            members_to_set = PluginInfo.NUM_HEX_IL_INSN_MEMBERS
+            members_to_set = pi.NUM_HEX_IL_INSN_MEMBERS
             getter: str
-            meta: [str]
+            meta: list[str]
             table += "{"
             for getter, meta in zip(insn.il_ops["getter_rzil"]["name"], insn.il_ops["meta"]):
                 table += f"{{(HexILOpGetter) {getter}, {'|'.join(meta)}}},\n"
@@ -776,8 +776,8 @@ class LLVMImporter:
         code += include_file("handwritten/hexagon_h/macros.h")
         code += "\n"
 
-        code += f"#define {PluginInfo.GENERAL_ENUM_PREFIX}MAX_OPERANDS {PluginInfo.MAX_OPERANDS}\n"
-        code += f"#define {PluginInfo.GENERAL_ENUM_PREFIX}PARSE_BITS_MASK 0x{PARSE_BITS_MASK_CONST:x}\n\n"
+        code += f"#define {pi.GENERAL_ENUM_PREFIX}MAX_OPERANDS {pi.MAX_OPERANDS}\n"
+        code += f"#define {pi.GENERAL_ENUM_PREFIX}PARSE_BITS_MASK 0x{PARSE_BITS_MASK_CONST:x}\n\n"
         code += include_file("handwritten/hexagon_h/typedefs.h")
         code += "\n"
 
@@ -822,7 +822,7 @@ class LLVMImporter:
         code = ""
         for reg_class in self.hardware_regs:
             code += "\n\n" + gen_c_doxygen(f"Lookup table for register names and alias of class {reg_class}.")
-            table_name = PluginInfo.REGISTER_LOOKUP_TABLE_NAME_V69.format(reg_class.lower())
+            table_name = pi.REGISTER_LOOKUP_TABLE_NAME_V69.format(reg_class.lower())
             code += f"HexRegNames {table_name}[] = {{\n"
 
             index = 0
@@ -841,7 +841,7 @@ class LLVMImporter:
             code += "};\n"
         return code
 
-    def get_hw_alias(self) -> [dict]:
+    def get_hw_alias(self) -> list[dict]:
         """
         Generates the list with alias of hardware registers and all the information about each alias.
         Used to generate alias enums and lookup tables.
@@ -858,7 +858,7 @@ class LLVMImporter:
                 for a in hw_reg.alias:
                     alias.append(
                         {
-                            "alias_enum": f'{PluginInfo.REGISTER_ALIAS_ENUM_PREFIX}{re.sub(r":", "_", a).upper()}',
+                            "alias_enum": f'{pi.REGISTER_ALIAS_ENUM_PREFIX}{re.sub(r":", "_", a).upper()}',
                             "reg_class": hw_reg.get_enum_item_of_class(reg_class),
                             "reg_enum": hw_reg.enum_name,
                             "real": hw_reg.asm_name,
@@ -872,7 +872,7 @@ class LLVMImporter:
         Returns: C lookup table with register alias.
         """
         code = gen_c_doxygen("Lookup table for register alias.\n")
-        code += f"HexRegAliasMapping {PluginInfo.ALIAS_REGISTER_LOOKUP_TABLE_v69}[] = {{\n"
+        code += f"HexRegAliasMapping {pi.ALIAS_REGISTER_LOOKUP_TABLE_v69}[] = {{\n"
         code += "\n".join(
             [f'{{{a["reg_class"]}, {a["reg_enum"]}}}, // {a["alias_enum"]}' for i, a in enumerate(self.get_hw_alias())]
         )
@@ -907,14 +907,14 @@ class LLVMImporter:
                     " // " + alias + "\n" if alias != "" else "\n",
                 )
             code += "}} {}{}; // {}\n\n".format(
-                PluginInfo.GENERAL_ENUM_PREFIX,
+                pi.GENERAL_ENUM_PREFIX,
                 HardwareRegister.register_class_name_to_upper(reg_class),
                 reg_class,
             )
         return code
 
     def build_hexagon_c(self, path: Path = Conf.get_path(OutputFile.HEXAGON_C)) -> None:
-        general_prefix = PluginInfo.GENERAL_ENUM_PREFIX
+        general_prefix = pi.GENERAL_ENUM_PREFIX
         code = get_generation_warning_c_code()
         code += include_file("handwritten/hexagon_c/include.c")
         code += "\n"
@@ -1002,7 +1002,7 @@ class LLVMImporter:
                 code += f"reg_num = hex_resolve_reg_enum_id({HardwareRegister.get_enum_item_of_class(reg_class)}, reg_num);\n"
 
             warn_ior = "%s: Index out of range during register name lookup:  i = %d\\n"
-            table_name = PluginInfo.REGISTER_LOOKUP_TABLE_NAME_V69.format(reg_class.lower())
+            table_name = pi.REGISTER_LOOKUP_TABLE_NAME_V69.format(reg_class.lower())
             code += (
                 f"if (reg_num >= ARRAY_LEN({table_name}))"
                 f'{{RZ_LOG_INFO("{warn_ior}", "{func_name}", reg_num);'
@@ -1124,7 +1124,7 @@ class LLVMImporter:
 
     def get_alias_profile(self) -> str:
         """Returns the alias profile of register. A0 = R0, SP = R29 PC = C9 etc."""
-        indent = PluginInfo.LINE_INDENT
+        indent = pi.LINE_INDENT
 
         p = "\n" + '"=PC{}C9\\n"'.format(indent) + "\n"
         p += '"=SP{}R29\\n"'.format(indent) + "\n"
@@ -1136,8 +1136,8 @@ class LLVMImporter:
         arg_regs = ""
         ret_regs = ""
 
-        arguments = HexagonArchInfo.CC_REGS["GPR_args"]
-        returns = HexagonArchInfo.CC_REGS["GPR_ret"]
+        arguments = hai.CC_REGS["GPR_args"]
+        returns = hai.CC_REGS["GPR_ret"]
 
         general_ps = list(self.hardware_regs["IntRegs"].values())
         gpr: HardwareRegister
@@ -1146,14 +1146,14 @@ class LLVMImporter:
                 i = arguments.index(gpr.name)
             except ValueError:
                 continue
-            if i > 9 and gpr.name in HexagonArchInfo.CC_REGS["GPR_args"]:
+            if i > 9 and gpr.name in hai.CC_REGS["GPR_args"]:
                 log(
                     "Can not add register {} as argument reg to the register"
                     " profile. ".format(gpr.name) + "Rizin only supports 10 argument registers. Check"
                     " rz_reg.h if this changed.",
                     LogLevel.WARNING,
                 )
-            if gpr.name in HexagonArchInfo.CC_REGS["GPR_args"]:
+            if gpr.name in hai.CC_REGS["GPR_args"]:
                 arg_regs += '"=A{}{}{}\\n"'.format(i, indent, gpr.asm_name.upper()) + "\n"
 
         for gpr in general_ps:
@@ -1161,14 +1161,14 @@ class LLVMImporter:
                 i = returns.index(gpr.name)
             except ValueError:
                 continue
-            if i > 3 and gpr.name in HexagonArchInfo.CC_REGS["GPR_ret"]:
+            if i > 3 and gpr.name in hai.CC_REGS["GPR_ret"]:
                 log(
                     "Can not add register {} as return reg to the register"
                     " profile. ".format(gpr.name) + "Rizin only supports 4 return registers. Check rz_reg.h"
                     " if this changed.",
                     LogLevel.WARNING,
                 )
-            if gpr.name in HexagonArchInfo.CC_REGS["GPR_ret"]:
+            if gpr.name in hai.CC_REGS["GPR_ret"]:
                 ret_regs += '"=R{}{}{}\\n"'.format(i, indent, gpr.asm_name.upper()) + "\n"
 
         p += arg_regs + ret_regs + "\n"
@@ -1186,7 +1186,7 @@ class LLVMImporter:
         cc_dict = dict()
         Conf.check_path(path)
         with open(path, "w+") as f:
-            for reg in HexagonArchInfo.CC_REGS["GPR_args"]:
+            for reg in hai.CC_REGS["GPR_args"]:
                 n = int(re.search(r"\d{1,2}", reg).group(0))
                 if reg[0] == "R":
                     cc_dict[f"cc.hexagon.arg{n}"] = f"R{n}"
@@ -1197,10 +1197,10 @@ class LLVMImporter:
                 else:
                     raise ImplementationException(f"Could not assign register {reg} to a specific return value.")
             cc_dict["cc.hexagon.argn"] = "stack_rev"
-            for reg in HexagonArchInfo.CC_REGS["GPR_ret"]:
+            for reg in hai.CC_REGS["GPR_ret"]:
                 n = int(re.search(r"\d{1,2}", reg).group(0))
                 if reg[0] == "R":
-                    if HexagonArchInfo.CC_REGS["GPR_ret"].index(reg) == 0:
+                    if hai.CC_REGS["GPR_ret"].index(reg) == 0:
                         cc_dict["cc.hexagon.ret"] = f"R{n}"
                     else:
                         continue
@@ -1215,7 +1215,7 @@ class LLVMImporter:
             f.write("\nhvx=cc\ncc.hvx.name=hvx\ncc.hvx.maxargs=16\n")
 
             cc_dict = dict()
-            for reg in HexagonArchInfo.CC_REGS["HVX_args"]:
+            for reg in hai.CC_REGS["HVX_args"]:
                 n = int(re.search(r"\d{1,2}", reg).group(0))
                 if reg[0] == "V":
                     cc_dict[f"cc.hvx.arg{n}"] = f"V{n}"
@@ -1223,10 +1223,10 @@ class LLVMImporter:
                     continue
                 else:
                     raise ImplementationException(f"Could not assign register {reg} to a specific return value.")
-            for reg in HexagonArchInfo.CC_REGS["HVX_ret"]:
+            for reg in hai.CC_REGS["HVX_ret"]:
                 n = int(re.search(r"\d{1,2}", reg).group(0))
                 if reg[0] == "V":
-                    if HexagonArchInfo.CC_REGS["HVX_ret"].index(reg) == 0:
+                    if hai.CC_REGS["HVX_ret"].index(reg) == 0:
                         cc_dict["cc.hvx.ret"] = f"V{n}"
                     else:
                         continue

@@ -4,10 +4,10 @@
 
 import unittest
 
-from Immediate import Immediate
-from Instruction import Instruction
-from LLVMImporter import LLVMImporter
-from helperFunctions import log, LogLevel
+from rzhexagon.Immediate import Immediate
+from rzhexagon.Instruction import Instruction
+from rzhexagon.LLVMImporter import LLVMImporter
+from rzhexagon.helperFunctions import log, LogLevel
 
 
 class TestImmediate(unittest.TestCase):

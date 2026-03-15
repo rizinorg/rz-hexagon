@@ -4,9 +4,9 @@
 
 import unittest
 
-from InstructionTemplate import InstructionTemplate
-from UnexpectedException import UnexpectedException
-from helperFunctions import normalize_llvm_syntax
+from rzhexagon.InstructionTemplate import InstructionTemplate
+from rzhexagon.UnexpectedException import UnexpectedException
+from rzhexagon.helperFunctions import normalize_llvm_syntax
 
 
 class TestInstruction(unittest.TestCase):

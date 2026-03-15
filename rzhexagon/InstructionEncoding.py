@@ -4,8 +4,8 @@
 
 from bitarray import bitarray
 
-from helperFunctions import bitarray_to_uint, log, LogLevel
-import HexagonArchInfo
+from rzhexagon.helperFunctions import bitarray_to_uint, log, LogLevel
+import rzhexagon.HexagonArchInfo as hai
 
 
 class InstructionEncoding:
@@ -51,11 +51,11 @@ class InstructionEncoding:
     def parse_encoding(self):
         """Parses each bit in the LLVM encoding and extracts masks and operands from those bits."""
 
-        instruction_mask = bitarray(HexagonArchInfo.INSTRUCTION_LENGTH, endian="little")
+        instruction_mask = bitarray(hai.INSTRUCTION_LENGTH, endian="little")
         instruction_mask.setall(0)
-        op_code = bitarray(HexagonArchInfo.INSTRUCTION_LENGTH, endian="little")
+        op_code = bitarray(hai.INSTRUCTION_LENGTH, endian="little")
         op_code.setall(0)
-        p_bits_mask = bitarray(HexagonArchInfo.INSTRUCTION_LENGTH, endian="little")
+        p_bits_mask = bitarray(hai.INSTRUCTION_LENGTH, endian="little")
         p_bits_mask.setall(0)
 
         for i in range(0, 32):
@@ -72,7 +72,7 @@ class InstructionEncoding:
                 else:
                     self.docs_mask = str(bit) + self.docs_mask
 
-                # In the encoding of Qualcomm (see: hexagon_iset_v5.h) we can find some some irrelevant bits
+                # In the encoding of Qualcomm (see: hexagon_iset_v5.h) we can find some irrelevant bits
                 # (depicted as '-'). In the LLVM encoding they are simply set to 0. So we include them in the mask
                 # and opcode anyways.
                 instruction_mask[i] = 1
@@ -90,7 +90,7 @@ class InstructionEncoding:
                 # Not yet parsed operand in encoding found. Create new mask.
                 if op_name not in self.llvm_operand_names:
                     self.llvm_operand_names.append(op_name)
-                    self.operand_masks[op_name] = bitarray(HexagonArchInfo.INSTRUCTION_LENGTH, endian="little")
+                    self.operand_masks[op_name] = bitarray(hai.INSTRUCTION_LENGTH, endian="little")
                     self.operand_masks[op_name].setall(0)
                 self.operand_masks[op_name][i] = 1
 

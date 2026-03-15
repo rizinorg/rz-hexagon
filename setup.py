@@ -4,4 +4,4 @@
 
 from setuptools import setup, find_packages
 
-setup(name="rz-hexagon", version="1.0", packages=find_packages())
+setup(name="rzhexagon", version="1.0", packages=find_packages())

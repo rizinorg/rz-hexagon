@@ -6,9 +6,9 @@ from __future__ import annotations
 
 import re
 
-import PluginInfo
-from ImplementationException import ImplementationException
-from Operand import Operand
+import rzhexagon.PluginInfo as pi
+from rzhexagon.ImplementationException import ImplementationException
+from rzhexagon.Operand import Operand
 
 
 class Register(Operand):
@@ -194,7 +194,7 @@ class Register(Operand):
         if is_n_reg:
             return "resolve_n_register"
         reg_func = Register.register_class_name_to_upper(reg_class).lower()
-        code = PluginInfo.GENERAL_ENUM_PREFIX.lower() + "get_" + reg_func
+        code = pi.GENERAL_ENUM_PREFIX.lower() + "get_" + reg_func
         return code
 
     @staticmethod
@@ -207,4 +207,4 @@ class Register(Operand):
         Returns: e.g. HEX_REG_CLASS_INT_REGS
         """
         reg_name = Register.register_class_name_to_upper(reg_class)
-        return f"{PluginInfo.GENERAL_ENUM_PREFIX}REG_CLASS_{reg_name}"
+        return f"{pi.GENERAL_ENUM_PREFIX}REG_CLASS_{reg_name}"

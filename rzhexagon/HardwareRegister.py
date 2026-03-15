@@ -4,11 +4,11 @@
 
 import re
 
-import HexagonArchInfo
-import PluginInfo
-from Register import Register
-from helperFunctions import list_to_int
-from ImplementationException import ImplementationException
+import rzhexagon.HexagonArchInfo as hai
+import rzhexagon.PluginInfo as pi
+from rzhexagon.Register import Register
+from rzhexagon.helperFunctions import list_to_int
+from rzhexagon.ImplementationException import ImplementationException
 
 
 class HardwareRegister(Register):
@@ -29,7 +29,7 @@ class HardwareRegister(Register):
         self.set_well_defined_asm_names(llvm_object["AsmName"], llvm_object["AltNames"])
         self.dwarf_numbers = llvm_object["DwarfNumbers"]
         self.enum_name = (
-            PluginInfo.REGISTER_ENUM_PREFIX
+            pi.REGISTER_ENUM_PREFIX
             + HardwareRegister.register_class_name_to_upper(llvm_reg_class)
             + "_"
             + re.sub(r":", "_", self.asm_name).upper()
@@ -39,7 +39,7 @@ class HardwareRegister(Register):
         self.hw_encoding = index
         self.size: int = size if not self.is_vector else size * 2
         self.sub_register_names: list = [
-            r["def"] for r in llvm_object["SubRegs"] if r["def"] not in HexagonArchInfo.LLVM_FAKE_REGS
+            r["def"] for r in llvm_object["SubRegs"] if r["def"] not in hai.LLVM_FAKE_REGS
         ]
 
     def __lt__(self, other):
@@ -81,7 +81,7 @@ class HardwareRegister(Register):
         """Sub register bits are encoded in a space saving way in the instruction encoding.
         So we need to shift the bits around before we get the register ID. Here we generate the code for that.
         """
-        indent = PluginInfo.LINE_INDENT
+        indent = pi.LINE_INDENT
         code = ""
         if reg_class == "CtrRegs64" or reg_class == "DoubleRegs" or reg_class == "GuestRegs64" or reg_class == "HvxVQR":
             # TODO Assumption: test with actual disassembly
@@ -118,7 +118,7 @@ class HardwareRegister(Register):
             is_tmp: True if a tmp register profile line should be generated (tmp regs are for RZIL VM).
         returns: "type name size mem-offset packed-size"
         """
-        indent = PluginInfo.LINE_INDENT
+        indent = pi.LINE_INDENT
         aname = self.asm_name.upper()
         return '"{t}{i}{n}{i}.{s}{i}{o}{i}0\\n"'.format(
             t=self.get_rz_reg_type(),

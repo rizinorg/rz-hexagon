@@ -6,11 +6,11 @@ from __future__ import annotations
 
 import re
 
-import HexagonArchInfo
-from Operand import Operand
-from ImplementationException import ImplementationException
-from UnexpectedException import UnexpectedException
-from helperFunctions import log, LogLevel
+import rzhexagon.HexagonArchInfo as hai
+from rzhexagon.Operand import Operand
+from rzhexagon.ImplementationException import ImplementationException
+from rzhexagon.UnexpectedException import UnexpectedException
+from rzhexagon.helperFunctions import log, LogLevel
 
 
 class Immediate(Operand):
@@ -118,7 +118,7 @@ class Immediate(Operand):
             raise ImplementationException("Could not find parse scale of immediate type: {}".format(llvm_imm_type))
 
         self.total_width = self.encoding_width + self.scale
-        mx = HexagonArchInfo.MAX_IMM_LEN
+        mx = hai.MAX_IMM_LEN
         nw = int((self.total_width - mx) / 4)
         if self.total_width > mx:
             log(

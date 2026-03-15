@@ -6,7 +6,7 @@ import subprocess
 from enum import StrEnum
 from pathlib import Path
 
-from helperFunctions import log
+from rzhexagon.helperFunctions import log
 
 
 class OutputFile(StrEnum):

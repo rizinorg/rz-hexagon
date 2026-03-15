@@ -6,16 +6,16 @@ from copy import deepcopy
 from enum import IntFlag
 import re
 
-import HexagonArchInfo
-import PluginInfo
+import rzhexagon.HexagonArchInfo as hai
+import rzhexagon.PluginInfo as pi
 from rzilcompiler.Compiler import RZILInstruction
-from Immediate import Immediate
-from ImplementationException import ImplementationException
-from InstructionEncoding import InstructionEncoding
-from Operand import Operand, OperandType, SparseMask
-from Register import Register
-from UnexpectedException import UnexpectedException
-from helperFunctions import log, LogLevel
+from rzhexagon.Immediate import Immediate
+from rzhexagon.ImplementationException import ImplementationException
+from rzhexagon.InstructionEncoding import InstructionEncoding
+from rzhexagon.Operand import Operand, OperandType, SparseMask
+from rzhexagon.Register import Register
+from rzhexagon.UnexpectedException import UnexpectedException
+from rzhexagon.helperFunctions import log, LogLevel
 
 PARSE_BITS_MASK_CONST = 0xC000  # currently, this is the same for all instructions, so no need to store it explicitly
 
@@ -36,7 +36,7 @@ class InstructionTemplate:
         self.llvm_instr: dict = llvm_instruction
         self.name: str = self.llvm_instr["!name"]
         self.is_vector = self.name[0] == "V"
-        self.plugin_name: str = PluginInfo.INSTR_ENUM_PREFIX + self.name.upper()
+        self.plugin_name: str = pi.INSTR_ENUM_PREFIX + self.name.upper()
         self.type: str = self.llvm_instr["Type"]["def"]
         self.constraints = self.llvm_instr["Constraints"]
         self.has_jump_target = self.name[:2] == "J2" or self.name[:2] == "J4"
@@ -201,10 +201,10 @@ class InstructionTemplate:
             self.ext_operand_index = self.operand_indices[op_name]
             log("{}\n ext: {}".format(self.llvm_syntax, self.ext_operand_index), LogLevel.VERBOSE)
 
-        if len(self.llvm_filtered_operands) > PluginInfo.MAX_OPERANDS:
+        if len(self.llvm_filtered_operands) > pi.MAX_OPERANDS:
             warning = "{} instruction struct can only hold {} operands. This" " instruction has {} operands.".format(
-                PluginInfo.FRAMEWORK_NAME,
-                PluginInfo.MAX_OPERANDS,
+                pi.FRAMEWORK_NAME,
+                pi.MAX_OPERANDS,
                 len(self.llvm_filtered_operands),
             )
             raise ImplementationException(warning)
@@ -398,14 +398,10 @@ class InstructionTemplate:
         """The syntax can contain lower case register names. Here we convert them to upper case to enable syntax
         highlighting in rizin.
         """
-        for reg_name in HexagonArchInfo.ALL_REG_NAMES:
+        for reg_name in hai.ALL_REG_NAMES:
             if re.search(r"[^a-zA-Z]" + reg_name.lower(), mnemonic) or mnemonic.startswith(reg_name.lower()):
                 mnemonic = re.sub(reg_name.lower(), reg_name.upper(), mnemonic)
         return mnemonic
-
-    def get_pkt_info_code(self) -> str:
-        # Duplexes are always last instr. in packet.
-        pass
 
     def remove_const_operands(self, all_ops):
         if self.name != "Y4_crswap10":

@@ -6,7 +6,7 @@ import unittest
 
 from bitarray import bitarray
 
-from helperFunctions import bitarray_to_uint, list_to_bitarray, list_to_int
+from rzhexagon.helperFunctions import bitarray_to_uint, list_to_bitarray, list_to_int
 
 
 class TestHelperFunction(unittest.TestCase):

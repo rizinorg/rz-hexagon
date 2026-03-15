@@ -4,8 +4,8 @@
 
 import unittest
 
-from Instruction import Instruction
-from LLVMImporter import LLVMImporter
+from rzhexagon.Instruction import Instruction
+from rzhexagon.LLVMImporter import LLVMImporter
 
 
 class TestRegister(unittest.TestCase):

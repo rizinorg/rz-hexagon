@@ -1,0 +1,17 @@
+[project]
+name = "rzhexagon"
+version = "0.1.0"
+description = "The Hexagon disassembly and analysis plugin generator for Rizin."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "bitarray>=3.8.0",
+    "black>=26.3.1",
+    "colorama>=0.4.6",
+    "flake8>=7.3.0",
+    "reuse>=6.2.0",
+    "rzilcompiler",
+]
+
+[tool.uv.sources]
+rzilcompiler = { path = "rzil_compiler" }

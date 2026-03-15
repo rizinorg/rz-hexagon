@@ -4,9 +4,9 @@
 
 from enum import StrEnum
 
-from ImplementationException import ImplementationException
-from Instruction import Instruction
-from UnexpectedException import UnexpectedException
+from rzhexagon.ImplementationException import ImplementationException
+from rzhexagon.Instruction import Instruction
+from rzhexagon.UnexpectedException import UnexpectedException
 
 
 class SubInstrNamespace(StrEnum):
