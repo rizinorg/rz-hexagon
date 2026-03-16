@@ -10,7 +10,19 @@ This is a Hexagon disassembly and analysis plugin generator for `rizin`.
 It uses the [LLVM target description source code](https://github.com/llvm/llvm-project/tree/main/llvm/lib/Target/Hexagon)
 of the Hexagon architecture and additional hand-written code.
 
-# Missing features and bugs
+## Comparison
+
+Those are the most up to date plugins I am aware of.
+
+| Plugin | RE Framework | ISA Version | Extensions | Lifted Instructions |
+|--------|--------|--------|--------|--------|
+| [idp_hexagon](https://github.com/n-o-o-n/idp_hexagon) | IDA | v79 (v81 ?) | HVX, HMX | None |
+| [Ghidra Hexagon SLEIGH](https://github.com/CUB3D/ghidra-hexagon-sleigh) | Ghidra | v79 | HVX | ~1000 |
+| rz-hexagon | Rizin | v81 | HVX, HMX | 1581/1733 + 431/643 HVX (v79) = ~2012 |
+| [binja-hexagon](https://github.com/google/binja-hexagon) (Community plugin) | Binary Ninja | v71 (?) | HVX | ~1000 |
+| Binja (official) | Binary Ninja | v79 | None | [(Almost) all of v79](https://github.com/Vector35/binaryninja-api/discussions/8016) (~1700) |
+
+## Missing features and bugs
 
 This plugin is under continuous work. So checkout the Github issues for missing features or not yet fixed bugs.
 
