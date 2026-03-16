@@ -51,20 +51,13 @@ git clone --recurse-submodules https://github.com/rizinorg/rz-hexagon.git
 cd rz-hexagon/
 ```
 
-**Setup a virtual environment**
+**Setup generator**
+
+Using [uv](https://docs.astral.sh/uv/) is recommended.
 
 ```bash
 uv venv
-# Activate the virtual environment.
-# This step might differ from shell to shell (the one below is for bash/zsh).
-# Take a look at the Python docs if you are using another one.
-# https://docs.python.org/3.11/library/venv.html?highlight=virtual%20environment
 source .venv/bin/activate
-```
-
-**Install `rz-hexagon` as package**
-
-```bash
 uv sync
 # Install as develop package
 uv pip install -e rzil_compiler/
@@ -75,7 +68,13 @@ uv pip install -e .
 
 The first time you run the generator you need to add the `-j` option.
 This will generate the `Hexagon.json` from the current `LLVM` source.
-```
+```bash
+# Set the path to LLVM in .config
+
+# Then generate the code:
+# For the disassembler only
+./LLVMImporter.py -j --no-rzil
+# Or disassembler + instruction semantics in RzIL
 ./LLVMImporter.py -j
 ```
 
@@ -90,7 +89,7 @@ rsync -a rizin/ <rz-src-path>/
 
 You can run the tests with:
 ```bash
-uv run pytest
+python -m unittest discover -s Tests
 ```
 
 # Development info

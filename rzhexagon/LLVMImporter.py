@@ -60,10 +60,7 @@ class LLVMImporter:
         self.sub_namespaces = set()
         self.skip_pcpp = skip_pcpp
         self.test_mode = test_mode
-        if self.test_mode:
-            self.hexagon_target_json_path = "../Hexagon.json"
-        else:
-            self.hexagon_target_json_path = "Hexagon.json"
+        self.hexagon_target_json_path = "Hexagon.json"
         self.get_import_config()
         if build_json:
             self.generate_hexagon_json()
@@ -108,7 +105,7 @@ class LLVMImporter:
         cwd = os.getcwd()
         log("Load LLVMImporter configuration from {}/.config".format(cwd))
         if cwd.split("/")[-1] == "rz-hexagon" or self.test_mode:
-            self.config["GENERATOR_ROOT_DIR"] = cwd if not self.test_mode else "/".join(cwd.split("/")[:-1])
+            self.config["GENERATOR_ROOT_DIR"] = cwd
             if not os.path.exists(".config"):
                 with open(cwd + "/.config", "w") as f:
                     config = "# Configuration for th LLVMImporter.\n"
@@ -216,7 +213,7 @@ class LLVMImporter:
             "SysRegs",
             "SysRegs64",
         ]
-        reg_dir = "./import/registers/" if not self.test_mode else "../import/registers/"
+        reg_dir = "./import/registers/"
         for filename in sorted(os.listdir(reg_dir)):
             if filename.split(".")[-1] != "json":
                 continue
@@ -239,7 +236,7 @@ class LLVMImporter:
                 self.hexArch[reg_class]["MemberList"]["args"].append([arg, None])
 
         instr_count = 0
-        insn_dir = "./import/instructions/" if not self.test_mode else "../import/instructions/"
+        insn_dir = "./import/instructions/"
         for filename in sorted(os.listdir(insn_dir)):
             if filename.split(".")[-1] != "json":
                 continue
