@@ -507,13 +507,13 @@ requires-dist = [
     { name = "colorama", specifier = ">=0.4.6" },
     { name = "flake8", specifier = ">=7.3.0" },
     { name = "reuse", specifier = ">=6.2.0" },
-    { name = "rzilcompiler", virtual = "rzil_compiler" },
+    { name = "rzilcompiler", editable = "rzil_compiler" },
 ]
 
 [[package]]
 name = "rzilcompiler"
 version = "0.1.0"
-source = { virtual = "rzil_compiler" }
+source = { editable = "rzil_compiler" }
 dependencies = [
     { name = "colorama" },
     { name = "lark" },
