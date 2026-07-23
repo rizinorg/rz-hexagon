@@ -75,33 +75,49 @@ RZ_IPI RZ_OWN RzILOpEffect *hex_commit_packet(HexInsnPktBundle *bundle) {
 		commit_seq = SEQ2(commit_seq, SETG(dest_reg, VARG(src_reg)));
 	}
 
-	hex_reset_il_pkt_stats(stats);
+	hex_il_pkt_stats_reset(stats);
 	return commit_seq;
 }
 
 RZ_IPI RZ_OWN RzILOpEffect *hex_il_op_jump_flag_init(HexInsnPktBundle *bundle) {
-	return SEQ3(SETL(bundle->jmp_flags[0], IL_FALSE),
-		SETL(bundle->jmp_flags[1], IL_FALSE),
-		SETL("next_pkt", U32(bundle->pkt->pkt_addr + (HEX_INSN_SIZE * rz_list_length(bundle->pkt->bin)))));
+	return SEQ2(SETL(bundle->jmp_flags[0], IL_FALSE),
+		SETL(bundle->jmp_flags[1], IL_FALSE));
+}
+
+RZ_IPI RZ_OWN RzILOpEffect *hex_il_op_set_jmp_target_0(HexInsnPktBundle *bundle) {
+	if (bundle->jmp_cnt < 1) {
+		rz_warn_if_reached();
+		return NULL;
+	}
+	return bundle->jmp_set_addr[0];
+}
+
+RZ_IPI RZ_OWN RzILOpEffect *hex_il_op_set_jmp_target_1(HexInsnPktBundle *bundle) {
+	if (bundle->jmp_cnt != 2) {
+		rz_warn_if_reached();
+		return NULL;
+	}
+	return bundle->jmp_set_addr[1];
 }
 
 RZ_IPI RZ_OWN RzILOpEffect *hex_il_op_next_pkt_jmp(HexInsnPktBundle *bundle) {
+	RzILOpPure *next_pkt_addr = U32(bundle->pkt->pkt_addr + (HEX_INSN_SIZE * rz_list_length(bundle->pkt->bin)));
 	switch (bundle->jmp_cnt) {
 	case 0:
 		// No jump/call was lifted.
-		return JMP(VARL("next_pkt"));
+		return JMP(next_pkt_addr);
 	case 1:
 		// One jump/call was lifted.
-		return BRANCH(VARL("jump_flag_0"),
+		return BRANCH(VARL(bundle->jmp_flags[0]),
 			JMP(VARL(bundle->jmp_targets[0])),
-			JMP(VARL("next_pkt")));
+			JMP(next_pkt_addr));
 	case 2:
 		// Two jumps/calls were lifted.
-		return BRANCH(VARL("jump_flag_0"),
+		return BRANCH(VARL(bundle->jmp_flags[0]),
 			JMP(VARL(bundle->jmp_targets[0])),
-			BRANCH(VARL("jump_flag_1"),
+			BRANCH(VARL(bundle->jmp_flags[1]),
 				JMP(VARL(bundle->jmp_targets[1])),
-				JMP(VARL("next_pkt"))));
+				JMP(next_pkt_addr)));
 	default:
 		break;
 	}
