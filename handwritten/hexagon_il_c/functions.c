@@ -6,9 +6,19 @@ static HexILOp hex_jump_flag_init_op = {
 	.get_il_op = (HexILOpGetter)hex_il_op_jump_flag_init,
 };
 
-static HexILOp hex_next_jump_to_next_pkt = {
+static HexILOp hex_jump_to_next_pkt = {
 	.attr = HEX_IL_INSN_ATTR_BRANCH | HEX_IL_INSN_ATTR_COND,
 	.get_il_op = (HexILOpGetter)hex_il_op_next_pkt_jmp,
+};
+
+static HexILOp hex_pkt_set_jmp_target_0 = {
+	.attr = HEX_IL_INSN_ATTR_NONE,
+	.get_il_op = (HexILOpGetter)hex_il_op_set_jmp_target_0,
+};
+
+static HexILOp hex_pkt_set_jmp_target_1 = {
+	.attr = HEX_IL_INSN_ATTR_NONE,
+	.get_il_op = (HexILOpGetter)hex_il_op_set_jmp_target_1,
 };
 
 static HexILOp hex_pkt_commit = {
@@ -34,7 +44,7 @@ static HexILOp hex_endloop01_op = {
 /**
  * \brief Sends the IL op at \p start to the position \p newloc.
  *
- * Note: THis is a copy of the same function implemented by Qualcomm in QEMU.
+ * Note: This is a copy of the same function implemented by Qualcomm in QEMU.
  * See: https://gitlab.com/qemu-project/qemu/-/blob/master/target/hexagon/decode.c :: decode_send_insn_to
  *
  * \param ops The IL ops list.
@@ -42,10 +52,9 @@ static HexILOp hex_endloop01_op = {
  * \param newloc Position the op shall be moved to.
  */
 static void hex_send_insn_to_i(RzPVector /*<HexILOp *>*/ *ops, ut8 start, ut8 newloc) {
-	rz_return_if_fail(ops);
+	rz_return_if_fail(ops && newloc < rz_pvector_len(ops));
 
 	st32 direction;
-	st32 i;
 	if (start == newloc) {
 		return;
 	}
@@ -56,9 +65,11 @@ static void hex_send_insn_to_i(RzPVector /*<HexILOp *>*/ *ops, ut8 start, ut8 ne
 		/* move towards beginning */
 		direction = -1;
 	}
-	for (i = start; i != newloc; i += direction) {
-		HexILOp *tmp_op = *rz_pvector_assign_at(ops, i, (HexILOp *)rz_pvector_at(ops, i + direction));
-		rz_pvector_assign_at(ops, i + direction, tmp_op);
+	for (st32 i = start; i != newloc; i += direction) {
+		HexILOp *neighbor_op = (HexILOp *)rz_pvector_at(ops, i + direction);
+		HexILOp *to_move_op = (HexILOp *)rz_pvector_at(ops, i);
+		rz_pvector_set(ops, i, neighbor_op);
+		rz_pvector_set(ops, i + direction, to_move_op);
 	}
 }
 
@@ -112,6 +123,7 @@ RZ_IPI bool hex_shuffle_insns(RZ_INOUT HexPkt *p) {
 			op = (HexILOp *)rz_pvector_at(ops, i);
 			if (!op) {
 				RZ_LOG_FATAL("NULL il op at index %" PFMT32d "\n", i);
+				return false;
 			}
 			if (flag && (op->attr & HEX_IL_INSN_ATTR_MEM_WRITE)) {
 				hex_send_insn_to_i(ops, i, last_insn - n_mems);
@@ -186,12 +198,23 @@ RZ_IPI bool hex_shuffle_insns(RZ_INOUT HexPkt *p) {
 	return true;
 }
 
-static RzILOpEffect *hex_il_op_to_effect(const HexILOp *il_op, HexPkt *pkt) {
-	rz_return_val_if_fail(il_op, NULL);
-	HexInsnPktBundle bundle = { 0 };
-	bundle.insn = (HexInsn *)il_op->hi;
-	bundle.pkt = pkt;
-	return il_op->get_il_op ? il_op->get_il_op(&bundle) : EMPTY();
+static inline void bundle_init(HexInsnPktBundle *bundle) {
+	memset(bundle, 0, sizeof(HexInsnPktBundle));
+	bundle->jmp_targets[0] = "jump_target_0";
+	bundle->jmp_targets[1] = "jump_target_1";
+	bundle->jmp_flags[0] = "jump_flag_0";
+	bundle->jmp_flags[1] = "jump_flag_1";
+}
+
+static inline void bundle_update(HexInsnPktBundle *bundle, HexInsn *insn, HexPkt *pkt) {
+	bundle->insn = insn;
+	bundle->pkt = pkt;
+}
+
+static RzILOpEffect *hex_il_op_to_effect(const HexILOp *il_op, HexPkt *pkt, HexInsnPktBundle *bundle) {
+	rz_return_val_if_fail(bundle && il_op && il_op->get_il_op, NULL);
+	bundle_update(bundle, il_op->hi, pkt);
+	return il_op->get_il_op(bundle);
 }
 
 /**
@@ -210,16 +233,18 @@ static RZ_OWN RzILOpEffect *hex_pkt_to_il_seq(HexPkt *pkt) {
 		RZ_LOG_WARN("Invalid il ops sequence! There should be at least two il ops per packet.\n");
 		return NULL;
 	}
+	HexInsnPktBundle bundle;
+	bundle_init(&bundle);
 	RzILOpEffect *complete_seq = EMPTY();
 	for (ut32 i = 0; i < rz_pvector_len(pkt->il_ops); ++i) {
-		complete_seq = SEQ2(complete_seq, hex_il_op_to_effect((HexILOp *)rz_pvector_at(pkt->il_ops, i), pkt));
+		complete_seq = SEQ2(complete_seq, hex_il_op_to_effect((HexILOp *)rz_pvector_at(pkt->il_ops, i), pkt, &bundle));
 	}
 	return complete_seq;
 }
 
 static bool set_pkt_il_ops(RZ_INOUT HexPkt *p) {
 	rz_return_val_if_fail(p, false);
-	hex_reset_il_pkt_stats(&p->il_op_stats);
+	hex_il_pkt_stats_reset(&p->il_op_stats);
 	// This function is a lot of unnecessary overhead so:
 	// TODO The assignment of IL instructions to their actual instructions should be done in the instruction template.
 	// But with the current separation between Asm and Analysis plugins this is not possible.
@@ -316,6 +341,41 @@ static inline bool pkt_at_addr_is_emu_ready(const HexPkt *pkt, const ut32 addr) 
 }
 
 /**
+ * \brief Inserts the `SETL(jmp_target_X, PURE)` effects after the respective
+ * jump effects.
+ */
+static bool insert_set_jmp_addr_effects(HexPkt *pkt) {
+	size_t idx[2] = { 0 };
+	size_t c = 0;
+	size_t i;
+	void **it;
+	rz_pvector_enumerate (pkt->il_ops, it, i) {
+		HexILOp *op = *it;
+		if (!(op->attr & HEX_IL_INSN_ATTR_BRANCH)) {
+			continue;
+		}
+		if (c >= 2) {
+			RZ_LOG_ERROR("Packet 0x%" PFMT32x " contains more than two branch instructions.\n", pkt->pkt_addr);
+			return false;
+		}
+		idx[c] = i + c + 1;
+		c++;
+	}
+	for (size_t k = 0; k < c; k++) {
+		rz_pvector_insert(pkt->il_ops, idx[k], k == 0 ? &hex_pkt_set_jmp_target_0 : &hex_pkt_set_jmp_target_1);
+		if (rz_pvector_at(pkt->il_ops, idx[k] - 1) == &hex_endloop01_op) {
+			// Edge case:
+			// The endloop01 effect has two jumps in it (one for each loop).
+			// but it is logged only once above.
+			// So we have to insert the second set_jmp_target_1 effect as well.
+			rz_pvector_insert(pkt->il_ops, idx[k] + 1, &hex_pkt_set_jmp_target_1);
+			break;
+		}
+	}
+	return true;
+}
+
+/**
  * \brief Returns the IL operation of the instruction at \p addr. This will always be EMPTY().
  * Except for last instructions in a packet. Those will always return the complete IL operation
  * of the packet or NULL if one instruction was not implemented or an error occurred.
@@ -326,13 +386,8 @@ static inline bool pkt_at_addr_is_emu_ready(const HexPkt *pkt, const ut32 addr) 
  * If false, the behavior is as documented above.
  * \return RzILOpEffect* Sequence of operations to emulate the packet.
  */
-RZ_IPI RzILOpEffect *hex_get_il_op(const ut32 addr, const bool get_pkt_op) {
-	static bool might_has_jumped = false;
-	HexState *state = hexagon_state(false);
-	if (!state) {
-		RZ_LOG_WARN("Failed to get hexagon plugin state data!\n");
-		return NULL;
-	}
+RZ_IPI RZ_OWN RzILOpEffect *hex_get_il_op(const ut32 addr, bool get_pkt_op, RZ_NONNULL HexState *state) {
+	rz_return_val_if_fail(state, NULL);
 	HexPkt *p = hex_get_pkt(state, addr);
 	if (!p) {
 		RZ_LOG_WARN("Packet was NULL although it should have been disassembled at this point.\n");
@@ -345,13 +400,14 @@ RZ_IPI RzILOpEffect *hex_get_il_op(const ut32 addr, const bool get_pkt_op) {
 	if (hic->identifier == HEX_INS_INVALID_DECODE) {
 		return NULL;
 	}
-	if (state->just_init || might_has_jumped) {
+	if (state->just_init || state->might_have_jumped) {
 		// Assume that the instruction at the address the VM was initialized is the first instruction.
 		// Also make it valid if a jump let to this packet.
 		p->is_valid = true;
+		get_pkt_op = true;
 		hic->pkt_info.first_insn = true;
 		state->just_init = false;
-		might_has_jumped = false;
+		state->might_have_jumped = false;
 	}
 
 	if (!get_pkt_op && !hic->pkt_info.last_insn) {
@@ -365,7 +421,7 @@ RZ_IPI RzILOpEffect *hex_get_il_op(const ut32 addr, const bool get_pkt_op) {
 	}
 
 	if (!rz_pvector_empty(p->il_ops)) {
-		check_for_jumps(p, &might_has_jumped);
+		check_for_jumps(p, &state->might_have_jumped);
 		return hex_pkt_to_il_seq(p);
 	}
 
@@ -389,12 +445,16 @@ RZ_IPI RzILOpEffect *hex_get_il_op(const ut32 addr, const bool get_pkt_op) {
 		rz_pvector_push(p->il_ops, &hex_endloop01_op);
 	}
 
+	if (!insert_set_jmp_addr_effects(p)) {
+		rz_warn_if_reached();
+		return NULL;
+	}
+
 	rz_pvector_push(p->il_ops, &hex_pkt_commit);
-	// Add a jump to the next packet. This always has to come last.
-	rz_pvector_push(p->il_ops, &hex_next_jump_to_next_pkt);
+	// Add a jump to the next packet.
+	rz_pvector_push(p->il_ops, &hex_jump_to_next_pkt);
 
-
-	check_for_jumps(p, &might_has_jumped);
+	check_for_jumps(p, &state->might_have_jumped);
 
 	return hex_pkt_to_il_seq(p);
 }
@@ -572,6 +632,7 @@ RZ_IPI RZ_OWN RzILOpEffect *hex_write_reg(RZ_BORROW HexInsnPktBundle *bundle, co
 	case HEX_REG_CLASS_GENERAL_SUB_REGS:
 		low_name = hex_get_reg_in_class(HEX_REG_CLASS_INT_REGS, reg_num, false, true, true);
 		if (!low_name) {
+			rz_il_op_pure_free(high_val);
 			return NULL;
 		}
 		low_val = CAST(HEX_GPR_WIDTH, IL_FALSE, val);
@@ -593,6 +654,7 @@ RZ_IPI RZ_OWN RzILOpEffect *hex_write_reg(RZ_BORROW HexInsnPktBundle *bundle, co
 		if (hex_ctr_immut_masks[reg_num] != HEX_IMMUTABLE_REG) {
 			low_name = hex_get_reg_in_class(HEX_REG_CLASS_CTR_REGS, reg_num, false, true, true);
 			if (!low_name) {
+				rz_il_op_pure_free(high_val);
 				return NULL;
 			}
 			low_val = CAST(HEX_GPR_WIDTH, IL_FALSE, val);
@@ -797,6 +859,8 @@ RZ_IPI RZ_OWN RzILOpPure *hex_read_reg(RZ_BORROW HexPkt *pkt, const HexOp *op, b
 	}
 	if (read_cond_faulty(low_val, high_val, val_width)) {
 		rz_warn_if_reached();
+		rz_il_op_pure_free(high_val);
+		rz_il_op_pure_free(low_val);
 		return NULL;
 	}
 	log_reg_read(pkt, reg_num, op->class, tmp_reg);
@@ -835,7 +899,10 @@ RzILOpPure *hex_get_corresponding_cs(RZ_BORROW HexPkt *pkt, const HexOp *Mu) {
 	return NULL;
 }
 
-RZ_IPI void hex_reset_il_pkt_stats(HexILExecData *stats) {
+RZ_IPI void hex_il_pkt_stats_fini(HexILExecData *stats) {
+	if (!stats) {
+		return;
+	}
 	rz_bv_free(stats->slot_cancelled);
 	rz_bv_free(stats->ctr_written);
 	rz_bv_free(stats->gpr_written);
@@ -846,6 +913,10 @@ RZ_IPI void hex_reset_il_pkt_stats(HexILExecData *stats) {
 	rz_bv_free(stats->ctr_tmp_read);
 	rz_bv_free(stats->gpr_tmp_read);
 	rz_bv_free(stats->pred_tmp_read);
+}
+
+RZ_IPI void hex_il_pkt_stats_init(HexILExecData *stats) {
+	rz_return_if_fail(stats);
 	stats->slot_cancelled = rz_bv_new(64);
 	stats->ctr_written = rz_bv_new(64);
 	stats->gpr_written = rz_bv_new(64);
@@ -856,4 +927,9 @@ RZ_IPI void hex_reset_il_pkt_stats(HexILExecData *stats) {
 	stats->ctr_tmp_read = rz_bv_new(64);
 	stats->gpr_tmp_read = rz_bv_new(64);
 	stats->pred_tmp_read = rz_bv_new(32);
+}
+
+RZ_IPI void hex_il_pkt_stats_reset(HexILExecData *stats) {
+	hex_il_pkt_stats_fini(stats);
+	hex_il_pkt_stats_init(stats);
 }
